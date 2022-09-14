@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
 import {Button, Input, InputGroup, InputRightElement, Link as ChakraLink} from "@chakra-ui/react";
 import {Link, useNavigate} from 'react-router-dom';
+import type { RootState } from '../../app/store'
+import { useDispatch } from 'react-redux'
+import { userUpdate} from '../../features/User/userSlice'
 
 export const Login = () => {
+    const dispatch = useDispatch()
     const navigate = useNavigate();
     const [show, setShow] = React.useState(false)
     const handleClick = () => setShow(!show)
@@ -31,6 +35,9 @@ export const Login = () => {
         if (data.error){
             setError('error 404')
         }else{
+
+            console.log(data)
+            dispatch(userUpdate(data));
             navigate("/home")
         }
 
