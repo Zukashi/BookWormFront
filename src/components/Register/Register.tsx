@@ -1,7 +1,5 @@
 import React, {FormEvent, useState} from 'react';
 import {Button, Input, InputGroup, InputRightElement} from "@chakra-ui/react";
-import {Link} from "react-router-dom";
-import {Link as ChakraLink} from "@chakra-ui/layout";
 
 export const Register = () => {
     const [show, setShow] = React.useState(false)
@@ -46,8 +44,6 @@ export const Register = () => {
             </InputRightElement>
                 </InputGroup>
                 <Button className='mt-5 ' colorScheme='blackAlpha' onClick={e => submit(e)} type='submit'>Register</Button>
-                <Link to='/reset-password' className='mt-3'><ChakraLink className='flex justify-center'>Forgot Password?</ChakraLink></Link>
-                <Link to='/create-account'  className='mt-1'><ChakraLink className='flex justify-center'>Don't have an account?</ChakraLink></Link>
             </div>
         </div>
 
