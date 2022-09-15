@@ -7,12 +7,13 @@ export interface UserState {
     email: string,
     password: string,
     username:string,
-
+    isAdmin:boolean,
 }
 const initialState: UserState = {
       email:'',
       password:'',
       username:'',
+      isAdmin:false,
 }
 
 export const userSlice = createSlice({
@@ -23,6 +24,7 @@ export const userSlice = createSlice({
       state.email = action.payload.email
       state.username = action.payload.username
       state.password = action.payload.password
+      state.isAdmin = action.payload.isAdmin
     }
   },
 })

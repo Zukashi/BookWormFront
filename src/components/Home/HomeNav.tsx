@@ -24,7 +24,7 @@ export const HomeNav = () => {
 
   return (<>
     <nav className='w-100vw h-[200px] flex justify-center'>
-      <Input  variant='filled' placeholder='Input your author or book' width='400px' onChange={e => onChange(e.target.value)}/>
+      <Input  variant='filled' placeholder='Input your author or book' width='400px' onChange={(e:any) => onChange(e.target.value)}/>
       <i className="fa-solid fa-magnifying-glass absolute right-[37vw] top-[1.5vh] cursor-pointer hover:text-lime-400"></i>
       <div className='absolute right-0'>
       <Menu>
