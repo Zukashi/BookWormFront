@@ -1,8 +1,10 @@
 import React from 'react';
+import {HomeNav} from "../components/Home/HomeNav";
+import {BooksSearchBar} from "../components/Home/BooksView";
 
 export const HomeView = () => {
     return (<>
-
-<h1>xd</h1>
+        <HomeNav/>
+        <BooksSearchBar/>
     </>)
 }

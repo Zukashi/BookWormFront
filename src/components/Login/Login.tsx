@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Input, InputGroup, InputRightElement, Link as ChakraLink} from "@chakra-ui/react";
 import {Link, useNavigate} from 'react-router-dom';
-import type { RootState } from '../../app/store'
 import { useDispatch } from 'react-redux'
 import { userUpdate} from '../../features/User/userSlice'
 
