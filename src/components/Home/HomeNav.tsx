@@ -6,8 +6,12 @@ import {useDispatch} from "react-redux";
 export const HomeNav = () => {
   const dispatch = useDispatch();
 
-
  const onChange = (value:string) => {
+   (async() => {
+     const encodedQuery = encodeURIComponent(value);
+     const response = await fetch(`http://localhost:3001/author?q=${encodedQuery} `);
+     console.log(await response.json())
+   })();
    const books = data.filter(book => {
      if ( book.title.toLowerCase().includes(value.toLowerCase())){
        return book.title
