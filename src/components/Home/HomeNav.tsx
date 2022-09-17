@@ -1,28 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, Input, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList} from "@chakra-ui/react";
 import { bookUpdate} from '../../features/Books/bookSlice'
-import {data} from './data'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {AuthorState, authorUpdate} from "../../features/Author/authorSlice";
+import {RootState} from "../../app/store";
+
+
 export const HomeNav = () => {
   const dispatch = useDispatch();
-
+  const author = useSelector((state: RootState) => state.author);
  const onChange = (value:string) => {
    (async() => {
      const encodedQuery = encodeURIComponent(value);
-     const response = await fetch(`http://localhost:3001/author?q=${encodedQuery} `);
-     console.log(await response.json())
+     const responseAuthor = await fetch(`http://localhost:3001/author?q=${encodedQuery} `);
+
+     const authorData:AuthorState = await responseAuthor.json()
+     dispatch(authorUpdate(authorData));
    })();
-   const books = data.filter(book => {
-     if ( book.title.toLowerCase().includes(value.toLowerCase())){
-       return book.title
-     }
-      else if(book.author.toLowerCase().includes(value.toLowerCase())) {
-        return book.title
-     }
 
-
-   });
-   dispatch(bookUpdate(books))
  }
 
 

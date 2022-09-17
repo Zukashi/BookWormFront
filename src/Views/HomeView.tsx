@@ -1,6 +1,6 @@
 import React from 'react';
 import {HomeNav} from "../components/Home/HomeNav";
-import {BooksSearchBar} from "../components/Home/BooksView";
+import {BooksSearchBar} from "../components/Home/HintsSearchBar";
 import {useSelector} from "react-redux";
 import {RootState} from "../app/store";
 import {HomeAdminNav} from "../components/Home/AdminHome/HomeAdminNav";
