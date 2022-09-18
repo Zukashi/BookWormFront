@@ -4,6 +4,7 @@ import { bookUpdate} from '../../features/Books/bookSlice'
 import {useDispatch, useSelector} from "react-redux";
 import {AuthorState, authorUpdate} from "../../features/Author/authorSlice";
 import {RootState} from "../../app/store";
+import {searchUpdate} from "../../features/Search/searchSlice";
 
 
 export const HomeNav = () => {
@@ -13,10 +14,10 @@ export const HomeNav = () => {
  const onChange = (value:string) => {
    (async() => {
      const encodedQuery = encodeURIComponent(value);
-     const responseAuthor = await fetch(`http://localhost:3001/author?q=${encodedQuery} `);
+     const res = await fetch(`http://localhost:3001/search/${category}/${encodedQuery} `);
 
-     const authorData:AuthorState = await responseAuthor.json()
-     dispatch(authorUpdate(authorData));
+     const data = await res.json();
+     dispatch(searchUpdate(data))
    })();
  };
 

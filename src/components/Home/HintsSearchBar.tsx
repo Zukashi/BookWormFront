@@ -6,11 +6,9 @@ import {Link} from "react-router-dom";
 export const BooksSearchBar = () => {
   const dispatch = useDispatch()
   const author = useSelector((state: RootState) => state.author);
-  console.log(author);
   (async () => {
     const res = await fetch(`https://openlibrary.org/authors/${author.docs[0].key}/works.json?limit=3`);
     const data = await res.json();
-    console.log(data)
   })()
 
 
