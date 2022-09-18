@@ -1,33 +1,35 @@
-import React from 'react';
-import {Button, Input, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList} from "@chakra-ui/react";
+import React, {useEffect, useState} from 'react';
+import {Button, Input, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, Select} from "@chakra-ui/react";
 import { bookUpdate} from '../../features/Books/bookSlice'
-import {data} from './data'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {AuthorState, authorUpdate} from "../../features/Author/authorSlice";
+import {RootState} from "../../app/store";
+import {searchUpdate} from "../../features/Search/searchSlice";
+
+
 export const HomeNav = () => {
   const dispatch = useDispatch();
+  const [category, setCategory] = useState('q')
 
  const onChange = (value:string) => {
    (async() => {
      const encodedQuery = encodeURIComponent(value);
-     const response = await fetch(`http://localhost:3001/author?q=${encodedQuery} `);
-     console.log(await response.json())
+     const res = await fetch(`http://localhost:3001/search/${category}/${encodedQuery} `);
+
+     const data = await res.json();
+     dispatch(searchUpdate(data))
    })();
-   const books = data.filter(book => {
-     if ( book.title.toLowerCase().includes(value.toLowerCase())){
-       return book.title
-     }
-      else if(book.author.toLowerCase().includes(value.toLowerCase())) {
-        return book.title
-     }
+ };
 
-
-   });
-   dispatch(bookUpdate(books))
- }
-
+  console.log(category)
 
   return (<>
     <nav className='w-100vw h-[200px] flex justify-center'>
+      <Select w='160px' onChange={(e:any) => setCategory(e.target.value)}>
+        <option value="q" selected disabled hidden style={{display:'none'}} >Default</option>
+        <option value='title'>Title</option>
+        <option value='author'>Author</option>
+      </Select>
       <Input  variant='filled' placeholder='Input your author or book' width='400px' onChange={(e:any) => onChange(e.target.value)}/>
       <i className="fa-solid fa-magnifying-glass absolute right-[37vw] top-[1.5vh] cursor-pointer hover:text-lime-400"></i>
       <div className='absolute right-0'>
