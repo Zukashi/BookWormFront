@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {RootState} from "../../app/store";
 import {useSelector} from "react-redux";
 import {AuthorState} from "../../features/Author/authorSlice";
+import {Link} from "react-router-dom";
 export const BooksSearchBar = () => {
 
   const author = useSelector((state: RootState) => state.author);
@@ -15,12 +16,11 @@ export const BooksSearchBar = () => {
 
   return (<>
     <div className='w-screen absolute top-[5vh] flex flex-col items-center'>
-      {author.docs.slice(0,3).map(author => <div className='flex gap-4 w-32 '>
-
-        <h2 className='w-full text-left'>{author?.top_work}</h2>
+      {author.docs.slice(0,1).map(author => <Link to={`/author/${author.key}`}><div className='flex gap-4 w-32 cursor-pointer hover:text-amber-600'>
+        <h2 className='w-full text-left'>{author?.type}</h2>
         {<h3>{author.name}</h3>}
 
-      </div>)}
+      </div></Link>)}
     </div>
 
 

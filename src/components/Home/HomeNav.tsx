@@ -8,7 +8,7 @@ import {RootState} from "../../app/store";
 
 export const HomeNav = () => {
   const dispatch = useDispatch();
-  const author = useSelector((state: RootState) => state.author);
+
  const onChange = (value:string) => {
    (async() => {
      const encodedQuery = encodeURIComponent(value);
