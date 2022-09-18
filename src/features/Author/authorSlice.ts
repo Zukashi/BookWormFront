@@ -29,7 +29,7 @@ const initialState: AuthorState = {
 }
 
 export const authorSlice = createSlice({
-  name: 'book',
+  name: 'author',
   initialState,
   reducers: {
     authorUpdate: (state,action:PayloadAction<AuthorState>) => {
