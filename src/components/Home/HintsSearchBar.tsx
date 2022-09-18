@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import {RootState} from "../../app/store";
-import {useSelector} from "react-redux";
-import {AuthorState} from "../../features/Author/authorSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {AuthorState, authorUpdate} from "../../features/Author/authorSlice";
 import {Link} from "react-router-dom";
 export const BooksSearchBar = () => {
-
+  const dispatch = useDispatch()
   const author = useSelector((state: RootState) => state.author);
   console.log(author);
   (async () => {
