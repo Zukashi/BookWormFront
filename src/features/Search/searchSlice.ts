@@ -2,42 +2,33 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface Docs {
+  author_key:string;
   key:string;
-  type:string;
   title:string;
-  title_suggest:string;
-  edition_count:number;
-  first_publish_year:number;
+  author_name:string;
   language?:string[];
-  seed: string[];
-  birth_date?:string;
-  top_work?:string;
-  top_subjects?:string[];
-  _version:string;
 
 }
 
-export interface SearchState {
-  numFound:number;
-  start:number;
-  numFoundExact: boolean;
-  docs: Docs[]
-}
-const initialState: SearchState = {
-  docs: [],
-  numFound: 0,
-  numFoundExact: false,
-  start: 0
 
+const initialState: Docs = {
+  author_key:'',
+  key:'',
+  title:'',
+  author_name:'',
+  language:[],
 }
 
 export const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    searchUpdate: (state,action:PayloadAction<SearchState>) => {
-      state = action.payload
-      console.log(state)
+    searchUpdate: (state,action:PayloadAction<Docs>) => {
+      state.author_key = action.payload.author_key
+      state.author_name = action.payload.author_name
+      state.key = action.payload.key
+      state.title = action.payload.title
+      state.language = action.payload.language
     }
   },
 })

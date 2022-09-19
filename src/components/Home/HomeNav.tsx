@@ -10,18 +10,23 @@ import {searchUpdate} from "../../features/Search/searchSlice";
 export const HomeNav = () => {
   const dispatch = useDispatch();
   const [category, setCategory] = useState('q')
-
+  const search = useSelector((state: RootState) => state.search);
  const onChange = (value:string) => {
    (async() => {
      const encodedQuery = encodeURIComponent(value);
      const res = await fetch(`http://localhost:3001/search/${category}/${encodedQuery} `);
 
      const data = await res.json();
-     dispatch(searchUpdate(data))
+     console.log(data)
+     dispatch(searchUpdate(data));
+
+     console.log(search)
+
    })();
+   console.log(search)
  };
 
-  console.log(category)
+
 
   return (<>
     <nav className='w-100vw h-[200px] flex justify-center'>
