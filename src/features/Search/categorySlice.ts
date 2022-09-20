@@ -1,19 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-
+export type category = string
 export interface ResultInterface {
   category:string
 }
 const initialState: ResultInterface = {
-  category : 'q'
+  category : ''
 };
 export const categorySlice = createSlice({
   name: 'category',
   initialState,
   reducers: {
-    categoryUpdate: (state,action:PayloadAction<ResultInterface>) => {
-      state.category = action.payload.category
+    categoryUpdate: (state,action:PayloadAction<category>) => {
+      console.log(action.payload)
+      state.category = action.payload
     }
   },
 })

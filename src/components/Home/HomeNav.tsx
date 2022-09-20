@@ -12,6 +12,7 @@ export const HomeNav = () => {
  const onChange = (value:string) => {
    (async() => {
      const encodedQuery = encodeURIComponent(value);
+     console.log(category)
      const res = await fetch(`http://localhost:3001/search/${category}/${encodedQuery} `);
 
      const data = await res.json();
@@ -19,11 +20,14 @@ export const HomeNav = () => {
      console.log(2)
    })();
  };
-
+  const onChangeCategory = (value:string) => {
+    categoryUpdate(value)
+    console.log(category)
+  }
 
   return (<>
     <nav className='w-100vw h-[200px] flex justify-center'>
-      <Select w='160px' onChange={(e:any) => categoryUpdate(e.target.value)}>
+      <Select w='160px' onChange={(e:any) => onChangeCategory(e.target.value)}>
         <option value="q" selected disabled hidden style={{display:'none'}} >Default</option>
         <option value='title'>Title</option>
         <option value='author'>Author</option>
