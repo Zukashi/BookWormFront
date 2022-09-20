@@ -12,6 +12,7 @@ export const HomeNav = () => {
   const [category, setCategory] = useState('q')
   const search = useSelector((state: RootState) => state.search);
  const onChange = (value:string) => {
+   console.log(category);
    (async() => {
      const encodedQuery = encodeURIComponent(value);
      const res = await fetch(`http://localhost:3001/search/${category}/${encodedQuery} `);
@@ -19,13 +20,9 @@ export const HomeNav = () => {
      const data = await res.json();
      console.log(data)
      dispatch(searchUpdate(data));
-
-     console.log(search)
-
+     console.log(2)
    })();
-   console.log(search)
  };
-
 
 
   return (<>

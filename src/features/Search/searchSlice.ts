@@ -11,24 +11,25 @@ export interface Docs {
 }
 
 
-const initialState: Docs = {
+const DocsState: Docs = {
   author_key:'',
   key:'',
   title:'',
   author_name:'',
   language:[],
 }
-
+export interface ResultInterface {
+  Result: Docs[]
+}
+const initialState: ResultInterface = {
+    Result : [],
+};
 export const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    searchUpdate: (state,action:PayloadAction<Docs>) => {
-      state.author_key = action.payload.author_key
-      state.author_name = action.payload.author_name
-      state.key = action.payload.key
-      state.title = action.payload.title
-      state.language = action.payload.language
+    searchUpdate: (state,action:PayloadAction<ResultInterface>) => {
+      state = action.payload
     }
   },
 })
