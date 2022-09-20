@@ -28,8 +28,8 @@ export const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    searchUpdate: (state,action:PayloadAction<ResultInterface>) => {
-      state = action.payload
+    searchUpdate: (state,action:PayloadAction<Docs[]>) => {
+      state.Result = action.payload
     }
   },
 })

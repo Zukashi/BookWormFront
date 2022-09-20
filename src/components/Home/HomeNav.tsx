@@ -1,24 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Input, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, Select} from "@chakra-ui/react";
-import { bookUpdate} from '../../features/Books/bookSlice'
 import {useDispatch, useSelector} from "react-redux";
-import {AuthorState, authorUpdate} from "../../features/Author/authorSlice";
-import {RootState} from "../../app/store";
 import {searchUpdate} from "../../features/Search/searchSlice";
+import {categoryUpdate} from "../../features/Search/categorySlice";
+import {RootState} from "../../app/store";
 
 
 export const HomeNav = () => {
   const dispatch = useDispatch();
-  const [category, setCategory] = useState('q')
-  const search = useSelector((state: RootState) => state.search);
+  const {category} = useSelector((state: RootState) => state.category);
  const onChange = (value:string) => {
-   console.log(category);
    (async() => {
      const encodedQuery = encodeURIComponent(value);
      const res = await fetch(`http://localhost:3001/search/${category}/${encodedQuery} `);
 
      const data = await res.json();
-     console.log(data)
      dispatch(searchUpdate(data));
      console.log(2)
    })();
@@ -27,7 +23,7 @@ export const HomeNav = () => {
 
   return (<>
     <nav className='w-100vw h-[200px] flex justify-center'>
-      <Select w='160px' onChange={(e:any) => setCategory(e.target.value)}>
+      <Select w='160px' onChange={(e:any) => categoryUpdate(e.target.value)}>
         <option value="q" selected disabled hidden style={{display:'none'}} >Default</option>
         <option value='title'>Title</option>
         <option value='author'>Author</option>
