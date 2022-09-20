@@ -6,13 +6,14 @@ export interface ResultInterface {
   category:string
 }
 const initialState: ResultInterface = {
-  category : ''
+  category : 'q'
 };
 export const categorySlice = createSlice({
   name: 'category',
   initialState,
   reducers: {
     categoryUpdate: (state,action:PayloadAction<category>) => {
+      console.log(123)
       console.log(action.payload)
       state.category = action.payload
     }

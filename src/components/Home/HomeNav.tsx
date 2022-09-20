@@ -21,7 +21,7 @@ export const HomeNav = () => {
    })();
  };
   const onChangeCategory = (value:string) => {
-    categoryUpdate(value)
+    dispatch(categoryUpdate(value))
     console.log(category)
   }
 
