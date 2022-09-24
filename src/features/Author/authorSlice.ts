@@ -5,7 +5,6 @@ export interface Docs {
   key:string;
   type:string;
   name:string;
-  alternate_names?:string[];
   birth_date?:string;
   top_work?:string;
   work_count:number;
