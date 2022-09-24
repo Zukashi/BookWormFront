@@ -4,14 +4,22 @@ import {useLocation, useParams} from "react-router";
 export interface AuthorInterface {
   alternate_names : string[],
   birth_date:string,
+  death_date?:string,
   personal_name:string,
   name:string,
   key:string,
-  bio:string,
-  links : [{
+  bio?: {
+    value:string,
+    type:string,
+  } | string,
+  links?: [{
     url:string,
     title:string,
-  }]
+  }],
+  created?:{
+    type:string,
+    value:string,
+  }
 }
 export const OneAuthor = () => {
   const location: any = useLocation();
@@ -25,13 +33,17 @@ export const OneAuthor = () => {
       const data = await res.json();
       setData(data);
     })()
-  },[])
-  console.log(data)
-  let encryptedLinks = data?.links.filter((link, index) => {
-    if (link.url.includes('https')){
-      return link
-    };
-  });
+  },[]);
+  const date = new Date('2008-04-01T03:28:50.625462');
+  let encryptedLinks;
+  if (data?.links){
+    encryptedLinks = data?.links.filter((link, index) => {
+      if (link.url.includes('https')){
+        return link
+      };
+    });
+  };
+
 
   return (<>
       <section className='w-[80vw] bg-gradient-to-r from-sky-500 to-indigo-800 h-[100vh] m-auto'>
@@ -40,12 +52,15 @@ export const OneAuthor = () => {
           <img src={`https://covers.openlibrary.org/a/olid/${params.authorId}-M.jpg`} alt=""/>
 
         </div>
-        <p className='text-center'>{data?.name}</p>
-        <div className='pl-[5vh]'>
+        <p className='text-center'>{data?.personal_name}</p>
+        <div className='pl-[5vh] mt-[1vw]'>
           <p>Birth date: {data?.birth_date}</p>
-          <p>Links: {encryptedLinks?.map((link) => {
+          <p>Death date: {data?.death_date}</p>
+          {data?.links && <p>Links: {encryptedLinks?.map((link) => {
             return  <a href={`${link.url}`} className='text-white hover:text-amber-400'> {link.title}</a>
-          })}</p>
+          })}</p>}
+          <p>Bio: {data?.bio instanceof Object ? data?.bio.value : data?.bio}</p>
+          <p className='absolute bottom-4'>Created at: {date.toLocaleString()}</p>
         </div>
       </section>
 
