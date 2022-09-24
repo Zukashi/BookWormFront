@@ -43,7 +43,7 @@ export const OneAuthor = () => {
         <p className='text-center'>{data?.name}</p>
         <div className='pl-[5vh]'>
           <p>Birth date: {data?.birth_date}</p>
-          <p>Links: {data?.links.map((link) => {
+          <p>Links: {encryptedLinks?.map((link) => {
             return  <a href={`${link.url}`} className='text-white hover:text-amber-400'> {link.title}</a>
           })}</p>
         </div>
