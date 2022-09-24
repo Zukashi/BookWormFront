@@ -66,3 +66,4 @@ export const OneAuthor = () => {
 
   </>)
 }
+// @TODO get books of author and add cover of books also add BOOK cover and author photo when searching with top work of author
