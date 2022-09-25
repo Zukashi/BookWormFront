@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-export interface Docs {
+export interface AuthorDocs {
   key:string;
   type:string;
   name:string;
@@ -10,6 +10,7 @@ export interface Docs {
   work_count:number;
   top_subjects?:string[];
   _version:string;
+  personal_name:string,
 
 }
 
@@ -17,7 +18,7 @@ export interface AuthorState {
   numFound:number;
   start:number;
   numFoundExact: boolean;
-  docs: Docs[]
+  docs: AuthorDocs[]
 }
 const initialState: AuthorState = {
   docs: [],
