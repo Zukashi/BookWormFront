@@ -2,21 +2,26 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface Docs {
-  author_key:string;
+  author_key:string[];
   key:string;
   title:string;
   author_name:string;
   language?:string[];
-
+  isbn:string[];
+  cover_edition_key:string,
+  cover_i:number,
 }
 
 
 const DocsState: Docs = {
-  author_key:'',
+  author_key:[],
   key:'',
   title:'',
   author_name:'',
   language:[],
+  isbn:[],
+  cover_edition_key:'',
+  cover_i:0,
 }
 export interface ResultInterface {
   Result: Docs[]
