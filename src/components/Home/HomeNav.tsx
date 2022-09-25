@@ -31,7 +31,7 @@ export const HomeNav = () => {
         <option value='title'>Title</option>
         <option value='author'>Author</option>
       </Select>
-      <Input  variant='filled' placeholder='Input your author or book' width='400px' onChange={(e:any) => onChange(e.target.value)}/>
+      <Input  variant='filled' placeholder='Input your author or book' width='400px' onChange={(e:any) => onChange(e.target.value.trim())}/>
       <i className="fa-solid fa-magnifying-glass absolute right-[37vw] top-[1.5vh] cursor-pointer hover:text-lime-400"></i>
       <div className='absolute right-0'>
       <Menu>

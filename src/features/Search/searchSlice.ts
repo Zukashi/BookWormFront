@@ -7,7 +7,9 @@ export interface Docs {
   title:string;
   author_name:string;
   language?:string[];
-
+  isbn:string[];
+  cover_edition_key:string,
+  cover_i:number,
 }
 
 
@@ -17,6 +19,9 @@ const DocsState: Docs = {
   title:'',
   author_name:'',
   language:[],
+  isbn:[],
+  cover_edition_key:'',
+  cover_i:0,
 }
 export interface ResultInterface {
   Result: Docs[]
