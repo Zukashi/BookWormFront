@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface Docs {
-  author_key:string;
+  author_key:string[];
   key:string;
   title:string;
   author_name:string;
@@ -14,7 +14,7 @@ export interface Docs {
 
 
 const DocsState: Docs = {
-  author_key:'',
+  author_key:[],
   key:'',
   title:'',
   author_name:'',

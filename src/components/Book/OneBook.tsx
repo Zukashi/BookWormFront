@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from "react-router";
+import {AuthorDocs} from "../../features/Author/authorSlice";
+import {Link} from "react-router-dom";
 
 export interface Book {
   type: {
@@ -24,8 +26,15 @@ export interface Book {
 
 export const OneBook = () => {
   const [data ,setData] = useState<null | Book>(null);
+  const [author ,setAuthor] = useState<null | AuthorDocs>(null)
   const location = useLocation();
-  console.log(location)
+  useEffect(() => {
+    (async() => {
+        const response = await fetch(`http://localhost:3001/author/${location.state}`)
+        const data = await response.json();
+        setAuthor(data)
+    })()
+  },[])
   const params = useParams();
   console.log(params)
   useEffect( () => {
@@ -35,7 +44,6 @@ export const OneBook = () => {
       setData(data);
     })()
   },[]);
-  console.log( location.state)
 
 
 
@@ -43,7 +51,7 @@ export const OneBook = () => {
   return (<>
     <section className='w-[80vw] bg-gradient-to-r from-sky-500 to-indigo-800 h-[100vh] m-auto '>
       <img src={`https://covers.openlibrary.org/b/id/${data?.covers[0]}-L.jpg`} alt=""/>
-      <h1 className='text-4xl'>{data?.title} by </h1>
+      <h1 className='text-4xl'>{data?.title} by <Link to={`/author/${location.state}`}><p className='hover:text-cyan-400 cursor-pointer'>{author?.personal_name}</p></Link></h1>
     </section>
 
   </>)
