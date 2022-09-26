@@ -26,13 +26,15 @@ export const HomeNav = () => {
 
   return (<>
     <nav className='w-100vw h-[200px] flex justify-center'>
-      <Select w='160px' onChange={(e:any) => onChangeCategory(e.target.value)}>
-        <option value="q" selected disabled hidden style={{display:'none'}} >Default</option>
+      <Select w='160px' onChange={(e:any) => onChangeCategory(e.target.value)} bg='gray.500'>
+        <option value="q" selected disabled hidden style={{display:'none'}}  >Default</option>
         <option value='title'>Title</option>
         <option value='author'>Author</option>
       </Select>
-      <Input  variant='filled' placeholder='Input your author or book' width='400px' onChange={(e:any) => onChange(e.target.value.trim())}/>
-      <i className="fa-solid fa-magnifying-glass absolute right-[37vw] top-[1.5vh] cursor-pointer hover:text-lime-400"></i>
+      <div className='relative'>
+        <Input  variant='filled' placeholder='Input your author or book' width='400px' onChange={(e:any) => onChange(e.target.value.trim())}/>
+        <i className="fa-solid fa-magnifying-glass top-[1.5vh] cursor-pointer hover:text-lime-400 absolute right-3"></i>
+      </div>
       <div className='absolute right-0'>
       <Menu>
       <MenuButton  as={Button} colorScheme='blue' >
