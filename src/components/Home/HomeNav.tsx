@@ -13,9 +13,9 @@ export const HomeNav = () => {
    (async() => {
      const encodedQuery = encodeURIComponent(value);
      const res = await fetch(`http://localhost:3001/search/${category}/${encodedQuery} `);
-
      const data = await res.json();
      dispatch(searchUpdate(data));
+
      console.log(2)
    })();
  };

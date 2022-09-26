@@ -42,9 +42,10 @@ export const OneBook = () => {
     (async () => {
       const res = await fetch(`http://localhost:3001/works/${params.bookId}`)
       const data = await res.json();
+      console.log(234)
       setData(data);
     })()
-  },[]);
+  },[location.state]);
 
 
 
