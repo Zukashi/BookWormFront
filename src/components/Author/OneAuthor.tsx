@@ -26,10 +26,11 @@ export const OneAuthor = () => {
   const {state} = location;
   const [data, setData] = useState<null |AuthorInterface>()
   const params = useParams();
-  console.log(params)
+  console.log(params);
+  console.log(state)
   useEffect( () => {
     (async () => {
-      const res = await fetch(`http://localhost:3001/author/${state[0]}`)
+      const res = await fetch(`http://localhost:3001/author/${params.authorId}`)
       const data = await res.json();
       setData(data);
     })()
