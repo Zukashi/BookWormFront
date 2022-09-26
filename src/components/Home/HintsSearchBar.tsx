@@ -24,7 +24,7 @@ export const BooksSearchBar = () => {
       </div></Link>)}
     </div> :  <div className='w-screen absolute top-[5vh] flex flex-col items-center'>
 
-      {search.Result.slice(0,4).map(search => search.cover_i &&
+      {search.Result.slice(0,3).map(search => search.cover_i &&
         <div className='flex gap-4 w-60 cursor-pointer mb-[15vh] relative  '><Link to={`${search.key}`}  className='h-20' state={search.author_key}>
         <img src={`https://covers.openlibrary.org/b/id/${search.cover_i}-M.jpg`} width='120px' alt=""/>
         <h2 className='w-full text-left hover:text-amber-600 absolute  -bottom-14 w-1/2 right-6 w-20'>{search?.title}</h2></Link>
@@ -36,3 +36,4 @@ export const BooksSearchBar = () => {
 
   </>)
 }
+//@TODO Do rating of books, user profile
