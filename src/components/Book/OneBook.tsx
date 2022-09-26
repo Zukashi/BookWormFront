@@ -54,7 +54,7 @@ export const OneBook = () => {
       <HomeNav/>
       <BooksSearchBar/>
       <img src={`https://covers.openlibrary.org/b/id/${data?.covers[0]}-L.jpg`} alt=""/>
-      <h1 className='text-4xl'>{data?.title} by <Link to={`/author/${location.state}`}><p className='hover:text-cyan-400 cursor-pointer'>{author?.personal_name}</p></Link></h1>
+      <h1 className='text-4xl'>{data?.title} by <Link to={`/author/${location.state}`} state={[author?.key]}><p className='hover:text-cyan-400 cursor-pointer'>{author?.personal_name}</p></Link></h1>
     </section>
 
   </>)
