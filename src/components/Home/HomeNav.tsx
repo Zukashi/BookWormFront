@@ -4,11 +4,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {searchUpdate} from "../../features/Search/searchSlice";
 import {categoryUpdate} from "../../features/Search/categorySlice";
 import {RootState} from "../../app/store";
+import {Link} from "react-router-dom";
 
 
 export const HomeNav = () => {
   const dispatch = useDispatch();
   const {category} = useSelector((state: RootState) => state.category);
+  const user = useSelector((state: RootState) => state.user);
  const onChange = (value:string) => {
    (async() => {
      const encodedQuery = encodeURIComponent(value);
@@ -42,7 +44,7 @@ export const HomeNav = () => {
       </MenuButton>
       <MenuList>
         <MenuGroup title='Profile' >
-          <MenuItem>My Account</MenuItem>
+          <Link to={`/user/${user._id}`}><MenuItem>My Account</MenuItem></Link>
           <MenuItem>Favorites</MenuItem>
         </MenuGroup>
         <MenuDivider />
