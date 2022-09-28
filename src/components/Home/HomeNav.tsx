@@ -45,7 +45,8 @@ export const HomeNav = () => {
       <MenuList>
         <MenuGroup title='Profile' >
           <Link to={`/user/${user._id}`}><MenuItem>My Account</MenuItem></Link>
-          <MenuItem>Favorites</MenuItem>
+          <Link to={`/edit/user/${user._id}`}><MenuItem>Edit account</MenuItem></Link>
+          <Link to={`/favorites/user/${user._id}`}><MenuItem>Favorites</MenuItem></Link>
         </MenuGroup>
         <MenuDivider />
         <MenuGroup title='Help'>
