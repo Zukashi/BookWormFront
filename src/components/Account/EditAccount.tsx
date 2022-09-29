@@ -18,8 +18,9 @@ import {userNameUpdate, userUpdate} from "../../features/User/userSlice";
 import {Link} from "react-router-dom";
 export const EditAccount = () => {
   const {userId} = useParams();
+  const user = useSelector((state: RootState) => state.user);
   const [form, setForm] = useState({
-      username :'',
+      username :user.username,
       firstName:'',
       lastName:'',
       city:'',
@@ -27,10 +28,11 @@ export const EditAccount = () => {
       dateOfBirth: '',
   });
   console.log(form)
-  const user = useSelector((state: RootState) => state.user);
+
   const dispatch = useDispatch();
 
-  const onSend = () => {
+  const onSend = (e:any) => {
+    e.preventDefault();
     (async() => {
 
       await fetch(`http://localhost:3001/user/${userId}`,{
@@ -83,12 +85,12 @@ export const EditAccount = () => {
             <form onSubmit={onSend}>
               <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">First Name:</p>
               <p className="mt-10 mb-3 inline-block">Last Name:</p>
-              <Input w='43vw'  onChange={ (e:any) => onChange(e.target.value, 'firstName') } className='inline-block mr-5' placeholder='John' name='firstName'></Input>
+              <Input w='43vw' value={form.firstName}  onChange={ (e:any) => onChange(e.target.value, 'firstName') } className='inline-block mr-5' placeholder='John' name='firstName'></Input>
               <Input className='inline-block ' w='43vw' placeholder='Smith' name="lastName" onChange={ (e:any) => onChange(e.target.value, 'lastName') } ></Input>
 
               <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">User Name:</p>
               <p className="mt-10 mb-3 inline-block">City:</p>
-              <Input w='43vw' value={user.username}  className='inline-block mr-5' name='username' onChange={ (e:any) => onChange(e.target.value, 'username') } ></Input>
+              <Input w='43vw' value={form.username}  className='inline-block mr-5' name='username' onChange={ (e:any) => onChange(e.target.value, 'username') } ></Input>
               <Input className='inline-block ' w='43vw' placeholder='Atlanta' name='city' onChange={ (e:any) => onChange(e.target.value, 'city') } ></Input>
 
               <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">Date Of Birth:</p>
