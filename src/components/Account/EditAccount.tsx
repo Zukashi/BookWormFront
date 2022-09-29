@@ -20,9 +20,8 @@ export const EditAccount = () => {
   const {userId} = useParams();
   const [form, setForm] = useState();
   const user = useSelector((state: RootState) => state.user);
-  const dispatch = useDispatch()
-  console.log(userId)
-  useEffect(() => {
+  const dispatch = useDispatch();
+
     (async() => {
 
       await fetch(`http://localhost:3001/user/${userId}`,{
@@ -33,7 +32,7 @@ export const EditAccount = () => {
         body:JSON.stringify(form)
       })
     })()
-  },[])
+
 
   const onSend =(e:FormEvent)=>{
     e.preventDefault()
@@ -56,23 +55,31 @@ export const EditAccount = () => {
         </MenuGroup>
       </MenuList>
     </Menu>
-    <Tabs isFitted variant='enclosed' pt={20}>
-      <TabList mb='1em'>
-        <Tab _selected={{backgroundColor:'#3730a3'}}>Personal Information</Tab>
-        <Tab _selected={{backgroundColor:'#6366f1'}}>Change Password</Tab>
-        <Tab _selected={{backgroundColor:'#6366f1'}}>Email And SMS</Tab>
-        <Tab _selected={{backgroundColor:'#6366f1'}}>Manage Contact</Tab>
-      </TabList>
-      <TabPanels>
-        <TabPanel>
-          <p>one!</p>
-        </TabPanel>
-        <TabPanel>
-          <p>two!</p>
-        </TabPanel>
-      </TabPanels>
-    </Tabs>
-    <Input w='300px' value={user.username} onChange={(e:any) => dispatch(userNameUpdate(e.target.value)) }></Input>
+    <div className='w-[90vw] flex m-auto'>
+      <Tabs isFitted variant='enclosed' pt={20} w={"full"} >
+        <TabList mb='1em'>
+          <Tab _selected={{backgroundColor:'#6366f1', color:'#fff'}} h='75px'>Personal Information</Tab>
+          <Tab _selected={{backgroundColor:'#6366f1', color:'#fff' }}>Change Password</Tab>
+          <Tab _selected={{backgroundColor:'#6366f1', color:'#fff'}}>Email And SMS</Tab>
+          <Tab _selected={{backgroundColor:'#6366f1', color:'#fff'}}>Manage Contact</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <h1 className='font-bold text-2xl'>Personal Information</h1>
+            <p>pic...</p>
+            <p className="mt-10 mb-3 w-[46vw] inline-block">First Name:</p>
+            <p className="mt-10 mb-3 inline-block">Last Name:</p>
+            <Input w='44vw' value={user.username} onChange={(e:any) => dispatch(userNameUpdate(e.target.value)) }></Input>
+
+
+          </TabPanel>
+          <TabPanel>
+            <p>two!</p>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </div>
+
 
 
   </>)
