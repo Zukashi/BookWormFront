@@ -8,6 +8,7 @@ import {RootState} from "./app/store";
 import {AuthorView} from "./Views/AuthorView";
 import {BookView} from "./Views/BookView";
 import {AccountView} from "./Views/AccountView";
+import {EditAccount} from "./components/Account/EditAccount";
 
 export const AllRoutes = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -20,6 +21,7 @@ export const AllRoutes = () => {
                 <Route path='/author/:authorId' element={<AuthorView/>}/>
                 <Route path='/works/:bookId' element={<BookView/>}/>
                 <Route path='/user/:userId' element={<AccountView/>}></Route>
+                <Route path='/edit/user/:userId' element={<EditAccount/>}></Route>
             </Routes>
 
     </>)

@@ -27,10 +27,13 @@ export const userSlice = createSlice({
       state.username = action.payload.username
       state.password = action.payload.password
       state.isAdmin = action.payload.isAdmin
-    }
+    },
+    userNameUpdate: (state,action:PayloadAction<string>) => {
+      state.username = action.payload
+}
   },
 })
 
-export const { userUpdate } = userSlice.actions
+export const { userUpdate , userNameUpdate } = userSlice.actions
 
 export default userSlice.reducer
