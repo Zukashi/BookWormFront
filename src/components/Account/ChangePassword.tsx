@@ -34,7 +34,7 @@ export const ChangePassword = () => {
   }
 
   return (<>
-    <h1 className='font-bold text-2xl border-b-[1px] pb-5  border-b-[#f1f1f1]'>Change Password</h1>
+      <h1 className='font-bold text-2xl border-b-[1px] pb-5  border-b-[#f1f1f1]'>Change Password</h1>
     <form onSubmit={onSend}>
       <p className="mt-10 mb-3 w-[43vw]  mr-5">Current Password:</p>
       <Input type='password' onChange={(e:any) => onChange(e.target.value, "currentPassword")}></Input>

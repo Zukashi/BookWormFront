@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormControl, FormLabel, Switch} from "@chakra-ui/react";
+import {Button, FormControl, FormLabel, Switch} from "@chakra-ui/react";
 
 export const EmailAndSMS = () => {
   return (<>
@@ -16,5 +16,13 @@ export const EmailAndSMS = () => {
       </FormLabel>
       <Switch id='sms-alerts'  />
     </FormControl>
+    <Button type={"submit"} mt={"30px"} variant='solid' backgroundColor={'#6366f1'} _active={{
+      backgroundColor: '#6366f1',
+      color:'#fff',
+      transform: 'scale(0.98)',
+      borderColor: '#bec3c9',
+    }} _hover={{backgroundColor:'#6366f1', color:'#fff'}}>
+      Submit
+    </Button>
   </>)
 }
