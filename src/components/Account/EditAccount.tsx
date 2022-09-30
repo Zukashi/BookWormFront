@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import {userNameUpdate, userUpdate} from "../../features/User/userSlice";
 import {Link} from "react-router-dom";
+import {ChangePassword} from "./ChangePassword";
 export const EditAccount = () => {
   const {userId} = useParams();
   const user = useSelector((state: RootState) => state.user);
@@ -27,7 +28,6 @@ export const EditAccount = () => {
       country:'',
       dateOfBirth: '',
   });
-  console.log(form)
 
   const dispatch = useDispatch();
 
@@ -114,7 +114,7 @@ export const EditAccount = () => {
             </form>
           </TabPanel>
           <TabPanel p={0}>
-            <p>two!</p>
+            <ChangePassword/>
           </TabPanel>
           <TabPanel p={0}>
             <p>two!</p>
