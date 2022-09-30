@@ -31,7 +31,6 @@ export const EditAccount = () => {
       dateOfBirth: '',
   });
 
-  const dispatch = useDispatch();
 
   const onSend = (e:any) => {
     e.preventDefault();
