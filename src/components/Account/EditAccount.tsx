@@ -17,6 +17,7 @@ import {
 import {userNameUpdate, userUpdate} from "../../features/User/userSlice";
 import {Link} from "react-router-dom";
 import {ChangePassword} from "./ChangePassword";
+import {EmailAndSMS} from "./EmailAndSMS";
 export const EditAccount = () => {
   const {userId} = useParams();
   const user = useSelector((state: RootState) => state.user);
@@ -117,7 +118,7 @@ export const EditAccount = () => {
             <ChangePassword/>
           </TabPanel>
           <TabPanel p={0}>
-            <p>two!</p>
+            <EmailAndSMS/>
           </TabPanel>
           <TabPanel p={0}>
             <p>two!</p>
