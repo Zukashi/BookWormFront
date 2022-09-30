@@ -16,6 +16,9 @@ import {
 } from "@chakra-ui/react";
 import {userNameUpdate, userUpdate} from "../../features/User/userSlice";
 import {Link} from "react-router-dom";
+import {ChangePassword} from "./ChangePassword";
+import {EmailAndSMS} from "./EmailAndSMS";
+import { ManageContact } from './ManageContact';
 export const EditAccount = () => {
   const {userId} = useParams();
   const user = useSelector((state: RootState) => state.user);
@@ -27,9 +30,7 @@ export const EditAccount = () => {
       country:'',
       dateOfBirth: '',
   });
-  console.log(form)
 
-  const dispatch = useDispatch();
 
   const onSend = (e:any) => {
     e.preventDefault();
@@ -114,13 +115,13 @@ export const EditAccount = () => {
             </form>
           </TabPanel>
           <TabPanel p={0}>
-            <p>two!</p>
+            <ChangePassword/>
           </TabPanel>
           <TabPanel p={0}>
-            <p>two!</p>
+            <EmailAndSMS/>
           </TabPanel>
           <TabPanel p={0}>
-            <p>two!</p>
+            <ManageContact/>
           </TabPanel>
         </TabPanels>
       </Tabs>
