@@ -28,7 +28,7 @@ export const EditAccount = () => {
       lastName:'',
       city:'',
       country:'',
-      dateOfBirth: '',
+      dateOfBirth: Date.now(),
   });
 
 
