@@ -28,12 +28,14 @@ export const EditAccount = () => {
       lastName:'',
       city:'',
       country:'',
-      dateOfBirth: Date.now(),
+      dateOfBirth:'',
+      id: userId,
   });
 
 
   const onSend = (e:any) => {
     e.preventDefault();
+
     (async() => {
 
       await fetch(`http://localhost:3001/user/${userId}`,{
@@ -47,7 +49,6 @@ export const EditAccount = () => {
   }
 
   const onChange = (value:string, fieldName:string) => {
-    console.log(value)
     setForm(prev => ({
         ...prev,
         [fieldName]:value,
