@@ -22,7 +22,7 @@ import { ManageContact } from './ManageContact';
 export interface UserInterface {
   city:string,
   country:string,
-  dateOfBirth:string,
+  dateOfBirth:string | Date,
   firstName:string,
   lastName:string,
   password:string,
@@ -50,7 +50,7 @@ export const EditAccount = () => {
         setForm(data);
     })();
   },[]);
-
+  console.log(typeof form.dateOfBirth)
   function getFormattedDate(date:Date) {
     let year = date.getFullYear();
     let month = (1 + date.getMonth()).toString().padStart(2, '0');
@@ -122,11 +122,10 @@ export const EditAccount = () => {
 
               <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">Date Of Birth:</p>
               <p className="mt-10 mb-3 inline-block">Country:</p>
-              <Input  w='43vw' className='inline-block mr-5'
+              <Input  w='43vw' className='inline-block mr-5'  value={form.dateOfBirth}
                       placeholder="dd-mm-yyyy"
                       min="1997-01-01" max="2030-12-31"
                       size="md"
-                      type="date"
                       name='dateOfBirth'
                       onChange={ (e:any) => onChange(e.target.value, 'dateOfBirth') }
               />
