@@ -19,20 +19,46 @@ import {Link} from "react-router-dom";
 import {ChangePassword} from "./ChangePassword";
 import {EmailAndSMS} from "./EmailAndSMS";
 import { ManageContact } from './ManageContact';
+export interface UserInterface {
+  city:string,
+  country:string,
+  dateOfBirth:string,
+  firstName:string,
+  lastName:string,
+  password:string,
+  username:string,
+  _id:string,
+}
 export const EditAccount = () => {
   const {userId} = useParams();
   const user = useSelector((state: RootState) => state.user);
+  const [userData ,setUserData] = useState<null | UserInterface >();
   const [form, setForm] = useState({
-      username :user.username,
-      firstName:'',
-      lastName:'',
-      city:'',
-      country:'',
-      dateOfBirth:'',
-      id: userId,
+    username :'',
+    firstName:'',
+    lastName:'',
+    city:'',
+    country:'',
+    dateOfBirth:'',
+    id: '',
   });
+  useEffect(() => {
+    (async() =>{
+        const res = await fetch(`http://localhost:3001/user/${userId}`)
+        const data = await res.json();
+        setUserData(data);
+        setForm(data);
+    })();
+  },[]);
 
+  function getFormattedDate(date:Date) {
+    let year = date.getFullYear();
+    let month = (1 + date.getMonth()).toString().padStart(2, '0');
+    let day = date.getDate().toString().padStart(2, '0');
 
+    return month + '/' + day + '/' + year;
+  };
+  console.log(getFormattedDate(new Date(form.dateOfBirth)));
   const onSend = (e:any) => {
     e.preventDefault();
 
@@ -47,7 +73,6 @@ export const EditAccount = () => {
       })
     })()
   }
-
   const onChange = (value:string, fieldName:string) => {
     setForm(prev => ({
         ...prev,
@@ -88,23 +113,24 @@ export const EditAccount = () => {
               <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">First Name:</p>
               <p className="mt-10 mb-3 inline-block">Last Name:</p>
               <Input w='43vw' value={form.firstName}  onChange={ (e:any) => onChange(e.target.value, 'firstName') } className='inline-block mr-5' placeholder='John' name='firstName'></Input>
-              <Input className='inline-block ' w='43vw' placeholder='Smith' name="lastName" onChange={ (e:any) => onChange(e.target.value, 'lastName') } ></Input>
+              <Input className='inline-block' value={form.lastName} w='43vw' placeholder='Smith' name="lastName" onChange={ (e:any) => onChange(e.target.value, 'lastName') } ></Input>
 
               <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">User Name:</p>
               <p className="mt-10 mb-3 inline-block">City:</p>
               <Input w='43vw' value={form.username}  className='inline-block mr-5' name='username' onChange={ (e:any) => onChange(e.target.value, 'username') } ></Input>
-              <Input className='inline-block ' w='43vw' placeholder='Atlanta' name='city' onChange={ (e:any) => onChange(e.target.value, 'city') } ></Input>
+              <Input className='inline-block ' value={form.city} w='43vw' placeholder='Atlanta' name='city' onChange={ (e:any) => onChange(e.target.value, 'city') } ></Input>
 
               <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">Date Of Birth:</p>
               <p className="mt-10 mb-3 inline-block">Country:</p>
               <Input  w='43vw' className='inline-block mr-5'
-                      placeholder="Select Date and Time"
+                      placeholder="dd-mm-yyyy"
+                      min="1997-01-01" max="2030-12-31"
                       size="md"
                       type="date"
                       name='dateOfBirth'
                       onChange={ (e:any) => onChange(e.target.value, 'dateOfBirth') }
               />
-              <Input className='inline-block ' w='43vw' placeholder='USA' name='country' onChange={ (e:any) => onChange(e.target.value, 'country') } ></Input>
+              <Input className='inline-block ' value={form.country} w='43vw' placeholder='USA' name='country' onChange={ (e:any) => onChange(e.target.value, 'country') } ></Input>
               <Button type={"submit"} mt={"30px"} variant='solid' backgroundColor={'#6366f1'} _active={{
                 backgroundColor: '#6366f1',
                 color:'#fff',
