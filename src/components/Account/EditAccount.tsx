@@ -124,6 +124,7 @@ export const EditAccount = () => {
               <p className="mt-10 mb-3 inline-block">Country:</p>
               <Input  w='43vw' className='inline-block mr-5'  value={form.dateOfBirth}
                       placeholder="dd-mm-yyyy"
+                      type='date'
                       min="1997-01-01" max="2030-12-31"
                       size="md"
                       name='dateOfBirth'
