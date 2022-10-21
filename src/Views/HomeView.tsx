@@ -4,6 +4,7 @@ import {BooksSearchBar} from "../components/Home/HintsSearchBar";
 import {useSelector} from "react-redux";
 import {RootState} from "../app/store";
 import {HomeAdminNav} from "../components/Home/AdminHome/HomeAdminNav";
+import {MainBooks} from "../components/Home/MainBooks";
 
 export const HomeView = () => {
     const user = useSelector((state: RootState) => state.user);
@@ -13,6 +14,7 @@ export const HomeView = () => {
             user.isAdmin ? <HomeAdminNav/> : <div>
                 <HomeNav/>
                 <BooksSearchBar/>
+                <MainBooks/>
             </div>
         }
     </>)

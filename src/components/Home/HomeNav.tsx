@@ -27,7 +27,7 @@ export const HomeNav = () => {
   }
 
   return (<>
-    <nav className='w-100vw h-[200px] flex justify-center'>
+    <nav className='w-100vw  flex justify-center'>
       <Select w='160px' onChange={(e:any) => onChangeCategory(e.target.value)} bg='gray.500'>
         <option value="q" selected disabled hidden style={{display:'none'}}  >Default</option>
         <option value='title'>Title</option>
@@ -59,6 +59,5 @@ export const HomeNav = () => {
       </div>
 
     </nav>
-
   </>)
 }

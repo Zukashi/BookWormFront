@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AuthorState, authorUpdate} from "../../features/Author/authorSlice";
 import {Link} from "react-router-dom";
 import {searchUpdate} from "../../features/Search/searchSlice";
+import {Button} from "@chakra-ui/react";
 export const BooksSearchBar = () => {
   const search = useSelector((state: RootState) => state.search);
   const {category} = useSelector((state: RootState) => state.category);
@@ -32,7 +33,6 @@ export const BooksSearchBar = () => {
         </Link>
       </div>)}
     </div> }
-
 
   </>)
 }
