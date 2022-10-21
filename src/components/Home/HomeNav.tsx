@@ -27,7 +27,7 @@ export const HomeNav = () => {
   }
 
   return (<>
-    <nav className='w-100vw h-[200px] flex justify-center'>
+    <nav className='w-100vw  flex justify-center'>
       <Select w='160px' onChange={(e:any) => onChangeCategory(e.target.value)} bg='gray.500'>
         <option value="q" selected disabled hidden style={{display:'none'}}  >Default</option>
         <option value='title'>Title</option>
@@ -59,12 +59,5 @@ export const HomeNav = () => {
       </div>
 
     </nav>
-    <main className='w-[90vw]  m-auto' >
-      <div className='w-full border-black border-b-2 pb-3 relative'>
-      <h1 className='text-3xl inline-block'>Browse Books</h1>
-      <div className='absolute right-0 inline-block'>
-        <Button >View More</Button>
-      </div>
-    </div></main>
   </>)
 }
