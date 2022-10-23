@@ -11,13 +11,14 @@ export const MainBooks = () => {
         <Button >View More</Button>
       </div>
     </div>
-      <div className='mt-4 '>
-        <Link to='/works/OL27351482M' className='relative'><Button pos='absolute' className='top-0'>View Book</Button><img src="https://covers.openlibrary.org/b/isbn/0062899147-M.jpg"  className="inline-block cursor-default" alt=""/ >
+      <div className='mt-4 bg-black w-[180px] inline-block'>
+        <Link to='/works/OL27351482M' className='relative  w-[180px] '><Button pos='absolute' className='top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  ' h='31px' w='83px'>View Book</Button><img src="https://covers.openlibrary.org/b/isbn/0062899147-M.jpg"  className="inline-block cursor-default hover:opacity-50" alt=""/>
 
         </Link>
+      </div>
         <div className='inline-block ml-4'><p className='text-1xl font-bold w-40 leading-5'>The Subtle Art of Not Giving a F*ck</p>
           <p className='text-sm mt-2'>Mark Manson</p></div>
-      </div>
+
     </main>
   </>)
 }
