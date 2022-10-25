@@ -1,7 +1,10 @@
 import {Button} from "@chakra-ui/react";
-import React from "react";
+import React, {useRef} from "react";
+import {Link} from "react-router-dom";
+import {OneBook} from "./OneBook";
 
 export const MainBooks = () => {
+
   return (<>
     <main className='w-[90vw]  m-auto mt-5' >
     <div className='w-full border-black border-b-2 pb-3 relative'>
@@ -9,6 +12,9 @@ export const MainBooks = () => {
       <div className='absolute right-0 inline-block'>
         <Button >View More</Button>
       </div>
-    </div></main>
+    </div>
+      <OneBook/>
+
+    </main>
   </>)
 }
