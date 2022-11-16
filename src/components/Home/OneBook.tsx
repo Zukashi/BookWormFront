@@ -18,7 +18,7 @@ export const OneBook = () => {
     refImg.current.classList.remove('opacity-50')
   }
   return (<> <div className='mt-4 bg-black w-[180px] inline-block'>
-    <Link to='/works/OL27351482M' className='relative  w-[180px] '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black' h='31px' w='83px'>View Book</Button><img ref={refImg} src="https://covers.openlibrary.org/b/isbn/0062899147-M.jpg"  className="inline-block cursor-default " onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/>
+    <Link to='/works/OL27213498M' className='relative  w-[180px] '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black' h='31px' w='83px'>View Book</Button><img ref={refImg} src="https://covers.openlibrary.org/b/isbn/1471156265-M.jpg"  className="inline-block cursor-default " onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/>
     </Link>
   </div>
     <div className='inline-block ml-4'><p className='text-1xl font-bold w-40 leading-5'>The Subtle Art of Not Giving a F*ck</p>
