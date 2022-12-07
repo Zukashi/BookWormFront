@@ -7,6 +7,7 @@ import {RootState} from "../../app/store";
 export const OneBook = () => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
+  console.log(favorite)
   const user = useSelector((state: RootState) => state.user);
   const mouseEntered = () => {
     if (refImg.current === null || refImg.current === undefined){
@@ -18,10 +19,24 @@ export const OneBook = () => {
   const changeFavorite = () => {
       if(favorite === false){
         setFavorite(true);
+        console.log(123);
         (async() => {
 
           await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
             method:"PUT",
+            headers:{
+              'Content-type':'application/json'
+            },
+            body:JSON.stringify({isbn:'1471156265'})
+          })
+        })()
+      }else{
+        setFavorite(false);
+        console.log(456);
+        (async() => {
+
+          await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
+            method:"DELETE",
             headers:{
               'Content-type':'application/json'
             },
@@ -47,7 +62,7 @@ export const OneBook = () => {
       <p className='font-bold mb-2'>$99</p>
       <i className="fa-solid fa-cart-shopping fa-lg cursor-pointer"></i>
      {!favorite ?  <button onClick={changeFavorite}><i className="fa-regular fa-heart fa-lg text-red-500 ml-4 cursor-pointer"></i></button> :
-         <button onClick={() => setFavorite(false)}> <i className="fa-solid fa-heart fa-lg text-red-500 ml-4 cursor-pointer"></i></button>} </div>
+         <button onClick={changeFavorite}> <i className="fa-solid fa-heart fa-lg text-red-500 ml-4 cursor-pointer"></i></button>} </div>
 
     </>)
 }
