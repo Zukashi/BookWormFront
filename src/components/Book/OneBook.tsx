@@ -20,8 +20,9 @@ export interface Book {
     value:string,
   },
   authors: {
-  type:{key:string},
-  author:{key:string}
+  type?:{key:string},
+  author?:{key:string},
+  key?:string
   }[]
 }
 
@@ -31,31 +32,28 @@ export const OneBook = () => {
   const location = useLocation();
   useEffect(() => {
     (async() => {
-        const response = await fetch(`http://localhost:3001/author/${location.state}`)
-        const data = await response.json();
-        setAuthor(data)
+        const response = await fetch(`http://localhost:3001/author/${data?.authors[0].key?.slice(9)}`)
+        const data2 = await response.json();
+        setAuthor(data2)
     })()
   },[])
   const params = useParams();
-  console.log(params)
   useEffect( () => {
     (async () => {
       const res = await fetch(`http://localhost:3001/works/${params.bookId}`)
       const data = await res.json();
-      console.log(234)
       setData(data);
     })()
   },[location.state]);
 
 
-
-
+  console.log(author)
   return (<>
     <section className='w-screen bg-gradient-to-r from-sky-500 to-indigo-800 h-[100vh] m-auto '>
       <HomeNav/>
       <BooksSearchBar/>
       <img src={`https://covers.openlibrary.org/b/id/${data?.covers[0]}-L.jpg`} alt=""/>
-      <h1 className='text-4xl'>{data?.title} by <Link to={`/author/${location.state}`} state={[author?.key]}><p className='hover:text-cyan-400 cursor-pointer'>{author?.personal_name}</p></Link></h1>
+      <h1 className='text-4xl'>{data?.title} by <Link to={`/author/${location.state}`} state={[author?.key]}><p className='hover:text-cyan-400 cursor-pointer'>{author?.name}</p></Link></h1>
     </section>
 
   </>)
