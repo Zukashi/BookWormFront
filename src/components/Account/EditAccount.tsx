@@ -116,9 +116,9 @@ export const EditAccount = () => {
               <Input className='inline-block' value={form.lastName} w='43vw' placeholder='Smith' name="lastName" onChange={ (e:any) => onChange(e.target.value, 'lastName') } ></Input>
 
               <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">User Name:</p>
-              <p className="mt-10 mb-3 inline-block">City:</p>
+              <p className="mt-10 mb-3 inline-block mr-4">City:</p>
               <Input w='43vw' value={form.username}  className='inline-block mr-5' name='username' onChange={ (e:any) => onChange(e.target.value, 'username') } ></Input>
-              <Input className='inline-block ' value={form.city} w='43vw' placeholder='Atlanta' name='city' onChange={ (e:any) => onChange(e.target.value, 'city') } ></Input>
+              <Input className='inline-block' value={form.city} w='43vw'  placeholder='Atlanta' name='city' onChange={ (e:any) => onChange(e.target.value, 'city') } ></Input>
 
               <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">Date Of Birth:</p>
               <p className="mt-10 mb-3 inline-block">Country:</p>
@@ -130,7 +130,8 @@ export const EditAccount = () => {
                       name='dateOfBirth'
                       onChange={ (e:any) => onChange(e.target.value, 'dateOfBirth') }
               />
-              <Input className='inline-block ' value={form.country} w='43vw' placeholder='USA' name='country' onChange={ (e:any) => onChange(e.target.value, 'country') } ></Input>
+              <Input className='inline-block ' value={form.country} w='43vw' placeholder='USA' name='country'
+                     onChange={ (e:any) => onChange(e.target.value, 'country') } ></Input>
               <Button type={"submit"} mt={"30px"} variant='solid' backgroundColor={'#6366f1'} _active={{
                 backgroundColor: '#6366f1',
                 color:'#fff',
