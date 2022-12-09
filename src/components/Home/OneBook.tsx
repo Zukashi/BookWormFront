@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import {Button} from "@chakra-ui/react";
 import {useSelector} from "react-redux";
@@ -16,6 +16,16 @@ export const OneBook = () => {
       refImg.current.classList.add('opacity-50')
     }
   }
+  useEffect(() => {
+    (async() => {
+      const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`);
+      const data = await res.json();
+      console.log(data)
+      if (data.includes('1471156265')){
+        setFavorite(true)
+      }
+    })()
+  },[])
   const changeFavorite = () => {
       if(favorite === false){
         setFavorite(true);
