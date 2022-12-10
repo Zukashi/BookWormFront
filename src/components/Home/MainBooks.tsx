@@ -13,7 +13,7 @@ export const MainBooks = () => {
         <Button >View More</Button>
       </div>
     </div>
-    <div className='flex gap-0 justify-between items-center'>
+    <div className='flex-col gap-0 justify-between items-center'>
       <OneBook/>
       <OneBook/>
       <OneBook/>
