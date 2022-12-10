@@ -5,12 +5,14 @@ import {searchUpdate} from "../../features/Search/searchSlice";
 import {categoryUpdate} from "../../features/Search/categorySlice";
 import {RootState} from "../../app/store";
 import {Link} from "react-router-dom";
+import useWindowDimensions from './WindowDimensions';
 
 
 export const HomeNav = () => {
   const dispatch = useDispatch();
   const {category} = useSelector((state: RootState) => state.category);
   const user = useSelector((state: RootState) => state.user);
+  const { height, width } = useWindowDimensions();
  const onChange = (value:string) => {
    (async() => {
      const encodedQuery = encodeURIComponent(value);
@@ -28,20 +30,23 @@ export const HomeNav = () => {
 
   return (<>
     <nav className='w-100vw  flex justify-center'>
-      <Select w='160px' onChange={(e:any) => onChangeCategory(e.target.value)} bg='gray.500'>
+      <Select w='100px' onChange={(e:any) => onChangeCategory(e.target.value)} bg='gray.500'>
         <option value="q" selected disabled hidden style={{display:'none'}}  >Default</option>
         <option value='title'>Title</option>
         <option value='author'>Author</option>
       </Select>
       <div className='relative'>
-        <Input  variant='filled' placeholder='Input your author or book' width='400px' onChange={(e:any) => onChange(e.target.value.trim())}/>
+        <Input variant='filled' placeholder='Input your author or book' className='w-[200px]' onChange={(e:any) => onChange(e.target.value.trim())}/>
         <i className="fa-solid fa-magnifying-glass top-[1.5vh] cursor-pointer hover:text-lime-400 absolute right-3"></i>
       </div>
       <div className='absolute right-0'>
       <Menu>
-      <MenuButton  as={Button} colorScheme='blue' >
+        { width > 900 ?
+          <MenuButton  as={Button} colorScheme='blue' >
         Profile
-      </MenuButton>
+      </MenuButton>:
+            <MenuButton className='w-7 h-7 mt-1'><i className="fa-solid fa-bars-staggered fa-lg"></i></MenuButton>
+        }
       <MenuList>
         <MenuGroup title='Profile' >
           <Link to={`/user/${user._id}`}><MenuItem>My Account</MenuItem></Link>
