@@ -6,10 +6,12 @@ import {categoryUpdate} from "../../features/Search/categorySlice";
 import {RootState} from "../../app/store";
 import {Link} from "react-router-dom";
 import useWindowDimensions from './WindowDimensions';
+import { DrawerComponent } from './DrawerMobile';
 
 
 export const HomeNav = () => {
   const dispatch = useDispatch();
+
   const {category} = useSelector((state: RootState) => state.category);
   const user = useSelector((state: RootState) => state.user);
   const { height, width } = useWindowDimensions();
@@ -40,29 +42,21 @@ export const HomeNav = () => {
         <i className="fa-solid fa-magnifying-glass top-[1.5vh] cursor-pointer hover:text-lime-400 absolute right-3"></i>
       </div>
       <div className='absolute right-0'>
-      <Menu>
         { width > 900 ?
-          <MenuButton  as={Button} colorScheme='blue' >
+          <Button>
         Profile
-      </MenuButton>:
-            <MenuButton className='w-7 h-7 mt-1'><i className="fa-solid fa-bars-staggered fa-lg"></i></MenuButton>
-        }
-      <MenuList>
-        <MenuGroup title='Profile' >
-          <Link to={`/user/${user._id}`}><MenuItem>My Account</MenuItem></Link>
-          <Link to={`/edit/user/${user._id}`}><MenuItem>Edit account</MenuItem></Link>
-          <Link to={`/favorites/user/${user._id}`}><MenuItem>Favorites</MenuItem></Link>
-        </MenuGroup>
-        <MenuDivider />
-        <MenuGroup title='Help'>
-          <MenuItem>Docs</MenuItem>
-          <MenuItem>FAQ</MenuItem>
-        </MenuGroup>
-      </MenuList>
-    </Menu>
-
+          </Button>:
+          <button  className='w-10 h-10'><i className="fa-solid fa-bars-staggered fa-lg text-teal-600"></i></button>}
+      <div>
+        <div className='flex flex-col absolute z-10 bg-white right-1 w-[150px] items-center   border-black border-[1px]'>
+          <div className='w-full border-b-gray-200 border-t-[1px] flex items-center w-full h-14'><Link to={`/user/${user._id}`} className='w-full flex justify-center hover:text-violet-600'><i className="fa-solid fa-user pt-1.5 absolute left-2"></i>My Account</Link></div>
+          <div className='w-full border-b-gray-200 border-t-[1px] flex h-14 w-full items-center '><Link to={`/edit/user/${user._id}`}className='w-full flex justify-center hover:text-violet-600'><i
+              className="fa-solid fa-pen-to-square pt-[4px] absolute left-2"></i>Edit account</Link></div>
+          <div className='w-full border-b-gray-200 border-t-[1px] flex h-14 w-full items-center'><Link to={`/favorites/user/${user._id}`} className='w-full flex justify-center hover:text-violet-600 '><i className="fa-solid fa-star pt-[4px] absolute left-2 "></i><p className='w-[86px] text-left'>Favorites</p></Link></div>
+        </div>
       </div>
 
+      </div>
     </nav>
   </>)
 }

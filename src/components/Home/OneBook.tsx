@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {Button} from "@chakra-ui/react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
+import {DrawerComponent} from "./DrawerMobile";
 
 export const OneBook = () => {
   const refImg = useRef<HTMLImageElement>(null);
@@ -59,7 +60,8 @@ export const OneBook = () => {
     }
     refImg.current.classList.remove('opacity-50')
   }
-  return (<><div className='flex'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
+  return (<>
+    <div className='flex'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
     <Link to='/works/OL27213498M' className='relative  w-[180px] '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black' h='31px' w='83px'>View Book</Button><img ref={refImg} src="https://covers.openlibrary.org/b/isbn/1471156265-L.jpg"   className="inline-block cursor-default w-40" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/>
 
     </Link>
@@ -67,11 +69,14 @@ export const OneBook = () => {
   </div>
     <div className='inline-block -ml-10 mt-10'><p className='text-[15px] font-bold w-40 leading-5
     ml-16'>It Ends With Us</p>
-      <p className='text-[16px] mt-2 ml-16'>COLLEN HOOVER</p>
+      <p className='text-[16px] mt-2 ml-16'>COLLEN HOOVER </p>
       <p className='font-bold mb-2'>$99</p>
       <i className="fa-solid fa-cart-shopping fa-xl cursor-pointer ml-16 "></i>
+
+
      {!favorite ?  <button onClick={changeFavorite}><i className="fa-regular fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button> :
          <button onClick={changeFavorite}> <i className="fa-solid fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button>} </div>
   </div>
+    <div><DrawerComponent/></div>
     </>)
 }
