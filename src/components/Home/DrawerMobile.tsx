@@ -36,7 +36,6 @@ export  function DrawerComponent() {
                     <div className='h-10 bg-gray pb-[60px] border-b-[rgb(221,221,221)] border-[1px]'><DrawerCloseButton  className='absolute left-0 top-10 h-15 w-15 ' size='lg' />
                         <h2 className='font-medium text-[21px] absolute left-12 top-[11px]'>Settings</h2>
                     </div>
-
                     <DrawerBody>
                         <div className='flex flex-col absolute z-10 bg-white  w-[150px] items-center   '>
                             <div className='w-full  flex items-center w-full h-14'><Link to={`/user/${user._id}`} className='w-full flex justify-center hover:text-violet-600'><i className="fa-regular fa-user pt-1.5 absolute left-0"></i>My Account</Link></div>
