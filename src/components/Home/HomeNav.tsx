@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, Select, Image} from "@chakra-ui/react";
 import {useDispatch, useSelector} from "react-redux";
 import {searchUpdate} from "../../features/Search/searchSlice";
@@ -14,6 +14,19 @@ export const HomeNav = () => {
   const [burger, setBurger] = useState(false)
   const {category} = useSelector((state: RootState) => state.category);
   const { height, width } = useWindowDimensions();
+  const [offset, setOffset] = useState(0);
+  const prevScroll = useRef(0);
+  useEffect(() => {
+    const onScroll = () => setOffset(window.pageYOffset);
+    // clean up code
+    window.removeEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  useEffect(() => {
+      prevScroll.current = offset
+  }, [offset]);
+  console.log('prev value:',prevScroll.current,'current value:',offset)
  // const onChange = (value:string) => {
  //   (async() => {
  //     const encodedQuery = encodeURIComponent(value);
@@ -27,7 +40,7 @@ export const HomeNav = () => {
  //    dispatch(categoryUpdate(value))
  //  }
 
-  return (<>
+  return (<>{prevScroll.current >= offset &&
     <nav className='w-screen  flex justify-center pt-2  h-16 fixed z-40  border-b-[rgb(221,221,221)] border-b-[1px] bg-white'>
         <Link to='/home'><Image className='fixed top-2 left-5 z-30' boxSize='50px' src="https://cdn-icons-png.flaticon.com/512/2490/2490314.png"></Image></Link>
       {/*<Select w='100px' onChange={(e:any) => onChangeCategory(e.target.value)} bg='gray.500'>*/}
@@ -39,7 +52,7 @@ export const HomeNav = () => {
       {/*  <Input variant='filled' placeholder='Input your author or book' className='w-[200px]' onChange={(e:any) => onChange(e.target.value.trim())}/>*/}
       {/*  <i className="fa-solid fa-magnifying-glass top-[1.5vh] cursor-pointer hover:text-lime-400 absolute right-3"></i>*/}
       {/*</div>*/}
-      <div className='absolute right-10'>
+      <div className='absolute right-10' >
         { width > 900 ?
           <Button onClick={() => setBurger((value:boolean)=> !value)}>
         Profile
@@ -48,6 +61,6 @@ export const HomeNav = () => {
       <DrawerComponent></DrawerComponent>}
 
       </div>
-    </nav>
+    </nav>}
   </>)
 }
