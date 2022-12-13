@@ -26,7 +26,6 @@ export const HomeNav = () => {
   useEffect(() => {
       prevScroll.current = offset
   }, [offset]);
-  console.log('prev value:',prevScroll.current,'current value:',offset)
  // const onChange = (value:string) => {
  //   (async() => {
  //     const encodedQuery = encodeURIComponent(value);

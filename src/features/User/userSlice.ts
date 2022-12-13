@@ -8,6 +8,7 @@ export interface UserState {
     password: string,
     username:string,
     isAdmin:boolean,
+    favorites:[];
 }
 const initialState: UserState = {
       _id:{},
@@ -15,6 +16,7 @@ const initialState: UserState = {
       password:'',
       username:'',
       isAdmin:false,
+      favorites:[],
 }
 
 export const userSlice = createSlice({
@@ -27,6 +29,7 @@ export const userSlice = createSlice({
       state.username = action.payload.username
       state.password = action.payload.password
       state.isAdmin = action.payload.isAdmin
+      state.favorites = action.payload.favorites
     },
     userNameUpdate: (state,action:PayloadAction<string>) => {
       state.username = action.payload

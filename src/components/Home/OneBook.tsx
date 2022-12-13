@@ -16,19 +16,18 @@ export const OneBook = () => {
       refImg.current.classList.add('opacity-50')
     }
   }
-  useEffect(() => {
-    (async() => {
-      const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`);
-      const data = await res.json();
-      if (data.includes('1471156265')){
-        setFavorite(true)
-      }
-    })()
-  },[])
+  // useEffect(() => {
+  //   (async() => {
+  //     const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`);
+  //     const data = await res.json();
+  //     if (data.includes('1471156265')){
+  //       setFavorite(true)
+  //     }
+  //   })()
+  // },[])
   const changeFavorite = () => {
       if(favorite === false){
         setFavorite(true);
-        console.log(123);
         (async() => {
 
           await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
@@ -41,7 +40,6 @@ export const OneBook = () => {
         })()
       }else{
         setFavorite(false);
-        console.log(456);
         (async() => {
 
           await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
@@ -67,15 +65,14 @@ export const OneBook = () => {
     </Link>
 
   </div>
-    <div className='inline-block -ml-10 mt-10'><p className='text-[15px] font-bold w-40 leading-5
+    <div className='inline-block -ml-10 mt-20'><p className='text-[15px] font-bold w-40 leading-5
     ml-16'>It Ends With Us</p>
       <p className='text-[16px] mt-2 ml-16'>COLLEN HOOVER </p>
-      <p className='font-bold mb-2'>$99</p>
       <i className="fa-solid fa-cart-shopping fa-xl cursor-pointer ml-16 "></i>
 
 
-     {!favorite ?  <button onClick={changeFavorite}><i className="fa-regular fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button> :
-         <button onClick={changeFavorite}> <i className="fa-solid fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button>} </div>
+     {!favorite ?  <button onClick={changeFavorite} className='mt-6'><i className="fa-regular fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button> :
+         <button onClick={changeFavorite} className='mt-6'> <i className="fa-solid fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button>} </div>
   </div>
     </>)
 }
