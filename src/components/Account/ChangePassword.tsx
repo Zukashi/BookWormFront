@@ -4,7 +4,6 @@ import {useParams} from "react-router";
 
 export const ChangePassword = () => {
   const params = useParams();
-  console.log(params)
   const [passwordForm, setPasswordForm] = useState({
     currentPassword:'',
     newPassword:'',
