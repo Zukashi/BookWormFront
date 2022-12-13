@@ -13,7 +13,6 @@ export const HomeNav = () => {
   const dispatch = useDispatch();
   const [burger, setBurger] = useState(false)
   const {category} = useSelector((state: RootState) => state.category);
-  const user = useSelector((state: RootState) => state.user);
   const { height, width } = useWindowDimensions();
  const onChange = (value:string) => {
    (async() => {
@@ -22,12 +21,10 @@ export const HomeNav = () => {
      const data = await res.json();
      dispatch(searchUpdate(data));
 
-     console.log(2)
    })();
  };
   const onChangeCategory = (value:string) => {
     dispatch(categoryUpdate(value))
-    console.log(category)
   }
 
   return (<>
@@ -46,15 +43,8 @@ export const HomeNav = () => {
           <Button onClick={() => setBurger((value:boolean)=> !value)}>
         Profile
           </Button>:
-          <div className='fixed z-20'><button  className='w-10 h-10' onClick={() => setBurger((value:boolean)=> !value)}><i className="fa-solid fa-bars-staggered fa-lg text-teal-600"></i></button></div>}
-      <div className={burger === true ? 'block fixed top-10 right-0 z-20' : 'hidden'} >
-        <div className='flex flex-col absolute z-10 bg-white right-1 w-[150px] items-center   border-black border-[1px]'>
-          <div className='w-full border-b-gray-200 border-t-[1px] flex items-center w-full h-14'><Link to={`/user/${user._id}`} className='w-full flex justify-center hover:text-violet-600'><i className="fa-solid fa-user pt-1.5 absolute left-2"></i>My Account</Link></div>
-          <div className='w-full border-b-gray-200 border-t-[1px] flex h-14 w-full items-center '><Link to={`/edit/user/${user._id}`}className='w-full flex justify-center hover:text-violet-600'><i
-              className="fa-solid fa-pen-to-square pt-[4px] absolute left-2"></i>Edit account</Link></div>
-          <div className='w-full border-b-gray-200 border-t-[1px] flex h-14 w-full items-center'><Link to={`/favorites/user/${user._id}`} className='w-full flex justify-center hover:text-violet-600 '><i className="fa-solid fa-star pt-[4px] absolute left-2 "></i><p className='w-[86px] text-left'>Favorites</p></Link></div>
-        </div>
-      </div>
+
+      <DrawerComponent></DrawerComponent>}
 
       </div>
     </nav>

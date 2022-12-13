@@ -8,41 +8,46 @@ import {
     DrawerContent,
     DrawerCloseButton, useDisclosure, Button, Input,
 } from '@chakra-ui/react'
+import { Link } from 'react-router-dom';
+import {useSelector} from "react-redux";
+import {RootState} from "../../app/store";
 
 
 
 export  function DrawerComponent() {
-
+    const user = useSelector((state: RootState) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef :any = React.useRef()
 
     return (
         <><div className='absolute top-0'>
-            <Button ref={btnRef} colorScheme='green' onClick={onOpen}>
-                <i className="fa-solid fa-bars"></i>
-            </Button>
+
+            <button ref={btnRef} onClick={onOpen} className='w-10 h-10 fixed z-20'><i className="fa-solid fa-bars-staggered fa-lg text-teal-600"></i></button>
             </div>
             <Drawer
                 isOpen={isOpen}
-                placement='left'
+                placement='right'
                 onClose={onClose}
                 finalFocusRef={btnRef}
                 size='xs'
             >
                 <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerCloseButton />
-                    <DrawerHeader>Create your account</DrawerHeader>
+                <DrawerContent className='relative'>
+                    <div className='h-10 bg-gray pb-[60px] border-b-[rgb(221,221,221)] border-[1px]'><DrawerCloseButton  className='absolute left-0 top-10 h-15 w-15 ' size='lg' />
+                        <h2 className='font-medium text-[21px] absolute left-12 top-[11px]'>Settings</h2>
+                    </div>
 
                     <DrawerBody>
-                        <Input placeholder='Type here...' />
+                        <div className='flex flex-col absolute z-10 bg-white  w-[150px] items-center   '>
+                            <div className='w-full  flex items-center w-full h-14'><Link to={`/user/${user._id}`} className='w-full flex justify-center hover:text-violet-600'><i className="fa-regular fa-user pt-1.5 absolute left-0"></i>My Account</Link></div>
+                            <div className='w-full  flex h-14 w-full items-center '><Link to={`/edit/user/${user._id}`}className='w-full flex justify-center hover:text-violet-600'><i
+                                className="fa-regular fa-pen-to-square pt-[4px] absolute left-0"></i>Edit account</Link></div>
+                            <div className='w-full  flex h-14 w-full items-center'><Link to={`/favorites/user/${user._id}`} className='w-full flex justify-center hover:text-violet-600 '><i className="fa-regular fa-star pt-[4px] absolute left-0 "></i><p className='w-[86px] text-left'>Favorites</p></Link></div>
+                        </div>
+
                     </DrawerBody>
 
                     <DrawerFooter>
-                        <Button variant='outline' mr={3} onClick={onClose}>
-                            Cancel
-                        </Button>
-                        <Button colorScheme='blue'>Save</Button>
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>

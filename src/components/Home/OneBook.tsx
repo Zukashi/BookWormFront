@@ -77,6 +77,5 @@ export const OneBook = () => {
      {!favorite ?  <button onClick={changeFavorite}><i className="fa-regular fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button> :
          <button onClick={changeFavorite}> <i className="fa-solid fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button>} </div>
   </div>
-    <div><DrawerComponent/></div>
     </>)
 }
