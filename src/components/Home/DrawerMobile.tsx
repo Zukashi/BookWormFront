@@ -6,7 +6,7 @@ import {
     DrawerHeader,
     DrawerOverlay,
     DrawerContent,
-    DrawerCloseButton, useDisclosure, Button, Input,
+    DrawerCloseButton, useDisclosure, Button, Input, Image,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom';
 import {useSelector} from "react-redux";
@@ -21,8 +21,7 @@ export  function DrawerComponent() {
 
     return (
         <><div className='absolute top-0'>
-
-            <button ref={btnRef} onClick={onOpen} className='w-10 h-10 fixed z-20'><i className="fa-solid fa-bars-staggered fa-lg text-teal-600"></i></button>
+            <button ref={btnRef} onClick={onOpen} className='w-10 h-10 fixed z-20 mt-1'><Image  boxSize='30px' src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png"></Image></button>
             </div>
             <Drawer
                 isOpen={isOpen}
