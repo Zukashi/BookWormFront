@@ -19,6 +19,7 @@ import {Link} from "react-router-dom";
 import {ChangePassword} from "./ChangePassword";
 import {EmailAndSMS} from "./EmailAndSMS";
 import { ManageContact } from './ManageContact';
+import {HomeNav} from "../Home/HomeNav";
 export interface UserInterface {
   city:string,
   country:string,
@@ -80,23 +81,7 @@ export const EditAccount = () => {
     }))
   }
   return (<>
-    <Menu>
-      <MenuButton   as={Button} colorScheme='blue' pos='absolute' right={0}>
-        Profile
-      </MenuButton>
-      <MenuList>
-        <MenuGroup title='Profile' >
-          <Link to={`/user/${user._id}`}><MenuItem>My Account</MenuItem></Link>
-          <Link to={`/edit/user/${user._id}`}><MenuItem>Edit account</MenuItem></Link>
-          <Link to={`/favorites/user/${user._id}`}><MenuItem>Favorites</MenuItem></Link>
-        </MenuGroup>
-        <MenuDivider />
-        <MenuGroup title='Help'>
-          <MenuItem>Docs</MenuItem>
-          <MenuItem>FAQ</MenuItem>
-        </MenuGroup>
-      </MenuList>
-    </Menu>
+    <HomeNav/>
     <div className='w-[90vw] flex m-auto'>
       <Tabs isFitted variant='enclosed'  pt={20} w={"full"} border='0px' >
         <TabList mb='1em'>

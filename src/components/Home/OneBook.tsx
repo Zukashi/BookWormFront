@@ -5,7 +5,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {DrawerComponent} from "./DrawerMobile";
 
-export const OneBook = () => {
+export const OneBook = ({favorites}:any) => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
   const user = useSelector((state: RootState) => state.user);
@@ -16,6 +16,13 @@ export const OneBook = () => {
       refImg.current.classList.add('opacity-50')
     }
   }
+  useEffect(() => {
+    favorites.forEach((favorite:any) => {
+      if (favorite.isbn_10.includes('1471156265')){
+        setFavorite(true)
+      }
+    })
+  },[])
   // useEffect(() => {
   //   (async() => {
   //     const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`);
