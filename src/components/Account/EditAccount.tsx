@@ -111,18 +111,18 @@ export const EditAccount = () => {
             <p>pic...</p>
             <form onSubmit={onSend}>
               <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">First Name:</p>
-              <p className="mt-10 mb-3 inline-block">Last Name:</p>
-              <Input w='43vw' value={form.firstName}  onChange={ (e:any) => onChange(e.target.value, 'firstName') } className='inline-block mr-5' placeholder='John' name='firstName'></Input>
-              <Input className='inline-block' value={form.lastName} w='43vw' placeholder='Smith' name="lastName" onChange={ (e:any) => onChange(e.target.value, 'lastName') } ></Input>
+              <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">Last Name:</p>
+              <Input w='42vw' value={form.firstName}  onChange={ (e:any) => onChange(e.target.value, 'firstName') } className='inline-block mr-5' placeholder='John' name='firstName'></Input>
+              <Input className='inline-block' value={form.lastName} w='42vw' placeholder='Smith' name="lastName" onChange={ (e:any) => onChange(e.target.value, 'lastName') } ></Input>
 
               <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">User Name:</p>
-              <p className="mt-10 mb-3 inline-block mr-4">City:</p>
-              <Input w='43vw' value={form.username}  className='inline-block mr-5' name='username' onChange={ (e:any) => onChange(e.target.value, 'username') } ></Input>
-              <Input className='inline-block' value={form.city} w='43vw'  placeholder='Atlanta' name='city' onChange={ (e:any) => onChange(e.target.value, 'city') } ></Input>
+              <p className="mt-10 mb-3 inline-block mr-20">City:</p>
+              <Input w='42vw' value={form.username}  className='inline-block mr-5' name='username' onChange={ (e:any) => onChange(e.target.value, 'username') } ></Input>
+              <Input className='inline-block' value={form.city} w='42vw'  placeholder='Atlanta' name='city' onChange={ (e:any) => onChange(e.target.value, 'city') } ></Input>
 
-              <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">Date Of Birth:</p>
-              <p className="mt-10 mb-3 inline-block">Country:</p>
-              <Input  w='43vw' className='inline-block mr-5'  value={form.dateOfBirth}
+              <p className="mt-10 mb-3 w-[42vw] inline-block mr-5">Date Of Birth:</p>
+              <p className="mt-10 mb-3 inline-block mr-20">Country:</p>
+              <Input  w='42vw' className='inline-block mr-5'  value={form.dateOfBirth}
                       placeholder="dd-mm-yyyy"
                       type='date'
                       min="1997-01-01" max="2030-12-31"
@@ -130,7 +130,7 @@ export const EditAccount = () => {
                       name='dateOfBirth'
                       onChange={ (e:any) => onChange(e.target.value, 'dateOfBirth') }
               />
-              <Input className='inline-block ' value={form.country} w='43vw' placeholder='USA' name='country'
+              <Input className='inline-block ' value={form.country} w='42vw' placeholder='USA' name='country'
                      onChange={ (e:any) => onChange(e.target.value, 'country') } ></Input>
               <Button type={"submit"} mt={"30px"} variant='solid' backgroundColor={'#6366f1'} _active={{
                 backgroundColor: '#6366f1',
