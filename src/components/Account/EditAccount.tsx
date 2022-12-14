@@ -110,28 +110,33 @@ export const EditAccount = () => {
             <h1 className='font-bold text-2xl border-b-[1px] pb-5  border-b-[#f1f1f1]'>Personal Information</h1>
             <p>pic...</p>
             <form onSubmit={onSend}>
-              <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">First Name:</p>
-              <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">Last Name:</p>
-              <Input w='42vw' value={form.firstName}  onChange={ (e:any) => onChange(e.target.value, 'firstName') } className='inline-block mr-5' placeholder='John' name='firstName'></Input>
-              <Input className='inline-block' value={form.lastName} w='42vw' placeholder='Smith' name="lastName" onChange={ (e:any) => onChange(e.target.value, 'lastName') } ></Input>
+            <div className='grid grid-cols-2'>  <div><div className='h-[70px] relative mt-5'><p className=" mb-3 inline-block mr-5">First Name:</p>
+              <Input w='42vw' value={form.firstName}  onChange={ (e:any) => onChange(e.target.value, 'firstName') } pos='absolute' left='0' bottom='0' placeholder='John' name='firstName'></Input></div>
+              <div className='h-[70px] relative mt-7'> <p className=" mb-3  inline-block mr-5">Last Name:</p>
+                <Input className='inline-block' value={form.lastName} w='42vw' pos='absolute' left='0' bottom='0'  placeholder='Smith' name="lastName" onChange={ (e:any) => onChange(e.target.value, 'lastName') } ></Input></div>
 
-              <p className="mt-10 mb-3 w-[43vw] inline-block mr-5">User Name:</p>
-              <p className="mt-10 mb-3 inline-block mr-20">City:</p>
-              <Input w='42vw' value={form.username}  className='inline-block mr-5' name='username' onChange={ (e:any) => onChange(e.target.value, 'username') } ></Input>
-              <Input className='inline-block' value={form.city} w='42vw'  placeholder='Atlanta' name='city' onChange={ (e:any) => onChange(e.target.value, 'city') } ></Input>
+              <div className='h-[70px] relative mt-7 '><p className=" mb-3  inline-block mr-5">User Name:</p>
+                <Input w='42vw' value={form.username} pos='absolute' left='0' bottom='0' name='username' onChange={ (e:any) => onChange(e.target.value, 'username') } ></Input></div></div>
 
-              <p className="mt-10 mb-3 w-[42vw] inline-block mr-5">Date Of Birth:</p>
-              <p className="mt-10 mb-3 inline-block mr-20">Country:</p>
-              <Input  w='42vw' className='inline-block mr-5'  value={form.dateOfBirth}
-                      placeholder="dd-mm-yyyy"
-                      type='date'
-                      min="1997-01-01" max="2030-12-31"
-                      size="md"
-                      name='dateOfBirth'
-                      onChange={ (e:any) => onChange(e.target.value, 'dateOfBirth') }
-              />
-              <Input className='inline-block ' value={form.country} w='42vw' placeholder='USA' name='country'
-                     onChange={ (e:any) => onChange(e.target.value, 'country') } ></Input>
+
+
+
+             <div> <div className='h-[70px] relative mt-5'> <p className=" mb-3 inline-block ">City:</p>
+               <Input className='inline-block' value={form.city} w='42vw' pos='absolute' left='0' bottom='0'  placeholder='Atlanta' name='city' onChange={ (e:any) => onChange(e.target.value, 'city') } ></Input></div>
+
+
+
+               <div className='h-[70px] relative mt-7'> <p className=" mb-3 w-[42vw] inline-block mr-5">Date Of Birth:</p> <Input  w='42vw' className='inline-block mr-5' pos='absolute' left='0' bottom='0'  value={form.dateOfBirth}
+                                                           placeholder="dd-mm-yyyy"
+                                                           type='date'
+                                                           min="1997-01-01" max="2030-12-31"
+                                                           size="md"
+                                                           name='dateOfBirth'
+                                                           onChange={ (e:any) => onChange(e.target.value, 'dateOfBirth') }
+               /></div>
+               <div className='h-[70px] relative mt-7'><p className=" mb-3 inline-block mr-20">Country:</p>
+                 <Input className='inline-block ' pos='absolute' left='0' bottom='0' value={form.country} w='42vw' placeholder='USA' name='country'
+                        onChange={ (e:any) => onChange(e.target.value, 'country') } ></Input></div></div></div>
               <Button type={"submit"} mt={"30px"} variant='solid' backgroundColor={'#6366f1'} _active={{
                 backgroundColor: '#6366f1',
                 color:'#fff',
