@@ -9,8 +9,6 @@ import {HomeNavAdmin} from "./HomeNavAdmin";
 
 export const HomeAdminNav = () => {
     return <> <HomeNavAdmin/>
-        <BooksSearchBar/>
-        <MainBooks/>
     </>
 
 
