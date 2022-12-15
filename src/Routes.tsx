@@ -10,6 +10,7 @@ import {BookView} from "./Views/BookView";
 import {AccountView} from "./Views/AccountView";
 import {EditAccount} from "./components/Account/EditAccount";
 import { Favorites } from './components/Account/Favorites';
+import {BookListView} from "./Views/BookListView";
 
 export const AllRoutes = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -19,11 +20,12 @@ export const AllRoutes = () => {
                 <Route path='/' element={<LoginPageView/>}/>
                 <Route path='/create-account' element={<Register/>}/>
               {user.password && <Route path='/home' element={<HomeView/>}/>}
-                <Route path='/author/:authorId' element={<AuthorView/>}/>
-                <Route path='/works/:bookId' element={<BookView/>}/>
-                <Route path='/user/:userId' element={<AccountView/>}></Route>
-                <Route path='/edit/user/:userId' element={<EditAccount/>}></Route>
-                <Route path='/favorites/user/:userId' element={<Favorites/>}></Route>
+                {user.password &&  <Route path='/author/:authorId' element={<AuthorView/>}/>}
+                {user.password && <Route path='/works/:bookId' element={<BookView/>}/>}
+                {user.password &&  <Route path='/user/:userId' element={<AccountView/>}></Route>}
+                {user.password && <Route path='/edit/user/:userId' element={<EditAccount/>}></Route>}
+                {user.password &&  <Route path='/favorites/user/:userId' element={<Favorites/>}></Route>}
+                {user.password &&  <Route path='/admin/books' element={<BookListView/>}></Route>}
             </Routes>
 
     </>)
