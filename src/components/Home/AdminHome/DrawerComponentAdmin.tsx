@@ -12,20 +12,35 @@ import {
 } from "@chakra-ui/react";
 import {Link} from "react-router-dom";
 import { SubcategoryMenu } from './SubcategoryMenu';
+import {CategoryAdminMenu} from "./CategoryAdminMenu";
 
 export const DrawerComponentAdmin = () => {
     const user = useSelector((state: RootState) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef :any = React.useRef()
-    const [selected, setSelected] = useState(false);
-    const subcategories = [{
+    const subcategories = {
+        Home:[{
         name:'Home Page',
         link:'/home'
     },
         {name:'Category Page',
          link:'/category'
-        }
-    ]
+        }],
+        Admin:[{
+            name:'Category Lists',
+            link:'/categories'
+        },
+            {
+                name:'Author',
+                link:'/admin/author'
+            },
+            {
+                name:'Books',
+                link:'/admin/books'
+            }
+        ]
+
+    }
     return (
         <><div className='absolute top-0'>
             <button ref={btnRef} onClick={onOpen} className='w-10 h-10 fixed z-20 mt-1 left-2'><i
@@ -44,14 +59,7 @@ export const DrawerComponentAdmin = () => {
                         <h2 className='font-medium text-[21px] absolute left-12 top-[11px] tracking-wide'>BOOKWORM</h2>
                     </div>
                     <DrawerBody p={0}>
-                        <div className={`flex h-12 items-center pl-7 ${selected && 'bg-amber-300'}`} onClick={() => setSelected((value) => !value)}><h2>Shop</h2> {selected ? <i className='fa-solid fa-chevron-down absolute right-7 '></i>:<i className='fa-solid fa-chevron-right absolute right-7 '></i>}
-                        </div>
-                        {selected &&
-                        <div className='flex flex-col'>
-                            {subcategories.map((value,index) => <SubcategoryMenu key={index} link={value.link} name={value.name}/>)}
-
-                        </div>
-                        }
+                        <CategoryAdminMenu subcategories={subcategories}/>
                     </DrawerBody>
 
 
