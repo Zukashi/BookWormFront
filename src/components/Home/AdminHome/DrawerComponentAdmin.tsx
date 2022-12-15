@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {useSelector} from "react-redux";
 import {RootState} from "../../../app/store";
 import {
@@ -16,6 +16,8 @@ export const DrawerComponentAdmin = () => {
     const user = useSelector((state: RootState) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef :any = React.useRef()
+    const [selected, setSelected] = useState(false)
+
 
     return (
         <><div className='absolute top-0'>
@@ -31,11 +33,12 @@ export const DrawerComponentAdmin = () => {
             >
                 <DrawerOverlay />
                 <DrawerContent className='relative'>
-                    <div className='h-10 bg-gray pb-[60px] border-b-[rgb(221,221,221)] border-[1px]'><DrawerCloseButton  className='absolute left-0 top-10 h-15 w-15 ' size='lg' />
-                        <h2 className='font-medium text-[21px] absolute left-12 top-[11px]'>Settings</h2>
+                    <div className='h-10 bg-gray pb-[60px] border-b-[rgb(221,221,221)] border-[1px]'><DrawerCloseButton  className='absolute right-0 top-10 h-15 w-15 ' size='lg' />
+                        <h2 className='font-medium text-[21px] absolute left-12 top-[11px] tracking-wide'>BOOKWORM</h2>
                     </div>
-                    <DrawerBody>
-
+                    <DrawerBody p={0}>
+                        <div className={`flex h-12 items-center pl-7 ${selected && 'bg-amber-300'}`} onClick={() => setSelected((value) => !value)}><h2>Shop</h2> {selected ? <i className='fa-solid fa-chevron-down absolute right-7 '></i>:<i className='fa-solid fa-chevron-right absolute right-7 '></i>}
+                        </div>
 
                     </DrawerBody>
 
