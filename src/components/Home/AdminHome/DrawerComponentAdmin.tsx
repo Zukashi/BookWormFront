@@ -12,7 +12,8 @@ import {
 } from "@chakra-ui/react";
 import {Link} from "react-router-dom";
 import { SubcategoryMenu } from './SubcategoryMenu';
-import {CategoryAdminMenu} from "./CategoryAdminMenu";
+import {CategoryHomeMenu} from "./CategoryHomeMenu";
+import { CategoryAdminMenu } from './CategoryAdminMenu';
 
 export const DrawerComponentAdmin = () => {
     const user = useSelector((state: RootState) => state.user);
@@ -59,7 +60,9 @@ export const DrawerComponentAdmin = () => {
                         <h2 className='font-medium text-[21px] absolute left-12 top-[11px] tracking-wide'>BOOKWORM</h2>
                     </div>
                     <DrawerBody p={0}>
-                        <CategoryAdminMenu subcategories={subcategories}/>
+                        <CategoryHomeMenu subcategories={subcategories.Home}/>
+                        <CategoryAdminMenu subcategories={subcategories.Admin}/>
+
                     </DrawerBody>
 
 
