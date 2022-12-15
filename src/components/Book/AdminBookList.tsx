@@ -1,6 +1,10 @@
 import React from 'react'
+import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
 
 export const AdminBookList = () => {
     return (<>
-    <h1>h23</h1></>)
+        <HomeNavAdmin/>
+    <div className='pt-20'></div>
+        {/*@TODO table for books */}
+    </>)
 }

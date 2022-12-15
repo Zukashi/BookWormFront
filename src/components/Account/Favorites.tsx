@@ -32,7 +32,8 @@ export const Favorites = () => {
     }
     if (favorites === null){
         return <HomeNav/>
-    }
+    };
+    console.log(favorites)
     return (<>
 
         {user.isAdmin ?  <HomeAdminNav/> : <HomeNav/>}
