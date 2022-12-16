@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {Link} from "react-router-dom";
 import {Button} from "@chakra-ui/react";
+import { HomeAdminNav } from '../Home/AdminHome/HomeAdminNav';
 
 export const Favorites = () => {
     const user = useSelector((state: RootState) => state.user);
@@ -31,10 +32,11 @@ export const Favorites = () => {
     }
     if (favorites === null){
         return <HomeNav/>
-    }
+    };
+    console.log(favorites)
     return (<>
 
-        <HomeNav/>
+        {user.isAdmin ?  <HomeAdminNav/> : <HomeNav/>}
         {favorites.map((favorite:any) => <div className='flex pt-20'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
             <Link to={`/works/${favorite.isbn_10[0]}`} className='relative  w-[180px] '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black' h='31px' w='83px'>View Book</Button><img ref={refImg} src={`https://covers.openlibrary.org/b/isbn/${favorite.isbn_10[0]}-L.jpg`}   className="inline-block cursor-default w-40" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/>
 
