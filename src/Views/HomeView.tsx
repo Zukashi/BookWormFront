@@ -11,7 +11,8 @@ export const HomeView = () => {
 
     return (<>
         {
-            user.isAdmin ? <HomeAdminNav/> : <div>
+            user.isAdmin ? <div><HomeAdminNav/><BooksSearchBar/>
+                <MainBooks/> </div>: <div>
                 <HomeNav/>
                 <BooksSearchBar/>
                 <MainBooks/>

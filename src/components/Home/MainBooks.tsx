@@ -16,7 +16,7 @@ export const MainBooks = () => {
   },[])
   if(favorites === null) {
     return <h1>XD</h1>
-  }
+  };
   return (<>
     <main className='w-[90vw]  m-auto pt-20' >
     <div className='w-full border-black border-b-2 pb-3 relative'>
