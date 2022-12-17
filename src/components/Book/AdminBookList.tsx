@@ -2,22 +2,44 @@ import { Button } from '@chakra-ui/react';
 import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom';
 import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
+export interface Author {
+    key:string,
+}
 export interface Book {
-    isbn :string,
-    author:string,
+    isbn_10 :string,
+    isbn_13:string,
+    authors:Author[],
     title:string,
 }
 
 export const AdminBookList = () => {
     const [books ,setBooks] = useState<Book[]>([]);
-
+    const [author, setAuthor] = useState<any>([]);
+    const authorSearch = async (olid:string):Promise<any> => {
+            const res = await fetch(`https://openlibrary.org/authors/${olid}.json`);
+            const data = await res.json();
+            setAuthor(data)
+        return null
+    }
     useEffect(() => {
         (async () => {
             const res = await fetch('http://localhost:3001/books');
             const data = await res.json();
-            setBooks(data)
+            setBooks(data);
+            const result = data.map( async (book:Book) => {
+                console.log(book.authors[0])
+                const res = await fetch(`https://openlibrary.org${book.authors[0]}.json`)
+                const data = await res.json();
+                return data
+            });
+            const authors = await Promise.all(result);
+            console.log(authors)
+            setAuthor(authors)
+
         })()
+
     },[])
+    console.log(books)
     return (<>
         <HomeNavAdmin/>
     <div className='pt-20'></div>
@@ -38,10 +60,10 @@ export const AdminBookList = () => {
                 <tbody>
                 {books.map((book, i) => <tr className='h-16 font-normal text-[16px]'>
                     <td className='p-3 border-[#dee2e6] border-[1px] '>{i+1}</td>
-                    <td className='p-3 border-[#dee2e6] border-[1px] '><img src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt=""/></td>
+                    <td className='p-3 border-[#dee2e6] border-[1px] '><img src={`https://covers.openlibrary.org/b/isbn/${book.isbn_10[0]}-L.jpg`} alt=""/></td>
                     <td className='p-3 border-[#dee2e6] border-[1px] '>{book.title}</td>
                     <td className='p-3 border-[#dee2e6] border-[1px] '>History</td>
-                    <td className='p-3 border-[#dee2e6] border-[1px] '>{book.author}</td>
+                    <td className='p-3 border-[#dee2e6] border-[1px] '>{book.authors.map((author, i:number) => <h1 key={i}></h1>)}</td>
                     <td className='p-3 border-[#dee2e6] border-[1px] '>About mercenary named Beso</td>
                     <td className='p-3 border-[#dee2e6] border-[1px] '><div className='h-full w-full  flex flex-col gap-3 justify-center'><i
                         className="fa-solid fa-pen-to-square"></i>
