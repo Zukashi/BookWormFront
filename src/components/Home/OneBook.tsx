@@ -31,7 +31,7 @@ export const OneBook = ({book}:any) => {
     })();
 
       favorites.forEach((favorite:any) => {
-        if (favorite.isbn_10.includes(book.isbn)){
+        if (favorite.isbn_10.includes(book.isbn) || favorite.isbn.includes(book.isbn)){
           setFavorite(true)
         }
       })
@@ -66,7 +66,6 @@ export const OneBook = ({book}:any) => {
       }else{
         setFavorite(false);
         (async() => {
-
           await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
             method:"DELETE",
             headers:{
