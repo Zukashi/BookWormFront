@@ -2,6 +2,10 @@ import { Button } from '@chakra-ui/react';
 import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom';
 import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
+import {OneRowInBookListAdmin} from "./OneRowInBookListAdmin";
+export interface Author {
+    key:string,
+}
 export interface Book {
     isbn :string,
     author:string,
@@ -10,14 +14,18 @@ export interface Book {
 
 export const AdminBookList = () => {
     const [books ,setBooks] = useState<Book[]>([]);
+    const refreshBooks = async () => {
+        const res = await fetch('http://localhost:3001/books');
+        const data = await res.json();
+        setBooks(data);
+    }
 
     useEffect(() => {
-        (async () => {
-            const res = await fetch('http://localhost:3001/books');
-            const data = await res.json();
-            setBooks(data)
-        })()
+        refreshBooks()
+
+
     },[])
+    console.log(books)
     return (<>
         <HomeNavAdmin/>
     <div className='pt-20'></div>
@@ -36,18 +44,7 @@ export const AdminBookList = () => {
                 </tr>
 
                 <tbody>
-                {books.map((book, i) => <tr className='h-16 font-normal text-[16px]'>
-                    <td className='p-3 border-[#dee2e6] border-[1px] '>{i+1}</td>
-                    <td className='p-3 border-[#dee2e6] border-[1px] '><img src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt=""/></td>
-                    <td className='p-3 border-[#dee2e6] border-[1px] '>{book.title}</td>
-                    <td className='p-3 border-[#dee2e6] border-[1px] '>History</td>
-                    <td className='p-3 border-[#dee2e6] border-[1px] '>{book.author}</td>
-                    <td className='p-3 border-[#dee2e6] border-[1px] '>About mercenary named Beso</td>
-                    <td className='p-3 border-[#dee2e6] border-[1px] '><div className='h-full w-full  flex flex-col gap-3 justify-center'><i
-                        className="fa-solid fa-pen-to-square"></i>
-                        <i className="fa-solid fa-trash"></i></div>
-                    </td>
-                </tr>)}
+                {books.map((book, i) => <OneRowInBookListAdmin key={i} book={book} i={i} refresh={refreshBooks}/>)}
                 </tbody>
             </table>
         </div>
