@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import {Link} from "react-router-dom";
 
 export const OneRowInBookListAdmin = ({book, i }:any,) => {
     console.log(i)
@@ -10,6 +11,13 @@ export const OneRowInBookListAdmin = ({book, i }:any,) => {
             setAuthor(data2)
         })()
     }, [])
+
+     const deleteBook = async () =>  {
+        await fetch(`http://localhost:3001/book/${book._id}`,{
+            method:'DELETE'
+        })
+    }
+
     return (<>
         <tr className='h-16 font-normal text-[16px]'>
             <td className='p-3 border-[#dee2e6] border-[1px] '>{i+1}</td>
@@ -18,9 +26,9 @@ export const OneRowInBookListAdmin = ({book, i }:any,) => {
             <td className='p-3 border-[#dee2e6] border-[1px] '>History</td>
             <td className='p-3 border-[#dee2e6] border-[1px] '>{author.personal_name}</td>
             <td className='p-3 border-[#dee2e6] border-[1px] '>About mercenary named Beso</td>
-            <td className='p-3 border-[#dee2e6] border-[1px] '><div className='h-full w-full  flex flex-col gap-3 justify-center'><i
-                className="fa-solid fa-pen-to-square"></i>
-                <i className="fa-solid fa-trash"></i></div>
+            <td className='p-3 border-[#dee2e6] border-[1px] '><div className='h-full w-full  flex flex-col gap-3 justify-center'><button><Link to={`/modify/book/${book._id}`}><i
+                className="fa-solid fa-pen-to-square"></i></Link></button>
+                <button onClick={deleteBook}><i className="fa-solid fa-trash"></i></button></div>
             </td>
         </tr></>)
 }
