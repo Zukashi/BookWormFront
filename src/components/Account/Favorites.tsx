@@ -5,7 +5,6 @@ import {RootState} from "../../app/store";
 import {Link} from "react-router-dom";
 import {Button} from "@chakra-ui/react";
 import { HomeAdminNav } from '../Home/AdminHome/HomeAdminNav';
-
 export const Favorites = () => {
     const user = useSelector((state: RootState) => state.user);
     const [favorites, setFavorites] = useState<null | Object[]>(null);
@@ -47,7 +46,6 @@ export const Favorites = () => {
     ml-16'>It Ends With Us</p>
                 <p className='text-[16px] mt-2 ml-16'>COLLEN HOOVER </p>
                 <i className="fa-solid fa-cart-shopping fa-xl cursor-pointer ml-16 "></i>
-
 
         </div>
         </div>)}
