@@ -5,10 +5,14 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {DrawerComponent} from "./DrawerMobile";
 
-export const OneBook = ({favorites}:any) => {
+export const OneBook = ({book}:any) => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
+  const [favorites ,setFavorites] = useState<any>([])
   const user = useSelector((state: RootState) => state.user);
+  const [author ,setAuthor] = useState({
+    personal_name:'',
+  })
   const mouseEntered = () => {
     if (refImg.current === null || refImg.current === undefined){
       return null;
@@ -17,12 +21,21 @@ export const OneBook = ({favorites}:any) => {
     }
   }
   useEffect(() => {
-    favorites.forEach((favorite:any) => {
-      if (favorite.isbn_10.includes('1471156265')){
+    ( async () => {
+      const res = await fetch(`http://localhost:3001/user/${user._id}`);
+      const data = await res.json();
+      setFavorites(data);
+      const res2 = await fetch(`http://localhost:3001/author${book.authors[0].key}`);
+      const data2 = await res2.json();
+      setAuthor(data2);
+      if (favorites.favorites.includes(book.isbn)){
         setFavorite(true)
       }
-    })
-  },[])
+    })();
+
+
+  },[]);
+
   // useEffect(() => {
   //   (async() => {
   //     const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`);
@@ -32,6 +45,7 @@ export const OneBook = ({favorites}:any) => {
   //     }
   //   })()
   // },[])
+
   const changeFavorite = () => {
       if(favorite === false){
         setFavorite(true);
@@ -42,19 +56,18 @@ export const OneBook = ({favorites}:any) => {
             headers:{
               'Content-type':'application/json'
             },
-            body:JSON.stringify({isbn:'1471156265'})
+            body:JSON.stringify({isbn:book.isbn})
           })
         })()
       }else{
         setFavorite(false);
         (async() => {
-
           await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
             method:"DELETE",
             headers:{
               'Content-type':'application/json'
             },
-            body:JSON.stringify({isbn:'1471156265'})
+            body:JSON.stringify({isbn:book.isbn})
           })
         })()
       }
@@ -67,14 +80,14 @@ export const OneBook = ({favorites}:any) => {
   }
   return (<>
     <div className='flex'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
-    <Link to='/works/OL27213498M' className='relative  w-[180px] '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black' h='31px' w='83px'>View Book</Button><img ref={refImg} src="https://covers.openlibrary.org/b/isbn/1471156265-L.jpg"   className="inline-block cursor-default w-40" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/>
+    <Link to='/works/OL27213498M' className='relative  w-[180px] '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black' h='31px' w='83px'>View Book</Button><img ref={refImg} src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-40" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/>
 
     </Link>
 
   </div>
     <div className='inline-block -ml-10 mt-20'><p className='text-[15px] font-bold w-40 leading-5
-    ml-16'>It Ends With Us</p>
-      <p className='text-[16px] mt-2 ml-16'>COLLEN HOOVER </p>
+    ml-16'>{book.title}</p>
+      <p className='text-[16px] mt-2 ml-16'>{author.personal_name} </p>
       <i className="fa-solid fa-cart-shopping fa-xl cursor-pointer ml-16 "></i>
 
 
