@@ -4,10 +4,10 @@ import {Button} from "@chakra-ui/react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {DrawerComponent} from "./DrawerMobile";
+import {Favorites} from "../Favorites";
 
 export const OneBook = ({book}:any) => {
   const refImg = useRef<HTMLImageElement>(null);
-  const [favorite ,setFavorite] = useState<boolean>(false);
   const [favorites ,setFavorites] = useState<any>([])
   const user = useSelector((state: RootState) => state.user);
   const [author ,setAuthor] = useState({
@@ -28,50 +28,13 @@ export const OneBook = ({book}:any) => {
       const res2 = await fetch(`http://localhost:3001/author${book.authors[0].key}`);
       const data2 = await res2.json();
       setAuthor(data2);
-      if (favorites.favorites.includes(book.isbn)){
-        setFavorite(true)
-      }
     })();
 
 
   },[]);
 
-  // useEffect(() => {
-  //   (async() => {
-  //     const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`);
-  //     const data = await res.json();
-  //     if (data.includes('1471156265')){
-  //       setFavorite(true)
-  //     }
-  //   })()
-  // },[])
 
-  const changeFavorite = () => {
-      if(favorite === false){
-        setFavorite(true);
-        (async() => {
 
-          await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
-            method:"PUT",
-            headers:{
-              'Content-type':'application/json'
-            },
-            body:JSON.stringify({isbn:book.isbn})
-          })
-        })()
-      }else{
-        setFavorite(false);
-        (async() => {
-          await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
-            method:"DELETE",
-            headers:{
-              'Content-type':'application/json'
-            },
-            body:JSON.stringify({isbn:book.isbn})
-          })
-        })()
-      }
-  }
   const mouseLeft = () => {
     if (refImg.current === null || refImg.current === undefined){
       return null;
@@ -90,9 +53,8 @@ export const OneBook = ({book}:any) => {
       <p className='text-[16px] mt-2 ml-16'>{author.personal_name} </p>
       <i className="fa-solid fa-cart-shopping fa-xl cursor-pointer ml-16 "></i>
 
-
-     {!favorite ?  <button onClick={changeFavorite} className='mt-6'><i className="fa-regular fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button> :
-         <button onClick={changeFavorite} className='mt-6'> <i className="fa-solid fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button>} </div>
+<Favorites book={book} favorites={favorites}></Favorites>
+     </div>
   </div>
     </>)
 }
