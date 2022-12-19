@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 import {Link} from "react-router-dom";
 
 export const OneRowInBookListAdmin = ({book, i, refresh }:any,) => {
-    console.log(i)
     const [author, setAuthor] = useState<any>([]);
     useEffect(() => {
         ( async () => {
@@ -18,7 +17,6 @@ export const OneRowInBookListAdmin = ({book, i, refresh }:any,) => {
         })
          refresh();
     }
-
     return (<>
         <tr className='h-16 font-normal text-[16px]'>
             <td className='p-3 border-[#dee2e6] border-[1px] '>{i+1}</td>
