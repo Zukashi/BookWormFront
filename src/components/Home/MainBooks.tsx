@@ -6,17 +6,18 @@ import {OneBook} from "./OneBook";
 
 export const MainBooks = () => {
   const user = useSelector((rootState:any) => rootState.user)
-  const [favorites, setFavorites] = useState([])
+  const [books, setBooks] = useState([])
   useEffect(() => {
     (async() => {
-      const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`)
+      const res = await fetch(`http://localhost:3001/books`)
       const data = await res.json();
-      setFavorites(data)
+      setBooks(data)
     })()
   },[])
-  if(favorites === null) {
+  if(books === null) {
     return <h1>XD</h1>
   };
+  console.log(books)
   return (<>
     <main className='w-[90vw]  m-auto pt-20' >
     <div className='w-full border-black border-b-2 pb-3 relative'>
@@ -26,7 +27,7 @@ export const MainBooks = () => {
       </div>
     </div>
     <div className='flex-col gap-0 justify-between items-center'>
-      {favorites.map((favorite:any, i:number) => <OneBook key={i} favorites={favorites}/>)}
+      {books.map((book:any, i:number) => <OneBook key={i}  book={book}/>)}
     </div>
 
     </main>
