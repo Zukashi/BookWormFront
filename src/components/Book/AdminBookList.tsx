@@ -14,12 +14,14 @@ export interface Book {
 
 export const AdminBookList = () => {
     const [books ,setBooks] = useState<Book[]>([]);
+    const refreshBooks = async () => {
+        const res = await fetch('http://localhost:3001/books');
+        const data = await res.json();
+        setBooks(data);
+    }
+
     useEffect(() => {
-        (async () => {
-            const res = await fetch('http://localhost:3001/books');
-            const data = await res.json();
-            setBooks(data);
-        })()
+        refreshBooks()
 
 
     },[])
@@ -42,7 +44,7 @@ export const AdminBookList = () => {
                 </tr>
 
                 <tbody>
-                {books.map((book, i) => <OneRowInBookListAdmin key={i} book={book} i={i}/>)}
+                {books.map((book, i) => <OneRowInBookListAdmin key={i} book={book} i={i} refresh={refreshBooks}/>)}
                 </tbody>
             </table>
         </div>

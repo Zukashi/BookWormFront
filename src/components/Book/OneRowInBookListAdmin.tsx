@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Link} from "react-router-dom";
 
-export const OneRowInBookListAdmin = ({book, i }:any,) => {
+export const OneRowInBookListAdmin = ({book, i, refresh }:any,) => {
     console.log(i)
     const [author, setAuthor] = useState<any>([]);
     useEffect(() => {
@@ -16,6 +16,7 @@ export const OneRowInBookListAdmin = ({book, i }:any,) => {
         await fetch(`http://localhost:3001/book/${book._id}`,{
             method:'DELETE'
         })
+         refresh();
     }
 
     return (<>
