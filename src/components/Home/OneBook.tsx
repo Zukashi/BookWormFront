@@ -4,8 +4,11 @@ import {Button} from "@chakra-ui/react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {DrawerComponent} from "./DrawerMobile";
-
-export const OneBook = ({book}:any) => {
+import {Book} from "../Book/AdminBookList";
+interface Props {
+  book: Book
+}
+export const OneBook = ({book}:Props) => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
   const [favorites ,setFavorites] = useState([]);
@@ -13,7 +16,7 @@ export const OneBook = ({book}:any) => {
   const user = useSelector((state: RootState) => state.user);
   const [author ,setAuthor] = useState({
     personal_name:'',
-  })
+  });
   const mouseEntered = () => {
     if (refImg.current === null || refImg.current === undefined){
       return null;
@@ -32,9 +35,8 @@ export const OneBook = ({book}:any) => {
       const res3 = await fetch(`http://localhost:3001/books`);
       const data3= await res3.json();
       setBooks(data3);
-      console.log(data)
       data.forEach((favorite:any,i:number) => {
-        if (favorite.isbn_10?.includes(book.isbn) || favorite.isbn?.includes(book.isbn) || favorite.isbn_13?.includes(book.isbn)){
+        if (favorite.isbn?.includes(book.isbn)){
           setFavorite(true)
         }
       })
@@ -52,7 +54,7 @@ export const OneBook = ({book}:any) => {
             headers:{
               'Content-type':'application/json'
             },
-            body:JSON.stringify({isbn:book.isbn})
+            body:JSON.stringify(book)
           })
         })()
       }else{
@@ -63,7 +65,7 @@ export const OneBook = ({book}:any) => {
             headers:{
               'Content-type':'application/json'
             },
-            body:JSON.stringify({isbn:book.isbn})
+            body:JSON.stringify(book)
           })
         })()
       }
