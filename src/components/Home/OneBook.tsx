@@ -8,7 +8,8 @@ import {DrawerComponent} from "./DrawerMobile";
 export const OneBook = ({book}:any) => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
-  const [favorites ,setFavorites] = useState<any>([])
+  const [favorites ,setFavorites] = useState([]);
+  const [books, setBooks] = useState()
   const user = useSelector((state: RootState) => state.user);
   const [author ,setAuthor] = useState({
     personal_name:'',
@@ -22,29 +23,24 @@ export const OneBook = ({book}:any) => {
   }
   useEffect(() => {
     ( async () => {
-      const res = await fetch(`http://localhost:3001/user/${user._id}`);
+      const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`);
       const data = await res.json();
       setFavorites(data);
       const res2 = await fetch(`http://localhost:3001/author${book.authors[0].key}`);
       const data2 = await res2.json();
-      setAuthor(data2);
-      if (favorites.favorites.includes(book.isbn)){
-        setFavorite(true)
-      }
+      setAuthor(data2)
+      const res3 = await fetch(`http://localhost:3001/books`);
+      const data3= await res3.json();
+      setBooks(data3);
+      console.log(data)
+      data.forEach((favorite:any,i:number) => {
+        if (favorite.isbn_10?.includes(book.isbn) || favorite.isbn?.includes(book.isbn) || favorite.isbn_13?.includes(book.isbn)){
+          setFavorite(true)
+        }
+      })
     })();
 
-
   },[]);
-
-  // useEffect(() => {
-  //   (async() => {
-  //     const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`);
-  //     const data = await res.json();
-  //     if (data.includes('1471156265')){
-  //       setFavorite(true)
-  //     }
-  //   })()
-  // },[])
 
   const changeFavorite = () => {
       if(favorite === false){
