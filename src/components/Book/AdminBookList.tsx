@@ -10,6 +10,12 @@ export interface Book {
     isbn :string,
     author:string,
     title:string,
+    publish_date: string,
+    publishers?: string[],
+    authors:{key:string,_id:string}[],
+    subjects?:string[],
+    subject_people?:string[],
+    description:string,
 }
 
 export const AdminBookList = () => {
