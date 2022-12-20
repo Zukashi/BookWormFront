@@ -32,25 +32,15 @@ export const OneBook = ({book}:any) => {
       const res3 = await fetch(`http://localhost:3001/books`);
       const data3= await res3.json();
       setBooks(data3);
-      data.forEach((favorite:any) => {
-        console.log(favorite, 'favorite');
-        console.log(book.isbn, 'isbn')
-        if (favorite.isbn_10.includes(book.isbn) || favorite.isbn.includes(book.isbn) | favorite.isbn_13.includes(book.isbn)){
+      console.log(data)
+      data.forEach((favorite:any,i:number) => {
+        if (favorite.isbn_10?.includes(book.isbn) || favorite.isbn?.includes(book.isbn) || favorite.isbn_13?.includes(book.isbn)){
           setFavorite(true)
         }
       })
     })();
 
   },[]);
-  // useEffect(() => {
-  //   (async() => {
-  //     const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`);
-  //     const data = await res.json();
-  //     if (data.includes('1471156265')){
-  //       setFavorite(true)
-  //     }
-  //   })()
-  // },[])
 
   const changeFavorite = () => {
       if(favorite === false){
