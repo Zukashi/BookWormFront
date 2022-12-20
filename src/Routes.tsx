@@ -12,6 +12,7 @@ import {EditAccount} from "./components/Account/EditAccount";
 import { Favorites } from './components/Account/Favorites';
 import {BookListView} from "./Views/BookListView";
 import {AddBookAdmin} from "./components/Book/AddBookAdmin";
+import { ModifyBook } from './components/Book/ModifyBook';
 
 export const AllRoutes = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -26,7 +27,10 @@ export const AllRoutes = () => {
                 {user.password &&  <Route path='/user/:userId' element={<AccountView/>}></Route>}
                 {user.password && <Route path='/edit/user/:userId' element={<EditAccount/>}></Route>}
                 {user.password &&  <Route path='/favorites/user/:userId' element={<Favorites/>}></Route>}
-                {user.password &&  <Route path='/admin/books' element={<BookListView/>}></Route>}
+                {user.isAdmin &&  <Route path='/admin/books'>
+                    <Route index  element={<BookListView/>}></Route>
+                    <Route path='modify/:id'element={<ModifyBook/>}></Route>
+                </Route>}
                 {user.password && <Route path='/addBook' element={<AddBookAdmin/>}></Route>}
             </Routes>
 
