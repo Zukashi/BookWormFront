@@ -31,7 +31,7 @@ export const AdminBookList = () => {
     <div className='pt-20'></div>
         <div><Button><Link to='/addBook'>Add Book</Link></Button></div>
         <div className='overflow-x-auto max-w-[1000vw] w-[90vw] mx-auto '>
-            <table className='h-[84px]  '>
+            <table className='h-[84px] table-fixed  '>
 
                 <tr className='h-16'>
                     <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[#dee2e6]'><p className='flex items-end h-5/6'>No</p></th>

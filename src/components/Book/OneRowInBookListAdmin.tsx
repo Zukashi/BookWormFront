@@ -18,13 +18,13 @@ export const OneRowInBookListAdmin = ({book, i, refresh }:any,) => {
          refresh();
     }
     return (<>
-        <tr className='h-16 font-normal text-[16px]'>
+        <tr className='h-16 font-normal text-[16px] max-h-[h-20] overflow-y-scroll'>
             <td className='p-3 border-[#dee2e6] border-[1px] '>{i+1}</td>
             <td className='p-3 border-[#dee2e6] border-[1px] '><img src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt=""/></td>
             <td className='p-3 border-[#dee2e6] border-[1px] '>{book.title}</td>
             <td className='p-3 border-[#dee2e6] border-[1px] '>History</td>
             <td className='p-3 border-[#dee2e6] border-[1px] '>{author.personal_name}</td>
-            <td className='p-3 border-[#dee2e6] border-[1px] '>About mercenary named Beso</td>
+            <td className='p-3 border-[#dee2e6] border-[1px] '><p className='h-full overflow-y-auto'>{book.description ? book.description : 'Add book description'}</p></td>
             <td className='p-3 border-[#dee2e6] border-[1px] '><div className='h-full w-full  flex flex-col gap-3 justify-center'><button><Link to={`/modify/book/${book._id}`}><i
                 className="fa-solid fa-pen-to-square"></i></Link></button>
                 <button onClick={deleteBook}><i className="fa-solid fa-trash"></i></button></div>
