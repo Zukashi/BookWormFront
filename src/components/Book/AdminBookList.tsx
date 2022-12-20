@@ -7,6 +7,7 @@ export interface Author {
     key:string,
 }
 export interface Book {
+    _id:string,
     isbn :string,
     author:string,
     title:string,
@@ -31,7 +32,6 @@ export const AdminBookList = () => {
 
 
     },[])
-    console.log(books)
     return (<>
         <HomeNavAdmin/>
     <div className='pt-20'></div>
