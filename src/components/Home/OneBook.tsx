@@ -8,7 +8,8 @@ import {DrawerComponent} from "./DrawerMobile";
 export const OneBook = ({book}:any) => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
-  const [favorites ,setFavorites] = useState([])
+  const [favorites ,setFavorites] = useState([]);
+  const [books, setBooks] = useState()
   const user = useSelector((state: RootState) => state.user);
   const [author ,setAuthor] = useState({
     personal_name:'',
@@ -28,18 +29,19 @@ export const OneBook = ({book}:any) => {
       const res2 = await fetch(`http://localhost:3001/author${book.authors[0].key}`);
       const data2 = await res2.json();
       setAuthor(data2)
-    })();
-    console.log(favorites)
-      favorites.forEach((favorite:any) => {
+      const res3 = await fetch(`http://localhost:3001/books`);
+      const data3= await res3.json();
+      setBooks(data3);
+      data.forEach((favorite:any) => {
         console.log(favorite, 'favorite');
         console.log(book.isbn, 'isbn')
-        if (favorite.isbn_10.includes(book.isbn) || favorite.isbn.includes(book.isbn)){
+        if (favorite.isbn_10.includes(book.isbn) || favorite.isbn.includes(book.isbn) | favorite.isbn_13.includes(book.isbn)){
           setFavorite(true)
         }
       })
+    })();
 
   },[]);
-
   // useEffect(() => {
   //   (async() => {
   //     const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`);
