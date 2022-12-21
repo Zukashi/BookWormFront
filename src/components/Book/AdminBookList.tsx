@@ -29,7 +29,10 @@ export const AdminBookList = () => {
 
     }
     useEffect(() => {
-        if(!value) refreshBooks();
+        if(!value) {
+            refreshBooks();
+            return;
+        };
         (async () => {
             const res = await fetch(`http://localhost:3001/bookAdmin/search/${value}`,{
                 method:'POST',
@@ -48,7 +51,6 @@ export const AdminBookList = () => {
     useEffect(() => {
         refreshBooks()
     }, [])
-    const [searchedBooks, setSearchedBooks] = useState(books);
     return (<>
         <HomeNavAdmin/>
     <div className='pt-20'></div>
