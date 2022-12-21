@@ -1,12 +1,13 @@
-import {Button} from "@chakra-ui/react";
+import {Button, Spinner} from "@chakra-ui/react";
 import React, {useEffect, useRef, useState} from "react";
 import { useSelector } from "react-redux";
-import {Link} from "react-router-dom";
 import {OneBook} from "./OneBook";
+import {HomeAdminNav} from "./AdminHome/HomeAdminNav";
+import {HomeNav} from "./HomeNav";
 
 export const MainBooks = () => {
   const user = useSelector((rootState:any) => rootState.user)
-  const [books, setBooks] = useState([])
+  const [books, setBooks] = useState([]);
   useEffect(() => {
     (async() => {
       const res = await fetch(`http://localhost:3001/books`)
@@ -14,10 +15,6 @@ export const MainBooks = () => {
       setBooks(data)
     })()
   },[])
-  if(books === null) {
-    return <h1>XD</h1>
-  };
-  console.log(books)
   return (<>
     <main className='w-[90vw]  m-auto pt-20' >
     <div className='w-full border-black border-b-2 pb-3 relative'>
@@ -27,7 +24,7 @@ export const MainBooks = () => {
       </div>
     </div>
     <div className='flex-col gap-0 justify-between items-center'>
-      {books.map((book:any, i:number) => <OneBook key={i}  book={book}/>)}
+      {books.map((book:any, i:number) => <OneBook key={i}  book={book} refresh={() =>  null} />)}
     </div>
 
     </main>
