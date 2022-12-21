@@ -37,7 +37,7 @@ export const OneBook = ({book,refresh}:Props) => {
     })();
     const timer = setTimeout(() => {
       setLoading(false)
-    }, 1000)
+    }, 400)
     return () => clearInterval(timer)
   },[]);
 

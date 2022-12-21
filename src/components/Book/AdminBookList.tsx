@@ -21,21 +21,39 @@ export interface Book {
 
 export const AdminBookList = () => {
     const [books ,setBooks] = useState<Book[]>([]);
+    const [value, setValue] = useState('');
     const refreshBooks = async () => {
         const res = await fetch('http://localhost:3001/books');
         const data = await res.json();
         setBooks(data);
-    }
 
+    }
+    useEffect(() => {
+        if(!value) refreshBooks();
+        (async () => {
+            const res = await fetch(`http://localhost:3001/bookAdmin/search/${value}`,{
+                method:'POST',
+                headers:{
+                    'content-type':'application/json'
+                },
+                body:JSON.stringify({value})
+            });
+            const data = await res.json();
+            setBooks(data)
+
+        })()
+
+
+    },[value]);
     useEffect(() => {
         refreshBooks()
-
-
-    },[])
+    }, [])
+    const [searchedBooks, setSearchedBooks] = useState(books);
     return (<>
         <HomeNavAdmin/>
     <div className='pt-20'></div>
         <div><Button><Link to='/addBook'>Add Book</Link></Button></div>
+        <div className='flex gap-6 justify-center'><p>Search:</p><input className='outline-none ring-2 ring-teal-600 px-3 py-1.5' value={value} onChange={(e) => setValue(e.target.value)}/></div>
         <div className='overflow-x-auto max-w-[1000vw] w-[90vw] mx-auto '>
             <table className='h-[84px] table-fixed  '>
 
