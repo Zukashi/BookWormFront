@@ -5,6 +5,8 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {DrawerComponent} from "./DrawerMobile";
 import {Book} from "../Book/AdminBookList";
+import {HomeAdminNav} from "./AdminHome/HomeAdminNav";
+import {HomeNav} from "./HomeNav";
 interface Props {
   book: Book,
   refresh: () => void,
@@ -12,6 +14,7 @@ interface Props {
 export const OneBook = ({book,refresh}:Props) => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true)
   const user = useSelector((state: RootState) => state.user);
   const mouseEntered = () => {
     if (refImg.current === null || refImg.current === undefined){
@@ -32,7 +35,10 @@ export const OneBook = ({book,refresh}:Props) => {
         }
       });
     })();
-
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 1000)
+    return () => clearInterval(timer)
   },[]);
 
   const changeFavorite = () => {
@@ -72,7 +78,11 @@ export const OneBook = ({book,refresh}:Props) => {
     }
     refImg.current.classList.remove('opacity-50')
   }
-
+  while (loading){
+    return <>
+      <div className='pt-20'></div>
+      <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
+  }
   return (<>
     <div className='flex'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
     <Link to='/works/OL27213498M' className='relative  w-[180px] '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black' h='31px' w='83px'>View Book</Button><img ref={refImg} src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-40" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/>

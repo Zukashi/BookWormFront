@@ -8,27 +8,13 @@ import {HomeNav} from "./HomeNav";
 export const MainBooks = () => {
   const user = useSelector((rootState:any) => rootState.user)
   const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const changeLoading = () => {
-    setLoading(prev => !prev)
-    return null
-  }
   useEffect(() => {
     (async() => {
       const res = await fetch(`http://localhost:3001/books`)
       const data = await res.json();
       setBooks(data)
     })()
-    const timer = setTimeout(() => {
-      setLoading(false)
-    }, 200)
-    return () => clearInterval(timer)
   },[])
-  while (loading){
-    return <>  {user.isAdmin ?  <HomeAdminNav/> : <HomeNav/>}
-      <div className='pt-20'></div>
-      <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
-  }
   return (<>
     <main className='w-[90vw]  m-auto pt-20' >
     <div className='w-full border-black border-b-2 pb-3 relative'>
