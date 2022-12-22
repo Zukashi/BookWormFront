@@ -29,20 +29,23 @@ export const AdminUserList = () => {
     console.log(users)
     useEffect(() => {
 
-        refreshUsers();
+        if(!value) {
+            refreshUsers();
+            return;
+        };
 
-        // (async () => {
-        //     const res = await fetch(`http://localhost:3001/bookAdmin/search/${value}`,{
-        //         method:'POST',
-        //         headers:{
-        //             'content-type':'application/json'
-        //         },
-        //         body:JSON.stringify({value})
-        //     });
-        //     const data = await res.json();
-        //     setUsers(data)
-        //
-        // })()
+        (async () => {
+            const res = await fetch(`http://localhost:3001/user/search/${value}`,{
+                method:'POST',
+                headers:{
+                    'content-type':'application/json'
+                },
+                body:JSON.stringify({value})
+            });
+            const data = await res.json();
+            setUsers(data)
+
+        })()
 
 
     },[value]);

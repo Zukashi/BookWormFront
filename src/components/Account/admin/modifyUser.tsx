@@ -46,7 +46,7 @@ export const ModifyUser = () => {
             },
             body:JSON.stringify(form)
         });
-        navigate('/admin/books')
+        navigate('/admin/users')
     }
     return (<>
         <HomeAdminNav/>
