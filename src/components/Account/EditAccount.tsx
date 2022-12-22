@@ -1,25 +1,22 @@
-import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {
+  Avatar as AvatarChakra,
   Button,
-  Input, Menu,
-  MenuButton, MenuDivider,
-  MenuGroup, MenuItem,
-  MenuList,
+  Input,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs
 } from "@chakra-ui/react";
-import {userNameUpdate, userUpdate} from "../../features/User/userSlice";
-import {Link} from "react-router-dom";
 import {ChangePassword} from "./ChangePassword";
 import {EmailAndSMS} from "./EmailAndSMS";
 import { ManageContact } from './ManageContact';
 import {HomeNav} from "../Home/HomeNav";
+import Avatar from 'react-avatar-edit';
 export interface UserInterface {
   city:string,
   country:string,
@@ -33,7 +30,13 @@ export interface UserInterface {
 export const EditAccount = () => {
   const {userId} = useParams();
   const user = useSelector((state: RootState) => state.user);
-  const [userData ,setUserData] = useState<null | UserInterface >();
+  const [toggleAvatar, setToggleAvatar] = useState(false)
+  const [src, setSrc] = useState(undefined);
+  const [preview ,setPreview] = useState(null);
+  const onClose = () => {
+    setPreview(null)
+  }
+  const onCrop = (view:any) => setPreview(view)
   const [form, setForm] = useState({
     username :'',
     firstName:'',
@@ -41,17 +44,11 @@ export const EditAccount = () => {
     city:'',
     country:'',
     dateOfBirth:'',
-    id: '',
+    _id: '',
+    base64Avatar:''
   });
-  useEffect(() => {
-    (async() =>{
-        const res = await fetch(`http://localhost:3001/user/${userId}`)
-        const data = await res.json();
-        setUserData(data);
-        setForm(data);
-    })();
-  },[]);
-  console.log(typeof form.dateOfBirth)
+
+
   function getFormattedDate(date:Date) {
     let year = date.getFullYear();
     let month = (1 + date.getMonth()).toString().padStart(2, '0');
@@ -59,7 +56,24 @@ export const EditAccount = () => {
 
     return month + '/' + day + '/' + year;
   };
-  console.log(getFormattedDate(new Date(form.dateOfBirth)));
+  const saveAvatar = async () => {
+      await fetch(`http://localhost:3001/user/${user._id}/avatar`,{
+        method:'PUT',
+        headers:{
+          'content-type':'application/json',
+        },
+        body:JSON.stringify({preview})
+      })
+      setPreview(null);
+      setToggleAvatar(prev => !prev)
+  }
+  useEffect(() => {
+    (async() =>{
+      const res = await fetch(`http://localhost:3001/user/${userId}`)
+      const data = await res.json();
+      setForm(data);
+    })();
+  },[saveAvatar]);
   const onSend = (e:any) => {
     e.preventDefault();
 
@@ -73,7 +87,8 @@ export const EditAccount = () => {
         body:JSON.stringify(form)
       })
     })()
-  }
+  };
+
   const onChange = (value:string, fieldName:string) => {
     setForm(prev => ({
         ...prev,
@@ -93,10 +108,19 @@ export const EditAccount = () => {
         <TabPanels >
           <TabPanel p={0}>
             <h1 className='font-bold text-2xl border-b-[1px] pb-5  border-b-[#f1f1f1]'>Personal Information</h1>
-            <p>pic...</p>
+            <AvatarChakra size='xl' src={form.base64Avatar}/>
+            <button className='outline-none bg-amber-300 px-4 py-2 border-2 border-black' onClick={() => setToggleAvatar(prev => !prev)}>Change Avatar</button>
+
+            {toggleAvatar &&  <div className='flex w-full h-[200px]'>   <div className='relative w-[210px]'>
+              {toggleAvatar && <Avatar width={150} height={150} src={src} onClose={onClose} onCrop={onCrop} />}
+              {preview && <button className='font-bold bg-black text-white text-xl rounded-xl border-[2px] px-5 py-2.5 absolute bottom-0 -right-9 'onClick={saveAvatar}>
+                <i className="fa-solid fa-check"></i></button>}
+            </div>
+              {preview && <div className='w-full h-full flex justify-center items-center'><div className='ml-3 font-bold text-xl'>Preview:<img className='' src={preview} alt=""/></div></div>}</div>}
             <form onSubmit={onSend}>
             <div className='grid grid-cols-2'>  <div><div className='h-[70px] relative mt-5'><p className=" mb-3 inline-block mr-5">First Name:</p>
               <Input w='42vw' value={form.firstName}  onChange={ (e:any) => onChange(e.target.value, 'firstName') } pos='absolute' left='0' bottom='0' placeholder='John' name='firstName'></Input></div>
+
               <div className='h-[70px] relative mt-7'> <p className=" mb-3  inline-block mr-5">Last Name:</p>
                 <Input className='inline-block' value={form.lastName} w='42vw' pos='absolute' left='0' bottom='0'  placeholder='Smith' name="lastName" onChange={ (e:any) => onChange(e.target.value, 'lastName') } ></Input></div>
 
@@ -149,3 +173,6 @@ export const EditAccount = () => {
 
   </>)
 }
+
+
+///@TODO extract Avatar associated things to separate component for better readability
