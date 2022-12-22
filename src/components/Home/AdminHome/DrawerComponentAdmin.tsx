@@ -38,6 +38,10 @@ export const DrawerComponentAdmin = () => {
             {
                 name:'Books',
                 link:'/admin/books'
+            },
+            {
+                name:'Users',
+                link:'/admin/users'
             }
         ]
 
