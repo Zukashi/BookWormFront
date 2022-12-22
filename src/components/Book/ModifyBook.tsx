@@ -42,7 +42,7 @@ export const ModifyBook = () => {
     }
     const onSubmit:MouseEventHandler<HTMLButtonElement> = async (e) => {
         e.preventDefault();
-        await fetch('http://localhost:3001/book',{
+        await fetch(`http://localhost:3001/book/${book._id}`,{
             method:'PUT',
             headers:{
                 'Content-type':'application/json',
