@@ -11,17 +11,27 @@ import {
 import { Link } from 'react-router-dom';
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
+import {useEffect, useState} from "react";
+import {User} from "../Account/admin/AdminUserList";
 
 
 
 export  function DrawerComponent() {
     const user = useSelector((state: RootState) => state.user);
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [preview, setPreview] = useState('')
+    useEffect(() => {
+        ( async () => {
+            const res = await fetch(`http://localhost:3001/user/${user._id}`)
+            const data:User = await res.json();
+            setPreview(data.base64Avatar)
+        })()
+    }, [])
     const btnRef :any = React.useRef()
 
     return (
         <><div className='absolute top-0'>
-            <button ref={btnRef} onClick={onOpen} className='w-10 h-10 fixed z-20 mt-1'><Image  boxSize='30px' src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png"></Image></button>
+            <button ref={btnRef} onClick={onOpen} className='w-14 h-14 fixed z-20 mt-1 right-0.5 top-0.5'><img className='' src={preview} alt=""/></button>
             </div>
             <Drawer
                 isOpen={isOpen}

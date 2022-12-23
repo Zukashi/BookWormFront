@@ -15,6 +15,7 @@ export interface User {
     lastName:string,
     age:number,
     city: string,
+    base64Avatar:string,
 }
 
 export const AdminUserList = () => {
@@ -26,7 +27,7 @@ export const AdminUserList = () => {
         setUsers(data);
 
     };
-    console.log(users)
+
     useEffect(() => {
 
         if(!value) {

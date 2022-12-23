@@ -17,6 +17,9 @@ export interface Book {
     subjects?:string[],
     subject_people?:string[],
     description:string,
+    rating:number,
+    sumOfRates:number,
+    amountOfRates:number,
 }
 
 export const AdminBookList = () => {
@@ -43,7 +46,6 @@ export const AdminBookList = () => {
             });
             const data = await res.json();
             setBooks(data)
-
         })()
 
 
