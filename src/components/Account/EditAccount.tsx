@@ -116,7 +116,7 @@ export const EditAccount = () => {
               {preview && <button className='font-bold bg-black text-white text-xl rounded-xl border-[2px] px-5 py-2.5 absolute bottom-12 -right-2 'onClick={saveAvatar}>
                 <i className="fa-solid fa-check"></i></button>}
             </div>
-              {preview && <div className='w-full h-full flex justify-center items-start ml-20'><div className='ml-3 font-bold text-xl '>Preview:<img className='' src={preview} alt=""/></div></div>}</div>}
+              {preview && <div className='w-full h-full flex justify-center items-start ml-20 '><div className='ml-3 font-bold text-xl '>Preview:<img className='' src={preview} alt=""/></div></div>}</div>}
             <form onSubmit={onSend}>
             <div className='grid grid-cols-2'>  <div><div className='h-[70px] relative mt-5'><p className=" mb-3 inline-block mr-5">First Name:</p>
               <Input w='42vw' value={form.firstName}  onChange={ (e:any) => onChange(e.target.value, 'firstName') } pos='absolute' left='0' bottom='0' placeholder='John' name='firstName'></Input></div>
