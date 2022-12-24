@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {DrawerComponent} from "./DrawerMobile";
 import {Book} from "../Book/AdminBookList";
+import {Rating} from "@mui/material";
 
 interface Props {
   book: Book,
@@ -120,7 +121,7 @@ export const OneBook = ({book,refresh}:Props) => {
         {
           stars.map((_, index) => {
             return (<>
-                <i className={`fa-solid fa-star text-xl ${(hover || rating) > index ? `text-[${colors.orange}]` : `text-[${colors.grey}]`} `}  key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                <i className={`fa-solid fa-star text-xl ${(hover || rating) > index && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
                 </>
             )
           })
