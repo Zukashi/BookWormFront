@@ -17,7 +17,7 @@ import {User} from "../Account/admin/AdminUserList";
 
 
 export  function DrawerComponent() {
-    const user = useSelector((state: RootState) => state.user);
+    const {user} = useSelector((state: RootState) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [preview, setPreview] = useState('')
     useEffect(() => {

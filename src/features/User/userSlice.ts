@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-
-export interface UserState {
+export interface User {
     _id:Object,
     email: string,
     password: string,
@@ -10,29 +9,32 @@ export interface UserState {
     isAdmin:boolean,
     favorites:[];
 }
+export interface UserState {
+    user:User
+
+}
 const initialState: UserState = {
-      _id:{},
-      email:'',
-      password:'',
-      username:'',
-      isAdmin:false,
-      favorites:[],
+      user:{
+          _id:{},
+          email:'',
+          password:'',
+          username:'',
+          isAdmin:false,
+          favorites:[],
+      }
 }
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    userUpdate: (state,action:PayloadAction<UserState>) => {
-      state._id = action.payload._id
-      state.email = action.payload.email
-      state.username = action.payload.username
-      state.password = action.payload.password
-      state.isAdmin = action.payload.isAdmin
-      state.favorites = action.payload.favorites
+    userUpdate: (state,action:PayloadAction<User>) => {
+
+        state.user = action.payload
+
     },
     userNameUpdate: (state,action:PayloadAction<string>) => {
-      state.username = action.payload
+      state.user.username = action.payload
 }
   },
 })

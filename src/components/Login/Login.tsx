@@ -36,7 +36,7 @@ export const Login = () => {
             setError('error 404')
         }else{
 
-            dispatch(userUpdate(data));
+            dispatch(userUpdate(data.user));
             navigate("/home")
         }
 

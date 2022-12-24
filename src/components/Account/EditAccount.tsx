@@ -29,7 +29,7 @@ export interface UserInterface {
 }
 export const EditAccount = () => {
   const {userId} = useParams();
-  const user = useSelector((state: RootState) => state.user);
+  const {user} = useSelector((state: RootState) => state.user);
   const [toggleAvatar, setToggleAvatar] = useState(false)
   const [src, setSrc] = useState(undefined);
   const [preview ,setPreview] = useState(null);

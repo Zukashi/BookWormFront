@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 
 export const ManageContact = () => {
-  const user = useSelector((state: RootState) => state.user);
+  const {user} = useSelector((state: RootState) => state.user);
   return (<>
 
     <h1 className='font-bold text-2xl border-b-[1px] pb-5  border-b-[#f1f1f1]'>Manage Contact</h1>

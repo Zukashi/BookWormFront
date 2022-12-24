@@ -7,7 +7,7 @@ import {HomeAdminNav} from "../components/Home/AdminHome/HomeAdminNav";
 import {MainBooks} from "../components/Home/MainBooks";
 
 export const HomeView = () => {
-    const user = useSelector((state: RootState) => state.user);
+    const {user} = useSelector((state: RootState) => state.user);
 
     return (<>
         {

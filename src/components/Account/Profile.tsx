@@ -4,7 +4,7 @@ import {RootState} from "../../app/store";
 
 
 export const Profile = () => {
-  const user = useSelector((state:RootState) => state.user)
+  const {user} = useSelector((state:RootState) => state.user)
   return (<>
 
     <section className='bg-gradient-to-r from-sky-800 to-indigo-900 w-screen h-screen bg-[#fbfcff]  '>

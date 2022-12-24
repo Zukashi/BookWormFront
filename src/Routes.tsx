@@ -17,7 +17,7 @@ import { ModifyUser } from './components/Account/admin/modifyUser';
 import {UserListView} from "./Views/UserListView";
 
 export const AllRoutes = () => {
-  const user = useSelector((state: RootState) => state.user);
+  const {user} = useSelector((state: RootState) => state.user);
     return (<>
 
             <Routes>

@@ -15,7 +15,7 @@ export const OneBook = ({book,refresh}:Props) => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true)
-  const user = useSelector((state: RootState) => state.user);
+  const {user} = useSelector((state: RootState) => state.user);
   const [rating,setRating] = useState<number>(0);
   const [hover, setHover] = React.useState(0);
   const stars = Array(5).fill(0);
@@ -121,7 +121,7 @@ export const OneBook = ({book,refresh}:Props) => {
         {
           stars.map((_, index) => {
             return (<>
-                <i className={`fa-solid fa-star text-xl ${(hover || rating) > index && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) > index && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
                 </>
             )
           })
