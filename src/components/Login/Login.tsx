@@ -2,9 +2,14 @@ import React, {useState} from 'react';
 import {Button, Input, InputGroup, InputRightElement, Link as ChakraLink} from "@chakra-ui/react";
 import {Link, useNavigate} from 'react-router-dom';
 import { useDispatch } from 'react-redux'
-import { userUpdate} from '../../features/User/userSlice'
+import {User, userUpdate} from '../../features/User/userSlice'
 import {DrawerComponent} from "../Home/DrawerMobile";
 
+export interface Login {
+    user:User,
+    accessToken:string,
+    error:any,
+}
 export const Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
@@ -31,12 +36,15 @@ export const Login = () => {
             },
             body:JSON.stringify(form),
         });
-        const data = await res.json();
-        if (data.error){
+        const data:Login = await res.json();
+        if (error){
             setError('error 404')
         }else{
 
-            dispatch(userUpdate(data.user));
+            dispatch(userUpdate({
+                user:data.user,
+                token:data.accessToken
+            }));
             navigate("/home")
         }
 

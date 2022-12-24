@@ -9,8 +9,11 @@ export interface User {
     isAdmin:boolean,
     favorites:[];
 }
+
+
 export interface UserState {
     user:User
+    token:string,
 
 }
 const initialState: UserState = {
@@ -21,16 +24,17 @@ const initialState: UserState = {
           username:'',
           isAdmin:false,
           favorites:[],
-      }
+      },
+      token:'',
 }
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    userUpdate: (state,action:PayloadAction<User>) => {
-
-        state.user = action.payload
+    userUpdate: (state,action:PayloadAction<UserState>) => {
+        state.user = action.payload.user;
+        state.token = action.payload.token
 
     },
     userNameUpdate: (state,action:PayloadAction<string>) => {
