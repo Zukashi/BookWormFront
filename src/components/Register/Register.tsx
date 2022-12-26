@@ -46,10 +46,10 @@ export const Register = () => {
             <div className='flex flex-col '>
                  <h2 className='text-white text-center mb-[2vh] text-3xl'>Register</h2>
                 <form onSubmit={handleSubmit(submit)}>
-                    <label ><span className="block text-lg font-medium text-slate-700">Username:</span><Input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className='focus:outline-none focus:ring focus:ring-blue-700  placeholder:italic placeholder:text-white flex ' focusBorderColor='none' {...register('username')}></Input></label>
-                    <label ><span className="block text-lg font-medium text-slate-700">Email:</span> <Input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className='   placeholder:italic placeholder:text-white ' focusBorderColor='none' {...register('email')} ></Input></label>
+                    <label ><span className="block text-lg font-medium text-slate-700">Username:</span><input className='focus:outline-none focus:ring-2 focus:ring-black  px-4 py-2 rounded-md bg-[#f0efeb]/[.3] flex ' {...register('username')}></input></label>
+                    <label ><span className="block text-lg font-medium text-slate-700">Email:</span> <input className=' focus:outline-none focus:ring-2 focus:ring-black  px-4 py-2 rounded-md bg-[#f0efeb]/[.3]' {...register('email')} ></input></label>
                     <InputGroup size='md'>
-                        <label ><span className='block text-lg font-medium text-slate-700'>Password</span> <input style={{ backgroundColor:'rgb(240, 239, 235)', outline: 'none'}}  className={`focus:outline-none focus:ring opacity-30 focus:ring-blue-700  focus:ring-[1px] focus:ring-opacity-100   placeholder:italic placeholder:text-white px-4 py-2 rounded-md focus:border-none focus:border-none outline-0 focus:outline-0 border-0 focus:border-0 ${errors.password?.type === 'required' && `bg-amber-600`} `}  {...register('password')}  type={show ? 'text' : 'password'}></input>{errors.email && <p role="alert">{errors.email?.message}</p>}</label> <InputRightElement width='4.5rem'>
+                        <label ><span className='block text-lg font-medium text-slate-700'>Password</span> <input   className={`focus:outline-none    focus:ring-2 focus:ring-black  px-4 py-2 rounded-md bg-[#f0efeb]/[.3] ${errors.password?.type === 'required' && `bg-amber-600`} `}  {...register('password')}  type={show ? 'text' : 'password'}></input>{errors.email && <p role="alert">{errors.email?.message}</p>}</label> <InputRightElement width='4.5rem'>
                         <Button h='1.75rem' size='sm' onClick={handleClick} className='mt-[57px]'>
                             {show ? 'Hide' : 'Show'}
                         </Button>
