@@ -1,6 +1,12 @@
 import React, {FormEvent, useState} from 'react';
 import {Button, Input, InputGroup, InputRightElement} from "@chakra-ui/react";
+import * as yup from 'yup';
 
+let schema = yup.object().shape({
+    username: yup.string().required(),
+    email: yup.string().required().email('must be a valid email'),
+    password: yup.string().required(),
+});
 export const Register = () => {
     const [show, setShow] = React.useState(false)
     const handleClick = () => setShow(!show)
@@ -8,19 +14,20 @@ export const Register = () => {
         username:'',
         email:'',
         password:'',
+
     });
 
     const submit =  async (e:FormEvent<HTMLButtonElement>) => {
-        console.log(123);
         e.preventDefault();
-        await fetch('http://localhost:3001/register',{
-            method:'POST',
-            headers:{
-                'Content-type':'application/json'
-            },
-            body:JSON.stringify(form)
-        });
-        console.log(123)
+        const res = await schema.isValid(form);
+        console.log(res);
+        // await fetch('http://localhost:3001/register',{
+        //     method:'POST',
+        //     headers:{
+        //         'Content-type':'application/json'
+        //     },
+        //     body:JSON.stringify(form)
+        // });
     }
 
     const updateForm = (value:string, fieldName: string) => {
