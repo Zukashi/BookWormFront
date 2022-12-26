@@ -30,6 +30,7 @@ export const Login = () => {
     const onSubmit =  async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         const res = await fetch('http://localhost:3001/login',{
+            credentials:'include',
             method:'POST',
             headers:{
                 'Content-type':'application/json'
@@ -37,6 +38,7 @@ export const Login = () => {
             body:JSON.stringify(form),
         });
         const data:Login = await res.json();
+        console.log(data)
         if (error){
             setError('error 404')
         }else{

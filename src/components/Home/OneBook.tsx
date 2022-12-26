@@ -3,9 +3,7 @@ import {Link} from "react-router-dom";
 import {Button, Spinner} from "@chakra-ui/react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
-import {DrawerComponent} from "./DrawerMobile";
 import {Book} from "../Book/AdminBookList";
-import {Rating} from "@mui/material";
 
 interface Props {
   book: Book,
@@ -19,7 +17,7 @@ export const OneBook = ({book,refresh}:Props) => {
   const [rating,setRating] = useState<number>(0);
   const [hover, setHover] = React.useState(0);
   const stars = Array(5).fill(0);
-
+  console.log(user, book)
   const handleClick = async (value:number) => {
       setRating(value)
   }

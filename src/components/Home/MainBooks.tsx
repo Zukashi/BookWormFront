@@ -6,11 +6,13 @@ import {HomeAdminNav} from "./AdminHome/HomeAdminNav";
 import {HomeNav} from "./HomeNav";
 
 export const MainBooks = () => {
-  const user = useSelector((rootState:any) => rootState.user)
+  const {user, token} = useSelector((rootState:any) => rootState.user)
   const [books, setBooks] = useState([]);
   useEffect(() => {
     (async() => {
-      const res = await fetch(`http://localhost:3001/books`)
+      const res = await fetch(`http://localhost:3001/books`, {
+        headers:{Authorization:`Bearer ${token}`}
+      })
       const data = await res.json();
       setBooks(data)
     })()
