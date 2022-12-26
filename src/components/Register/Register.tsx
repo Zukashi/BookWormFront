@@ -3,9 +3,9 @@ import {Button, Input, InputGroup, InputRightElement} from "@chakra-ui/react";
 import * as yup from 'yup';
 
 let schema = yup.object().shape({
-    username: yup.string().required(),
+    username: yup.string().required().max(18,'username cannot be longer than 18 characters').min(6,'username must be at least 6 characters long'),
     email: yup.string().required().email('must be a valid email'),
-    password: yup.string().required(),
+    password: yup.string().min(8, 'must be at least 8 characters long').required().max(24,`password can't be longer than 24 characters`)
 });
 export const Register = () => {
     const [show, setShow] = React.useState(false)
@@ -19,15 +19,15 @@ export const Register = () => {
 
     const submit =  async (e:FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        const res = await schema.isValid(form);
-        console.log(res);
-        // await fetch('http://localhost:3001/register',{
-        //     method:'POST',
-        //     headers:{
-        //         'Content-type':'application/json'
-        //     },
-        //     body:JSON.stringify(form)
-        // });
+        const isValid = await schema.isValid(form);
+        if (!isValid) return null;
+        await fetch('http://localhost:3001/register',{
+            method:'POST',
+            headers:{
+                'Content-type':'application/json'
+            },
+            body:JSON.stringify(form)
+        });
     }
 
     const updateForm = (value:string, fieldName: string) => {
