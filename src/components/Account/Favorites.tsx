@@ -5,7 +5,6 @@ import {RootState} from "../../app/store";
 import { HomeAdminNav } from '../Home/AdminHome/HomeAdminNav';
 import {OneBook} from "../Home/OneBook";
 import {Book} from "../Book/AdminBookList";
-import {Spinner} from "@chakra-ui/react";
 export const Favorites = () => {
     const {user} = useSelector((state: RootState) => state.user);
     const [favorites, setFavorites] = useState<null | Book[]>(null);

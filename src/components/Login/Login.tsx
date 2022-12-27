@@ -30,8 +30,8 @@ export const Login = () => {
     const onSubmit =  async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         const res = await fetch('http://localhost:3001/login',{
-            credentials:'include',
             method:'POST',
+            credentials: 'include',
             headers:{
                 'Content-type':'application/json'
             },

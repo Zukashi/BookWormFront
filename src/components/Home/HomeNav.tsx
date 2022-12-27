@@ -10,9 +10,7 @@ import { DrawerComponent } from './DrawerMobile';
 
 
 export const HomeNav = () => {
-  const dispatch = useDispatch();
-  const [burger, setBurger] = useState(false)
-  const {category} = useSelector((state: RootState) => state.category);
+
   const { height, width } = useWindowDimensions();
   const [offset, setOffset] = useState(0);
   const prevScroll = useRef(0);
@@ -38,7 +36,6 @@ export const HomeNav = () => {
  //  const onChangeCategory = (value:string) => {
  //    dispatch(categoryUpdate(value))
  //  }
-
   return (<>{prevScroll.current >= offset &&
     <nav className='w-screen  flex justify-center pt-2  h-16 fixed z-40  border-b-[rgb(221,221,221)] border-b-[1px] bg-white'>
         <Link to='/home'><Image className='fixed top-2 left-5 z-30' boxSize='50px' src="https://cdn-icons-png.flaticon.com/512/2490/2490314.png"></Image></Link>
@@ -53,7 +50,7 @@ export const HomeNav = () => {
       {/*</div>*/}
       <div className='absolute right-10' >
         { width > 900 ?
-          <Button onClick={() => setBurger((value:boolean)=> !value)}>
+          <Button >
         Profile
           </Button>:
 
