@@ -2,12 +2,12 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface User {
-    _id:Object,
-    email: string,
-    password: string,
-    username:string,
-    isAdmin:boolean,
-    favorites:[];
+    _id:Object | string,
+    email?: string,
+    password?: string,
+    username?:string,
+    isAdmin?:boolean,
+    favorites?:[];
 }
 
 
