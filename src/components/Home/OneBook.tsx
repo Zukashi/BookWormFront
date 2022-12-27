@@ -42,7 +42,9 @@ export const OneBook = ({book,refresh}:Props) => {
       const res2 = await fetch(`http://localhost:3001/book/${book._id}`);
       const data2 = await res2.json();
       setRating(data2.rating)
-      const res3 = await fetch(`http://localhost:3001/books`);
+      const res3 = await fetch(`http://localhost:3001/books`, {
+        credentials:'include'
+      });
       const data3 = await res3.json();
       data.forEach((favorite:any) => {
         if (favorite.isbn?.includes(book.isbn)){
