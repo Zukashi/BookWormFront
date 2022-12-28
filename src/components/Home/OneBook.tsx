@@ -20,6 +20,10 @@ export const OneBook = ({book,refresh}:Props) => {
   console.log(user, book)
   const handleClick = async (value:number) => {
       setRating(value)
+    await fetch(`http://localhost:3001/book/${book._id}/${value}`,{
+      method:'PUT',
+      credentials:'include'
+    })
   }
 
   const handleMouseOver = (value:number) => {
@@ -37,9 +41,13 @@ export const OneBook = ({book,refresh}:Props) => {
   };
   useEffect(() => {
     ( async () => {
-      const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`);
+      const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`,{
+        credentials:'include'
+      });
       const data = await res.json();
-      const res2 = await fetch(`http://localhost:3001/book/${book._id}`);
+      const res2 = await fetch(`http://localhost:3001/book/${book._id}`,{
+        credentials:'include'
+      });
       const data2 = await res2.json();
       setRating(data2.rating)
       const res3 = await fetch(`http://localhost:3001/books`, {
@@ -121,7 +129,7 @@ export const OneBook = ({book,refresh}:Props) => {
         {
           stars.map((_, index) => {
             return (<>
-                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) > index && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) > index && `text-[#faaf00]`} ` } key={_} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
                 </>
             )
           })
