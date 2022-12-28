@@ -40,6 +40,7 @@ export const AdminUserList = () => {
         (async () => {
             const res = await fetch(`http://localhost:3001/user/search/${value}`,{
                 method:'POST',
+                credentials:'include',
                 headers:{
                     'content-type':'application/json'
                 },

@@ -59,6 +59,7 @@ export const EditAccount = () => {
   const saveAvatar = async () => {
       await fetch(`http://localhost:3001/user/${user._id}/avatar`,{
         method:'PUT',
+        credentials:'include',
         headers:{
           'content-type':'application/json',
         },
@@ -69,7 +70,9 @@ export const EditAccount = () => {
   }
   useEffect(() => {
     (async() =>{
-      const res = await fetch(`http://localhost:3001/user/${userId}`)
+      const res = await fetch(`http://localhost:3001/user/${userId}`, {
+        credentials:'include',
+      })
       const data = await res.json();
       setForm(data);
     })();
@@ -81,6 +84,7 @@ export const EditAccount = () => {
 
       await fetch(`http://localhost:3001/user/${userId}`,{
         method:"PUT",
+        credentials:'include',
         headers:{
           'Content-type':'application/json'
         },

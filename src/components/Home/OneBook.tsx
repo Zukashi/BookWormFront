@@ -17,7 +17,6 @@ export const OneBook = ({book,refresh}:Props) => {
   const [rating,setRating] = useState<number>(0);
   const [hover, setHover] = React.useState(0);
   const stars = Array(5).fill(0);
-  console.log(user, book)
   const handleClick = async (value:number) => {
       setRating(value)
     await fetch(`http://localhost:3001/book/${book._id}/${value}`,{
@@ -73,6 +72,7 @@ export const OneBook = ({book,refresh}:Props) => {
 
           await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
             method:"PUT",
+            credentials:'include',
             headers:{
               'Content-type':'application/json'
             },
@@ -86,6 +86,7 @@ export const OneBook = ({book,refresh}:Props) => {
         (async() => {
           await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
             method:"DELETE",
+            credentials:'include',
             headers:{
               'Content-type':'application/json'
             },

@@ -27,6 +27,7 @@ export const Register = () => {
         if (!isValid) return null;
         await fetch('http://localhost:3001/register',{
             method:'POST',
+            credentials:'include',
             headers:{
                 'Content-type':'application/json'
             },

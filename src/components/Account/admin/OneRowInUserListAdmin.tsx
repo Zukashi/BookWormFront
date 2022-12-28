@@ -5,7 +5,8 @@ export const OneRowInUserListAdmin = ({user, i, refresh }:any,) => {
 
     const deleteUser = async () =>  {
         await fetch(`http://localhost:3001/user/${user._id}`,{
-            method:'DELETE'
+            method:'DELETE',
+            credentials:'include',
         })
         refresh();
     }

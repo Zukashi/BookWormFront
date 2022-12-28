@@ -18,6 +18,7 @@ export const AddBookAdmin = () => {
         e.preventDefault();
         await fetch('http://localhost:3001/addBook',{
             method:'POST',
+            credentials:'include',
             headers:{
                 'Content-type':'application/json'
             },

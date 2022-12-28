@@ -10,7 +10,9 @@ export const Favorites = () => {
     const [favorites, setFavorites] = useState<null | Book[]>(null);
     const refImg = useRef<HTMLImageElement>(null);
     const refresh = async () => {
-            const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`)
+            const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`, {
+                credentials:'include',
+            })
             const data = await res.json();
             setFavorites(data)
     }
