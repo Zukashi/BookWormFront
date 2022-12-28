@@ -17,9 +17,12 @@ export const OneBook = ({book,refresh}:Props) => {
   const [rating,setRating] = useState<number>(0);
   const [hover, setHover] = React.useState(0);
   const stars = Array(5).fill(0);
-  console.log(user, book)
   const handleClick = async (value:number) => {
       setRating(value)
+    await fetch(`http://localhost:3001/book/${book._id}/${value}`,{
+      method:'PUT',
+      credentials:'include'
+    })
   }
 
   const handleMouseOver = (value:number) => {
@@ -37,9 +40,13 @@ export const OneBook = ({book,refresh}:Props) => {
   };
   useEffect(() => {
     ( async () => {
-      const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`);
+      const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`,{
+        credentials:'include'
+      });
       const data = await res.json();
-      const res2 = await fetch(`http://localhost:3001/book/${book._id}`);
+      const res2 = await fetch(`http://localhost:3001/book/${book._id}`,{
+        credentials:'include'
+      });
       const data2 = await res2.json();
       setRating(data2.rating)
       const res3 = await fetch(`http://localhost:3001/books`, {
@@ -65,6 +72,7 @@ export const OneBook = ({book,refresh}:Props) => {
 
           await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
             method:"PUT",
+            credentials:'include',
             headers:{
               'Content-type':'application/json'
             },
@@ -78,6 +86,7 @@ export const OneBook = ({book,refresh}:Props) => {
         (async() => {
           await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
             method:"DELETE",
+            credentials:'include',
             headers:{
               'Content-type':'application/json'
             },
@@ -120,9 +129,9 @@ export const OneBook = ({book,refresh}:Props) => {
       <div className='w-32 h-7 absolute right-[11%] bottom-[10%] '>
         {
           stars.map((_, index) => {
-            return (<>
-                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) > index && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
-                </>
+            return (
+                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) > index && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+
             )
           })
         }

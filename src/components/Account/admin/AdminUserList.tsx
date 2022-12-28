@@ -22,7 +22,9 @@ export const AdminUserList = () => {
     const [users ,setUsers] = useState<User[]>([]);
     const [value, setValue] = useState('');
     const refreshUsers = async () => {
-        const res = await fetch('http://localhost:3001/user/users');
+        const res = await fetch('http://localhost:3001/user/users',{
+            credentials:'include'
+        });
         const data = await res.json();
         setUsers(data);
 
@@ -38,6 +40,7 @@ export const AdminUserList = () => {
         (async () => {
             const res = await fetch(`http://localhost:3001/user/search/${value}`,{
                 method:'POST',
+                credentials:'include',
                 headers:{
                     'content-type':'application/json'
                 },
@@ -61,7 +64,7 @@ export const AdminUserList = () => {
         <div className='overflow-x-auto max-w-[1000vw] w-[90vw] mx-auto '>
             <table className='h-[84px] table-fixed  '>
 
-                <tr className='h-16'>
+                <thead><tr className='h-16'>
                     <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[#dee2e6]'><p className='flex items-end h-5/6'>No</p></th>
                     <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>User Image</p></th>
                     <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>Username</p></th>
@@ -70,7 +73,7 @@ export const AdminUserList = () => {
                     <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>City</p></th>
                     <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>Age</p></th>
                     <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='flex items-end h-5/6'>Actions</p></th>
-                </tr>
+                </tr></thead>
 
                 <tbody>
                 {users.map((user, i) => <OneRowInUserListAdmin key={i} user={user} i={i} refresh={refreshUsers}/>)}

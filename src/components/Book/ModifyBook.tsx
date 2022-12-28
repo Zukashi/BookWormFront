@@ -28,7 +28,9 @@ export const ModifyBook = () => {
     }
     useEffect(() => {
         (async() => {
-           const res = await fetch(`http://localhost:3001/book/${id}`)
+           const res = await fetch(`http://localhost:3001/book/${id}`, {
+               credentials:'include'
+           })
            const data = await res.json();
            setBook(data);
            setForm(data)
@@ -44,6 +46,7 @@ export const ModifyBook = () => {
         e.preventDefault();
         await fetch(`http://localhost:3001/book/${book._id}`,{
             method:'PUT',
+            credentials:'include',
             headers:{
                 'Content-type':'application/json',
             },

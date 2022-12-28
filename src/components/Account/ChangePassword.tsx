@@ -16,6 +16,7 @@ export const ChangePassword = () => {
     (async() => {
       const res = await fetch('http://localhost:3001/user/password',{
         method:'PUT',
+        credentials:'include',
         headers:{
           'Content-type':'application/json'
         },

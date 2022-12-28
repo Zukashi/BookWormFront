@@ -16,8 +16,9 @@ export const AddBookAdmin = () => {
     }
     const onSubmit =  async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        await fetch('http://localhost:3001/addBook',{
+        await fetch('http://localhost:3001/book',{
             method:'POST',
+            credentials:'include',
             headers:{
                 'Content-type':'application/json'
             },
