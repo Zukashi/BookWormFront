@@ -22,7 +22,7 @@ export  function DrawerComponent() {
     const [preview, setPreview] = useState('');
     useEffect(() => {
         ( async () => {
-            const res = await fetch(`http://localhost:3001/user/${user?._id}`)
+            const res = await fetch(`http://localhost:3001/user/${user._id}`)
             const data:User = await res.json();
             setPreview(data.base64Avatar)
         })()

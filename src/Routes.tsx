@@ -16,6 +16,7 @@ import { ModifyBook } from './components/Book/ModifyBook';
 import { ModifyUser } from './components/Account/admin/modifyUser';
 import {UserListView} from "./Views/UserListView";
 import {userUpdate} from "./features/User/userSlice";
+import {Spinner} from "@chakra-ui/react";
 
 export const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -38,7 +39,14 @@ export const AllRoutes = () => {
                 token:data.token
             }))
         })()
-    },[])
+    },[]);
+    while(typeof user._id !== 'string'){
+
+            return <>
+                <div className='pt-20'></div>
+                <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
+
+    }
     return (<>
 
             <Routes>

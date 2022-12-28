@@ -22,7 +22,7 @@ export const MainBooks = () => {
         if(res2.status === 403){
           navigate('/')
         }
-        else if(res2.status === 201){
+        else if(res2.status !== 403){
           window.location.reload();
         }
       }else{
