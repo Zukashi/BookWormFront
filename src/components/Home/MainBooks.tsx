@@ -10,7 +10,7 @@ export const MainBooks = () => {
   const navigate = useNavigate();
   useEffect(() => {
     (async() => {
-      const res = await fetch(`http://localhost:3001/books`, {
+      const res = await fetch(`http://localhost:3001/books/${user._id}`, {
         credentials:'include'
       })
       if(res.status === 401){
@@ -25,7 +25,7 @@ export const MainBooks = () => {
         else if(res2.status !== 403){
           window.location.reload();
         }
-      }else{
+      }else if (res.status === 200){
         const data = await res.json();
         setBooks(data)
       }
