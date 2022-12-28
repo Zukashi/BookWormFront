@@ -32,10 +32,9 @@ export const AllRoutes = () => {
                 navigate('/')
             }
             const data = await res.json();
+            console.log(data)
             dispatch(userUpdate({
-                user:{
-                    _id:data.user
-                },
+                user:data.user[0],
                 token:data.token
             }))
         })()
