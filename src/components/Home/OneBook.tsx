@@ -128,9 +128,9 @@ export const OneBook = ({book,refresh}:Props) => {
       <div className='w-32 h-7 absolute right-[11%] bottom-[10%] '>
         {
           stars.map((_, index) => {
-            return (<>
-                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) > index && `text-[#faaf00]`} ` } key={_} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
-                </>
+            return (
+                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) > index && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+
             )
           })
         }
