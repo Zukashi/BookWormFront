@@ -25,7 +25,9 @@ export const ModifyUser = () => {
     }
     useEffect(() => {
         (async() => {
-            const res = await fetch(`http://localhost:3001/user/${id}`)
+            const res = await fetch(`http://localhost:3001/user/${id}`, {
+                credentials:'include',
+            })
             const data = await res.json();
             setUser(data);
             setForm(data)
@@ -41,6 +43,7 @@ export const ModifyUser = () => {
         e.preventDefault();
         await fetch(`http://localhost:3001/user/admin/${user._id}`,{
             method:'PUT',
+            credentials:'include',
             headers:{
                 'Content-type':'application/json',
             },
