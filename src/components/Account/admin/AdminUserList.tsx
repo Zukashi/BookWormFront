@@ -22,7 +22,9 @@ export const AdminUserList = () => {
     const [users ,setUsers] = useState<User[]>([]);
     const [value, setValue] = useState('');
     const refreshUsers = async () => {
-        const res = await fetch('http://localhost:3001/user/users');
+        const res = await fetch('http://localhost:3001/user/users',{
+            credentials:'include'
+        });
         const data = await res.json();
         setUsers(data);
 
