@@ -34,7 +34,7 @@ export const AllRoutes = () => {
             const data = await res.json();
             console.log(data)
             dispatch(userUpdate({
-                user:data.user[0],
+                user:data.user,
                 token:data.token
             }))
         })()
