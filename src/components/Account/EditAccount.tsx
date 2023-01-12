@@ -76,7 +76,7 @@ export const EditAccount = () => {
       const data = await res.json();
       setForm(data);
     })();
-  },[saveAvatar]);
+  },[]);
   const onSend = (e:any) => {
     e.preventDefault();
 
@@ -90,7 +90,9 @@ export const EditAccount = () => {
         },
         body:JSON.stringify(form)
       })
-    })()
+      window.location.reload();
+    })();
+
   };
 
   const onChange = (value:string, fieldName:string) => {
@@ -98,7 +100,7 @@ export const EditAccount = () => {
         ...prev,
         [fieldName]:value,
     }))
-  }
+  };
   return (<>
     <HomeNav/>
     <div className='w-[90vw] flex m-auto'>
@@ -111,6 +113,7 @@ export const EditAccount = () => {
         </TabList>
         <TabPanels >
           <TabPanel p={0}>
+
             <h1 className='font-bold text-2xl border-b-[1px] pb-5  border-b-[#f1f1f1]'>Personal Information</h1>
             <AvatarChakra size='xl' src={form.base64Avatar}/>
             <button className='outline-none bg-amber-300 px-4 py-2 border-2 border-black ml-20 mt-7 ' onClick={() => setToggleAvatar(prev => !prev)}>Change Avatar</button>
