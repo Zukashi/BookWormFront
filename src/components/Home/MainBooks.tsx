@@ -12,7 +12,7 @@ export const MainBooks = () => {
     (async() => {
       const res = await fetch(`http://localhost:3001/books/${user._id}`, {
         credentials:'include'
-      })
+      });
       if(res.status === 401){
         console.log(333)
          const res2 = await fetch(`http://localhost:3001/auth/refreshToken`, {
@@ -22,9 +22,7 @@ export const MainBooks = () => {
         if(res2.status === 403){
           navigate('/')
         }
-        else if(res2.status !== 403){
-          window.location.reload();
-        }
+
       }else if (res.status === 200){
         const data = await res.json();
         setBooks(data)

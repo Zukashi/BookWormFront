@@ -34,12 +34,12 @@ export const AllRoutes = () => {
             const data = await res.json();
             console.log(data)
             dispatch(userUpdate({
-                user:data.user[0],
+                user:data.user,
                 token:data.token
             }))
         })()
     },[]);
-    while(typeof user._id !== 'string'){
+    while(typeof user._id !== 'string' || user._id === ''){
 
             return <>
                 <div className='pt-20'></div>
