@@ -8,6 +8,7 @@ export interface User {
     username?:string,
     isAdmin?:boolean,
     favorites?:[];
+    role:string,
 }
 
 
@@ -24,6 +25,7 @@ const initialState: UserState = {
           username:'',
           isAdmin:false,
           favorites:[],
+          role:'',
       },
       token:'',
 }
