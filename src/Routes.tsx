@@ -39,7 +39,7 @@ export const AllRoutes = () => {
             }))
         })()
     },[]);
-    while(typeof user._id !== 'string' && user._id === ''){
+    while(typeof user._id !== 'string' || user._id === ''){
 
             return <>
                 <div className='pt-20'></div>
