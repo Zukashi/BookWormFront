@@ -10,7 +10,7 @@ export const MainBooks = () => {
   const navigate = useNavigate();
   useEffect(() => {
     (async() => {
-      const res = await fetch(`http://localhost:3001/books/${user._id}`, {
+      const res = await fetch(`http://localhost:3001/books`, {
         credentials:'include'
       });
       if(res.status === 401){
