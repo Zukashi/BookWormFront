@@ -87,10 +87,12 @@ export const OneBook = () => {
             })
           }
         </div>
-        <div className='ml-[1.7rem] pb-4 mx-auto w-[90%] mt-4 font-mono font-[400] tracking-tighter text-[16px] leading-[25px]'>
+        <div className='ml-[1.7rem] pb-4 mx-auto w-[90%] mt-4 font-mono font-[400] tracking-tighter text-[16px] leading-[25px] mr-[1.7rem]'>
           {!book.description ? <p>This edition doesn't have a description yet.</p>:
           <p className='break'>{book.description}</p>}
         </div>
+        <div className='ml-[1.7rem] w-full h-[1px] w-[90%] mx-auto bg-[#edbdf0]'></div>
+        <div className='ml-[1.7rem] mt-[1.5rem] pb-5'><p className='text-xl'>Author: <p className='inline-block font-bold'>{book.author}</p></p></div>
       </div>
     </section>
 
