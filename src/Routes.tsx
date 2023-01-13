@@ -54,7 +54,7 @@ export const AllRoutes = () => {
                 <Route path='/create-account' element={<Register/>}/>
                 <Route path='/home' element={<HomeView/>}/>
                 <Route path='/author/:authorId' element={<AuthorView/>}/>
-              <Route path='/works/:bookId' element={<BookView/>}/>
+              <Route path='/book/:bookId' element={<BookView/>}/>
               <Route path='/user/:userId' element={<AccountView/>}></Route>
                <Route path='/edit/user/:userId' element={<EditAccount/>}></Route>
             <Route path='/favorites/user/:userId' element={<Favorites/>}></Route>

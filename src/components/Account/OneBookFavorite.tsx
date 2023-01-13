@@ -126,7 +126,7 @@ export const OneBookFavorite = ({book,refresh}:Props) => {
     ml-16'>{book.title}</p>
                 <p className='text-[16px] mt-2 ml-16'>{book.author} </p>
                 <i className="fa-solid fa-cart-shopping fa-xl cursor-pointer ml-16 "></i>
-                <div className='w-32 h-7 absolute right-[80px] bottom-[10%] '>
+                <div className='w-32 h-7 absolute right-[3.5rem] bottom-[10%] '>
                     {
                         stars.map((_, index) => {
                             return (
