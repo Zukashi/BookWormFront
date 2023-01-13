@@ -71,10 +71,10 @@ export const OneBook = () => {
   }
 
   return (<>
-    <section className='w-screen bg-[#fbfcff]  h-[100vh] m-auto '>
+    <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
       <HomeNav/>
       <div className='pt-20'></div>
-      <div className='w-[90%]  bg-white shadow-2xl mx-auto  h-full'>
+      <div className='w-[90%] rounded-md  bg-white shadow-2xl mx-auto  h-full'>
        <div className='flex justify-center pt-4'> <img src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt=""/></div>
         <div className='mt-4 pl-[1.7rem] text-[1.5rem] font-medium'><p>{book.title}</p></div>
         <div className='flex justify-start mt-4 pl-[1.7rem]'>
@@ -87,9 +87,9 @@ export const OneBook = () => {
             })
           }
         </div>
-        <div className='pl-[1.7rem] mt-4 font-mono font-[400] tracking-tighter text-[16px] leading-[25px]'>
+        <div className='ml-[1.7rem] pb-4 mx-auto w-[90%] mt-4 font-mono font-[400] tracking-tighter text-[16px] leading-[25px]'>
           {!book.description ? <p>This edition doesn't have a description yet.</p>:
-          <p>{book.description}</p>}
+          <p className='break'>{book.description}</p>}
         </div>
       </div>
     </section>
