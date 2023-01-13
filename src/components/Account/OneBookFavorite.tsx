@@ -135,6 +135,7 @@ export const OneBookFavorite = ({book,refresh}:Props) => {
                             )
                         })
                     }
+                    <p className='inline-block text-[1.2rem] font-medium'>{book.rating.toFixed(2)}</p>
                 </div>
 
                 {!favorite ?  <button onClick={changeFavorite} className='mt-6'><i className="fa-regular fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button> :

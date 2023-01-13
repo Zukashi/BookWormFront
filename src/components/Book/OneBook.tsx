@@ -25,6 +25,7 @@ export interface Book {
   author:string,
   isbn:string,
   description:string,
+  rating:number,
 }
 
 export const OneBook = () => {
@@ -86,6 +87,7 @@ export const OneBook = () => {
               )
             })
           }
+          <p className='inline-block text-[1.4rem] font-medium ml-2'>{book.rating.toFixed(2)}</p>
         </div>
         <div className='ml-[1.7rem] pb-4 mx-auto w-[90%] mt-4 font-mono font-[400] tracking-tighter text-[16px] leading-[25px] mr-[1.7rem]'>
           {!book.description ? <p>This edition doesn't have a description yet.</p>:

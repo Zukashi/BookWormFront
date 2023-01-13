@@ -48,7 +48,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
         credentials:'include'
       });
       const data2 = await res2.json();
-      setRating(data2.rating)
+      setRating(data2.rating - 1)
       // const res3 = await fetch(`http://localhost:3001/books`, {
       //   credentials:'include'
       // });
@@ -131,11 +131,14 @@ export const OneBookHome = ({book,refresh}:Props) => {
         {
           stars.map((_, index) => {
             return (
-                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) > index + 1 && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) > index  && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
 
             )
           })
+
         }
+        <p className='inline-block text-[1.2rem] font-medium'>{book.rating.toFixed(2)}</p>
+
       </div>
 
       {!favorite ?  <button onClick={changeFavorite} className='mt-6'><i className="fa-regular fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button> :
