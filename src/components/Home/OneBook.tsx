@@ -9,7 +9,7 @@ interface Props {
   book: Book,
   refresh: () => void,
 }
-export const OneBook = ({book,refresh}:Props) => {
+export const OneBookHome = ({book,refresh}:Props) => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true)
@@ -126,11 +126,11 @@ export const OneBook = ({book,refresh}:Props) => {
     ml-16'>{book.title}</p>
       <p className='text-[16px] mt-2 ml-16'>{book.author} </p>
       <i className="fa-solid fa-cart-shopping fa-xl cursor-pointer ml-16 "></i>
-      <div className='w-32 h-7 absolute right-[11%] bottom-[10%] '>
+      <div className='w-32 h-7 absolute right-[2.5rem] bottom-[2rem] '>
         {
           stars.map((_, index) => {
             return (
-                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) > index && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) > index + 1 && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
 
             )
           })
