@@ -6,11 +6,12 @@ import {categoryUpdate} from "../../features/Search/categorySlice";
 import {RootState} from "../../app/store";
 import {Link} from "react-router-dom";
 import useWindowDimensions from './WindowDimensions';
-import { DrawerComponent } from './DrawerMobile';
+import { DrawerComponent } from './DrawerComponentUser';
+import {DrawerComponentAdmin} from "./AdminHome/DrawerComponentAdmin";
 
 
 export const HomeNav = () => {
-
+  const {user} = useSelector((state: RootState) => state.user);
   const { height, width } = useWindowDimensions();
   const [offset, setOffset] = useState(0);
   const prevScroll = useRef(0);
@@ -54,7 +55,7 @@ export const HomeNav = () => {
         Profile
           </Button>:
 
-      <DrawerComponent></DrawerComponent>}
+      user.role === 'user' ? <DrawerComponent></DrawerComponent> : <DrawerComponentAdmin/>}
 
       </div>
     </nav>}
