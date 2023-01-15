@@ -1,41 +1,63 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
+import {useParams} from "react-router-dom";
+import {Spinner} from "@chakra-ui/react";
 
 
 export const Profile = () => {
-  const {user} = useSelector((state:RootState) => state.user)
-  return (<>
+  const [user, setUser] = useState<any>(null);
+  const params = useParams();
+  const [loading, setLoading] = useState<boolean>(true)
+    useEffect(() => {
+        (async () => {
+           const res = await fetch(`http://localhost:3001/user/${params.userId}`, {
+               credentials:'include'
+           });
+           const data = await res.json();
+           setUser(data);
+           setLoading(prev => !prev)
+        })()
+    }, []);
 
-    <section className='bg-gradient-to-r from-sky-800 to-indigo-900 w-screen h-screen bg-[#fbfcff]  '>
-    <div>
-      <div className='flex flex-col gap-5 p-[25px] text-center w-[30vw] bg-white absolute top-10 left-20 pb-[2vw] shadow-black shadow-2xl rounded-md'>
-        <h2 >picture</h2>
-        <h1 className='text-3xl font-[600]'>{user.username}</h1>
+
+    // while (loading){
+    //     return <>
+    //         <div className='pt-20'></div>
+    //         <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
+    // }
+    return (<>
+
+    <section className='bg-gradient-to-r from-sky-800 to-indigo-900 w-screen h-screen bg-[#fbfcff] pt-20  '>
+    <div className='w-[90vw] h-full flex flex-col mx-auto'>
+      <div className='flex flex-col gap-5 p-[25px] text-center  bg-white  pb-[2vw] shadow-black shadow-2xl rounded-md w-full items-center'>
+          <img className='w-16' src={user?.base64Avatar} alt=""/>
+        <h1 className='text-3xl font-[600]'>{user?.username}</h1>
         <h3>job</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est, iusto!</p>
       </div>
-      <div className="flex flex-col gap-5 pt-[2vw] pb-[2vw] text-center w-[30vw] bg-white  absolute bottom-40 left-20 rounded-md shadow-black shadow-2xl">
-        <h2 className='text-left text-2xl font-[600]'>Personal Details</h2>
+      <div className="flex flex-col gap-5 pt-[2vw] pb-[2vw] text-center w-[90vw] bg-white  mt-10  rounded-md shadow-black shadow-2xl">
+        <h2 className='text-left text-[1.5rem] font-[600] ml-[1rem] tracking-tight'>Personal Details</h2>
+          <div className='w-full  border-b-gray border-b-[1px] '></div>
        <div className='flex flex-col'>
 
-           <div className='flex justify-between'>
+           <div className='flex flex-col items-start ml-[1rem] mb-[1.3rem] '>
 
-             <p>birthday : </p>
+             <h3 className='font-bold leading-5'>Birthday </h3>
              <p>#date</p>
 
            </div>
-         <div className='flex justify-between'>
-             <p>address </p>
+         <div className='flex flex-col items-start ml-[1rem] mb-[1.3rem] '>
+             <h3 className='font-bold leading-5'>Address </h3>
               <p>#address</p>
            </div>
-         <div className='flex justify-between'>
-             <p>phone  </p>
+         <div className='flex flex-col items-start ml-[1rem] mb-[1.3rem] '>
+             <h3 className='font-bold leading-5'>Phone  </h3>
               <p>#phone</p>
            </div>
-         <div className='flex justify-between'>
-             <p>email  </p>
-           <p>#{user.email}</p>
+         <div className='flex flex-col items-start ml-[1rem]  mb-[1.3rem]'>
+             <h3 className='font-bold leading-5'>Email  </h3>
+           <p>#{user?.email}</p>
            </div>
          </div>
 
