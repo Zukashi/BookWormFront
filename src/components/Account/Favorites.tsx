@@ -3,8 +3,8 @@ import { HomeNav } from '../Home/HomeNav';
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import { HomeAdminNav } from '../Home/AdminHome/HomeAdminNav';
-import {OneBook} from "../Home/OneBook";
 import {Book} from "../Book/AdminBookList";
+import {OneBookFavorite} from "./OneBookFavorite";
 export const Favorites = () => {
     const {user} = useSelector((state: RootState) => state.user);
     const [favorites, setFavorites] = useState<null | Book[]>(null);
@@ -21,9 +21,9 @@ export const Favorites = () => {
     },[]);
     return (<>
 
-        {user.isAdmin ?  <HomeAdminNav/> : <HomeNav/>}
+        {user.role === 'admin' ?  <HomeAdminNav/> : <HomeNav/>}
             <div className='pt-20'></div>
-        {favorites?.map((favorite:any) => <OneBook  key={favorite._id} book={favorite} refresh={refresh} />)}
+        {favorites?.map((favorite:any) => <OneBookFavorite  key={favorite._id} book={favorite} refresh={refresh} />)}
         </>
     )
 }

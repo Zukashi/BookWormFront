@@ -3,7 +3,7 @@ import {Button, Input, InputGroup, InputRightElement, Link as ChakraLink} from "
 import {Link, useNavigate} from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import {User, userUpdate} from '../../features/User/userSlice'
-import {DrawerComponent} from "../Home/DrawerMobile";
+import {DrawerComponent} from "../Home/DrawerComponentUser";
 
 export interface Login {
     user:User,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import {RootState} from "../../../app/store";
 import {
@@ -14,11 +14,13 @@ import {Link} from "react-router-dom";
 import { SubcategoryMenu } from './SubcategoryMenu';
 import {CategoryHomeMenu} from "./CategoryHomeMenu";
 import { CategoryAdminMenu } from './CategoryAdminMenu';
+import {User} from "../../Account/admin/AdminUserList";
+import {AvatarComponent} from "./AvatarComponentForNav";
 
 export const DrawerComponentAdmin = () => {
-    const user = useSelector((state: RootState) => state.user);
+    const {user} = useSelector((state: RootState) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const btnRef :any = React.useRef()
+    const btnRef :any = React.useRef();
     const subcategories = {
         Home:[{
         name:'Home Page',
@@ -48,8 +50,9 @@ export const DrawerComponentAdmin = () => {
     }
     return (
         <><div className='absolute top-0'>
-            <button ref={btnRef} onClick={onOpen} className='w-10 h-10 fixed z-20 mt-1 left-2'><i
-                className="fa-solid fa-bars text-3xl"></i></button>
+            <button ref={btnRef} onClick={onOpen} className='fixed z-20  left-24 mt-1.5'><i
+                className="fa-solid fa-bars text-4xl"></i></button>
+            <AvatarComponent/>
         </div>
             <Drawer
                 isOpen={isOpen}

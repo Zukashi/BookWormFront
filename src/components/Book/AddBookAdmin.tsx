@@ -27,9 +27,9 @@ export const AddBookAdmin = () => {
 
     }
     return (<>
-        <Input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className='focus:outline-none focus:ring focus:ring-blue-700  placeholder:italic placeholder:text-white ' placeholder='isbn' focusBorderColor='none'   onChange={(e:any) => updateForm(e.target.value,'isbn')}></Input>
-        <Input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className='focus:outline-none focus:ring focus:ring-blue-700  placeholder:italic placeholder:text-white ' placeholder='title' focusBorderColor='none'   onChange={(e:any) => updateForm(e.target.value,'title')}></Input>
-        <Input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className='focus:outline-none focus:ring focus:ring-blue-700  placeholder:italic placeholder:text-white ' placeholder='author' focusBorderColor='none'   onChange={(e:any) => updateForm(e.target.value,'author')}></Input>
+        <Input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className='focus:outline-none focus:ring focus:ring-blue-700  placeholder:italic  ' placeholder='isbn' focusBorderColor='none'   onChange={(e:any) => updateForm(e.target.value,'isbn')}></Input>
+        <Input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className='focus:outline-none focus:ring focus:ring-blue-700  placeholder:italic  ' placeholder='title' focusBorderColor='none'   onChange={(e:any) => updateForm(e.target.value,'title')}></Input>
+        <Input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className='focus:outline-none focus:ring focus:ring-blue-700  placeholder:italic  ' placeholder='author' focusBorderColor='none'   onChange={(e:any) => updateForm(e.target.value,'author')}></Input>
         <Button className='mt-5 ' colorScheme='blackAlpha' onClick={(e:any) => onSubmit(e)}>Add</Button>
 
     </>)

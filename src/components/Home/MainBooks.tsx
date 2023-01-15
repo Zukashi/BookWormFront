@@ -1,7 +1,7 @@
 import {Button, Spinner} from "@chakra-ui/react";
 import React, {useEffect, useRef, useState} from "react";
 import { useSelector } from "react-redux";
-import {OneBook} from "./OneBook";
+import { OneBookHome} from "./OneBook";
 import {useNavigate} from "react-router-dom";
 
 export const MainBooks = () => {
@@ -10,7 +10,7 @@ export const MainBooks = () => {
   const navigate = useNavigate();
   useEffect(() => {
     (async() => {
-      const res = await fetch(`http://localhost:3001/books/${user._id}`, {
+      const res = await fetch(`http://localhost:3001/books`, {
         credentials:'include'
       });
       if(res.status === 401){
@@ -40,7 +40,7 @@ export const MainBooks = () => {
       </div>
     </div>
     <div className='flex-col gap-0 justify-between items-center'>
-      {books.map((book:any, i:number) => <OneBook key={i}  book={book} refresh={() =>  null} />)}
+      {books.map((book:any, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
     </div>
 
     </main>

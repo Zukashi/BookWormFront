@@ -46,6 +46,7 @@ export const AllRoutes = () => {
                 <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
 
     }
+    console.log(user)
     return (<>
 
             <Routes>
@@ -53,20 +54,20 @@ export const AllRoutes = () => {
                 <Route path='/create-account' element={<Register/>}/>
                 <Route path='/home' element={<HomeView/>}/>
                 <Route path='/author/:authorId' element={<AuthorView/>}/>
-              <Route path='/works/:bookId' element={<BookView/>}/>
+              <Route path='/book/:bookId' element={<BookView/>}/>
               <Route path='/user/:userId' element={<AccountView/>}></Route>
                <Route path='/edit/user/:userId' element={<EditAccount/>}></Route>
             <Route path='/favorites/user/:userId' element={<Favorites/>}></Route>
-                {user.isAdmin &&  <Route path='/admin/books'>
+                {user.role === 'admin' &&  <Route path='/admin/books'>
                     <Route index  element={<BookListView/>}></Route>
                     <Route path='modify/:id'element={<ModifyBook/>}></Route>
                 </Route>}
-                {user.isAdmin &&  <Route path='/admin/users'>
+                {user.role === 'admin' &&  <Route path='/admin/users'>
                     <Route index  element={<UserListView/>}></Route>
                     <Route path='modify/:id'element={<ModifyUser/>}></Route>
                 </Route>}
 
-                {user.password && <Route path='/addBook' element={<AddBookAdmin/>}></Route>}
+                {user.role === 'admin' && <Route path='/addBook' element={<AddBookAdmin/>}></Route>}
             </Routes>
 
     </>)
