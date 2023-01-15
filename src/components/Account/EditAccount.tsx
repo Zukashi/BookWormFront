@@ -47,8 +47,7 @@ export const EditAccount = () => {
     _id: '',
     base64Avatar:''
   });
-
-
+  console.log(getFormattedDate(new Date(Date.now())))
   function getFormattedDate(date:Date) {
     let year = date.getFullYear();
     let month = (1 + date.getMonth()).toString().padStart(2, '0');
@@ -94,7 +93,6 @@ export const EditAccount = () => {
     })();
 
   };
-
   const onChange = (value:string, fieldName:string) => {
     setForm(prev => ({
         ...prev,
@@ -142,10 +140,10 @@ export const EditAccount = () => {
 
 
 
-               <div className='h-[70px] relative mt-7'> <p className=" mb-3 w-[42vw] inline-block mr-5">Date Of Birth:</p> <Input  w='42vw' className='inline-block mr-5' pos='absolute' left='0' bottom='0'  value={form.dateOfBirth}
-                                                           placeholder="dd-mm-yyyy"
+               <div className='h-[70px] relative mt-7'> <p className=" mb-3 w-[42vw] inline-block mr-5">Date Of Birth:</p> <Input  w='42vw' className='inline-block mr-5' pos='absolute' left='0' bottom='0'  value={form.dateOfBirth.split(' ').reverse().join('-')}
+
                                                            type='date'
-                                                           min="1997-01-01" max="2030-12-31"
+                                                           max={new Date().toISOString().slice(0, -14)}
                                                            size="md"
                                                            name='dateOfBirth'
                                                            onChange={ (e:any) => onChange(e.target.value, 'dateOfBirth') }
