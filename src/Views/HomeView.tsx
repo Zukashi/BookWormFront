@@ -9,13 +9,12 @@ import {MainBooks} from "../components/Home/MainBooks";
 export const HomeView = () => {
     const {user} = useSelector((state: RootState) => state.user);
     return (<>
-        {
-            user?.isAdmin ? <div><HomeAdminNav/><BooksSearchBar/>
-                <MainBooks/> </div>: <div>
+
+             <div>
                 <HomeNav/>
                 <BooksSearchBar/>
                 <MainBooks/>
             </div>
-        }
+
     </>)
 }
