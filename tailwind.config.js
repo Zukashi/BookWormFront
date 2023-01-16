@@ -8,7 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'gray':'#f5f5f5'
+        'gray':'#f5f5f5',
+        'loginBtn':'rgb(17, 158, 0)'
       }
     },
   },

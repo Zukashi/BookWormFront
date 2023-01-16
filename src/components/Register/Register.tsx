@@ -1,5 +1,5 @@
 import React, {FormEvent, useState} from 'react';
-import {Button, Input, InputGroup, InputRightElement} from "@chakra-ui/react";
+import {Button, Input, InputGroup, InputRightElement, useToast} from "@chakra-ui/react";
 import * as yup from 'yup';
 import {useForm, SubmitHandler } from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -14,7 +14,8 @@ let schema = yup.object().shape({
     password: yup.string().required().min(8, 'must be at least 8 characters long').max(24,`password can't be longer than 24 characters`)
 });
 export const Register = () => {
-    const [show, setShow] = React.useState(false);;
+    const [show, setShow] = React.useState(false);
+    const toast = useToast();
     const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>({
         resolver:yupResolver(schema)
     });
@@ -33,6 +34,14 @@ export const Register = () => {
             },
             body:JSON.stringify(data)
         });
+        toast({
+            position:'top',
+            title: 'Account created.',
+            description: "We've created your account for you.",
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+        })
     }
     return (<>
         <div className='bg-gradient-to-r w-screen h-screen from-sky-500 to-indigo-500 w-screen h-screen flex items-center justify-center'>

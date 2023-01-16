@@ -7,7 +7,7 @@ import {
     DrawerContent,
     DrawerCloseButton, useDisclosure, Button, Input, Image,
 } from '@chakra-ui/react'
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useEffect, useState} from "react";
@@ -19,6 +19,7 @@ export  function DrawerComponent() {
     const {user} = useSelector((state: RootState) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [preview, setPreview] = useState('');
+    const navigate = useNavigate();
     useEffect(() => {
         ( async () => {
             const res = await fetch(`http://localhost:3001/user/${user._id}`, {
@@ -29,7 +30,13 @@ export  function DrawerComponent() {
         })()
     }, [])
     const btnRef :any = React.useRef()
-
+    const logOut = async () => {
+        await fetch(`http://localhost:3001/user/${user._id}/logout`,{
+            credentials:'include',
+            method:'DELETE'
+        });
+        navigate('/')
+    }
     return (
         <><div className='absolute top-0'>
             <button ref={btnRef} onClick={onOpen} className='w-14 h-14 fixed z-20 mt-1 right-0.5 top-0.5'><img className='' src={preview} alt=""/></button>
@@ -52,6 +59,7 @@ export  function DrawerComponent() {
                             <div className='w-full  flex h-14 w-full items-center '><Link to={`/edit/user/${user._id}`}className='w-full flex justify-center hover:text-violet-600'><i
                                 className="fa-regular fa-pen-to-square pt-[4px] absolute left-0"></i>Edit account</Link></div>
                             <div className='w-full  flex h-14 w-full items-center'><Link to={`/favorites/user/${user._id}`} className='w-full flex justify-center hover:text-violet-600 '><i className="fa-regular fa-star pt-[4px] absolute left-0 "></i><p className='w-[86px] text-left'>Favorites</p></Link></div>
+                            <div className='w-full  flex h-14 w-full items-center' onClick={logOut}><div className='w-full flex justify-center hover:text-violet-600 '><i className="fa-solid fa-arrow-right-from-bracket pt-[4px] absolute left-0 "></i><p className='w-[86px] text-left'>Logout</p></div></div>
                         </div>
 
                     </DrawerBody>
