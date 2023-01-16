@@ -12,23 +12,26 @@ import {
   TabPanels,
   Tabs
 } from "@chakra-ui/react";
+
 import {ChangePassword} from "./ChangePassword";
 import {EmailAndSMS} from "./EmailAndSMS";
 import { ManageContact } from './ManageContact';
 import {HomeNav} from "../Home/HomeNav";
 import Avatar from 'react-avatar-edit';
+import {SubmitHandler, useForm} from "react-hook-form";
 export interface UserInterface {
   city:string,
   country:string,
   dateOfBirth:string | Date,
   firstName:string,
   lastName:string,
-  password:string,
   username:string,
   _id:string,
 }
+
 export const EditAccount = () => {
   const {userId} = useParams();
+
   const {user} = useSelector((state: RootState) => state.user);
   const [toggleAvatar, setToggleAvatar] = useState(false)
   const [src, setSrc] = useState(undefined);
@@ -47,6 +50,8 @@ export const EditAccount = () => {
     _id: '',
     base64Avatar:''
   });
+  const {register, handleSubmit}  = useForm<UserInterface>({
+    values:form});
   console.log(getFormattedDate(new Date(Date.now())))
   function getFormattedDate(date:Date) {
     let year = date.getFullYear();
@@ -76,8 +81,7 @@ export const EditAccount = () => {
       setForm(data);
     })();
   },[]);
-  const onSend = (e:any) => {
-    e.preventDefault();
+  const onSend = (data:any) => {
 
     (async() => {
 
@@ -87,7 +91,7 @@ export const EditAccount = () => {
         headers:{
           'Content-type':'application/json'
         },
-        body:JSON.stringify(form)
+        body:JSON.stringify(data)
       })
       window.location.reload();
     })();
@@ -122,43 +126,38 @@ export const EditAccount = () => {
                 <i className="fa-solid fa-check"></i></button>}
             </div>
               {preview && <div className='w-full h-full flex justify-center items-start ml-20 '><div className='ml-3 font-bold text-xl '>Preview:<img className='' src={preview} alt=""/></div></div>}</div>}
-            <form onSubmit={onSend}>
+            <form onSubmit={handleSubmit(onSend)}>
             <div className='grid grid-cols-2'>  <div><div className='h-[70px] relative mt-5'><p className=" mb-3 inline-block mr-5">First Name:</p>
-              <Input w='42vw' value={form.firstName}  onChange={ (e:any) => onChange(e.target.value, 'firstName') } pos='absolute' left='0' bottom='0' placeholder='John' name='firstName'></Input></div>
+              <Input w='42vw'   {...register('firstName')} pos='absolute' left='0' bottom='0' placeholder='John' ></Input></div>
 
               <div className='h-[70px] relative mt-7'> <p className=" mb-3  inline-block mr-5">Last Name:</p>
-                <Input className='inline-block' value={form.lastName} w='42vw' pos='absolute' left='0' bottom='0'  placeholder='Smith' name="lastName" onChange={ (e:any) => onChange(e.target.value, 'lastName') } ></Input></div>
+                <Input className='inline-block'  w='42vw' pos='absolute' left='0' bottom='0'  placeholder='Smith'  {...register('lastName')} ></Input></div>
 
               <div className='h-[70px] relative mt-7 '><p className=" mb-3  inline-block mr-5">User Name:</p>
-                <Input w='42vw' value={form.username} pos='absolute' left='0' bottom='0' name='username' onChange={ (e:any) => onChange(e.target.value, 'username') } ></Input></div></div>
+                <Input w='42vw'  pos='absolute' left='0' bottom='0' {...register('username')} ></Input></div></div>
 
 
 
 
              <div> <div className='h-[70px] relative mt-5'> <p className=" mb-3 inline-block ">City:</p>
-               <Input className='inline-block' value={form.city} w='42vw' pos='absolute' left='0' bottom='0'  placeholder='Atlanta' name='city' onChange={ (e:any) => onChange(e.target.value, 'city') } ></Input></div>
+               <Input className='inline-block'  w='42vw' pos='absolute' left='0' bottom='0'  placeholder='Atlanta' {...register('city')} ></Input></div>
 
 
 
-               <div className='h-[70px] relative mt-7'> <p className=" mb-3 w-[42vw] inline-block mr-5">Date Of Birth:</p> <Input  w='42vw' className='inline-block mr-5' pos='absolute' left='0' bottom='0'  value={form.dateOfBirth}
+               <div className='h-[70px] relative mt-7'> <p className=" mb-3 w-[42vw] inline-block mr-5">Date Of Birth:</p> <Input  w='42vw' className='inline-block mr-5' pos='absolute' left='0' bottom='0'  {...register('dateOfBirth')}
 
                                                            type='date'
                                                            max={new Date().toISOString().slice(0, -14)}
                                                            size="md"
-                                                           name='dateOfBirth'
                                                            onChange={ (e:any) => onChange(e.target.value, 'dateOfBirth') }
                /></div>
                <div className='h-[70px] relative mt-7'><p className=" mb-3 inline-block mr-20">Country:</p>
                  <Input className='inline-block ' pos='absolute' left='0' bottom='0' value={form.country} w='42vw' placeholder='USA' name='country'
                         onChange={ (e:any) => onChange(e.target.value, 'country') } ></Input></div></div></div>
-              <Button type={"submit"} mt={"30px"} variant='solid' backgroundColor={'#6366f1'} _active={{
-                backgroundColor: '#6366f1',
-                color:'#fff',
-                transform: 'scale(0.98)',
-                borderColor: '#bec3c9',
-              }} _hover={{backgroundColor:'#6366f1', color:'#fff'}}>
-                Submit
-              </Button>
+              <div className='w-full flex justify-center mt-5'
+              ><input className='p-4 bg-black text-2xl font-bold text-white rounded-md mx-auto  ' type={"submit"} >
+
+              </input></div>
             </form>
           </TabPanel>
           <TabPanel p={0}>

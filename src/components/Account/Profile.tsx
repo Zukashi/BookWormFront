@@ -5,7 +5,6 @@ import {useParams} from "react-router-dom";
 import {Spinner} from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-
 export const Profile = () => {
   const [user, setUser] = useState<any>(null);
   const params = useParams();
