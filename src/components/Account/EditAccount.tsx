@@ -149,11 +149,10 @@ export const EditAccount = () => {
                                                            type='date'
                                                            max={new Date().toISOString().slice(0, -14)}
                                                            size="md"
-                                                           onChange={ (e:any) => onChange(e.target.value, 'dateOfBirth') }
+
                /></div>
                <div className='h-[70px] relative mt-7'><p className=" mb-3 inline-block mr-20">Country:</p>
-                 <Input className='inline-block ' pos='absolute' left='0' bottom='0' value={form.country} w='42vw' placeholder='USA' name='country'
-                        onChange={ (e:any) => onChange(e.target.value, 'country') } ></Input></div></div></div>
+                 <Input className='inline-block ' pos='absolute' left='0' bottom='0' w='42vw' placeholder='USA' {...register('country')}></Input></div></div></div>
               <div className='w-full flex justify-center mt-5'
               ><input className='p-4 bg-black text-2xl font-bold text-white rounded-md mx-auto  ' type={"submit"} >
 
