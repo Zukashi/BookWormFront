@@ -33,8 +33,6 @@ export const Profile = () => {
       <div className='flex flex-col gap-5 p-[25px] text-center  bg-white  pb-[2vw] shadow-black shadow-2xl rounded-md w-full items-center'>
           <img className='w-16' src={user?.base64Avatar} alt=""/>
         <h1 className='text-3xl font-[600]'>{user?.username}</h1>
-        <h3>job</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est, iusto!</p>
       </div>
       <div className="flex flex-col gap-5 pt-[2vw] pb-[2vw] text-center w-[90vw] bg-white  mt-10  rounded-md shadow-black shadow-2xl">
         <h2 className='text-left text-[1.5rem] font-[600] ml-[1rem] tracking-tight'>Personal Details</h2>
