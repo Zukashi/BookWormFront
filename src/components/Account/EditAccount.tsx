@@ -140,7 +140,7 @@ export const EditAccount = () => {
 
 
 
-               <div className='h-[70px] relative mt-7'> <p className=" mb-3 w-[42vw] inline-block mr-5">Date Of Birth:</p> <Input  w='42vw' className='inline-block mr-5' pos='absolute' left='0' bottom='0'  value={form.dateOfBirth.split(' ').reverse().join('-')}
+               <div className='h-[70px] relative mt-7'> <p className=" mb-3 w-[42vw] inline-block mr-5">Date Of Birth:</p> <Input  w='42vw' className='inline-block mr-5' pos='absolute' left='0' bottom='0'  value={form.dateOfBirth}
 
                                                            type='date'
                                                            max={new Date().toISOString().slice(0, -14)}

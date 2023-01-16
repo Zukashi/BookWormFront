@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useParams} from "react-router-dom";
 import {Spinner} from "@chakra-ui/react";
+import dayjs from "dayjs";
 
 
 export const Profile = () => {
@@ -20,12 +21,12 @@ export const Profile = () => {
         })()
     }, []);
 
-
-    // while (loading){
-    //     return <>
-    //         <div className='pt-20'></div>
-    //         <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
-    // }
+    console.log(user?.dateOfBirth)
+    while (loading){
+        return <>
+            <div className='pt-20'></div>
+            <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
+    }
     return (<>
 
     <section className='bg-gradient-to-r from-sky-800 to-indigo-900 w-screen h-screen bg-[#fbfcff] pt-20  '>
@@ -44,20 +45,20 @@ export const Profile = () => {
            <div className='flex flex-col items-start ml-[1rem] mb-[1.3rem] '>
 
              <h3 className='font-bold leading-5'>Birthday </h3>
-             <p>#date</p>
+             <p className='font-medium'>{((dayjs(user.dateOfBirth).format('DD/MMMM')).split('/')).join(' ')}</p>
 
            </div>
          <div className='flex flex-col items-start ml-[1rem] mb-[1.3rem] '>
-             <h3 className='font-bold leading-5'>Address </h3>
-              <p>#address</p>
+             <h3 className='font-bold leading-5'>Country </h3>
+              <p className='font-medium'>{user.country ? user.country : "Unknown"}</p>
            </div>
          <div className='flex flex-col items-start ml-[1rem] mb-[1.3rem] '>
              <h3 className='font-bold leading-5'>Phone  </h3>
-              <p>#phone</p>
+              <p>{user.phone ? user.phone :'Unknown'}</p>
            </div>
          <div className='flex flex-col items-start ml-[1rem]  mb-[1.3rem]'>
              <h3 className='font-bold leading-5'>Email  </h3>
-           <p>#{user?.email}</p>
+           <p className='font-medium'>{user.email ? user.email : 'Unknown'}</p>
            </div>
          </div>
 
