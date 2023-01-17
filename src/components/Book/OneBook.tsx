@@ -31,15 +31,16 @@ export interface Book {
 }
 
 export const OneBook = () => {
-  const params = useParams();
+
   const {user} = useSelector((state: RootState) => state.user);
   const [book, setBook] = useState<Book|null>();
+  const {bookId} = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [rating,setRating] = useState<number>(0);
   const [hover, setHover] = React.useState(0);
   useEffect(() => {
     (async () => {
-      const res = await fetch(`http://localhost:3001/book/${params.bookId}`, {
+      const res = await fetch(`http://localhost:3001/book/${bookId}`, {
         credentials:'include'
       });
       const data = await res.json();
@@ -102,9 +103,19 @@ export const OneBook = () => {
         <h1 className='ml-[1.7rem]  py-5 text-[1.2rem] font-bold w-90vw'>Ratings & Reviews</h1>
         <div className='flex items-center flex-col'>
           <img className='w-12' src={user.base64Avatar} alt=""/>
-          <h2 className='text-2xl w-[70vw] flex justify-center mt-4 pb-3'>What do <p className='  font-liberville px-1.5 pt-[2px]'>you</p> think?</h2>
-          <h3 className='text-[1rem] font-medium'>Rate this book</h3>
-          <button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button>
+          <h2 className='text-2xl w-[70vw] flex justify-center mt-4 pb-3'>What do <p className='font-liberville px-1.5 pt-[2px]'>you</p> think?</h2>
+          <div className='flex justify-start mt-2 mb-2 '>
+            {
+              stars.map((_, index) => {
+                return (
+                    <i className={`fa-solid fa-star text-3xl cursor-pointer ${0 > index + 1 && `text-[#faaf00]`} ` } key={index} ></i>
+                )
+              })
+            }
+
+          </div>
+          <h3 className='text-[1rem] font-medium mb-5'>Rate this book</h3>
+          <Link to={`/review/new/${bookId}`}><button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button></Link>
         </div>
       </div>
 
