@@ -6,6 +6,8 @@ import {HomeNav} from "../Home/HomeNav";
 import {BooksSearchBar} from "../Home/HintsSearchBar";
 import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
 import {Spinner} from "@chakra-ui/react";
+import {useSelector} from "react-redux";
+import {RootState} from "../../app/store";
 export interface Book {
   _id:string,
   type: {
@@ -30,6 +32,7 @@ export interface Book {
 
 export const OneBook = () => {
   const params = useParams();
+  const {user} = useSelector((state: RootState) => state.user);
   const [book, setBook] = useState<Book|null>();
   const [loading, setLoading] = useState<boolean>(true);
   const [rating,setRating] = useState<number>(0);
@@ -82,7 +85,7 @@ export const OneBook = () => {
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(hover || rating) > index + 1 && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(hover || rating) > index + 1 && `text-[#faaf00]`} ` } key={index} ></i>
 
               )
             })
@@ -95,7 +98,16 @@ export const OneBook = () => {
         </div>
         <div className='ml-[1.7rem] w-full h-[1px] w-[90%] mx-auto bg-[#edbdf0]'></div>
         <div className='ml-[1.7rem] mt-[1.5rem] pb-5'><p className='text-xl'>Author: <p className='inline-block font-bold'>{book.author}</p></p></div>
+        <div className='ml-[1.7rem] w-full h-[1px] w-[90%] mx-auto bg-[#edbdf0]'></div>
+        <h1 className='ml-[1.7rem]  py-5 text-[1.2rem] font-bold w-90vw'>Ratings & Reviews</h1>
+        <div className='flex items-center flex-col'>
+          <img className='w-12' src={user.base64Avatar} alt=""/>
+          <h2 className='text-2xl w-[70vw] flex justify-center mt-4 pb-3'>What do <p className='  font-liberville px-1.5 pt-[2px]'>you</p> think?</h2>
+          <h3 className='text-[1rem] font-medium'>Rate this book</h3>
+          <button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button>
+        </div>
       </div>
+
     </section>
 
   </>)
