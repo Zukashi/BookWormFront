@@ -37,6 +37,7 @@ export const OneBook = () => {
   const {bookId} = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [rating,setRating] = useState<number>(0);
+  const [personalRating, setPersonalRating] = useState<number>(0)
   const [hover, setHover] = React.useState(0);
   useEffect(() => {
     (async () => {
@@ -45,11 +46,23 @@ export const OneBook = () => {
       });
       const data = await res.json();
       setBook(data);
-      const res2 = await fetch(`http://localhost:3001/book/${data._id}`,{
+      const res3 = await fetch(`http://localhost:3001/book/${data._id}`, {
         credentials:'include'
-      });
-      const data2 = await res2.json();
-      setRating(data2.rating)
+      })
+      const data3 = await res3.json();
+      setRating(data3.rating);
+      try{
+        const res2 = await fetch(`http://localhost:3001/user/${user._id}/book/${data._id}`,{
+          credentials:'include'
+        });
+
+        const data2 = await res2.json();
+        console.log(data2)
+        setPersonalRating(data2.rating)
+      }catch(err){
+        console.log('error occurred')
+      }
+
       setLoading(false)
     })();
 
@@ -74,7 +87,7 @@ export const OneBook = () => {
       <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div>
     </>
   }
-
+  console.log(rating)
   return (<>
     <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
       <HomeNav/>
@@ -101,14 +114,14 @@ export const OneBook = () => {
         <div className='ml-[1.7rem] mt-[1.5rem] pb-5'><p className='text-xl'>Author: <p className='inline-block font-bold'>{book.author}</p></p></div>
         <div className='ml-[1.7rem] w-full h-[1px] w-[90%] mx-auto bg-[#edbdf0]'></div>
         <h1 className='ml-[1.7rem]  py-5 text-[1.2rem] font-bold w-90vw'>Ratings & Reviews</h1>
-        <div className='flex items-center flex-col'>
+        { !personalRating ?  <div className='flex items-center flex-col'>
           <img className='w-12' src={user.base64Avatar} alt=""/>
           <h2 className='text-2xl w-[70vw] flex justify-center mt-4 pb-3'>What do <p className='font-liberville px-1.5 pt-[2px]'>you</p> think?</h2>
           <div className='flex justify-start mt-2 mb-2 '>
             {
               stars.map((_, index) => {
                 return (
-                    <i className={`fa-solid fa-star text-3xl cursor-pointer ${0 > index + 1 && `text-[#faaf00]`} ` } key={index} ></i>
+                    <i className={`fa-solid fa-star text-3xl cursor-pointer ${0 > index + 1 && `text-[#faaf00]`} ` } key={index}  ></i>
                 )
               })
             }
@@ -116,7 +129,7 @@ export const OneBook = () => {
           </div>
           <h3 className='text-[1rem] font-medium mb-5'>Rate this book</h3>
           <Link to={`/review/new/${bookId}`}><button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button></Link>
-        </div>
+        </div>:<h1>123</h1>}
       </div>
 
     </section>
