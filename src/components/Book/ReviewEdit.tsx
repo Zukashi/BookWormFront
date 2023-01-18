@@ -93,7 +93,7 @@ export const ReviewEdit = () => {
             <div className='flex items-center'>  {
                 stars.map((_, index) => {
                     return (
-                        <i className={`fa-solid fa-star text-sm cursor-pointer ${(hover || book?.rating)  > index  && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                        <i className={`fa-solid fa-star text-sm cursor-pointer ${(book?.rating) -1 > index  && `text-[#faaf00]`} ` } key={index} ></i>
 
                     )
                 })
@@ -101,7 +101,7 @@ export const ReviewEdit = () => {
                 <p className='inline-block text-[1rem] ml-1    font-medium'>{book?.rating.toFixed(2)} </p>
             </div>
 
-            <div className='mb-24'></div>
+            <div className='mb-16'></div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="status"></label>
                 <div className='flex justify-center'><Select className='h-5 w-[20vw]' w={'40%'} {...register('status')}>
