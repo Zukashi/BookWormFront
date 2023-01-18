@@ -59,6 +59,7 @@ export const OneBook = () => {
         });
 
         const data2 = await res2.json();
+        console.log(data2)
         setReview(data2)
         setPersonalRating(data2.rating)
       }catch(err){
@@ -81,7 +82,19 @@ export const OneBook = () => {
     await fetch(`http://localhost:3001/book/${book?._id}/${value}`,{
       method:'PUT',
       credentials:'include'
-    })
+    });
+    await fetch(`http://localhost:3001/user/${user._id}/book/${bookId}`,{
+      credentials:'include',
+      method:'POST',
+      headers:{
+        'content-type':'application/json'
+      },
+      body:JSON.stringify({
+        rating:value,
+        description:'',
+        status:'read'
+      })
+    });
   }
   while(loading || !book){
     return <>
@@ -135,7 +148,7 @@ export const OneBook = () => {
           <Link to={`/review/new/${bookId}`}><button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button></Link>
         </div>:
             <div className='ml-[1.7rem] pb-5'>
-          <h1 className='text-[1.1rem] font-normal mb-3'>My Review</h1>
+          <h1 className='text-[1.1rem] font-[500] mb-3'>My Review</h1>
         <div className='w-full flex'>
           <img className='w-[1.9rem] pt-1.5' src={user.base64Avatar} alt=""/>
           <p className='ml-3 font-medium'>{user.username}</p>
@@ -145,7 +158,7 @@ export const OneBook = () => {
             {
               stars.map((_, index) => {
                 return (
-                    <i className={`fa-solid fa-star text-md cursor-pointer ${(hover || personalRating) > index  && `text-[#faaf00]`} ` } key={index} ></i>
+                    <i className={`fa-solid fa-star text-md cursor-pointer ${(hover || personalRating) > index  && `text-[#faaf00]`} ` } key={index}  ></i>
 
                 )
               })
@@ -153,7 +166,9 @@ export const OneBook = () => {
           </div>}
           <p className='font-medium'>{monthName} {dayNumber}, {year}</p>
           </div>
-          <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit'>Write a review</button>
+              <p className='text-[1rem] font-[450] mt-3'>{review.desc}</p>
+              {review.desc ?<button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'>
+                <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 ' alt="pen"/><p className='flex items-start '>Edit Review</p></button>  :<button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit'>Write a review</button>}
         </div>}
       </div>
 
