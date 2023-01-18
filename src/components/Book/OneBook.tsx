@@ -5,9 +5,10 @@ import {Link} from "react-router-dom";
 import {HomeNav} from "../Home/HomeNav";
 import {BooksSearchBar} from "../Home/HintsSearchBar";
 import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
-import {Spinner} from "@chakra-ui/react";
+import {Button, Spinner} from "@chakra-ui/react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
+import dayjs from "dayjs";
 export interface Book {
   _id:string,
   type: {
@@ -39,6 +40,7 @@ export const OneBook = () => {
   const [rating,setRating] = useState<number>(0);
   const [personalRating, setPersonalRating] = useState<number>(0)
   const [hover, setHover] = React.useState(0);
+  const [review, setReview] = useState<any>();
   useEffect(() => {
     (async () => {
       const res = await fetch(`http://localhost:3001/book/${bookId}`, {
@@ -57,7 +59,7 @@ export const OneBook = () => {
         });
 
         const data2 = await res2.json();
-        console.log(data2)
+        setReview(data2)
         setPersonalRating(data2.rating)
       }catch(err){
         console.log('error occurred')
@@ -86,7 +88,9 @@ export const OneBook = () => {
       <div className='pt-20'></div>
       <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div>
     </>
-  }
+  };
+  const [dayNumber,monthName,year]= (dayjs(review?.date).format('DD/MMMM/YYYY')).split('/');
+
   console.log(rating)
   return (<>
     <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
@@ -99,7 +103,7 @@ export const OneBook = () => {
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(hover || rating) > index + 1 && `text-[#faaf00]`} ` } key={index} ></i>
+                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(rating) > index + 1 && `text-[#faaf00]`} ` } key={index} ></i>
 
               )
             })
@@ -113,7 +117,7 @@ export const OneBook = () => {
         <div className='ml-[1.7rem] w-full h-[1px] w-[90%] mx-auto bg-[#edbdf0]'></div>
         <div className='ml-[1.7rem] mt-[1.5rem] pb-5'><p className='text-xl'>Author: <p className='inline-block font-bold'>{book.author}</p></p></div>
         <div className='ml-[1.7rem] w-full h-[1px] w-[90%] mx-auto bg-[#edbdf0]'></div>
-        <h1 className='ml-[1.7rem]  py-5 text-[1.2rem] font-bold w-90vw'>Ratings & Reviews</h1>
+        <h1 className='ml-[1.7rem]  py-5 text-[1.4rem] font-bold '>Ratings & Reviews</h1>
         { !personalRating ?  <div className='flex items-center flex-col'>
           <img className='w-12' src={user.base64Avatar} alt=""/>
           <h2 className='text-2xl w-[70vw] flex justify-center mt-4 pb-3'>What do <p className='font-liberville px-1.5 pt-[2px]'>you</p> think?</h2>
@@ -129,7 +133,28 @@ export const OneBook = () => {
           </div>
           <h3 className='text-[1rem] font-medium mb-5'>Rate this book</h3>
           <Link to={`/review/new/${bookId}`}><button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button></Link>
-        </div>:<h1>123</h1>}
+        </div>:
+            <div className='ml-[1.7rem] pb-5'>
+          <h1 className='text-[1.1rem] font-normal mb-3'>My Review</h1>
+        <div className='w-full flex'>
+          <img className='w-[1.9rem] pt-1.5' src={user.base64Avatar} alt=""/>
+          <p className='ml-3 font-medium'>{user.username}</p>
+        </div>
+          <div className='flex items-end gap-[4rem]'>
+          { <div className='flex justify-start mt-3 mb-1'>
+            {
+              stars.map((_, index) => {
+                return (
+                    <i className={`fa-solid fa-star text-md cursor-pointer ${(hover || personalRating) > index  && `text-[#faaf00]`} ` } key={index} ></i>
+
+                )
+              })
+            }
+          </div>}
+          <p className='font-medium'>{monthName} {dayNumber}, {year}</p>
+          </div>
+          <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit'>Write a review</button>
+        </div>}
       </div>
 
     </section>
