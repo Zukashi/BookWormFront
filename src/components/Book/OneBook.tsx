@@ -142,7 +142,6 @@ export const OneBook = () => {
                 )
               })
             }
-
           </div>
           <h3 className='text-[1rem] font-medium mb-5'>Rate this book</h3>
           <Link to={`/review/new/${bookId}`}><button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button></Link>

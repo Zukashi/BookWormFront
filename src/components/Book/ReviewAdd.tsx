@@ -20,7 +20,8 @@ export const ReviewAdd = () => {
         rating:0,
         description:'',
         status:'',
-        user: {}
+        user: {},
+        spoilers:false,
     });
     const [hover, setHover] = React.useState(0)
 
@@ -106,7 +107,7 @@ export const ReviewAdd = () => {
 
                 }
                 <Textarea {...register('description')} placeholder='Write a review (optional)'/>
-                <div className='flex flex-col '><label>Spoilers?</label><Checkbox iconSize='' className='w-4 h-4  '/></div>
+                <div className='flex mt-4 '><Checkbox {...register('spoilers')} iconSize='' className='w-4 h-4 mt-1 mr-2  '/><label>This review contains spoilers</label></div>
                 <input type='submit' className='font-medium text-xl bg-black px-4 py-2 rounded-xl text-white mt-5'></input>
             </form>
         </div>
