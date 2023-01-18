@@ -167,8 +167,8 @@ export const OneBook = () => {
           <p className='font-medium'>{monthName} {dayNumber}, {year}</p>
           </div>
               <p className='text-[1rem] font-[450] mt-3'>{review.desc}</p>
-              {review.desc ?<button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'>
-                <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 ' alt="pen"/><p className='flex items-start '>Edit Review</p></button>  :<button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit'>Write a review</button>}
+              {review.desc ? <Link to={`/review/edit/${bookId}`}><button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'>
+                <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 ' alt="pen"/><p className='flex items-start '>Edit Review</p></button>  </Link>:<Link to={`/review/new/${bookId}`}><button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit'>Write a review</button></Link>}
         </div>}
       </div>
 
