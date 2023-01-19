@@ -18,6 +18,8 @@ import {UserListView} from "./Views/UserListView";
 import {userUpdate} from "./features/User/userSlice";
 import {Spinner} from "@chakra-ui/react";
 import {ResetPassword} from "./components/Login/ResetPassword";
+import { ReviewAdd } from './components/Book/ReviewAdd';
+import {ReviewEdit} from "./components/Book/ReviewEdit";
 
 export const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -41,7 +43,7 @@ export const AllRoutes = () => {
         })()
     },[]);
     console.log(user)
-    while(typeof user._id !== 'string' ){
+    while(typeof user._id !== 'string' || user._id === '' ){
 
             return <>
                 <div className='pt-20'></div>
@@ -59,6 +61,8 @@ export const AllRoutes = () => {
               <Route path='/book/:bookId' element={<BookView/>}/>
               <Route path='/reset-password' element={<ResetPassword/>}/>
               <Route path='/user/:userId' element={<AccountView/>}></Route>
+                <Route path='/review/new/:bookId' element={<ReviewAdd/>}></Route>
+                <Route path='/review/edit/:bookId' element={<ReviewEdit/>}></Route>
                <Route path='/edit/user/:userId' element={<EditAccount/>}></Route>
             <Route path='/favorites/user/:userId' element={<Favorites/>}></Route>
                 {user.role === 'admin' &&  <Route path='/admin/books'>

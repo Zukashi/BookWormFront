@@ -131,7 +131,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
         {
           stars.map((_, index) => {
             return (
-                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) > index  && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) + 0.01 > index  && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
 
             )
           })
