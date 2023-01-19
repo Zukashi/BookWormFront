@@ -40,6 +40,7 @@ export const OneBook = () => {
   const [rating,setRating] = useState<number>(0);
   const [personalRating, setPersonalRating] = useState<number>(0)
   const [hover, setHover] = React.useState(0);
+  const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
   const [review, setReview] = useState<any>();
   useEffect(() => {
     (async () => {
@@ -103,7 +104,6 @@ export const OneBook = () => {
     </>
   };
   const [dayNumber,monthName,year]= (dayjs(review?.date).format('DD/MMMM/YYYY')).split('/');
-
   console.log(rating)
   return (<>
     <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
@@ -165,7 +165,8 @@ export const OneBook = () => {
           </div>}
           <p className='font-medium'>{monthName} {dayNumber}, {year}</p>
           </div>
-              {review.desc && <p className='text-[1rem] font-[450] mt-3'>{review.desc}</p>}
+              {(review.desc && review.spoilers )&& <p className={`text-[1rem] font-[450] inline leading-6  mt-3 bg-[#687a86] ${!hoverSpoiler ? 'text-transparent': 'text-black bg-[#e7e9ee]'}`} onMouseOver={() => setHoverSpoiler(true)} onMouseLeave={() => setHoverSpoiler(false)}>{review.desc}</p>}
+              {review.desc && !review.spoilers &&  <p className='text-[1rem] font-[450] mt-3 '>{review.desc}</p>}
               {review.desc ? <Link to={`/review/edit/${bookId}`}><button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'>
                 <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 ' alt="pen"/><p className='flex items-start '>Edit Review</p></button>  </Link>:<Link to={`/review/new/${bookId}`}><button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit'>Write a review</button></Link>}
         </div>}
