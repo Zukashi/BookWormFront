@@ -23,6 +23,7 @@ export const ReviewEdit = () => {
         user: {},
         spoilers:false,
     });
+    const [lastReviewRating, setLastReviewRating] = useState(null)
     const [hover, setHover] = React.useState(0)
 
     useEffect(() => {
@@ -40,7 +41,8 @@ export const ReviewEdit = () => {
                 const data2 = await res2.json();
                 setValue('description', data2.desc)
                 setValue('spoilers', data2.spoilers)
-                setReview(data2)
+                setReview(data2);
+                setLastReviewRating(data2.rating)
             }catch(e){
                 console.log('error occurred')
             }
@@ -59,10 +61,14 @@ export const ReviewEdit = () => {
                 },
                 body:JSON.stringify(data)
             });
+            await fetch(`http://localhost:3001/book/${book?._id}/${lastReviewRating}`,{
+                method:'DELETE',
+                credentials:'include'
+            })
             await fetch(`http://localhost:3001/book/${book?._id}/${review.rating}`,{
                 method:'PUT',
                 credentials:'include'
-            })
+            });
             navigate(`/book/${bookId}`)
         }catch (e) {
 
@@ -119,7 +125,7 @@ export const ReviewEdit = () => {
 
               }</div>
                <div className=' flex justify-center'> <Textarea {...register('description')} className='' placeholder='Write a review (optional)'/></div>
-                <div className='flex mt-4 '><Checkbox {...register('spoilers')} iconSize='' className='w-4 h-4 mt-1 mr-2  '/><label>This review contains spoilers</label></div>
+                <div className='flex mt-4 '><label><Checkbox {...register('spoilers')} iconSize='' className='w-4 h-4 mt-1 mr-2  '/>This review contains spoilers</label></div>
                 <input type='submit' className='font-medium text-xl bg-black px-4 py-2 rounded-xl text-white mt-5'></input>
             </form>
         </div>

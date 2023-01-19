@@ -58,6 +58,10 @@ export const ReviewAdd = () => {
                 },
                 body:JSON.stringify(data)
             });
+            await fetch(`http://localhost:3001/book/${bookId}/${data.rating}`,{
+                credentials:'include',
+                method:'PUT',
+            });
             navigate(`/book/${bookId}`)
         }catch (e) {
 

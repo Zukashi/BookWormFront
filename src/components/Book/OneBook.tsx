@@ -119,7 +119,7 @@ export const OneBook = () => {
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(rating) > index + 1 && `text-[#faaf00]`} ` } key={index} ></i>
+                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(rating) > index && `text-[#faaf00]`} ` } key={index} ></i>
 
               )
             })
