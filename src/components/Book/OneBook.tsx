@@ -199,7 +199,7 @@ export const OneBook = () => {
         <div className='flex flex-col gap-5 mt-4'>
               <div className='flex gap-3 items-center'>
 
-                      <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[4] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[4]} ({(book.amountOfRates / sumOfRatings ) * 100}%)</p>
+                      <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[4] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[4]} ({(book.ratingTypeAmount[4] / sumOfRatings ) * 100}%)</p>
               </div>
           <div className='flex gap-3 items-center'>
             <h3>4 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={(book.ratingTypeAmount[3] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[3]} ({(book.ratingTypeAmount[3]/ sumOfRatings ) * 100}%)</p>
