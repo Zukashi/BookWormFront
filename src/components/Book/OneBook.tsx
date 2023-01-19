@@ -5,11 +5,13 @@ import {Link} from "react-router-dom";
 import {HomeNav} from "../Home/HomeNav";
 import {BooksSearchBar} from "../Home/HintsSearchBar";
 import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
-import {Button, Spinner} from "@chakra-ui/react";
+import {Button, Progress, Spinner} from "@chakra-ui/react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import dayjs from "dayjs";
 export interface Book {
+  amountOfRates: number;
+  ratingTypeAmount: number[];
   _id:string,
   type: {
     key:string,
@@ -107,7 +109,11 @@ export const OneBook = () => {
     </>
   };
   const [dayNumber,monthName,year]= (dayjs(review?.date).format('DD/MMMM/YYYY')).split('/');
-
+  const sumOfRatings =  book.ratingTypeAmount.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+  );
+  console.log(sumOfRatings, book.amountOfRates)
   return (<>
     <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
       <HomeNav/>
@@ -177,6 +183,38 @@ export const OneBook = () => {
               {review.desc ? <button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'><Link to={`/review/edit/${bookId}`} className='flex  gap-2'>
                 <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 inline-block ' alt="pen"/><p className='flex items-start '>Edit Review</p></Link></button>  :<Link to={`/review/new/${bookId}`}><button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit'>Write a review</button></Link>}
         </div>}
+      <div className='ml-[1.7rem]'><h2 className='text-[1.22rem] font-bold'>Community Reviews</h2>
+        <div className='flex justify-start mt-4 gap-3 items-center '>
+          {
+            stars.map((_, index) => {
+              return (
+                  <i className={`fa-solid fa-star text-2xl self-center  cursor-pointer ${(rating) > index && `text-[#faaf00]`} ` } key={index} ></i>
+
+              )
+            })
+          }
+          <p className='inline-block text-[1.7rem] font-medium ml-2 '>{book.rating.toFixed(2)} </p>
+        </div>
+
+        <div className='flex flex-col gap-5 mt-4'>
+              <div className='flex gap-3 items-center'>
+
+                      <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[4] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[4]} ({(book.amountOfRates / sumOfRatings ) * 100}%)</p>
+              </div>
+          <div className='flex gap-3 items-center'>
+            <h3>4 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={(book.ratingTypeAmount[3] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[3]} ({(book.ratingTypeAmount[3]/ sumOfRatings ) * 100}%)</p>
+          </div>
+          <div className='flex gap-3 items-center'>
+            <h3>3 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[2] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[2]} ({(book.ratingTypeAmount[2] / sumOfRatings ) * 100}%)</p>
+          </div>
+          <div className='flex gap-3 items-center'>
+            <h3>2 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={(book.ratingTypeAmount[1] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[1]} ({(book.ratingTypeAmount[1] / sumOfRatings ) * 100}%)</p>
+          </div>
+          <div className='flex gap-3 items-center'>
+            <h3>1 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[0] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[0]} ({(book.ratingTypeAmount[0] / sumOfRatings ) * 100}%)</p>
+          </div>
+        </div>
+      </div>
       </div>
 
     </section>
