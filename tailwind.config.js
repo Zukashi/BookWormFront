@@ -10,6 +10,9 @@ module.exports = {
       colors: {
         'gray':'#f5f5f5',
         'loginBtn':'rgb(17, 158, 0)'
+      },
+      fontFamily:{
+        'liberville':['Libre Baskerville']
       }
     },
   },

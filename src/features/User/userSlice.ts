@@ -9,6 +9,7 @@ export interface User {
     isAdmin?:boolean,
     favorites?:[];
     role:string,
+    base64Avatar:string,
 }
 
 
@@ -26,6 +27,7 @@ const initialState: UserState = {
           isAdmin:false,
           favorites:[],
           role:'',
+          base64Avatar:'',
       },
       token:'',
 }

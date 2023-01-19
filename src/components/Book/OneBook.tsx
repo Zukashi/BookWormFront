@@ -1,12 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useLocation, useParams} from "react-router";
 import {AuthorDocs} from "../../features/Author/authorSlice";
 import {Link} from "react-router-dom";
 import {HomeNav} from "../Home/HomeNav";
 import {BooksSearchBar} from "../Home/HintsSearchBar";
 import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
-import {Spinner} from "@chakra-ui/react";
+import {Button, Progress, Spinner} from "@chakra-ui/react";
+import {useSelector} from "react-redux";
+import {RootState} from "../../app/store";
+import dayjs from "dayjs";
 export interface Book {
+  amountOfRates: number;
+  ratingTypeAmount: number[];
   _id:string,
   type: {
     key:string,
@@ -29,27 +34,48 @@ export interface Book {
 }
 
 export const OneBook = () => {
-  const params = useParams();
+
+  const {user} = useSelector((state: RootState) => state.user);
   const [book, setBook] = useState<Book|null>();
+  const {bookId} = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [rating,setRating] = useState<number>(0);
+  const [personalRating, setPersonalRating] = useState<number>(0)
   const [hover, setHover] = React.useState(0);
+  const [showFullText , setShowFullText] = useState(false)
+  const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
+  const [review, setReview] = useState<any>();
+
+
   useEffect(() => {
     (async () => {
-      const res = await fetch(`http://localhost:3001/book/${params.bookId}`, {
+      const res = await fetch(`http://localhost:3001/book/${bookId}`, {
         credentials:'include'
       });
       const data = await res.json();
       setBook(data);
-      const res2 = await fetch(`http://localhost:3001/book/${data._id}`,{
+      const res3 = await fetch(`http://localhost:3001/book/${data._id}`, {
         credentials:'include'
-      });
-      const data2 = await res2.json();
-      setRating(data2.rating)
+      })
+      const data3 = await res3.json();
+      setRating(data3.rating);
+      try{
+        const res2 = await fetch(`http://localhost:3001/user/${user._id}/book/${data._id}`,{
+          credentials:'include'
+        });
+
+        const data2 = await res2.json();
+
+        setReview(data2)
+        setPersonalRating(data2.rating)
+      }catch(err){
+        console.log('error occurred')
+      }
       setLoading(false)
     })();
 
-  }, [])
+  }, []);
+
   const stars = Array(5).fill(0);
   const handleMouseOver = (value:number) => {
     setHover(value)
@@ -58,19 +84,36 @@ export const OneBook = () => {
     setHover(0)
   };
   const handleClick = async (value:number) => {
-    setRating(value)
+    setPersonalRating(value)
     await fetch(`http://localhost:3001/book/${book?._id}/${value}`,{
       method:'PUT',
       credentials:'include'
-    })
-  }
+    });
+    await fetch(`http://localhost:3001/user/${user._id}/book/${bookId}`,{
+      credentials:'include',
+      method:'POST',
+      headers:{
+        'content-type':'application/json'
+      },
+      body:JSON.stringify({
+        rating:value,
+        description:'',
+        status:'read'
+      })
+    });
+  };
   while(loading || !book){
     return <>
       <div className='pt-20'></div>
       <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div>
     </>
-  }
-
+  };
+  const [dayNumber,monthName,year]= (dayjs(review?.date).format('DD/MMMM/YYYY')).split('/');
+  const sumOfRatings =  book.ratingTypeAmount.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+  );
+  console.log(sumOfRatings, book.amountOfRates)
   return (<>
     <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
       <HomeNav/>
@@ -82,7 +125,7 @@ export const OneBook = () => {
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(hover || rating) > index + 1 && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(rating) > index && `text-[#faaf00]`} ` } key={index} ></i>
 
               )
             })
@@ -95,7 +138,85 @@ export const OneBook = () => {
         </div>
         <div className='ml-[1.7rem] w-full h-[1px] w-[90%] mx-auto bg-[#edbdf0]'></div>
         <div className='ml-[1.7rem] mt-[1.5rem] pb-5'><p className='text-xl'>Author: <p className='inline-block font-bold'>{book.author}</p></p></div>
+        <div className='ml-[1.7rem] w-full h-[1px] w-[90%] mx-auto bg-[#edbdf0]'></div>
+        <h1 className='ml-[1.7rem]  py-5 text-[1.4rem] font-bold '>Ratings & Reviews</h1>
+        { !personalRating ?  <div className='flex items-center flex-col'>
+          <img className='w-12' src={user.base64Avatar} alt=""/>
+          <h2 className='text-2xl w-[70vw] flex justify-center mt-4 pb-3'>What do <p className='font-liberville px-1.5 pt-[2px]'>you</p> think?</h2>
+          <div className='flex justify-start mt-2 mb-2 '>
+            {
+              stars.map((_, index) => {
+                return (
+                    <i className={`fa-solid fa-star text-3xl cursor-pointer ${0 > index + 1 && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}  ></i>
+                )
+              })
+            }
+          </div>
+          <h3 className='text-[1rem] font-medium mb-5'>Rate this book</h3>
+          <Link to={`/review/new/${bookId}`}><button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button></Link>
+        </div>:
+            <div className='ml-[1.7rem] pb-5'>
+          <h1 className='text-[1.1rem] font-[500] mb-3'>My Review</h1>
+        <div className='w-full flex'>
+          <img className='w-[1.9rem] pt-1.5' src={user.base64Avatar} alt=""/>
+          <p className='ml-3 font-medium'>{user.username}</p>
+        </div>
+          <div className='flex items-end gap-[4rem]'>
+          { <div className='flex justify-start mt-3 mb-1'>
+            {
+              stars.map((_, index) => {
+                return (
+                    <i className={`fa-solid fa-star text-md cursor-pointer ${(hover || personalRating) > index  && `text-[#faaf00]`} ` } key={index}  ></i>
+
+                )
+              })
+            }
+          </div>}
+          <p className='font-medium'>{monthName} {dayNumber}, {year}</p>
+          </div>
+             <div className={`    font-[450] ${showFullText ? 'overflow-auto max-h-screen': review.desc.length > 160 ?  'max-h-[6rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `} onMouseOver={() => setHoverSpoiler(true)} onMouseLeave={() => setHoverSpoiler(false)}> {(review.desc && review.spoilers )&& <p className={`  inline  mt-3 bg-[#687a86] ${!hoverSpoiler ? 'text-transparent': 'text-black bg-[#e7e9ee]'}`} >{review.desc}</p>}</div>
+              {review.desc && !review.spoilers &&   <div className={` max-h-[6rem] overflow-hidden  font-[450] ${showFullText ? 'overflow-auto max-h-screen': review.desc.length > 160 ? 'overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}><p className='text-[1rem] font-[450] mt-3 ' >{review.desc}</p></div>}
+              {review.desc.length > 160 ? !showFullText ? <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(true)}>Show more <i
+                  className="fa-solid fa-arrow-down" ></i></button> : <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(false)}>Show Less <i
+                  className="fa-solid fa-arrow-up" ></i></button> : null }
+
+              {review.desc ? <button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'><Link to={`/review/edit/${bookId}`} className='flex  gap-2'>
+                <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 inline-block ' alt="pen"/><p className='flex items-start '>Edit Review</p></Link></button>  :<Link to={`/review/new/${bookId}`}><button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit'>Write a review</button></Link>}
+        </div>}
+      <div className='ml-[1.7rem]'><h2 className='text-[1.22rem] font-bold'>Community Reviews</h2>
+        <div className='flex justify-start mt-4 gap-3 items-center '>
+          {
+            stars.map((_, index) => {
+              return (
+                  <i className={`fa-solid fa-star text-2xl self-center  cursor-pointer ${(rating) > index && `text-[#faaf00]`} ` } key={index} ></i>
+
+              )
+            })
+          }
+          <p className='inline-block text-[1.7rem] font-medium ml-2 '>{book.rating.toFixed(2)} </p>
+        </div>
+
+        <div className='flex flex-col gap-5 mt-4'>
+              <div className='flex gap-3 items-center'>
+
+                      <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[4] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[4]} ({(book.ratingTypeAmount[4] / sumOfRatings ) * 100}%)</p>
+              </div>
+          <div className='flex gap-3 items-center'>
+            <h3>4 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={(book.ratingTypeAmount[3] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[3]} ({(book.ratingTypeAmount[3]/ sumOfRatings ) * 100}%)</p>
+          </div>
+          <div className='flex gap-3 items-center'>
+            <h3>3 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[2] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[2]} ({(book.ratingTypeAmount[2] / sumOfRatings ) * 100}%)</p>
+          </div>
+          <div className='flex gap-3 items-center'>
+            <h3>2 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={(book.ratingTypeAmount[1] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[1]} ({(book.ratingTypeAmount[1] / sumOfRatings ) * 100}%)</p>
+          </div>
+          <div className='flex gap-3 items-center'>
+            <h3>1 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[0] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[0]} ({(book.ratingTypeAmount[0] / sumOfRatings ) * 100}%)</p>
+          </div>
+        </div>
       </div>
+      </div>
+
     </section>
 
   </>)
