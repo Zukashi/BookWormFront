@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useLocation, useParams} from "react-router";
 import {AuthorDocs} from "../../features/Author/authorSlice";
 import {Link} from "react-router-dom";
@@ -40,8 +40,11 @@ export const OneBook = () => {
   const [rating,setRating] = useState<number>(0);
   const [personalRating, setPersonalRating] = useState<number>(0)
   const [hover, setHover] = React.useState(0);
+  const [showFullText , setShowFullText] = useState(false)
   const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
   const [review, setReview] = useState<any>();
+
+
   useEffect(() => {
     (async () => {
       const res = await fetch(`http://localhost:3001/book/${bookId}`, {
@@ -60,17 +63,17 @@ export const OneBook = () => {
         });
 
         const data2 = await res2.json();
-        console.log(data2)
+
         setReview(data2)
         setPersonalRating(data2.rating)
       }catch(err){
         console.log('error occurred')
       }
-
       setLoading(false)
     })();
 
-  }, [])
+  }, []);
+
   const stars = Array(5).fill(0);
   const handleMouseOver = (value:number) => {
     setHover(value)
@@ -96,7 +99,7 @@ export const OneBook = () => {
         status:'read'
       })
     });
-  }
+  };
   while(loading || !book){
     return <>
       <div className='pt-20'></div>
@@ -104,7 +107,7 @@ export const OneBook = () => {
     </>
   };
   const [dayNumber,monthName,year]= (dayjs(review?.date).format('DD/MMMM/YYYY')).split('/');
-  console.log(rating)
+
   return (<>
     <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
       <HomeNav/>
@@ -165,10 +168,14 @@ export const OneBook = () => {
           </div>}
           <p className='font-medium'>{monthName} {dayNumber}, {year}</p>
           </div>
-              {(review.desc && review.spoilers )&& <p className={`text-[1rem] font-[450] inline leading-6  mt-3 bg-[#687a86] ${!hoverSpoiler ? 'text-transparent': 'text-black bg-[#e7e9ee]'}`} onMouseOver={() => setHoverSpoiler(true)} onMouseLeave={() => setHoverSpoiler(false)}>{review.desc}</p>}
-              {review.desc && !review.spoilers &&  <p className='text-[1rem] font-[450] mt-3 '>{review.desc}</p>}
-              {review.desc ? <Link to={`/review/edit/${bookId}`}><button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'>
-                <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 ' alt="pen"/><p className='flex items-start '>Edit Review</p></button>  </Link>:<Link to={`/review/new/${bookId}`}><button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit'>Write a review</button></Link>}
+             <div className={`    font-[450] ${showFullText ? 'overflow-auto max-h-screen': review.desc.length > 160 ?  'max-h-[6rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `} onMouseOver={() => setHoverSpoiler(true)} onMouseLeave={() => setHoverSpoiler(false)}> {(review.desc && review.spoilers )&& <p className={`  inline  mt-3 bg-[#687a86] ${!hoverSpoiler ? 'text-transparent': 'text-black bg-[#e7e9ee]'}`} >{review.desc}</p>}</div>
+              {review.desc && !review.spoilers &&   <div className={` max-h-[6rem] overflow-hidden  font-[450] ${showFullText ? 'overflow-auto max-h-screen': 'overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white '} `}><p className='text-[1rem] font-[450] mt-3 ' >{review.desc}</p></div>}
+              {review.desc.length > 160 ? !showFullText ? <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(true)}>Show more <i
+                  className="fa-solid fa-arrow-down" ></i></button> : <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(false)}>Show Less <i
+                  className="fa-solid fa-arrow-up" ></i></button> : null }
+
+              {review.desc ? <button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'><Link to={`/review/edit/${bookId}`} className='flex  gap-2'>
+                <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 inline-block ' alt="pen"/><p className='flex items-start '>Edit Review</p></Link></button>  :<Link to={`/review/new/${bookId}`}><button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit'>Write a review</button></Link>}
         </div>}
       </div>
 
