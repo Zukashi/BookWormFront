@@ -9,6 +9,7 @@ import {Button, Progress, Spinner} from "@chakra-ui/react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import dayjs from "dayjs";
+import {OneReviewOrdinary} from "./OneReviewOrdinary";
 export interface Book {
   amountOfRates: number;
   ratingTypeAmount: number[];
@@ -45,6 +46,7 @@ export const OneBook = () => {
   const [showFullText , setShowFullText] = useState(false)
   const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
   const [review, setReview] = useState<any>();
+  const [reviews, setReviews] = useState<any[]>();
 
   const handleClick = async (value:number) => {
     setPersonalRating(value)
@@ -82,6 +84,9 @@ export const OneBook = () => {
       const data3 = await res3.json();
       setRating(data3.rating);
       try{
+        const res5 = await fetch(`http://localhost:3001/book/${data._id}/reviews`);
+        const data5 = await res5.json();
+        setReviews(data5)
         const res2 = await fetch(`http://localhost:3001/user/${user._id}/book/${data._id}`,{
           credentials:'include'
         });
@@ -117,7 +122,7 @@ export const OneBook = () => {
       (accumulator, currentValue) => accumulator + currentValue,
       0
   );
-  console.log(123)
+  console.log(reviews)
   return (<>
     <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
       <HomeNav/>
@@ -179,7 +184,7 @@ export const OneBook = () => {
           <p className='font-medium'>{monthName} {dayNumber}, {year}</p>
           </div>
              <div className={`    font-[450] ${showFullText ? 'overflow-auto max-h-screen': review?.description?.length > 160 ?  'max-h-[6rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `} onMouseOver={() => setHoverSpoiler(true)} onMouseLeave={() => setHoverSpoiler(false)}> {(review?.description && review.spoilers )&& <p className={`  inline  mt-3 bg-[#687a86] ${!hoverSpoiler ? 'text-transparent': 'text-black bg-[#e7e9ee]'}`} >{review?.description}</p>}</div>
-              {review?.description && !review.spoilers &&   <div className={` max-h-[6rem] overflow-hidden  font-[450] ${showFullText ? 'overflow-auto max-h-screen': review.desc.length > 160 ? 'overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}><p className='text-[1rem] font-[450] mt-3 ' >{review?.description}</p></div>}
+              {review?.description && !review.spoilers &&   <div className={` max-h-[6rem] overflow-hidden  font-[450] ${showFullText ? 'overflow-auto max-h-screen': review?.description.length > 160 ? 'overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}><p className='text-[1rem] font-[450] mt-3 ' >{review?.description}</p></div>}
               {review?.description?.length > 160 ? !showFullText ? <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(true)}>Show more <i
                   className="fa-solid fa-arrow-down" ></i></button> : <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(false)}>Show Less <i
                   className="fa-solid fa-arrow-up" ></i></button> : null }
@@ -219,8 +224,8 @@ export const OneBook = () => {
           </div>
         </div>
       </div>
+        {reviews?.map((review) => <OneReviewOrdinary key={review._id} review={review}/>)}
       </div>
-
     </section>
 
   </>)
