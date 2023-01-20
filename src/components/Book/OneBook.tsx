@@ -46,7 +46,29 @@ export const OneBook = () => {
   const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
   const [review, setReview] = useState<any>();
 
-
+  const handleClick = async (value:number) => {
+    setPersonalRating(value)
+    await fetch(`http://localhost:3001/book/${book?._id}/${value}`,{
+      method:'POST',
+      credentials:'include'
+    });
+    const res = await fetch(`http://localhost:3001/user/${user._id}/book/${bookId}`,{
+      credentials:'include',
+      method:'POST',
+      headers:{
+        'content-type':'application/json'
+      },
+      body:JSON.stringify({
+        rating:value,
+        description:'',
+        status:'read',
+        spoilers:false,
+      })
+    });
+    const data = await res.json();
+    setBook(data)
+    setRating(data.rating)
+  };
   useEffect(() => {
     (async () => {
       const res = await fetch(`http://localhost:3001/book/${bookId}`, {
@@ -65,7 +87,7 @@ export const OneBook = () => {
         });
 
         const data2 = await res2.json();
-
+        console.log(data2, 'useEffect')
         setReview(data2)
         setPersonalRating(data2.rating)
       }catch(err){
@@ -83,25 +105,7 @@ export const OneBook = () => {
   const handleMouseLeave = (value:number) => {
     setHover(0)
   };
-  const handleClick = async (value:number) => {
-    setPersonalRating(value)
-    await fetch(`http://localhost:3001/book/${book?._id}/${value}`,{
-      method:'PUT',
-      credentials:'include'
-    });
-    await fetch(`http://localhost:3001/user/${user._id}/book/${bookId}`,{
-      credentials:'include',
-      method:'POST',
-      headers:{
-        'content-type':'application/json'
-      },
-      body:JSON.stringify({
-        rating:value,
-        description:'',
-        status:'read'
-      })
-    });
-  };
+
   while(loading || !book){
     return <>
       <div className='pt-20'></div>
@@ -113,7 +117,7 @@ export const OneBook = () => {
       (accumulator, currentValue) => accumulator + currentValue,
       0
   );
-  console.log(sumOfRatings, book.amountOfRates)
+  console.log(123)
   return (<>
     <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
       <HomeNav/>
@@ -174,14 +178,14 @@ export const OneBook = () => {
           </div>}
           <p className='font-medium'>{monthName} {dayNumber}, {year}</p>
           </div>
-             <div className={`    font-[450] ${showFullText ? 'overflow-auto max-h-screen': review.desc.length > 160 ?  'max-h-[6rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `} onMouseOver={() => setHoverSpoiler(true)} onMouseLeave={() => setHoverSpoiler(false)}> {(review.desc && review.spoilers )&& <p className={`  inline  mt-3 bg-[#687a86] ${!hoverSpoiler ? 'text-transparent': 'text-black bg-[#e7e9ee]'}`} >{review.desc}</p>}</div>
-              {review.desc && !review.spoilers &&   <div className={` max-h-[6rem] overflow-hidden  font-[450] ${showFullText ? 'overflow-auto max-h-screen': review.desc.length > 160 ? 'overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}><p className='text-[1rem] font-[450] mt-3 ' >{review.desc}</p></div>}
-              {review.desc.length > 160 ? !showFullText ? <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(true)}>Show more <i
+             <div className={`    font-[450] ${showFullText ? 'overflow-auto max-h-screen': review?.description?.length > 160 ?  'max-h-[6rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `} onMouseOver={() => setHoverSpoiler(true)} onMouseLeave={() => setHoverSpoiler(false)}> {(review?.description && review.spoilers )&& <p className={`  inline  mt-3 bg-[#687a86] ${!hoverSpoiler ? 'text-transparent': 'text-black bg-[#e7e9ee]'}`} >{review?.description}</p>}</div>
+              {review?.description && !review.spoilers &&   <div className={` max-h-[6rem] overflow-hidden  font-[450] ${showFullText ? 'overflow-auto max-h-screen': review.desc.length > 160 ? 'overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}><p className='text-[1rem] font-[450] mt-3 ' >{review?.description}</p></div>}
+              {review?.description?.length > 160 ? !showFullText ? <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(true)}>Show more <i
                   className="fa-solid fa-arrow-down" ></i></button> : <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(false)}>Show Less <i
                   className="fa-solid fa-arrow-up" ></i></button> : null }
 
-              {review.desc ? <button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'><Link to={`/review/edit/${bookId}`} className='flex  gap-2'>
-                <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 inline-block ' alt="pen"/><p className='flex items-start '>Edit Review</p></Link></button>  :<Link to={`/review/new/${bookId}`}><button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit'>Write a review</button></Link>}
+              <button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'><Link to={`/review/edit/${bookId}`} className='flex  gap-2'>
+                <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 inline-block' alt="pen"/><p className='flex items-start '>Edit Review</p></Link></button>
         </div>}
       <div className='ml-[1.7rem]'><h2 className='text-[1.22rem] font-bold'>Community Reviews</h2>
         <div className='flex justify-start mt-4 gap-3 items-center '>
@@ -199,19 +203,19 @@ export const OneBook = () => {
         <div className='flex flex-col gap-5 mt-4'>
               <div className='flex gap-3 items-center'>
 
-                <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[4] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[4]} { sumOfRatings ? <p>({(book.ratingTypeAmount[4] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
+                <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && ((book.ratingTypeAmount[4] / sumOfRatings ) * 100)} /> <p className='w-20 flex '> {book.ratingTypeAmount[4]} { sumOfRatings ? <p>({(book.ratingTypeAmount[4] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
               </div>
           <div className='flex gap-3 items-center'>
-            <h3>4 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={(book.ratingTypeAmount[3] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[3]} { sumOfRatings ? <p>({(book.ratingTypeAmount[3] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
+            <h3>4 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={sumOfRatings && (book.ratingTypeAmount[3] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[3]} { sumOfRatings ? <p>({(book.ratingTypeAmount[3] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
           <div className='flex gap-3 items-center'>
-            <h3>3 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[2] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[2]} { sumOfRatings ? <p>({(book.ratingTypeAmount[2] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
+            <h3>3 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && (book.ratingTypeAmount[2] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[2]} { sumOfRatings ? <p>({(book.ratingTypeAmount[2] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
           <div className='flex gap-3 items-center'>
-            <h3>2 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={(book.ratingTypeAmount[1] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[1]} { sumOfRatings ? <p>({(book.ratingTypeAmount[1] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
+            <h3>2 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={sumOfRatings && (book.ratingTypeAmount[1] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[1]} { sumOfRatings ? <p>({(book.ratingTypeAmount[1] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
           <div className='flex gap-3 items-center'>
-            <h3>1 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[0] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[0]} { sumOfRatings ? <p>({(book.ratingTypeAmount[0] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
+            <h3>1 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && (book.ratingTypeAmount[0] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[0]} { sumOfRatings ? <p>({(book.ratingTypeAmount[0] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
         </div>
       </div>
