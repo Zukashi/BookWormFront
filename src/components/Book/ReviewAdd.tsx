@@ -46,23 +46,14 @@ export const ReviewAdd = () => {
             });
             const data = await res.json();
             setBook(data);
-           try{
-               const res2 = await fetch(`http://localhost:3001/user/${user._id}/book/${data._id}`,{
-                   credentials:'include'
-               });
 
-               const data2 = await res2.json();
-               console.log(324);
-               setReview(data2)
-           }catch(e){
-               console.log('error occurred')
-           }
             setLoading(false)
         })();
 
     }, []);
     const onSubmit = async (data:any) => {
         data.rating = review.rating;
+        console.log(data)
         try{
             await fetch(`http://localhost:3001/user/${user._id}/book/${bookId}`,{
                 credentials:'include',
