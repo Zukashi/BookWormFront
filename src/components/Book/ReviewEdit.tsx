@@ -51,10 +51,13 @@ export const ReviewEdit = () => {
 
     }, []);
     const deleteReview = async () => {
+        navigate(`${`/book/${book?._id}`}`)
         await fetch(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${lastReviewRating}`,{
             method:'DELETE',
             credentials:'include'
-        })
+        });
+        window.location.reload();
+
     }
     const onSubmit = async (data:any) => {
         data.rating = review.rating
