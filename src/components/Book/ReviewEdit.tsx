@@ -50,6 +50,12 @@ export const ReviewEdit = () => {
         })();
 
     }, []);
+    const deleteReview = async () => {
+        await fetch(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${lastReviewRating}`,{
+            method:'DELETE',
+            credentials:'include'
+        })
+    }
     const onSubmit = async (data:any) => {
         data.rating = review.rating
         try{
@@ -127,7 +133,9 @@ export const ReviewEdit = () => {
                <div className=' flex justify-center'> <Textarea {...register('description')} className='' placeholder='Write a review (optional)'/></div>
                 <div className='flex mt-4 '><label><Checkbox {...register('spoilers')} iconSize='' className='w-4 h-4 mt-1 mr-2  '/>This review contains spoilers</label></div>
                 <input type='submit' className='font-medium text-xl bg-black px-4 py-2 rounded-xl text-white mt-5'></input>
+                <button className='font-medium text-xl bg-white px-4 py-2 rounded-xl text-black border-2 border-amber-300 border-green-400 bg-blue-500 ml-4' onClick={deleteReview}>Delete</button>
             </form>
+
         </div>
     </>)
 }

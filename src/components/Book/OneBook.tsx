@@ -199,19 +199,19 @@ export const OneBook = () => {
         <div className='flex flex-col gap-5 mt-4'>
               <div className='flex gap-3 items-center'>
 
-                      <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[4] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[4]} ({(book.ratingTypeAmount[4] / sumOfRatings ) * 100}%)</p>
+                <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[4] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[4]} { sumOfRatings ? <p>({(book.ratingTypeAmount[4] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
               </div>
           <div className='flex gap-3 items-center'>
-            <h3>4 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={(book.ratingTypeAmount[3] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[3]} ({(book.ratingTypeAmount[3]/ sumOfRatings ) * 100}%)</p>
+            <h3>4 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={(book.ratingTypeAmount[3] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[3]} { sumOfRatings ? <p>({(book.ratingTypeAmount[3] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
           <div className='flex gap-3 items-center'>
-            <h3>3 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[2] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[2]} ({(book.ratingTypeAmount[2] / sumOfRatings ) * 100}%)</p>
+            <h3>3 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[2] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[2]} { sumOfRatings ? <p>({(book.ratingTypeAmount[2] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
           <div className='flex gap-3 items-center'>
-            <h3>2 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={(book.ratingTypeAmount[1] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[1]} ({(book.ratingTypeAmount[1] / sumOfRatings ) * 100}%)</p>
+            <h3>2 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={(book.ratingTypeAmount[1] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[1]} { sumOfRatings ? <p>({(book.ratingTypeAmount[1] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
           <div className='flex gap-3 items-center'>
-            <h3>1 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[0] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[0]} ({(book.ratingTypeAmount[0] / sumOfRatings ) * 100}%)</p>
+            <h3>1 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={(book.ratingTypeAmount[0] / sumOfRatings ) * 100} /> <p> {book.ratingTypeAmount[0]} { sumOfRatings ? <p>({(book.ratingTypeAmount[0] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
         </div>
       </div>
