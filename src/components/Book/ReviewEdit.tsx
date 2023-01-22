@@ -108,7 +108,7 @@ export const ReviewEdit = () => {
             <div className='flex items-center'>  {
                 stars.map((_, index) => {
                     return (
-                        <i className={`fa-solid fa-star text-sm cursor-pointer ${(book?.rating) -1 > index  && `text-[#faaf00]`} ` } key={index} ></i>
+                        <i className={`fa-solid fa-star text-sm cursor-pointer ${(book?.rating)  > index  && `text-[#faaf00]`} ` } key={index} ></i>
 
                     )
                 })

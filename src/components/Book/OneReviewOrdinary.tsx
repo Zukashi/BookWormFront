@@ -31,7 +31,7 @@ export const OneReviewOrdinary = (props:any) => {
         return <Spinner/>
     }
     return (<>
-        <div className='ml-[1.5rem] '>
+        <div className='ml-[1.5rem]'>
             <div className='w-full flex'>
                 <img className='w-[1.9rem] pt-1.5' src={user.base64Avatar} alt=""/>
                 <p className='ml-3 font-medium'>{props.review.user.username}</p>
