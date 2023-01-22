@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Route, Routes, useNavigate} from "react-router-dom";
 import {LoginPageView} from "./Views/LoginPageView";
 import {Register} from "./components/Register/Register";
@@ -20,11 +20,13 @@ import {Spinner} from "@chakra-ui/react";
 import {ResetPassword} from "./components/Login/ResetPassword";
 import { ReviewAdd } from './components/Book/ReviewAdd';
 import {ReviewEdit} from "./components/Book/ReviewEdit";
+import {useLocation} from "react-router";
 
 export const AllRoutes = () => {
   const dispatch = useDispatch();
     const navigate = useNavigate();
     const {user} = useSelector((state: RootState) => state.user);
+    const location = useLocation();
     useEffect(() => {
         (async () => {
             const res = await fetch(`http://localhost:3001/auth/refreshToken`,{
@@ -32,18 +34,22 @@ export const AllRoutes = () => {
                 credentials:'include'
             })
             if(res.status === 403){
+                console.log(41)
                 navigate('/')
-            }
+            };
             const data = await res.json();
             console.log(data)
             dispatch(userUpdate({
                 user:data.user,
                 token:data.token
             }))
+
+
+
         })()
     },[]);
     console.log(user)
-    while(typeof user._id !== 'string' || user._id === '' ){
+    while(typeof user._id !== 'string' || user._id === '' && location.pathname !== '/' ){
 
             return <>
                 <div className='pt-20'></div>

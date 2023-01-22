@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button, Input, InputGroup, InputRightElement, Link as ChakraLink, useToast} from "@chakra-ui/react";
 import {Link, useNavigate} from 'react-router-dom';
-import { useDispatch } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {User, userUpdate} from '../../features/User/userSlice'
 import {useForm} from "react-hook-form";
 
@@ -21,7 +21,6 @@ export const Login = () => {
     const {register, handleSubmit}  = useForm<any>();
     const toast = useToast();
 
-
     const onSubmit =  async (formData:any) => {
         try{
             const res = await fetch('http://localhost:3001/login',{
@@ -40,7 +39,9 @@ export const Login = () => {
                 user:data.user,
                 token:data.accessToken
             }));
-            navigate("/home")
+
+            navigate('/home')
+
 
         }catch(e){
             toast({

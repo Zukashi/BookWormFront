@@ -20,6 +20,7 @@ export interface Book {
     rating:number,
     sumOfRates:number,
     amountOfRates:number,
+    imageSrc:string,
 }
 
 export const AdminBookList = () => {

@@ -6,11 +6,25 @@ import {RootState} from "../../app/store";
 import {Book} from "./OneBook";
 import {Button, Checkbox, Select, Spinner, Textarea} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
+import * as yup from "yup";
+import {yupResolver} from "@hookform/resolvers/yup";
 
-
+export interface AddReview {
+    rating :number,
+    spoilers:boolean,
+    status:string,
+    description:string,
+}
+let schemaAddReview = yup.object().shape({
+    rating: yup.number().required().max(5).min(1),
+    spoilers: yup.boolean().required(),
+    status:yup.string().required(),
+});
 export const ReviewAdd = () => {
     const {user} = useSelector((state: RootState) => state.user);
-    const {register, handleSubmit} = useForm()
+    const {register, handleSubmit, formState:{errors}} = useForm<AddReview>({
+        resolver: yupResolver(schemaAddReview)
+    })
     const [book, setBook] = useState<Book|null>();
     const navigate = useNavigate();
     const {bookId} = useParams();
@@ -24,7 +38,7 @@ export const ReviewAdd = () => {
         spoilers:false,
     });
     const [hover, setHover] = React.useState(0)
-
+    console.log(errors)
     useEffect(() => {
         (async () => {
             const res = await fetch(`http://localhost:3001/book/${bookId}`, {
@@ -32,23 +46,14 @@ export const ReviewAdd = () => {
             });
             const data = await res.json();
             setBook(data);
-           try{
-               const res2 = await fetch(`http://localhost:3001/user/${user._id}/book/${data._id}`,{
-                   credentials:'include'
-               });
 
-               const data2 = await res2.json();
-               console.log(324);
-               setReview(data2)
-           }catch(e){
-               console.log('error occurred')
-           }
             setLoading(false)
         })();
 
     }, []);
     const onSubmit = async (data:any) => {
-        data.rating = review.rating
+        data.rating = review.rating;
+        console.log(data)
         try{
             await fetch(`http://localhost:3001/user/${user._id}/book/${bookId}`,{
                 credentials:'include',
@@ -110,6 +115,7 @@ export const ReviewAdd = () => {
                     })
 
                 }
+                {errors.rating && <p className='text-white-400 font-medium w-52' role="alert">{errors.rating.message}</p>}
                 <Textarea {...register('description')} placeholder='Write a review (optional)'/>
                 <div className='flex mt-4 '><Checkbox {...register('spoilers')} iconSize='' className='w-4 h-4 mt-1 mr-2  '/><label>This review contains spoilers</label></div>
                 <input type='submit' className='font-medium text-xl bg-black px-4 py-2 rounded-xl text-white mt-5'></input>
