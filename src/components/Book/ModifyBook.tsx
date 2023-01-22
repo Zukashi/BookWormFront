@@ -18,7 +18,7 @@ export const ModifyBook = () => {
         subjects:book?.subjects,
         subject_people:book?.subject_people,
         publishers:book?.publishers,
-
+        imageSrc:book?.imageSrc,
     });
     const updateForm = (value:string,fieldName:string) => {
         setForm((prev) => ({
@@ -60,6 +60,8 @@ export const ModifyBook = () => {
         <div className='w-[90vw] m-auto'><form action="">
             <div><h2 className='mb-2'>Title:</h2>
                 <input ref={inputRef} className='mb-6 w-[100%] px-3 py-1.5 outline-none ring-[#E2E8F0] ring-1 focus:ring-[#3182ce] focus:ring-2 rounded-md' value={form.title} onChange={(event) => updateForm(event.target.value,'title')}/></div>
+            <div><h2 className='mb-2'>Image:</h2>
+                <input ref={inputRef} placeholder='http://...' className='mb-6 w-[100%] px-3 py-1.5 outline-none ring-[#E2E8F0] ring-1 focus:ring-[#3182ce] focus:ring-2 rounded-md' value={form.imageSrc} onChange={(event) => updateForm(event.target.value,'imageSrc')}/></div>
             <div><h2 className='mb-2'>Publishers:</h2>
                 <input ref={inputRef} className='mb-6 w-[100%] px-3 py-1.5 outline-none ring-[#E2E8F0] ring-1 focus:ring-[#3182ce] focus:ring-2 rounded-md' value={form.publishers} onChange={(event) => updateForm(event.target.value,'publishers')}/></div>
             <div><h2 className='mb-2'>Subjects:</h2>
