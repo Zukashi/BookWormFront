@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useLocation, useParams} from "react-router";
 import {AuthorDocs} from "../../features/Author/authorSlice";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {HomeNav} from "../Home/HomeNav";
 import {BooksSearchBar} from "../Home/HintsSearchBar";
 import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
 import {Button, Progress, Spinner} from "@chakra-ui/react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import dayjs from "dayjs";
 import {OneReviewOrdinary} from "./OneReviewOrdinary";
@@ -35,7 +35,9 @@ export interface Book {
 }
 
 export const OneBook = () => {
-
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {user} = useSelector((state: RootState) => state.user);
   const [book, setBook] = useState<Book|null>();
   const {bookId} = useParams();
@@ -48,6 +50,41 @@ export const OneBook = () => {
   const [review, setReview] = useState<any>();
   const [reviews, setReviews] = useState<any[]>();
 
+  const refresh = async () => {
+    try{
+      const res = await fetch(`http://localhost:3001/book/${bookId}`, {
+        credentials:'include'
+      });
+      const data = await res.json();
+      setBook(data);
+      const res3 = await fetch(`http://localhost:3001/book/${data._id}`, {
+        credentials:'include'
+      })
+      const data3 = await res3.json();
+      setRating(data3.rating);
+      const res5 = await fetch(`http://localhost:3001/book/${data._id}/reviews`);
+      const data5 = await res5.json();
+      setReviews(data5)
+      const res2 = await fetch(`http://localhost:3001/user/${user._id}/book/${data._id}`,{
+        credentials:'include'
+      });
+
+      const data2 = await res2.json();
+      console.log(data2, 'useEffect')
+      setReview(data2)
+      setPersonalRating(data2.rating)
+    }catch (e) {
+      console.log('catcherror')
+    }
+
+    console.log(user)
+    setLoading(false)
+  };
+  console.log(reviews);
+  useEffect(() => {
+      refresh()
+
+  }, []);
   const handleClick = async (value:number) => {
     setPersonalRating(value)
     await fetch(`http://localhost:3001/book/${book?._id}/${value}`,{
@@ -69,40 +106,9 @@ export const OneBook = () => {
     });
     const data = await res.json();
     setBook(data)
-    setRating(data.rating)
+    setRating(data.rating);
+    refresh();
   };
-  useEffect(() => {
-    (async () => {
-      const res = await fetch(`http://localhost:3001/book/${bookId}`, {
-        credentials:'include'
-      });
-      const data = await res.json();
-      setBook(data);
-      const res3 = await fetch(`http://localhost:3001/book/${data._id}`, {
-        credentials:'include'
-      })
-      const data3 = await res3.json();
-      setRating(data3.rating);
-      try{
-        const res5 = await fetch(`http://localhost:3001/book/${data._id}/reviews`);
-        const data5 = await res5.json();
-        setReviews(data5)
-        const res2 = await fetch(`http://localhost:3001/user/${user._id}/book/${data._id}`,{
-          credentials:'include'
-        });
-
-        const data2 = await res2.json();
-        console.log(data2, 'useEffect')
-        setReview(data2)
-        setPersonalRating(data2.rating)
-      }catch(err){
-        console.log('error occurred')
-      }
-      setLoading(false)
-    })();
-
-  }, []);
-
   const stars = Array(5).fill(0);
   const handleMouseOver = (value:number) => {
     setHover(value)
@@ -134,7 +140,7 @@ export const OneBook = () => {
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(rating) > index && `text-[#faaf00]`} ` } key={index} ></i>
+                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(rating) - 1 > index  && `text-[#faaf00]`} ` } key={index} ></i>
 
               )
             })
@@ -175,7 +181,7 @@ export const OneBook = () => {
             {
               stars.map((_, index) => {
                 return (
-                    <i className={`fa-solid fa-star text-md cursor-pointer ${(hover || personalRating) > index  && `text-[#faaf00]`} ` } key={index}  ></i>
+                    <i className={`fa-solid fa-star text-md cursor-pointer ${(hover || personalRating)  > index  && `text-[#faaf00]`} ` } key={index}  ></i>
 
                 )
               })
@@ -197,7 +203,7 @@ export const OneBook = () => {
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-2xl self-center  cursor-pointer ${(rating) > index && `text-[#faaf00]`} ` } key={index} ></i>
+                  <i className={`fa-solid fa-star text-2xl self-center  cursor-pointer ${(rating) - 1 > index && `text-[#faaf00]`} ` } key={index} ></i>
 
               )
             })
@@ -208,23 +214,25 @@ export const OneBook = () => {
         <div className='flex flex-col gap-5 mt-4'>
               <div className='flex gap-3 items-center'>
 
-                <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && ((book.ratingTypeAmount[4] / sumOfRatings ) * 100)} /> <p className='w-20 flex '> {book.ratingTypeAmount[4]} { sumOfRatings ? <p>({(book.ratingTypeAmount[4] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
+                <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && ((book.ratingTypeAmount[4] / sumOfRatings ) * 100)} /> <p className='w-20 flex '> {book.ratingTypeAmount[4]} { sumOfRatings ? <p>({((book.ratingTypeAmount[4] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
               </div>
           <div className='flex gap-3 items-center'>
-            <h3>4 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={sumOfRatings && (book.ratingTypeAmount[3] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[3]} { sumOfRatings ? <p>({(book.ratingTypeAmount[3] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
+            <h3>4 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={sumOfRatings && (book.ratingTypeAmount[3] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[3]} { sumOfRatings ? <p>({((book.ratingTypeAmount[3] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
           <div className='flex gap-3 items-center'>
-            <h3>3 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && (book.ratingTypeAmount[2] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[2]} { sumOfRatings ? <p>({(book.ratingTypeAmount[2] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
+            <h3>3 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && (book.ratingTypeAmount[2] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[2]} { sumOfRatings ? <p>({((book.ratingTypeAmount[2] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
           <div className='flex gap-3 items-center'>
-            <h3>2 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={sumOfRatings && (book.ratingTypeAmount[1] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[1]} { sumOfRatings ? <p>({(book.ratingTypeAmount[1] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
+            <h3>2 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={sumOfRatings && (book.ratingTypeAmount[1] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[1]} { sumOfRatings ? <p>({((book.ratingTypeAmount[1] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
           <div className='flex gap-3 items-center'>
-            <h3>1 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && (book.ratingTypeAmount[0] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[0]} { sumOfRatings ? <p>({(book.ratingTypeAmount[0] / sumOfRatings ) * 100}%)</p>: <p className='inline-block'>(0%)</p>}</p>
+            <h3>1 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && (book.ratingTypeAmount[0] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[0]} { sumOfRatings ? <p>({((book.ratingTypeAmount[0] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
         </div>
       </div>
+        <div className='flex flex-col gap-6 mt-3'>
         {reviews?.map((review) => <OneReviewOrdinary key={review._id} review={review}/>)}
+        </div>
       </div>
     </section>
 
