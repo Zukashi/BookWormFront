@@ -21,48 +21,23 @@ import {ResetPassword} from "./components/Login/ResetPassword";
 import { ReviewAdd } from './components/Book/ReviewAdd';
 import {ReviewEdit} from "./components/Book/ReviewEdit";
 import {useLocation} from "react-router";
+import {useAxiosPrivate} from "./hooks/useAxiosPrivate";
+import PersistLogin from "./components/PersistLogin";
 
 export const AllRoutes = () => {
   const dispatch = useDispatch();
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate()
     const {user} = useSelector((state: RootState) => state.user);
     const location = useLocation();
-    useEffect(() => {
-        (async () => {
-            const res = await fetch(`http://localhost:3001/auth/refreshToken`,{
-                method:"POST",
-                credentials:'include'
-            })
-            if(res.status === 403){
-                console.log(41)
-                navigate('/')
-            }
-            const data = await res.json();
-            console.log(data)
-            dispatch(userUpdate({
-                user:data.user,
-                token:data.token
-            }))
 
-
-
-        })()
-    },[]);
-    console.log(user)
-    while(typeof user._id !== 'string' || user._id === '' && location.pathname !== '/' ){
-
-            return <>
-                <div className='pt-20'></div>
-                <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
-
-    }
     console.log(user)
     return (<>
 
             <Routes>
                 <Route path='/' element={<LoginPageView/>}/>
                 <Route path='/create-account' element={<Register/>}/>
-                <Route path='/home' element={<HomeView/>}/>
+               <Route element={<PersistLogin/>}> <Route path='home' element={<HomeView/>}/>
                 <Route path='/author/:authorId' element={<AuthorView/>}/>
               <Route path='/book/:bookId' element={<BookView/>}/>
               <Route path='/reset-password' element={<ResetPassword/>}/>
@@ -81,6 +56,7 @@ export const AllRoutes = () => {
                 </Route>}
 
                 {user.role === 'admin' && <Route path='/addBook' element={<AddBookAdmin/>}></Route>}
+               </Route>
             </Routes>
 
     </>)
