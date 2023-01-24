@@ -3,30 +3,17 @@ import React, {useEffect, useRef, useState} from "react";
 import { useSelector } from "react-redux";
 import { OneBookHome} from "./OneBook";
 import {useNavigate} from "react-router-dom";
-
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 export const MainBooks = () => {
   const {user, token} = useSelector((rootState:any) => rootState.user)
   const [books, setBooks] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   useEffect(() => {
     (async() => {
-      const res = await fetch(`http://localhost:3001/books`, {
-        credentials:'include'
-      });
-      if(res.status === 401){
-        console.log(333)
-         const res2 = await fetch(`http://localhost:3001/auth/refreshToken`, {
-           method:'POST',
-           credentials:'include'
-         })
-        if(res2.status === 403){
-          navigate('/')
-        }
+      const res = await axiosPrivate.get(`http://localhost:3001/books`);
+      setBooks(res.data)
 
-      }else if (res.status === 200){
-        const data = await res.json();
-        setBooks(data)
-      }
     // @TODO do that for each fetch but first make function that takes query and returns response from server
     })()
   },[]);

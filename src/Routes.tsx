@@ -36,7 +36,7 @@ export const AllRoutes = () => {
             if(res.status === 403){
                 console.log(41)
                 navigate('/')
-            };
+            }
             const data = await res.json();
             console.log(data)
             dispatch(userUpdate({
