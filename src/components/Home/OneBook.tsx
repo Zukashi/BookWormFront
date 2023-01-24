@@ -17,13 +17,6 @@ export const OneBookHome = ({book,refresh}:Props) => {
   const [rating,setRating] = useState<number>(0);
   const [hover, setHover] = React.useState(0);
   const stars = Array(5).fill(0);
-  const handleClick = async (value:number) => {
-      setRating(value)
-    await fetch(`http://localhost:3001/book/${book._id}/${value}`,{
-      method:'PUT',
-      credentials:'include'
-    })
-  }
 
   const handleMouseOver = (value:number) => {
     setHover(value)
@@ -131,7 +124,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
         {
           stars.map((_, index) => {
             return (
-                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) + 0.01 > index  && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) + 0.01 > index  && `text-[#faaf00]`} ` } key={index}></i>
 
             )
           })
