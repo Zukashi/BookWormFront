@@ -1,9 +1,14 @@
 import { axiosPrivate } from "../api/axios";
 import { useEffect } from "react";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import {userUpdate} from "../features/User/userSlice";
+import {useDispatch} from "react-redux";
 
 
-const useAxiosPrivate = () => {
-
+export const useAxiosPrivate = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     useEffect(() => {
 
         const requestIntercept = axiosPrivate.interceptors.request.use(
@@ -19,10 +24,14 @@ const useAxiosPrivate = () => {
                 const prevRequest = error?.config;
                 if (error?.response?.status === 401 && !prevRequest?.sent) {
                     prevRequest.sent = true;
-                    await fetch(`http://localhost:3001/auth/refreshToken`,{
+                    const res = await axios(`http://localhost:3001/auth/refreshToken`,{
                         method:'POST',
-                        credentials:'include'
+                        withCredentials:true,
                     });
+                    dispatch(userUpdate({
+                        user:res.data.user,
+                        token:res.data.token
+                    }))
 
                     return axiosPrivate(prevRequest);
                 }
@@ -38,5 +47,3 @@ const useAxiosPrivate = () => {
 
     return axiosPrivate;
 }
-
-export default useAxiosPrivate;
