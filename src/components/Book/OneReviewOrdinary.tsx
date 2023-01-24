@@ -15,7 +15,6 @@ export const OneReviewOrdinary = (props:any) => {
     const [personalReview, setPersonalReview] = useState<any>();
     const [showFullText , setShowFullText] = useState(false)
     const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false);
-    console.log(props, 'props')
     useEffect(() => {
         (async() => {
             const res2 = await fetch(`http://localhost:3001/user/${props.review.user._id}/book/${params.bookId}`,{
@@ -33,7 +32,7 @@ export const OneReviewOrdinary = (props:any) => {
     return (<>
         <div className='ml-[1.5rem]'>
             <div className='w-full flex'>
-                <img className='w-[1.9rem] pt-1.5' src={user.base64Avatar} alt=""/>
+                <img className='w-[1.9rem] pt-1.5' src={props.review.user.base64Avatar} alt=""/>
                 <p className='ml-3 font-medium'>{props.review.user.username}</p>
             </div>
             <div className='flex items-end gap-[4rem]'>

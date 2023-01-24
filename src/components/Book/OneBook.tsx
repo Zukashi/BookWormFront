@@ -49,7 +49,8 @@ export const OneBook = () => {
   const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
   const [review, setReview] = useState<any>();
   const [reviews, setReviews] = useState<any[]>();
-
+  const [filterStars, setFilterStars] = useState<boolean>(false);
+  const [filerRate, setFilterRate] = useState<number>(0);
   const refresh = async () => {
     try{
       const res = await fetch(`http://localhost:3001/book/${bookId}`, {
@@ -70,17 +71,22 @@ export const OneBook = () => {
       });
 
       const data2 = await res2.json();
-      console.log(data2, 'useEffect')
       setReview(data2)
       setPersonalRating(data2.rating)
     }catch (e) {
       console.log('catcherror')
     }
-
-    console.log(user)
     setLoading(false)
   };
   console.log(reviews);
+  const changeFilter = (rating:number) => {
+    setFilterRate(rating);
+    setFilterStars((prev) => !prev);
+    const filteredReviewsByRating = reviews?.filter((review) => {
+      return review.rating === rating
+    });
+    setReviews(filteredReviewsByRating)
+  }
   useEffect(() => {
       refresh()
 
@@ -128,7 +134,6 @@ export const OneBook = () => {
       (accumulator, currentValue) => accumulator + currentValue,
       0
   );
-  console.log(reviews)
   return (<>
     <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
       <HomeNav/>
@@ -203,7 +208,7 @@ export const OneBook = () => {
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-2xl self-center  cursor-pointer ${(rating) - 1 > index && `text-[#faaf00]`} ` } key={index} ></i>
+                  <i className={`fa-solid fa-star text-2xl self-center  cursor-pointer ${(rating)  > index && `text-[#faaf00]`} ` } key={index} ></i>
 
               )
             })
@@ -212,7 +217,7 @@ export const OneBook = () => {
         </div>
 
         <div className='flex flex-col gap-5 mt-4'>
-              <div className='flex gap-3 items-center'>
+              <div className='flex gap-3 items-center' onClick={() => changeFilter(5)}>
 
                 <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && ((book.ratingTypeAmount[4] / sumOfRatings ) * 100)} /> <p className='w-20 flex '> {book.ratingTypeAmount[4]} { sumOfRatings ? <p>({((book.ratingTypeAmount[4] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
               </div>
