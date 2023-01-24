@@ -49,7 +49,10 @@ export const OneBook = () => {
   const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
   const [review, setReview] = useState<any>();
   const [reviews, setReviews] = useState<any[]>();
-
+  const [originalReviews, setOriginalReviews] = useState<any[]>()
+  const [filterStars, setFilterStars] = useState<boolean>(false);
+  const [filterRate, setFilterRate] = useState<number>(0);
+  const [isHighlighted, setIsHighlighted] = useState<boolean[]>([false,false,false,false,false])
   const refresh = async () => {
     try{
       const res = await fetch(`http://localhost:3001/book/${bookId}`, {
@@ -64,23 +67,47 @@ export const OneBook = () => {
       setRating(data3.rating);
       const res5 = await fetch(`http://localhost:3001/book/${data._id}/reviews`);
       const data5 = await res5.json();
-      setReviews(data5)
+      setReviews(data5);
+      setOriginalReviews(data5)
       const res2 = await fetch(`http://localhost:3001/user/${user._id}/book/${data._id}`,{
         credentials:'include'
       });
 
       const data2 = await res2.json();
-      console.log(data2, 'useEffect')
       setReview(data2)
       setPersonalRating(data2.rating)
     }catch (e) {
       console.log('catcherror')
     }
-
-    console.log(user)
     setLoading(false)
   };
-  console.log(reviews);
+
+  const changeFilter = async (rating:number) => {
+    setFilterRate(rating);
+    setFilterStars((prev) => !prev);
+    setIsHighlighted((prev) => {
+      const newArray = [false,false,false,false,false];
+      prev[rating - 1] = !prev[rating-1]
+      if(filterRate !== rating){
+        newArray[rating- 1] = !newArray[rating - 1]
+        return newArray
+      }else{
+        return prev
+      }
+
+    })
+    if (rating !== filterRate){
+      const filteredReviewsByRating = originalReviews?.filter((review) => {
+        return review.rating === rating
+      });
+      setReviews(filteredReviewsByRating)
+    } else if (filterRate === rating){
+      setFilterRate(0)
+      const res5 = await fetch(`http://localhost:3001/book/${book?._id}/reviews`);
+      const data5 = await res5.json();
+      setReviews(data5)
+    }
+  }
   useEffect(() => {
       refresh()
 
@@ -128,7 +155,7 @@ export const OneBook = () => {
       (accumulator, currentValue) => accumulator + currentValue,
       0
   );
-  console.log(reviews)
+  console.log(filterStars)
   return (<>
     <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
       <HomeNav/>
@@ -203,7 +230,7 @@ export const OneBook = () => {
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-2xl self-center  cursor-pointer ${(rating) - 1 > index && `text-[#faaf00]`} ` } key={index} ></i>
+                  <i className={`fa-solid fa-star text-2xl self-center  cursor-pointer ${(rating) - 1  > index && `text-[#faaf00]`} ` } key={index} ></i>
 
               )
             })
@@ -212,22 +239,11 @@ export const OneBook = () => {
         </div>
 
         <div className='flex flex-col gap-5 mt-4'>
-              <div className='flex gap-3 items-center'>
 
-                <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && ((book.ratingTypeAmount[4] / sumOfRatings ) * 100)} /> <p className='w-20 flex '> {book.ratingTypeAmount[4]} { sumOfRatings ? <p>({((book.ratingTypeAmount[4] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
-              </div>
-          <div className='flex gap-3 items-center'>
-            <h3>4 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={sumOfRatings && (book.ratingTypeAmount[3] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[3]} { sumOfRatings ? <p>({((book.ratingTypeAmount[3] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
-          </div>
-          <div className='flex gap-3 items-center'>
-            <h3>3 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && (book.ratingTypeAmount[2] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[2]} { sumOfRatings ? <p>({((book.ratingTypeAmount[2] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
-          </div>
-          <div className='flex gap-3 items-center'>
-            <h3>2 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={sumOfRatings && (book.ratingTypeAmount[1] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[1]} { sumOfRatings ? <p>({((book.ratingTypeAmount[1] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
-          </div>
-          <div className='flex gap-3 items-center'>
-            <h3>1 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && (book.ratingTypeAmount[0] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[0]} { sumOfRatings ? <p>({((book.ratingTypeAmount[0] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
-          </div>
+            {book.ratingTypeAmount.map((item,index) =>        <div className='flex gap-3 items-center' onClick={() => changeFilter(book?.ratingTypeAmount.length  - index)}>      <h3 className={`border-b-[0.19rem] border-b-black mb-0.5 ${isHighlighted[book?.ratingTypeAmount.length - 1 - index] && 'border-b-orange-400'} `}>{`${book?.ratingTypeAmount.length  - index}`} stars </h3>  <div className={`px-[0.6rem] py-[1rem] ${isHighlighted[book?.ratingTypeAmount.length - 1 - index] && 'bg-[#c1c1c1]'
+            } rounded-2xl`}><Progress className='h-3 w-[37vw] rounded-xl' size='xl' value={sumOfRatings && ((book?.ratingTypeAmount[book?.ratingTypeAmount.length - 1 -  index] / sumOfRatings ) * 100)} /></div> <p className='w-20 flex '> {book.ratingTypeAmount[book?.ratingTypeAmount.length - 1 - index]} { sumOfRatings ? <p>({((book.ratingTypeAmount[book?.ratingTypeAmount.length -1 - index] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>   </div> )}
+
+
         </div>
       </div>
         <div className='flex flex-col gap-6 mt-3'>
