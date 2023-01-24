@@ -49,8 +49,9 @@ export const OneBook = () => {
   const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
   const [review, setReview] = useState<any>();
   const [reviews, setReviews] = useState<any[]>();
+  const [originalReviews, setOriginalReviews] = useState<any[]>()
   const [filterStars, setFilterStars] = useState<boolean>(false);
-  const [filerRate, setFilterRate] = useState<number>(0);
+  const [filterRate, setFilterRate] = useState<number>(0);
   const refresh = async () => {
     try{
       const res = await fetch(`http://localhost:3001/book/${bookId}`, {
@@ -65,7 +66,8 @@ export const OneBook = () => {
       setRating(data3.rating);
       const res5 = await fetch(`http://localhost:3001/book/${data._id}/reviews`);
       const data5 = await res5.json();
-      setReviews(data5)
+      setReviews(data5);
+      setOriginalReviews(data5)
       const res2 = await fetch(`http://localhost:3001/user/${user._id}/book/${data._id}`,{
         credentials:'include'
       });
@@ -78,14 +80,21 @@ export const OneBook = () => {
     }
     setLoading(false)
   };
-  console.log(reviews);
-  const changeFilter = (rating:number) => {
+
+  const changeFilter = async (rating:number) => {
     setFilterRate(rating);
     setFilterStars((prev) => !prev);
-    const filteredReviewsByRating = reviews?.filter((review) => {
-      return review.rating === rating
-    });
-    setReviews(filteredReviewsByRating)
+
+    if (rating !== filterRate){
+      const filteredReviewsByRating = originalReviews?.filter((review) => {
+        return review.rating === rating
+      });
+      setReviews(filteredReviewsByRating)
+    } else if (filterRate === rating){
+      const res5 = await fetch(`http://localhost:3001/book/${book?._id}/reviews`);
+      const data5 = await res5.json();
+      setReviews(data5)
+    }
   }
   useEffect(() => {
       refresh()
@@ -221,16 +230,16 @@ export const OneBook = () => {
 
                 <h3>5 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && ((book.ratingTypeAmount[4] / sumOfRatings ) * 100)} /> <p className='w-20 flex '> {book.ratingTypeAmount[4]} { sumOfRatings ? <p>({((book.ratingTypeAmount[4] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
               </div>
-          <div className='flex gap-3 items-center'>
+          <div className='flex gap-3 items-center' onClick={() => changeFilter(4)}>
             <h3>4 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={sumOfRatings && (book.ratingTypeAmount[3] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[3]} { sumOfRatings ? <p>({((book.ratingTypeAmount[3] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
-          <div className='flex gap-3 items-center'>
+          <div className='flex gap-3 items-center' onClick={() => changeFilter(3)}>
             <h3>3 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && (book.ratingTypeAmount[2] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[2]} { sumOfRatings ? <p>({((book.ratingTypeAmount[2] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
-          <div className='flex gap-3 items-center'>
+          <div className='flex gap-3 items-center' onClick={() => changeFilter(2)}>
             <h3>2 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl '  size='xl' value={sumOfRatings && (book.ratingTypeAmount[1] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[1]} { sumOfRatings ? <p>({((book.ratingTypeAmount[1] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
-          <div className='flex gap-3 items-center'>
+          <div className='flex gap-3 items-center' onClick={() => changeFilter(1)}>
             <h3>1 stars </h3>  <Progress className='h-2 w-[40vw] rounded-xl'  size='xl' value={sumOfRatings && (book.ratingTypeAmount[0] / sumOfRatings ) * 100} /> <p className='w-20 flex '> {book.ratingTypeAmount[0]} { sumOfRatings ? <p>({((book.ratingTypeAmount[0] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>
           </div>
         </div>
