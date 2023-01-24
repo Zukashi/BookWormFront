@@ -3,7 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import { useSelector } from "react-redux";
 import { OneBookHome} from "./OneBook";
 import {useNavigate} from "react-router-dom";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 export const MainBooks = () => {
   const {user, token} = useSelector((rootState:any) => rootState.user)
   const [books, setBooks] = useState([]);
