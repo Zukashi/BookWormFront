@@ -178,7 +178,7 @@ export const OneBook = () => {
             }
           </div>
           <h3 className='text-[1rem] font-medium mb-5'>Rate this book</h3>
-          <Link to={`/review/edit/${bookId}`}><button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button></Link>
+          <Link to={`/review/new/${bookId}`}><button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button></Link>
         </div>:
             <div className='ml-[1.7rem] pb-5'>
           <h1 className='text-[1.1rem] font-[500] mb-3'>My Review</h1>
@@ -208,7 +208,7 @@ export const OneBook = () => {
               <button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'><Link to={`/review/edit/${bookId}`} className='flex  gap-2'>
                 <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 inline-block' alt="pen"/><p className='flex items-start '>Edit Review</p></Link></button>
         </div>}
-      <div className='ml-[1.7rem]'><h2 className='text-[1.22rem] font-bold'>Community Reviews</h2>
+      <div className='ml-[1.7rem] mt-12'><h2 className='text-[1.22rem] font-bold'>Community Reviews</h2>
         <div className='flex justify-start mt-4 gap-3 items-center '>
           {
             stars.map((_, index) => {
