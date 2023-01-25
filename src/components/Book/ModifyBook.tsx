@@ -2,6 +2,7 @@ import React, {MouseEventHandler, useEffect, useRef, useState} from 'react'
 import { HomeAdminNav } from '../Home/AdminHome/HomeAdminNav'
 import {useNavigate, useParams} from "react-router-dom"
 import {Book} from "./AdminBookList";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 export const ModifyBook = () => {
     const {id} = useParams();
@@ -9,6 +10,7 @@ export const ModifyBook = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
     console.log(book)
     const [form ,setForm] = useState({
         _id:book?._id,
@@ -28,12 +30,9 @@ export const ModifyBook = () => {
     }
     useEffect(() => {
         (async() => {
-           const res = await fetch(`http://localhost:3001/book/${id}`, {
-               credentials:'include'
-           })
-           const data = await res.json();
-           setBook(data);
-           setForm(data)
+           const res = await axiosPrivate.get(`http://localhost:3001/book/${id}`)
+           setBook(res.data);
+           setForm(res.data)
         })()
         if(inputRef.current){
             inputRef.current.focus()
@@ -44,14 +43,7 @@ export const ModifyBook = () => {
     }
     const onSubmit:MouseEventHandler<HTMLButtonElement> = async (e) => {
         e.preventDefault();
-        await fetch(`http://localhost:3001/book/${book._id}`,{
-            method:'PUT',
-            credentials:'include',
-            headers:{
-                'Content-type':'application/json',
-            },
-            body:JSON.stringify(form)
-        });
+        await axiosPrivate.put(`http://localhost:3001/book/${book._id}`,JSON.stringify(form));
         navigate('/admin/books')
     }
     return (<>
