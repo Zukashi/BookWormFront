@@ -50,7 +50,6 @@ export const ReviewEdit = () => {
         navigate(`${`/book/${book?._id}`}`)
         await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${lastReviewRating}`);
         window.location.reload();
-
     }
     const onSubmit = async (data:any) => {
         data.rating = review.rating

@@ -74,7 +74,12 @@ export const OneBook = () => {
     }
     setLoading(false)
   };
-
+  const deleteReview = async () => {
+    navigate(`${`/book/${book?._id}`}`)
+    await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${personalRating}`);
+    setPersonalRating(0)
+    refresh();
+  }
   const changeFilter = async (rating:number) => {
     setFilterRate(rating);
     setFilterStars((prev) => !prev);
@@ -205,8 +210,11 @@ export const OneBook = () => {
                   className="fa-solid fa-arrow-down" ></i></button> : <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(false)}>Show Less <i
                   className="fa-solid fa-arrow-up" ></i></button> : null }
 
-              <button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'><Link to={`/review/edit/${bookId}`} className='flex  gap-2'>
+            <div className='flex justify-between'>
+              <button className='bg-white w-36 inline-block font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'><Link to={`/review/edit/${bookId}`} className='flex  gap-2'>
                 <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 inline-block' alt="pen"/><p className='flex items-start '>Edit Review</p></Link></button>
+              <button className='bg-white font-medium rounded-2xl mr-[1.7rem] p-[.5rem]   border-[#808080] flex items-center gap-2 mt-4' onClick={deleteReview}><i className="fa-solid fa-trash"></i></button>
+            </div>
         </div>}
       <div className='ml-[1.7rem] mt-12'><h2 className='text-[1.22rem] font-bold'>Community Reviews</h2>
         <div className='flex justify-start mt-4 gap-3 items-center '>
