@@ -1,6 +1,6 @@
 {
   "name": "book-worm-front",
-  "version": "0.3.18",
+  "version": "0.3.19",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.3.2",
