@@ -38,24 +38,24 @@ export const AllRoutes = () => {
                 <Route path='/' element={<LoginPageView/>}/>
                 <Route path='/create-account' element={<Register/>}/>
                <Route element={<PersistLogin/>}> <Route path='home' element={<HomeView/>}/>
-                <Route path='/author/:authorId' element={<AuthorView/>}/>
-              <Route path='/book/:bookId' element={<BookView/>}/>
-              <Route path='/reset-password' element={<ResetPassword/>}/>
-              <Route path='/user/:userId' element={<AccountView/>}></Route>
-                <Route path='/review/new/:bookId' element={<ReviewAdd/>}></Route>
-                <Route path='/review/edit/:bookId' element={<ReviewEdit/>}></Route>
-               <Route path='/edit/user/:userId' element={<EditAccount/>}></Route>
-            <Route path='/favorites/user/:userId' element={<Favorites/>}></Route>
-                {user.role === 'admin' &&  <Route path='/admin/books'>
+                <Route path='author/:authorId' element={<AuthorView/>}/>
+              <Route path='book/:bookId' element={<BookView/>}/>
+              <Route path='reset-password' element={<ResetPassword/>}/>
+              <Route path='user/:userId' element={<AccountView/>}></Route>
+                <Route path='review/new/:bookId' element={<ReviewAdd/>}></Route>
+                <Route path='review/edit/:bookId' element={<ReviewEdit/>}></Route>
+               <Route path='edit/user/:userId' element={<EditAccount/>}></Route>
+            <Route path='favorites/user/:userId' element={<Favorites/>}></Route>
+                {user.role === 'admin' &&  <Route path='admin/books'>
                     <Route index  element={<BookListView/>}></Route>
                     <Route path='modify/:id'element={<ModifyBook/>}></Route>
                 </Route>}
-                {user.role === 'admin' &&  <Route path='/admin/users'>
+                {user.role === 'admin' &&  <Route path='admin/users'>
                     <Route index  element={<UserListView/>}></Route>
                     <Route path='modify/:id'element={<ModifyUser/>}></Route>
                 </Route>}
 
-                {user.role === 'admin' && <Route path='/addBook' element={<AddBookAdmin/>}></Route>}
+                {user.role === 'admin' && <Route path='addBook' element={<AddBookAdmin/>}></Route>}
                </Route>
             </Routes>
 
