@@ -4,6 +4,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux'
 import {User, userUpdate} from '../../features/User/userSlice'
 import {useForm} from "react-hook-form";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 export interface Login {
     user:User,
@@ -20,24 +21,15 @@ export const Login = () => {
     const [error,setError] = useState(false);
     const {register, handleSubmit}  = useForm<any>();
     const toast = useToast();
-
+    const axiosPrivate = useAxiosPrivate();
     const onSubmit =  async (formData:any) => {
         try{
-            const res = await fetch('http://localhost:3001/login',{
-                method:'POST',
-                credentials: 'include',
-                headers:{
-                    'Content-type':'application/json'
-                },
-                body:JSON.stringify(formData),
-            });
-            const data:Login = await res.json();
-            console.log(data)
+            const res = await axiosPrivate.post('http://localhost:3001/login',JSON.stringify(formData));
 
 
             dispatch(userUpdate({
-                user:data.user,
-                token:data.accessToken
+                user:res.data.user,
+                token:res.data.accessToken
             }));
 
             navigate('/home')

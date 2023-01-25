@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from "react-router";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 export interface AuthorInterface {
   alternate_names : string[],
@@ -26,13 +27,13 @@ export const OneAuthor = () => {
   const {state} = location;
   const [data, setData] = useState<null |AuthorInterface>()
   const params = useParams();
+  const axiosPrivate = useAxiosPrivate();
   console.log(params);
   console.log(state)
   useEffect( () => {
     (async () => {
-      const res = await fetch(`http://localhost:3001/author/${params.authorId}`)
-      const data = await res.json();
-      setData(data);
+      const res = await axiosPrivate(`http://localhost:3001/author/${params.authorId}`)
+      setData(res.data);
     })()
   },[]);
   const date = new Date('2008-04-01T03:28:50.625462');

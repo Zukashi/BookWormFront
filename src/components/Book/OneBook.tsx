@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import dayjs from "dayjs";
 import {OneReviewOrdinary} from "./OneReviewOrdinary";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 export interface Book {
   amountOfRates: number;
   ratingTypeAmount: number[];
@@ -48,6 +49,7 @@ export const OneBook = () => {
   const [showFullText , setShowFullText] = useState(false)
   const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
   const [review, setReview] = useState<any>();
+  const axiosPrivate = useAxiosPrivate();
   const [reviews, setReviews] = useState<any[]>();
   const [originalReviews, setOriginalReviews] = useState<any[]>()
   const [filterStars, setFilterStars] = useState<boolean>(false);
@@ -55,33 +57,29 @@ export const OneBook = () => {
   const [isHighlighted, setIsHighlighted] = useState<boolean[]>([false,false,false,false,false])
   const refresh = async () => {
     try{
-      const res = await fetch(`http://localhost:3001/book/${bookId}`, {
-        credentials:'include'
-      });
-      const data = await res.json();
-      setBook(data);
-      const res3 = await fetch(`http://localhost:3001/book/${data._id}`, {
-        credentials:'include'
-      })
-      const data3 = await res3.json();
-      setRating(data3.rating);
-      const res5 = await fetch(`http://localhost:3001/book/${data._id}/reviews`);
-      const data5 = await res5.json();
-      setReviews(data5);
-      setOriginalReviews(data5)
-      const res2 = await fetch(`http://localhost:3001/user/${user._id}/book/${data._id}`,{
-        credentials:'include'
-      });
+      const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
+      setBook(res.data);
+      const res3 = await axiosPrivate.get(`http://localhost:3001/book/${res.data._id}`)
 
-      const data2 = await res2.json();
-      setReview(data2)
-      setPersonalRating(data2.rating)
+      setRating(res3.data.rating);
+      const res5 = await axiosPrivate.get(`http://localhost:3001/book/${res.data._id}/reviews`);
+      setReviews(res5.data);
+      setOriginalReviews(res5.data)
+      const res2 = await axiosPrivate(`http://localhost:3001/user/${user._id}/book/${res.data._id}`);
+
+      setReview(res2.data)
+      setPersonalRating(res2.data.rating)
     }catch (e) {
       console.log('catcherror')
     }
     setLoading(false)
   };
-
+  const deleteReview = async () => {
+    navigate(`${`/book/${book?._id}`}`)
+    await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${personalRating}`);
+    setPersonalRating(0)
+    refresh();
+  }
   const changeFilter = async (rating:number) => {
     setFilterRate(rating);
     setFilterStars((prev) => !prev);
@@ -103,9 +101,8 @@ export const OneBook = () => {
       setReviews(filteredReviewsByRating)
     } else if (filterRate === rating){
       setFilterRate(0)
-      const res5 = await fetch(`http://localhost:3001/book/${book?._id}/reviews`);
-      const data5 = await res5.json();
-      setReviews(data5)
+      const res5 = await axiosPrivate.get(`http://localhost:3001/book/${book?._id}/reviews`);
+      setReviews(res5.data)
     }
   }
   useEffect(() => {
@@ -114,26 +111,17 @@ export const OneBook = () => {
   }, []);
   const handleClick = async (value:number) => {
     setPersonalRating(value)
-    await fetch(`http://localhost:3001/book/${book?._id}/${value}`,{
-      method:'POST',
-      credentials:'include'
-    });
-    const res = await fetch(`http://localhost:3001/user/${user._id}/book/${bookId}`,{
-      credentials:'include',
-      method:'POST',
-      headers:{
-        'content-type':'application/json'
-      },
-      body:JSON.stringify({
+    await axiosPrivate.post(`http://localhost:3001/book/${book?._id}/${value}`);
+    const res = await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
         rating:value,
         description:'',
         status:'read',
         spoilers:false,
       })
-    });
-    const data = await res.json();
-    setBook(data)
-    setRating(data.rating);
+    );
+
+    setBook(res.data)
+    setRating(res.data.rating);
     refresh();
   };
   const stars = Array(5).fill(0);
@@ -222,15 +210,18 @@ export const OneBook = () => {
                   className="fa-solid fa-arrow-down" ></i></button> : <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(false)}>Show Less <i
                   className="fa-solid fa-arrow-up" ></i></button> : null }
 
-              <button className='bg-white font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'><Link to={`/review/edit/${bookId}`} className='flex  gap-2'>
+            <div className='flex justify-between'>
+              <button className='bg-white w-36 inline-block font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'><Link to={`/review/edit/${bookId}`} className='flex  gap-2'>
                 <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 inline-block' alt="pen"/><p className='flex items-start '>Edit Review</p></Link></button>
+              <button className='bg-white font-medium rounded-2xl mr-[1.7rem] p-[.5rem]   border-[#808080] flex items-center gap-2 mt-4' onClick={deleteReview}><i className="fa-solid fa-trash"></i></button>
+            </div>
         </div>}
-      <div className='ml-[1.7rem]'><h2 className='text-[1.22rem] font-bold'>Community Reviews</h2>
+      <div className='ml-[1.7rem] mt-12'><h2 className='text-[1.22rem] font-bold'>Community Reviews</h2>
         <div className='flex justify-start mt-4 gap-3 items-center '>
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-2xl self-center  cursor-pointer ${(rating) - 1  > index && `text-[#faaf00]`} ` } key={index} ></i>
+                  <i className={`fa-solid fa-star text-2xl self-center  cursor-pointer ${(rating) - 0.99  > index && `text-[#faaf00]`} ` } key={index} ></i>
 
               )
             })

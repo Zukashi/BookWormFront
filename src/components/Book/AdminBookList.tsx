@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom';
 import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
 import {OneRowInBookListAdmin} from "./OneRowInBookListAdmin";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 export interface Author {
     key:string,
 }
@@ -26,12 +27,10 @@ export interface Book {
 export const AdminBookList = () => {
     const [books ,setBooks] = useState<Book[]>([]);
     const [value, setValue] = useState('');
+    const axiosPrivate = useAxiosPrivate()
     const refreshBooks = async () => {
-        const res = await fetch('http://localhost:3001/books', {
-            credentials:'include'
-        });
-        const data = await res.json();
-        setBooks(data);
+        const res = await axiosPrivate.get('http://localhost:3001/books');
+        setBooks(res.data);
 
     }
     useEffect(() => {
@@ -40,16 +39,8 @@ export const AdminBookList = () => {
             return;
         };
         (async () => {
-            const res = await fetch(`http://localhost:3001/bookAdmin/search/${value}`,{
-                method:'POST',
-                credentials:'include',
-                headers:{
-                    'content-type':'application/json'
-                },
-                body:JSON.stringify({value})
-            });
-            const data = await res.json();
-            setBooks(data)
+            const res = await axiosPrivate.post(`http://localhost:3001/bookAdmin/search/${value}`,JSON.stringify({value}));
+            setBooks(res.data)
         })()
 
 

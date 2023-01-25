@@ -19,7 +19,7 @@ export const OneReviewOrdinary = (props:any) => {
     const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false);
     useEffect(() => {
         (async() => {
-            const res2 = await axiosPrivate(`http://localhost:3001/user/${props.review.user._id}/book/${params.bookId}`);
+            const res2 = await axiosPrivate.get(`http://localhost:3001/user/${props.review.user._id}/book/${params.bookId}`);
             setPersonalRating(res2.data.rating);
             setPersonalReview(res2.data)
         })()

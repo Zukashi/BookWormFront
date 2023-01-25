@@ -4,18 +4,18 @@ import {RootState} from "../../app/store";
 import {useParams} from "react-router-dom";
 import {Spinner} from "@chakra-ui/react";
 import dayjs from "dayjs";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 export const Profile = () => {
   const [user, setUser] = useState<any>(null);
   const params = useParams();
+  const axiosPrivate = useAxiosPrivate()
+
   const [loading, setLoading] = useState<boolean>(true)
     useEffect(() => {
         (async () => {
-           const res = await fetch(`http://localhost:3001/user/${params.userId}`, {
-               credentials:'include'
-           });
-           const data = await res.json();
-           setUser(data);
+           const res = await axiosPrivate.get(`http://localhost:3001/user/${params.userId}`);
+           setUser(res.data);
            setLoading(prev => !prev)
         })()
     }, []);

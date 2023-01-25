@@ -18,7 +18,6 @@ const PersistLogin = () => {
             try {
                 const res = await axiosPrivate.post(`http://localhost:3001/auth/refreshToken`)
                 if(res.status === 403){
-                    console.log(41)
                     navigate('/')
                 }
 

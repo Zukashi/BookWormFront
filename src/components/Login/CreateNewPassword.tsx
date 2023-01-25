@@ -1,23 +1,15 @@
 import React from 'react';
 import {useForm} from "react-hook-form";
 import {Input, useToast} from "@chakra-ui/react";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 export const CreateNewPassword = (props:any) => {
     const {register, handleSubmit} = useForm();
     const toast = useToast();
+    const axiosPrivate = useAxiosPrivate();
     const sendForm = async(data:any) => {
         if(data.newPassword === data.repeatNewPassword){
-         await fetch(`http://localhost:3001/user/${props.user._id}/newPassword`,
-             {
-                 credentials:'include',
-                 method:'PUT',
-                 headers:{
-                     'content-type':"application/json"
-                 },
-                 body:JSON.stringify({newPassword:data.newPassword})
-             },
-
-             )
+         await axiosPrivate.put(`http://localhost:3001/user/${props.user._id}/newPassword`,JSON.stringify({newPassword:data.newPassword}))
             toast({
                 title: `Password Changed`,
                 description: `Password has been changed`,

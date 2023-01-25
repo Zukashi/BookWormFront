@@ -1,23 +1,19 @@
 import React, {useEffect, useState} from 'react'
 import {Link} from "react-router-dom";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 export const OneRowInBookListAdmin = ({book, i, refresh }:any,) => {
     const [author, setAuthor] = useState<any>([]);
+    const axiosPrivate = useAxiosPrivate();
     useEffect(() => {
         ( async () => {
-            const res2 = await fetch(`http://localhost:3001/author${book.authors[0].key}`,{
-                credentials:'include'
-            });
-            const data2 = await res2.json();
-            setAuthor(data2)
+            const res2 = await axiosPrivate.get(`http://localhost:3001/author${book.authors[0].key}`);
+            setAuthor(res2.data)
         })()
     }, [])
 
      const deleteBook = async () =>  {
-        await fetch(`http://localhost:3001/book/${book._id}`,{
-            method:'DELETE',
-            credentials:'include'
-        })
+        await axiosPrivate.delete(`http://localhost:3001/book/${book._id}`)
          refresh();
     }
     return (<>

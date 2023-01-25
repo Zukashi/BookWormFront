@@ -12,19 +12,18 @@ import {
 } from "@chakra-ui/react";
 import {User} from "../../Account/admin/AdminUserList";
 import {Link} from "react-router-dom";
+import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 
 export const AvatarComponent = () => {
     const {user} = useSelector((state: RootState) => state.user);
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const axiosPrivate = useAxiosPrivate();
     const btnRef :any = React.useRef();
     const [preview, setPreview] = useState('');
     useEffect(() => {
         ( async () => {
-            const res = await fetch(`http://localhost:3001/user/${user._id}`, {
-                credentials:'include',
-            })
-            const data:User = await res.json();
-            setPreview(data.base64Avatar)
+            const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}`)
+            setPreview(res.data.base64Avatar)
         })()
     }, [])
     return (<>
@@ -44,6 +43,7 @@ export const AvatarComponent = () => {
                 </div>
                 <DrawerBody>
                     <div className='flex flex-col absolute z-10 bg-white  w-[150px] items-center   '>
+                        <div className='w-full flex h-14 w-full items-center '><Link to={`/user/${user._id}/books`}className='w-full flex justify-center hover:text-violet-600'><i className="fas fa-book pt-[4px] absolute left-0"></i>My books</Link></div>
                         <div className='w-full  flex items-center w-full h-14'><Link to={`/user/${user._id}`} className='w-full flex justify-center hover:text-violet-600'><i className="fa-regular fa-user pt-1.5 absolute left-0"></i>My Account</Link></div>
                         <div className='w-full  flex h-14 w-full items-center '><Link to={`/edit/user/${user._id}`}className='w-full flex justify-center hover:text-violet-600'><i
                             className="fa-regular fa-pen-to-square pt-[4px] absolute left-0"></i>Edit account</Link></div>
