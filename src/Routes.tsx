@@ -23,6 +23,7 @@ import {ReviewEdit} from "./components/Book/ReviewEdit";
 import {useLocation} from "react-router";
 import {useAxiosPrivate} from "./hooks/useAxiosPrivate";
 import PersistLogin from "./components/PersistLogin";
+import {UserBooks} from "./components/Account/UserBooks";
 
 export const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -41,7 +42,9 @@ export const AllRoutes = () => {
                 <Route path='author/:authorId' element={<AuthorView/>}/>
               <Route path='book/:bookId' element={<BookView/>}/>
               <Route path='reset-password' element={<ResetPassword/>}/>
-              <Route path='user/:userId' element={<AccountView/>}></Route>
+              <Route path='user/:userId' element={<AccountView/>}>
+              </Route>
+                   <Route path='user/:userId/books' element={<UserBooks/>}></Route>
                 <Route path='review/new/:bookId' element={<ReviewAdd/>}></Route>
                 <Route path='review/edit/:bookId' element={<ReviewEdit/>}></Route>
                <Route path='edit/user/:userId' element={<EditAccount/>}></Route>
