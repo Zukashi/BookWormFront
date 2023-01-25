@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {userUpdate} from "../../features/User/userSlice";
 import {Button, Input} from "@chakra-ui/react";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 export const AddBookAdmin = () => {
     const [form, setForm] = useState({
@@ -8,6 +9,7 @@ export const AddBookAdmin = () => {
         title:'',
         author:'',
     });
+    const axiosPrivate = useAxiosPrivate()
     const updateForm = (value:string,fieldName:string) => {
         setForm((prev) => ({
             ...prev,
@@ -16,14 +18,7 @@ export const AddBookAdmin = () => {
     }
     const onSubmit =  async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        await fetch('http://localhost:3001/book',{
-            method:'POST',
-            credentials:'include',
-            headers:{
-                'Content-type':'application/json'
-            },
-            body:JSON.stringify(form),
-        });
+        await axiosPrivate.post('http://localhost:3001/book',JSON.stringify(form));
 
     }
     return (<>
