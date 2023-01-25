@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import dayjs from "dayjs";
 import {OneReviewOrdinary} from "./OneReviewOrdinary";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 export interface Book {
   amountOfRates: number;
   ratingTypeAmount: number[];
@@ -48,6 +49,7 @@ export const OneBook = () => {
   const [showFullText , setShowFullText] = useState(false)
   const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
   const [review, setReview] = useState<any>();
+  const axiosPrivate = useAxiosPrivate();
   const [reviews, setReviews] = useState<any[]>();
   const [originalReviews, setOriginalReviews] = useState<any[]>()
   const [filterStars, setFilterStars] = useState<boolean>(false);
@@ -55,27 +57,18 @@ export const OneBook = () => {
   const [isHighlighted, setIsHighlighted] = useState<boolean[]>([false,false,false,false,false])
   const refresh = async () => {
     try{
-      const res = await fetch(`http://localhost:3001/book/${bookId}`, {
-        credentials:'include'
-      });
-      const data = await res.json();
-      setBook(data);
-      const res3 = await fetch(`http://localhost:3001/book/${data._id}`, {
-        credentials:'include'
-      })
-      const data3 = await res3.json();
-      setRating(data3.rating);
-      const res5 = await fetch(`http://localhost:3001/book/${data._id}/reviews`);
-      const data5 = await res5.json();
-      setReviews(data5);
-      setOriginalReviews(data5)
-      const res2 = await fetch(`http://localhost:3001/user/${user._id}/book/${data._id}`,{
-        credentials:'include'
-      });
+      const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
+      setBook(res.data);
+      const res3 = await axiosPrivate.get(`http://localhost:3001/book/${res.data._id}`)
 
-      const data2 = await res2.json();
-      setReview(data2)
-      setPersonalRating(data2.rating)
+      setRating(res3.data.rating);
+      const res5 = await axiosPrivate.get(`http://localhost:3001/book/${res.data._id}/reviews`);
+      setReviews(res5.data);
+      setOriginalReviews(res5.data)
+      const res2 = await axiosPrivate(`http://localhost:3001/user/${user._id}/book/${res.data._id}`);
+
+      setReview(res2.data)
+      setPersonalRating(res2.data.rating)
     }catch (e) {
       console.log('catcherror')
     }
@@ -103,9 +96,8 @@ export const OneBook = () => {
       setReviews(filteredReviewsByRating)
     } else if (filterRate === rating){
       setFilterRate(0)
-      const res5 = await fetch(`http://localhost:3001/book/${book?._id}/reviews`);
-      const data5 = await res5.json();
-      setReviews(data5)
+      const res5 = await axiosPrivate.get(`http://localhost:3001/book/${book?._id}/reviews`);
+      setReviews(res5.data)
     }
   }
   useEffect(() => {
@@ -114,26 +106,17 @@ export const OneBook = () => {
   }, []);
   const handleClick = async (value:number) => {
     setPersonalRating(value)
-    await fetch(`http://localhost:3001/book/${book?._id}/${value}`,{
-      method:'POST',
-      credentials:'include'
-    });
-    const res = await fetch(`http://localhost:3001/user/${user._id}/book/${bookId}`,{
-      credentials:'include',
-      method:'POST',
-      headers:{
-        'content-type':'application/json'
-      },
-      body:JSON.stringify({
+    await axiosPrivate.post(`http://localhost:3001/book/${book?._id}/${value}`);
+    const res = await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
         rating:value,
         description:'',
         status:'read',
         spoilers:false,
       })
-    });
-    const data = await res.json();
-    setBook(data)
-    setRating(data.rating);
+    );
+
+    setBook(res.data)
+    setRating(res.data.rating);
     refresh();
   };
   const stars = Array(5).fill(0);
@@ -195,7 +178,7 @@ export const OneBook = () => {
             }
           </div>
           <h3 className='text-[1rem] font-medium mb-5'>Rate this book</h3>
-          <Link to={`/review/new/${bookId}`}><button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button></Link>
+          <Link to={`/review/edit/${bookId}`}><button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button></Link>
         </div>:
             <div className='ml-[1.7rem] pb-5'>
           <h1 className='text-[1.1rem] font-[500] mb-3'>My Review</h1>
@@ -230,7 +213,7 @@ export const OneBook = () => {
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-2xl self-center  cursor-pointer ${(rating) - 1  > index && `text-[#faaf00]`} ` } key={index} ></i>
+                  <i className={`fa-solid fa-star text-2xl self-center  cursor-pointer ${(rating) - 0.99  > index && `text-[#faaf00]`} ` } key={index} ></i>
 
               )
             })

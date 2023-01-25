@@ -68,9 +68,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
       }else{
         setFavorite(false);
         (async() => {
-          await axios.delete(`http://localhost:3001/user/${user._id}/favorite`,{
-            data:JSON.stringify(book),
-          })
+          await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book._id}/favorite`)
           refresh();
         })();
 
