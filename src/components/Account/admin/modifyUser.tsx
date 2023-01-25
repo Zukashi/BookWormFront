@@ -2,12 +2,14 @@ import React, {MouseEventHandler, useEffect, useRef, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {HomeAdminNav} from "../../Home/AdminHome/HomeAdminNav";
 import {User} from "./AdminUserList";
+import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 
 export const ModifyUser = () => {
     const {id} = useParams();
     const [user, setUser] = useState<User|null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate()
     const [form ,setForm] = useState({
         _id:user?._id,
         username:user?.username,
@@ -25,12 +27,9 @@ export const ModifyUser = () => {
     }
     useEffect(() => {
         (async() => {
-            const res = await fetch(`http://localhost:3001/user/${id}`, {
-                credentials:'include',
-            })
-            const data = await res.json();
-            setUser(data);
-            setForm(data)
+            const res = await axiosPrivate.get(`http://localhost:3001/user/${id}`)
+            setUser(res.data);
+            setForm(res.data)
         })()
         if(inputRef.current){
             inputRef.current.focus()
@@ -41,14 +40,7 @@ export const ModifyUser = () => {
     }
     const onSubmit:MouseEventHandler<HTMLButtonElement> = async (e) => {
         e.preventDefault();
-        await fetch(`http://localhost:3001/user/admin/${user._id}`,{
-            method:'PUT',
-            credentials:'include',
-            headers:{
-                'Content-type':'application/json',
-            },
-            body:JSON.stringify(form)
-        });
+        await axiosPrivate.put(`http://localhost:3001/user/admin/${user._id}`,JSON.stringify(form));
         navigate('/admin/users')
     }
     return (<>

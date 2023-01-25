@@ -4,7 +4,8 @@ import {Button, Spinner} from "@chakra-ui/react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {Book} from "../Book/AdminBookList";
-
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import axios from "axios";
 interface Props {
   book: Book,
   refresh: () => void,
@@ -12,18 +13,12 @@ interface Props {
 export const OneBookHome = ({book,refresh}:Props) => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
+  const axiosPrivate = useAxiosPrivate()
   const [loading, setLoading] = useState<boolean>(true)
   const {user} = useSelector((state: RootState) => state.user);
   const [rating,setRating] = useState<number>(0);
   const [hover, setHover] = React.useState(0);
   const stars = Array(5).fill(0);
-  const handleClick = async (value:number) => {
-      setRating(value)
-    await fetch(`http://localhost:3001/book/${book._id}/${value}`,{
-      method:'PUT',
-      credentials:'include'
-    })
-  }
 
   const handleMouseOver = (value:number) => {
     setHover(value)
@@ -40,20 +35,16 @@ export const OneBookHome = ({book,refresh}:Props) => {
   };
   useEffect(() => {
     ( async () => {
-      const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`,{
-        credentials:'include'
-      });
-      const data = await res.json();
-      const res2 = await fetch(`http://localhost:3001/book/${book._id}`,{
-        credentials:'include'
-      });
-      const data2 = await res2.json();
-      setRating(data2.rating - 1)
+      const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/favorites`);
+
+      const res2 = await axiosPrivate.get(`http://localhost:3001/book/${book._id}`);
+
+      setRating(res2.data.rating - 1)
       // const res3 = await fetch(`http://localhost:3001/books`, {
       //   credentials:'include'
       // });
       // const data3 = await res3.json();
-      data.forEach((favorite:any) => {
+      res.data.forEach((favorite:any) => {
         if (favorite.isbn?.includes(book.isbn)){
           setFavorite(true)
         }
@@ -70,28 +61,14 @@ export const OneBookHome = ({book,refresh}:Props) => {
         setFavorite(true);
         (async() => {
 
-          await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
-            method:"PUT",
-            credentials:'include',
-            headers:{
-              'Content-type':'application/json'
-            },
-            body:JSON.stringify(book)
-          })
+          await axiosPrivate.put(`http://localhost:3001/user/${user._id}/favorite`, JSON.stringify(book))
           refresh();
         })();
 
       }else{
         setFavorite(false);
         (async() => {
-          await fetch(`http://localhost:3001/user/${user._id}/favorite`,{
-            method:"DELETE",
-            credentials:'include',
-            headers:{
-              'Content-type':'application/json'
-            },
-            body:JSON.stringify(book)
-          })
+          await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book._id}/favorite`)
           refresh();
         })();
 
@@ -131,7 +108,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
         {
           stars.map((_, index) => {
             return (
-                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) + 0.01 > index  && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) + 0.01 > index  && `text-[#faaf00]`} ` } key={index}></i>
 
             )
           })

@@ -5,25 +5,23 @@ import {useParams} from "react-router";
 import {Spinner} from "@chakra-ui/react";
 import dayjs from "dayjs";
 import {Link} from "react-router-dom";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 
 export const OneReviewOrdinary = (props:any) => {
     const {user} = useSelector((state: RootState) => state.user);
     const params = useParams();
     const stars = Array(5).fill(0);
+    const axiosPrivate = useAxiosPrivate()
     const [personalRating ,setPersonalRating] = useState<number>();
     const [personalReview, setPersonalReview] = useState<any>();
     const [showFullText , setShowFullText] = useState(false)
     const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false);
-    console.log(props, 'props')
     useEffect(() => {
         (async() => {
-            const res2 = await fetch(`http://localhost:3001/user/${props.review.user._id}/book/${params.bookId}`,{
-                credentials:'include'
-            });
-            const data2 = await res2.json();
-            setPersonalRating(data2.rating);
-            setPersonalReview(data2)
+            const res2 = await axiosPrivate.get(`http://localhost:3001/user/${props.review.user._id}/book/${params.bookId}`);
+            setPersonalRating(res2.data.rating);
+            setPersonalReview(res2.data)
         })()
     },[]);
     const [dayNumber,monthName,year]= (dayjs(props.review?.date).format('DD/MMMM/YYYY')).split('/');
@@ -33,7 +31,7 @@ export const OneReviewOrdinary = (props:any) => {
     return (<>
         <div className='ml-[1.5rem]'>
             <div className='w-full flex'>
-                <img className='w-[1.9rem] pt-1.5' src={user.base64Avatar} alt=""/>
+                <img className='w-[1.9rem] pt-1.5' src={props.review.user.base64Avatar} alt=""/>
                 <p className='ml-3 font-medium'>{props.review.user.username}</p>
             </div>
             <div className='flex items-end gap-[4rem]'>

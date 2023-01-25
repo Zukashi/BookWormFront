@@ -2,24 +2,19 @@ import React, {useState} from 'react';
 import {Input, useToast} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {CreateNewPassword} from "./CreateNewPassword";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 export const CheckEmailCode =(props:any) => {
     const {register, handleSubmit}  = useForm<any>();
     const toast = useToast();
     const [isValid ,setIsValid] = useState(false);
-    const [user, setUser] = useState()
+    const [user, setUser] = useState();
+    const axiosPrivate = useAxiosPrivate()
     const onSubmit = async (data:any) => {
         if (data.code === props.code){
-            const res = await fetch(`http://localhost:3001/user/reset-password/confirm`,{
-                credentials:'include',
-                method:'PUT',
-                headers:{
-                    'content-type':'application/json'
-                },
-                body:JSON.stringify({email:props.email})
-            });
-            const data = await res.json();
-            setUser(data)
+            const res = await axiosPrivate.put(`http://localhost:3001/user/reset-password/confirm`,JSON.stringify({email:props.email}));
+
+            setUser(res.data)
             setIsValid(prev => !prev)
             toast({
                 title: `Password Reset`,

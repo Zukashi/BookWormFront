@@ -3,10 +3,11 @@ import {Button, Input} from "@chakra-ui/react";
 import {useParams} from "react-router";
 import {useForm} from "react-hook-form";
 import {UserInterface} from "./EditAccount";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 export const ChangePassword = () => {
   const params = useParams();
-
+  const axiosPrivate = useAxiosPrivate()
   const {register, handleSubmit}  = useForm<{currentPassword:string, newPassword:string,verifyPassword:string, id:string}>({
     defaultValues:{
         id:params.userId,
@@ -16,14 +17,7 @@ export const ChangePassword = () => {
   const onSend = (data:any) => {
 
     (async() => {
-      const res = await fetch('http://localhost:3001/user/password',{
-        method:'PUT',
-        credentials:'include',
-        headers:{
-          'Content-type':'application/json'
-        },
-        body:JSON.stringify(data)
-      });
+      const res = await axiosPrivate.put('http://localhost:3001/user/password',JSON.stringify(data));
     })()
 
   }

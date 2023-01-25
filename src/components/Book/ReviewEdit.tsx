@@ -6,6 +6,7 @@ import {RootState} from "../../app/store";
 import {Book} from "./OneBook";
 import {Button, Checkbox, Select, Spinner, Textarea} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 
 export const ReviewEdit = () => {
@@ -16,6 +17,7 @@ export const ReviewEdit = () => {
     const {bookId} = useParams();
     const [loading, setLoading] = useState<boolean>(true);
     const stars = Array(5).fill(0);
+    const axiosPrivate = useAxiosPrivate();
     const [review,setReview] = useState<any>({
         rating:0,
         description:'',
@@ -28,21 +30,15 @@ export const ReviewEdit = () => {
 
     useEffect(() => {
         (async () => {
-            const res = await fetch(`http://localhost:3001/book/${bookId}`, {
-                credentials:'include'
-            });
-            const data = await res.json();
-            setBook(data);
+            const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
+            setBook(res.data);
             try{
-                const res2 = await fetch(`http://localhost:3001/user/${user._id}/book/${data._id}`,{
-                    credentials:'include'
-                });
+                const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/book/${res.data._id}`);
 
-                const data2 = await res2.json();
-                setValue('description', data2.desc)
-                setValue('spoilers', data2.spoilers)
-                setReview(data2);
-                setLastReviewRating(data2.rating)
+                setValue('description', res2.data.desc)
+                setValue('spoilers', res2.data.spoilers)
+                setReview(res2.data);
+                setLastReviewRating(res2.data.rating)
             }catch(e){
                 console.log('error occurred')
             }
@@ -52,32 +48,15 @@ export const ReviewEdit = () => {
     }, []);
     const deleteReview = async () => {
         navigate(`${`/book/${book?._id}`}`)
-        await fetch(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${lastReviewRating}`,{
-            method:'DELETE',
-            credentials:'include'
-        });
+        await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${lastReviewRating}`);
         window.location.reload();
-
     }
     const onSubmit = async (data:any) => {
         data.rating = review.rating
         try{
-            await fetch(`http://localhost:3001/user/${user._id}/book/${bookId}`,{
-                credentials:'include',
-                method:'PUT',
-                headers:{
-                    'content-type':'application/json'
-                },
-                body:JSON.stringify(data)
-            });
-            await fetch(`http://localhost:3001/book/${book?._id}/${lastReviewRating}`,{
-                method:'DELETE',
-                credentials:'include'
-            })
-            await fetch(`http://localhost:3001/book/${book?._id}/${review.rating}`,{
-                method:'PUT',
-                credentials:'include'
-            });
+            await axiosPrivate.put(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify(data));
+            await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/${lastReviewRating}`)
+            await axiosPrivate.put(`http://localhost:3001/book/${book?._id}/${review.rating}`);
             navigate(`/book/${bookId}`)
         }catch (e) {
 
@@ -122,6 +101,7 @@ export const ReviewEdit = () => {
                 <div className='flex justify-center'><Select className='h-5 w-[20vw]' w={'40%'} {...register('status')}>
                     <option value="read">Read</option>
                     <option value="currentlyReading">Currently Reading</option>
+                    <option value="wantToRead">Want To Read</option>
                 </Select></div>
                 <h3 className='w-full flex justify-center mt-2  mb-1'>Your rating: </h3>
               <div className='flex justify-center mb-4'>  {

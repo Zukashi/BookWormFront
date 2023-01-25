@@ -11,7 +11,8 @@ import {Link, useNavigate} from 'react-router-dom';
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useEffect, useState} from "react";
-import {User} from "../Account/admin/AdminUserList";
+
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 
 
@@ -19,22 +20,17 @@ export  function DrawerComponent() {
     const {user} = useSelector((state: RootState) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [preview, setPreview] = useState('');
+    const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     useEffect(() => {
         ( async () => {
-            const res = await fetch(`http://localhost:3001/user/${user._id}`, {
-                credentials:'include',
-            })
-            const data:User = await res.json();
-            setPreview(data.base64Avatar)
+            const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}`)
+            setPreview(res.data.base64Avatar)
         })()
     }, [])
     const btnRef :any = React.useRef()
     const logOut = async () => {
-        await fetch(`http://localhost:3001/user/${user._id}/logout`,{
-            credentials:'include',
-            method:'DELETE'
-        });
+        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/logout`);
         navigate('/')
     }
     return (

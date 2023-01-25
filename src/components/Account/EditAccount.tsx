@@ -19,6 +19,7 @@ import { ManageContact } from './ManageContact';
 import {HomeNav} from "../Home/HomeNav";
 import Avatar from 'react-avatar-edit';
 import {SubmitHandler, useForm} from "react-hook-form";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 export interface UserInterface {
   city:string,
   country:string,
@@ -36,6 +37,7 @@ export const EditAccount = () => {
   const [toggleAvatar, setToggleAvatar] = useState(false)
   const [src, setSrc] = useState(undefined);
   const [preview ,setPreview] = useState(null);
+  const axiosPrivate = useAxiosPrivate()
   const onClose = () => {
     setPreview(null)
   }
@@ -61,38 +63,21 @@ export const EditAccount = () => {
     return month + '/' + day + '/' + year;
   };
   const saveAvatar = async () => {
-      await fetch(`http://localhost:3001/user/${user._id}/avatar`,{
-        method:'PUT',
-        credentials:'include',
-        headers:{
-          'content-type':'application/json',
-        },
-        body:JSON.stringify({preview})
-      })
+      await axiosPrivate.put(`http://localhost:3001/user/${user._id}/avatar`,JSON.stringify({preview}))
       setPreview(null);
       setToggleAvatar(prev => !prev)
   }
   useEffect(() => {
     (async() =>{
-      const res = await fetch(`http://localhost:3001/user/${userId}`, {
-        credentials:'include',
-      })
-      const data = await res.json();
-      setForm(data);
+      const res = await axiosPrivate.get(`http://localhost:3001/user/${userId}`)
+      setForm(res.data);
     })();
   },[]);
   const onSend = (data:any) => {
 
     (async() => {
 
-      await fetch(`http://localhost:3001/user/${userId}`,{
-        method:"PUT",
-        credentials:'include',
-        headers:{
-          'Content-type':'application/json'
-        },
-        body:JSON.stringify(data)
-      })
+      await axiosPrivate.put(`http://localhost:3001/user/${userId}`,JSON.stringify(data))
       window.location.reload();
     })();
 

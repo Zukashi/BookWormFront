@@ -5,16 +5,15 @@ import {RootState} from "../../app/store";
 import { HomeAdminNav } from '../Home/AdminHome/HomeAdminNav';
 import {Book} from "../Book/AdminBookList";
 import {OneBookFavorite} from "./OneBookFavorite";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 export const Favorites = () => {
     const {user} = useSelector((state: RootState) => state.user);
     const [favorites, setFavorites] = useState<null | Book[]>(null);
     const refImg = useRef<HTMLImageElement>(null);
+    const axiosPrivate = useAxiosPrivate()
     const refresh = async () => {
-            const res = await fetch(`http://localhost:3001/user/${user._id}/favorites`, {
-                credentials:'include',
-            })
-            const data = await res.json();
-            setFavorites(data)
+            const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/favorites`)
+            setFavorites(res.data)
     }
     useEffect(() => {
             refresh();
