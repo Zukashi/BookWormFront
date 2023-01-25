@@ -106,6 +106,7 @@ export const ReviewAdd = () => {
                 <div className='flex justify-center'><Select className='h-5 w-[20vw]' w={'40%'} {...register('status')}>
                     <option value="read">Read</option>
                     <option value="currentlyReading">Currently Reading</option>
+                    <option value="wantToRead">Want To Read</option>
                 </Select></div>
                 <h3 className='w-full flex justify-center mt-2  mb-1'>Your rating: </h3>
                 <div className='flex justify-center mb-4'>  {
