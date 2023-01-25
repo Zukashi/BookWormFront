@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import {OneRowInUserListAdmin} from "./OneRowInUserListAdmin";
 import {HomeNavAdmin} from "../../Home/AdminHome/HomeNavAdmin";
+import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 
 export interface Author {
     key:string,
@@ -21,12 +22,10 @@ export interface User {
 export const AdminUserList = () => {
     const [users ,setUsers] = useState<User[]>([]);
     const [value, setValue] = useState('');
+    const axiosPrivate = useAxiosPrivate()
     const refreshUsers = async () => {
-        const res = await fetch('http://localhost:3001/user/users',{
-            credentials:'include'
-        });
-        const data = await res.json();
-        setUsers(data);
+        const res = await axiosPrivate.get('http://localhost:3001/user/users');
+        setUsers(res.data);
 
     };
 
@@ -38,16 +37,8 @@ export const AdminUserList = () => {
         };
 
         (async () => {
-            const res = await fetch(`http://localhost:3001/user/search/${value}`,{
-                method:'POST',
-                credentials:'include',
-                headers:{
-                    'content-type':'application/json'
-                },
-                body:JSON.stringify({value})
-            });
-            const data = await res.json();
-            setUsers(data)
+            const res = await axiosPrivate.post(`http://localhost:3001/user/search/${value}`,JSON.stringify({value}))
+            setUsers(res.data)
 
         })()
 

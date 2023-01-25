@@ -12,19 +12,18 @@ import {
 } from "@chakra-ui/react";
 import {User} from "../../Account/admin/AdminUserList";
 import {Link} from "react-router-dom";
+import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 
 export const AvatarComponent = () => {
     const {user} = useSelector((state: RootState) => state.user);
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const axiosPrivate = useAxiosPrivate();
     const btnRef :any = React.useRef();
     const [preview, setPreview] = useState('');
     useEffect(() => {
         ( async () => {
-            const res = await fetch(`http://localhost:3001/user/${user._id}`, {
-                credentials:'include',
-            })
-            const data:User = await res.json();
-            setPreview(data.base64Avatar)
+            const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}`)
+            setPreview(res.data.base64Avatar)
         })()
     }, [])
     return (<>
