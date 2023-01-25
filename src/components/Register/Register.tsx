@@ -3,6 +3,7 @@ import {Button, Input, InputGroup, InputRightElement, useToast} from "@chakra-ui
 import * as yup from 'yup';
 import {useForm, SubmitHandler } from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 type Inputs = {
     username: string,
     password: string,
@@ -21,19 +22,12 @@ export const Register = () => {
     });
     console.log(errors)
     const handleClick = () => setShow(!show)
-
+    const axiosPrivate = useAxiosPrivate();
     console.log(watch("username"))
     const submit: SubmitHandler<Inputs> =  async (data) => {
         const isValid = await schemaUserRegister.isValid(data);
         if (!isValid) return null;
-        await fetch('http://localhost:3001/register',{
-            method:'POST',
-            credentials:'include',
-            headers:{
-                'Content-type':'application/json'
-            },
-            body:JSON.stringify(data)
-        });
+        await axiosPrivate.post('http://localhost:3001/register',JSON.stringify(data));
         toast({
             position:'top',
             title: 'Account created.',
