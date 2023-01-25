@@ -8,6 +8,7 @@ import {Button, Checkbox, Select, Spinner, Textarea} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 export interface AddReview {
     rating :number,
@@ -29,6 +30,7 @@ export const ReviewAdd = () => {
     const navigate = useNavigate();
     const {bookId} = useParams();
     const [loading, setLoading] = useState<boolean>(true);
+    const axiosPrivate = useAxiosPrivate()
     const stars = Array(5).fill(0);
     const [review,setReview] = useState<any>({
         rating:0,
@@ -41,11 +43,8 @@ export const ReviewAdd = () => {
     console.log(errors)
     useEffect(() => {
         (async () => {
-            const res = await fetch(`http://localhost:3001/book/${bookId}`, {
-                credentials:'include'
-            });
-            const data = await res.json();
-            setBook(data);
+            const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
+            setBook(res.data);
 
             setLoading(false)
         })();
@@ -55,18 +54,8 @@ export const ReviewAdd = () => {
         data.rating = review.rating;
         console.log(data)
         try{
-            await fetch(`http://localhost:3001/user/${user._id}/book/${bookId}`,{
-                credentials:'include',
-                method:'POST',
-                headers:{
-                    'content-type':'application/json'
-                },
-                body:JSON.stringify(data)
-            });
-            await fetch(`http://localhost:3001/book/${bookId}/${data.rating}`,{
-                credentials:'include',
-                method:'PUT',
-            });
+            await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify(data));
+            await axiosPrivate.put(`http://localhost:3001/book/${bookId}/${data.rating}`);
             navigate(`/book/${bookId}`)
         }catch (e) {
 
