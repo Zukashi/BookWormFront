@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {HomeNav} from "../Home/HomeNav";
-import {Spinner, Tab, TabList, TabPanel, TabPanels, Tabs} from "@chakra-ui/react";
+import {Button, Input, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs} from "@chakra-ui/react";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
@@ -34,14 +34,20 @@ export const UserBooks = () => {
             </TabList>
             <TabPanels>
                 <TabPanel>
+                    <div className='flex'><Input placeholder='Search your reading log'/>
+                        <Button>Submit</Button></div>
                     {shelves['read'].map((bookId:string) => {
                         return <OneBookUser key={bookId} id={bookId}/>})}
                 </TabPanel>
                 <TabPanel>
+                    <div className='flex'><Input placeholder='Search your reading log'/>
+                        <Button>Submit</Button></div>
                     {shelves['currentlyReading'].map((bookId:string) => {
                         return <OneBookUser key={bookId} id={bookId}/>})}
                 </TabPanel>
                 <TabPanel>
+                    <div className='flex'><Input placeholder='Search your reading log'/>
+                        <Button>Submit</Button></div>
                     {shelves['wantToRead'].map((bookId:string) => {
                         return <OneBookUser key={bookId} id={bookId}/>})}
                 </TabPanel>
