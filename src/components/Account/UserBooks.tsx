@@ -1,8 +1,28 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {HomeNav} from "../Home/HomeNav";
-import {Tab, TabList, TabPanel, TabPanels, Tabs} from "@chakra-ui/react";
+import {Spinner, Tab, TabList, TabPanel, TabPanels, Tabs} from "@chakra-ui/react";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import {useSelector} from "react-redux";
+import {RootState} from "../../app/store";
+import {OneBookUser} from "./OneBookUser";
 
 export const UserBooks = () => {
+    const axiosPrivate = useAxiosPrivate();
+    const {user} = useSelector((state: RootState) => state.user);
+    const [shelves ,setShelves] = useState<{read:string[], wantToRead:string[], currentlyReading:string[]}>();
+    useEffect(() => {
+        const refresh = async() => {
+            const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/books`)
+            setShelves(res.data)
+        };
+        refresh();
+    }, [])
+    console.log(shelves)
+    if (!shelves){
+        return <h1>1</h1>
+    };
+    console.log(Object.keys(shelves).length)
+    // @ts-ignore
     return (<>
         <HomeNav/>
         <div className='pt-16'></div>
@@ -14,13 +34,16 @@ export const UserBooks = () => {
             </TabList>
             <TabPanels>
                 <TabPanel>
-                    <p>one!</p>
+                    {shelves['read'].map((bookId:string) => {
+                        return <OneBookUser key={bookId} id={bookId}/>})}
                 </TabPanel>
                 <TabPanel>
-                    <p>two!</p>
+                    {shelves['currentlyReading'].map((bookId:string) => {
+                        return <OneBookUser key={bookId} id={bookId}/>})}
                 </TabPanel>
                 <TabPanel>
-                    <p>two!</p>
+                    {shelves['wantToRead'].map((bookId:string) => {
+                        return <OneBookUser key={bookId} id={bookId}/>})}
                 </TabPanel>
 
             </TabPanels>
