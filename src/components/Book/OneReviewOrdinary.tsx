@@ -6,6 +6,7 @@ import {Spinner} from "@chakra-ui/react";
 import dayjs from "dayjs";
 import {Link} from "react-router-dom";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import {Comments} from "./Comments";
 
 
 export const OneReviewOrdinary = (props:any) => {
@@ -17,6 +18,7 @@ export const OneReviewOrdinary = (props:any) => {
     const [personalReview, setPersonalReview] = useState<any>();
     const [showFullText , setShowFullText] = useState(false)
     const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false);
+    console.log(props)
     useEffect(() => {
         (async() => {
             const res2 = await axiosPrivate.get(`http://localhost:3001/user/${props.review.user._id}/book/${params.bookId}`);
@@ -28,6 +30,7 @@ export const OneReviewOrdinary = (props:any) => {
     while(!personalRating){
         return <Spinner/>
     }
+    // @ts-ignore
     return (<>
         <div className='ml-[1.5rem]'>
             <div className='w-full flex'>
@@ -52,7 +55,7 @@ export const OneReviewOrdinary = (props:any) => {
             {props.review?.description?.length > 160 ? !showFullText ? <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(true)}>Show more <i
                 className="fa-solid fa-arrow-down" ></i></button> : <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(false)}>Show Less <i
                 className="fa-solid fa-arrow-up" ></i></button> : null }
-
+            {<Comments personalReview={props.review}/>}
 
         </div>
 
