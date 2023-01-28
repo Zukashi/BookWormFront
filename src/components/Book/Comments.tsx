@@ -26,7 +26,7 @@ export const Comments = (props:any) => {
     }, [])
     const onSubmit =  async (data:any) => {
         console.log(1234)
-            const res = await axiosPrivate.put(`http://localhost:3001/book/${bookId}/user/${props.personalReview.user._id}/review/${props.personalReview._id}/comment`, data);
+            const res = await axiosPrivate.put(`http://localhost:3001/book/${bookId}/user/${user._id}/review/${props.personalReview._id}/comment`, data);
         refresh()
     }
     const commentsToggle = () => {
@@ -38,9 +38,9 @@ export const Comments = (props:any) => {
         <div className='w-full h-[2px] bg-green-200 mt-5 mb-5'></div>
         {toggleComments && comments.map((comment:any) => <OneComment comment={comment} personalReview={props.personalReview} refresh={refresh}/>)}
       <div className='relative '>   <form  onSubmit={handleSubmit(onSubmit)}>
-          <div className='flex h-10  '> <img className='min-h-0 overflow-hidden min-w-0 w-10 h-8 content-center self-center' src={props.personalReview.user.base64Avatar} width={30} height={10} alt=""/>
+          <div className='flex h-10  '> <img className='min-h-0 overflow-hidden min-w-0 w-10 h-8 content-center self-center' src={user.base64Avatar} width={30} height={10} alt=""/>
 
-              <input className='border-black border-2 rounded-xl px-2 py-2 w-full ml-2' {...register('comment')} type="text" placeholder='Add a comment'/>
+              <input className='border-[#707070] border-[1px] rounded-xl px-2 py-2 w-full ml-2  focus:outline-0 focus:border-black focus:border-2' {...register('comment')} type="text" placeholder='Add a comment'/>
 
           </div>
 
