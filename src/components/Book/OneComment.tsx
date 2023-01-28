@@ -2,23 +2,33 @@ import React, {useState} from 'react';
 import {Comments} from "./Comments";
 import dayjs from "dayjs";
 import moment from "moment";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import {useParams} from "react-router";
 
 export const OneComment = (props:any) => {
     const [showFullText , setShowFullText] = useState(false)
     const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false);
-    console.log(props)
+    const axiosPrivate = useAxiosPrivate();
+    const {bookId} = useParams();
     const [dayNumber,monthName,year]= (dayjs(props.comment?.date).format('DD/MMMM/YYYY')).split('/');
     console.log(moment(props.comment?.date).fromNow());
     console.log(props.comment?.date)
+    const deleteComment = async () => {
+        await axiosPrivate.delete(`http://localhost:3001/book/${bookId}/user/${props.personalReview.user._id}/review/${props.personalReview._id}/comment/${props.comment._id}`);
+        props.refresh()
+    }
 return  (<>
 <div className='mb-3'>
     <div className='w-full flex '>
         <img className='w-[1.9rem] pt-1.5 absolute' src={props.comment.user.base64Avatar} alt=""/>
-        <div className='flex ml-7'>
-            <p className='ml-3 font-medium h-5'>{props.comment.user.username}</p>
-            <div className='flex   ml-3'>
-                <p className='font-medium text-[#707070] font-normal'>{moment(props.comment?.date).fromNow()}</p>
-            </div>
+        <div className='flex ml-7 justify-between w-full mr-4'>
+           <div className='flex '>
+               <p className='ml-3 font-medium h-5'>{props.comment.user.username}</p>
+               <div className='flex   ml-3'>
+                   <p className='font-medium text-[#707070] font-normal'>{moment(props.comment?.date).fromNow()}</p>
+               </div>
+           </div>
+            <p className='font-bold text-xl cursor-pointer' onClick={deleteComment}>...</p>
         </div>
     </div>
     <div className='flex  ml-10 '>
