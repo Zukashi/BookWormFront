@@ -40,6 +40,7 @@ export const OneBook = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {user} = useSelector((state: RootState) => state.user);
+
   const [book, setBook] = useState<Book|null>();
   const {bookId} = useParams();
   const [loading, setLoading] = useState<boolean>(true);
@@ -117,6 +118,7 @@ export const OneBook = () => {
         description:'',
         status:'read',
         spoilers:false,
+        comments:[]
       })
     );
 
@@ -148,14 +150,14 @@ export const OneBook = () => {
     <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
       <HomeNav/>
       <div className='pt-20'></div>
-      <div className='w-[90%] rounded-md  bg-white shadow-2xl mx-auto  h-full'>
+      <div className='w-[90%] rounded-md  bg-white shadow-2xl mx-auto pb-10  h-full'>
        <div className='flex justify-center pt-4'> <img src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt=""/></div>
         <div className='mt-4 pl-[1.7rem] text-[1.5rem] font-medium'><p>{book.title}</p></div>
         <div className='flex justify-start mt-4 pl-[1.7rem]'>
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(rating) - 1 > index  && `text-[#faaf00]`} ` } key={index} ></i>
+                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(rating) - 0.99 > index  && `text-[#faaf00]`} ` } key={index} ></i>
 
               )
             })
