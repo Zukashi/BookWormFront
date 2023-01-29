@@ -40,6 +40,7 @@ export const OneBook = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {user} = useSelector((state: RootState) => state.user);
+
   const [book, setBook] = useState<Book|null>();
   const {bookId} = useParams();
   const [loading, setLoading] = useState<boolean>(true);
