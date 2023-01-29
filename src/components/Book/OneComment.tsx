@@ -12,20 +12,21 @@ import {
     Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Modal,
     useDisclosure
 } from "@chakra-ui/react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {DrawerOneComment} from "./DrawerOneComment";
-
+import {UserState, userUpdate} from "../../features/User/userSlice";
+import {useNavigate} from "react-router-dom";
 export const OneComment = (props:any) => {
     const [showFullText , setShowFullText] = useState(false)
     const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false);
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = React.useRef(null);
     const { getDisclosureProps, getButtonProps } = useDisclosure();
-    const buttonProps = getButtonProps()
-    const disclosureProps = getDisclosureProps();
 
-    const {user} = useSelector((state:RootState) => state.user)
+
+
+    const {user, token} = useSelector((state:RootState) => state.user)
     const axiosPrivate = useAxiosPrivate();
     const {bookId} = useParams();
     const [dayNumber,monthName,year]= (dayjs(props.comment?.date).format('DD/MMMM/YYYY')).split('/');
@@ -33,7 +34,9 @@ export const OneComment = (props:any) => {
     console.log(props.comment)
     const deleteComment = async () => {
         await axiosPrivate.delete(`http://localhost:3001/book/${bookId}/user/${user._id}/review/${props.personalReview._id}/comment/${props.comment._id}`);
-        props.refresh()
+        props.refresh();
+        // @ts-ignore
+
     }
 
     return  (<>
