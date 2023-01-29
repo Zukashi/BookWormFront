@@ -11,7 +11,7 @@ import {
     useDisclosure
 } from "@chakra-ui/react";
 import {User} from "../../Account/admin/AdminUserList";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 
 export const AvatarComponent = () => {
@@ -19,7 +19,12 @@ export const AvatarComponent = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const axiosPrivate = useAxiosPrivate();
     const btnRef :any = React.useRef();
+    const navigate = useNavigate()
     const [preview, setPreview] = useState('');
+    const logOut = async () => {
+        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/logout`);
+        navigate('/')
+    }
     useEffect(() => {
         ( async () => {
             const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}`)
@@ -48,7 +53,9 @@ export const AvatarComponent = () => {
                         <div className='w-full  flex h-14 w-full items-center '><Link to={`/edit/user/${user._id}`}className='w-full flex justify-center hover:text-violet-600'><i
                             className="fa-regular fa-pen-to-square pt-[4px] absolute left-0"></i>Edit account</Link></div>
                         <div className='w-full  flex h-14 w-full items-center'><Link to={`/favorites/user/${user._id}`} className='w-full flex justify-center hover:text-violet-600 '><i className="fa-regular fa-star pt-[4px] absolute left-0 "></i><p className='w-[86px] text-left'>Favorites</p></Link></div>
+                        <div className='w-full  flex h-14 w-full items-center' onClick={logOut}><div className='w-full flex justify-center hover:text-violet-600 '><i className="fa-solid fa-arrow-right-from-bracket pt-[4px] absolute left-0 "></i><p className='w-[86px] text-left'>Logout</p></div></div>
                     </div>
+
 
                 </DrawerBody>
 
