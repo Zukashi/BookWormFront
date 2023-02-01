@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {userUpdate} from "../../features/User/userSlice";
-import {Button, Input, useToast} from "@chakra-ui/react";
+import {Button, Input, Spinner, useToast} from "@chakra-ui/react";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useForm} from "react-hook-form";
 import * as yup from 'yup';
@@ -15,14 +15,15 @@ export const AddBookAdmin = () => {
     const {register, handleSubmit, trigger, formState:{errors}} = useForm<{isbn:string,title:string,author:string}>({
         resolver:yupResolver(schema)
     });
-
+    const [loading ,setLoading] = useState<boolean>(false)
     const toast = useToast();
     const axiosPrivate = useAxiosPrivate()
     const onSubmit =  async (data:any) => {
+        setLoading(true)
         try{
             await schema.validate(data)
             const res = await axiosPrivate.post('http://localhost:3001/book',JSON.stringify(data));
-
+            setLoading(false)
         }catch(e:unknown){
             // @ts-ignore
             if(e?.response?.status === 404){
@@ -35,10 +36,13 @@ export const AddBookAdmin = () => {
                     isClosable: true,
                 })
             }
+            setLoading(false)
         }
 
     }
-    console.log(errors.isbn?.message)
+    if(loading){
+        return <Spinner></Spinner>
+    }
     return (<>
        <div className='w-full'>
            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-11/12 mx-auto'>
