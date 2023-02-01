@@ -20,7 +20,6 @@ const PersistLogin = () => {
                 if(res.status === 403){
                     navigate('/')
                 }
-
                 dispatch(userUpdate({
                     user:res.data.user,
                     token:res.data.token

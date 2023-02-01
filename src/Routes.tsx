@@ -49,16 +49,16 @@ export const AllRoutes = () => {
                 <Route path='review/edit/:bookId' element={<ReviewEdit/>}></Route>
                <Route path='edit/user/:userId' element={<EditAccount/>}></Route>
             <Route path='favorites/user/:userId' element={<Favorites/>}></Route>
-                {user.role === 'admin' &&  <Route path='admin/books'>
+                 <Route path='admin/books'>
                     <Route index  element={<BookListView/>}></Route>
                     <Route path='modify/:id'element={<ModifyBook/>}></Route>
-                </Route>}
-                {user.role === 'admin' &&  <Route path='admin/users'>
+                </Route>
+                <Route path='admin/users'>
                     <Route index  element={<UserListView/>}></Route>
                     <Route path='modify/:id'element={<ModifyUser/>}></Route>
-                </Route>}
+                </Route>
 
-                {user.role === 'admin' && <Route path='addBook' element={<AddBookAdmin/>}></Route>}
+                 <Route path='addBook' element={<AddBookAdmin/>}></Route>
                </Route>
             </Routes>
 
