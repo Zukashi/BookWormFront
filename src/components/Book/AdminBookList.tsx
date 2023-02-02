@@ -1,9 +1,10 @@
-import { Button } from '@chakra-ui/react';
+import {Button, useToast} from '@chakra-ui/react';
 import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom';
 import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
 import {OneRowInBookListAdmin} from "./OneRowInBookListAdmin";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import {log} from "util";
 export interface Author {
     key:string,
 }
@@ -28,31 +29,48 @@ export const AdminBookList = () => {
     const [books ,setBooks] = useState<Book[]>([]);
     const [value, setValue] = useState('');
     const axiosPrivate = useAxiosPrivate()
+    const toast = useToast();
     const refreshBooks = async () => {
         const res = await axiosPrivate.get('http://localhost:3001/books');
         setBooks(res.data);
+    }
+    const getBooksSearch = debounce(async (value:string) =>  {
+        if (!value){
+            refreshBooks()
+            return
+        }
 
+        console.log(value)
+            const res = await axiosPrivate.post(`http://localhost:3001/bookAdmin/search/${value}`,JSON.stringify({value}));
+            setBooks(res.data)
+
+    }, 300)
+    function debounce (cb:any, delay=500){
+        let timeout:any;
+        return (...args:any) => {
+            clearTimeout(timeout)
+            timeout = setTimeout(() => {
+                cb(...args)
+            }, delay)
+        }
     }
     useEffect(() => {
         if(!value) {
             refreshBooks();
             return;
         };
-        (async () => {
-            const res = await axiosPrivate.post(`http://localhost:3001/bookAdmin/search/${value}`,JSON.stringify({value}));
-            setBooks(res.data)
-        })()
 
 
-    },[value]);
+    },[]);
     useEffect(() => {
         refreshBooks()
-    }, [])
+    }, []);
     return (<>
         <HomeNavAdmin/>
     <div className='pt-20'></div>
         <div><Button><Link to='/addBook'>Add Book</Link></Button></div>
-        <div className='flex gap-6 justify-center'><p>Search:</p><input className='outline-none ring-2 ring-teal-600 px-3 py-1.5' value={value} onChange={(e) => setValue(e.target.value)}/></div>
+        <div className='flex gap-6 justify-center'><p>Search:</p><input className='outline-none ring-2 ring-teal-600 px-3 py-1.5'    onChange={(e) =>
+            getBooksSearch(e.target.value)}/></div>
         <div className='overflow-x-auto max-w-[1000vw] w-[90vw] mx-auto '>
             <table className='h-[84px] table-fixed  '>
 
