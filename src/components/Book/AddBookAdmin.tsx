@@ -33,13 +33,13 @@ export const AddBookAdmin = () => {
                 toast({
                     position:'top',
                     title: 'Error',
-                    description: e.response.data.result,
+                    description: e.response.data.message,
                     status: 'warning',
                     duration: 9000,
                     isClosable: true,
                 })
             }
-            setError('isbn', { type: 'custom', message: e?.response?.data?.result });
+            setError('isbn', { type: 'custom', message: e?.response?.data?.message });
             setLoading(false)
         }
 
