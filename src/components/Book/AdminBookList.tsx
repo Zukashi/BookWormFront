@@ -55,14 +55,6 @@ export const AdminBookList = () => {
         }
     }
     useEffect(() => {
-        if(!value) {
-            refreshBooks();
-            return;
-        };
-
-
-    },[]);
-    useEffect(() => {
         refreshBooks()
     }, []);
     return (<>

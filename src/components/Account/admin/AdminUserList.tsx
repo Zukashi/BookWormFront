@@ -29,29 +29,37 @@ export const AdminUserList = () => {
 
     };
 
-    useEffect(() => {
+    const getUsersSearch = debounce(async (value:string) =>  {
+        if (!value){
+            refreshUsers()
+            return
+        }
 
-        if(!value) {
-            refreshUsers();
-            return;
-        };
+        const res = await axiosPrivate.post(`http://localhost:3001/user/search/${value}`,JSON.stringify({value}))
+        setUsers(res.data)
 
-        (async () => {
-            const res = await axiosPrivate.post(`http://localhost:3001/user/search/${value}`,JSON.stringify({value}))
-            setUsers(res.data)
+    }, 350);
+    function debounce (cb:any, delay=500){
+        let timeout:any;
+        return (...args:any) => {
+            clearTimeout(timeout)
+            timeout = setTimeout(() => {
+                cb(...args)
+            }, delay)
+        }
+    }
 
-        })()
-
-
-    },[value]);
+    console.log('rerender')
     useEffect(() => {
         refreshUsers()
     }, [])
     return (<>
         <HomeNavAdmin/>
         <div className='pt-20'></div>
-        <div><Button><Link to='/addBook'>Add Book</Link></Button></div>
-        <div className='flex gap-6 justify-center'><p>Search:</p><input className='outline-none ring-2 ring-teal-600 px-3 py-1.5' value={value} onChange={(e) => setValue(e.target.value)}/></div>
+        <div className='flex gap-6 justify-center'><p>Search:</p><input className='outline-none ring-2 ring-teal-600 px-3 py-1.5'  onChange={(e) =>{
+            setValue(value)
+            return getUsersSearch(e.target.value)}
+        }/></div>
         <div className='overflow-x-auto max-w-[1000vw] w-[90vw] mx-auto '>
             <table className='h-[84px] table-fixed  '>
 
