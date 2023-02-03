@@ -10,11 +10,13 @@ export const UserBooks = () => {
     const axiosPrivate = useAxiosPrivate();
     const {user} = useSelector((state: RootState) => state.user);
     const [shelves ,setShelves] = useState<{read:string[], wantToRead:string[], currentlyReading:string[]}>();
+
+    const refresh = async() => {
+        const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/books`)
+        setShelves(res.data)
+    };
+
     useEffect(() => {
-        const refresh = async() => {
-            const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/books`)
-            setShelves(res.data)
-        };
         refresh();
     }, [])
     console.log(shelves)
@@ -37,19 +39,19 @@ export const UserBooks = () => {
                     <div className='flex'><Input placeholder='Search your reading log'/>
                         <Button>Submit</Button></div>
                     {shelves['read'].map((bookId:string) => {
-                        return <OneBookUser key={bookId} id={bookId}/>})}
+                        return <OneBookUser key={bookId} id={bookId} refresh={refresh} status={'read'} />})}
                 </TabPanel>
                 <TabPanel>
                     <div className='flex'><Input placeholder='Search your reading log'/>
                         <Button>Submit</Button></div>
                     {shelves['currentlyReading'].map((bookId:string) => {
-                        return <OneBookUser key={bookId} id={bookId}/>})}
+                        return <OneBookUser key={bookId} id={bookId} refresh={refresh} status={'currentlyReading'}/>})}
                 </TabPanel>
                 <TabPanel>
                     <div className='flex'><Input placeholder='Search your reading log'/>
                         <Button>Submit</Button></div>
                     {shelves['wantToRead'].map((bookId:string) => {
-                        return <OneBookUser key={bookId} id={bookId}/>})}
+                        return <OneBookUser key={bookId} id={bookId} refresh={refresh} status='wantToRead'/>})}
                 </TabPanel>
 
             </TabPanels>
