@@ -5,14 +5,15 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {OneBookUser} from "./OneBookUser";
+import {ShelfUser} from "./ShelfUser";
 
 export const UserBooks = () => {
     const axiosPrivate = useAxiosPrivate();
     const {user} = useSelector((state: RootState) => state.user);
     const [shelves ,setShelves] = useState<{read:string[], wantToRead:string[], currentlyReading:string[]}>();
-
     const refresh = async() => {
         const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/books`)
+        console.log(res.data, 111)
         setShelves(res.data)
     };
 
@@ -24,7 +25,7 @@ export const UserBooks = () => {
         return <h1>1</h1>
     };
     console.log(Object.keys(shelves).length)
-    // @ts-ignore
+    const statuses = ['read', 'currentlyReading', 'wantToRead']
     return (<>
         <HomeNav/>
         <div className='pt-16'></div>
@@ -35,24 +36,10 @@ export const UserBooks = () => {
                 <Tab _selected={{color:'white', bg:'blue.500'}}>Want To Read</Tab>
             </TabList>
             <TabPanels>
-                <TabPanel>
-                    <div className='flex'><Input placeholder='Search your reading log'/>
-                        <Button>Submit</Button></div>
-                    {shelves['read'].map((bookId:string) => {
-                        return <OneBookUser key={bookId} id={bookId} refresh={refresh} status={'read'} />})}
-                </TabPanel>
-                <TabPanel>
-                    <div className='flex'><Input placeholder='Search your reading log'/>
-                        <Button>Submit</Button></div>
-                    {shelves['currentlyReading'].map((bookId:string) => {
-                        return <OneBookUser key={bookId} id={bookId} refresh={refresh} status={'currentlyReading'}/>})}
-                </TabPanel>
-                <TabPanel>
-                    <div className='flex'><Input placeholder='Search your reading log'/>
-                        <Button>Submit</Button></div>
-                    {shelves['wantToRead'].map((bookId:string) => {
-                        return <OneBookUser key={bookId} id={bookId} refresh={refresh} status='wantToRead'/>})}
-                </TabPanel>
+                {
+                    statuses.map((status:string) => <ShelfUser key={status} shelves={shelves} status={status} refresh={refresh}/>)
+                }
+
 
             </TabPanels>
         </Tabs>
