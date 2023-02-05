@@ -4,13 +4,13 @@ import {useForm} from "react-hook-form";
 import {CreateNewPassword} from "./CreateNewPassword";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
-export const CheckEmailCode =(props:any) => {
+export const CheckEmailCode =(props:{code:string | null, email:string}) => {
     const {register, handleSubmit}  = useForm<any>();
     const toast = useToast();
     const [isValid ,setIsValid] = useState(false);
     const [user, setUser] = useState();
     const axiosPrivate = useAxiosPrivate()
-    const onSubmit = async (data:any) => {
+    const onSubmit = async (data:{code:string}) => {
         if (data.code === props.code){
             const res = await axiosPrivate.put(`http://localhost:3001/user/reset-password/confirm`,JSON.stringify({email:props.email}));
 
