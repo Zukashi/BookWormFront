@@ -24,6 +24,7 @@ import {useLocation} from "react-router";
 import {useAxiosPrivate} from "./hooks/useAxiosPrivate";
 import PersistLogin from "./components/PersistLogin";
 import {UserBooks} from "./components/Account/UserBooks";
+import {CategoryView} from "./Views/CategoryView";
 
 export const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ export const AllRoutes = () => {
                 <Route path='review/edit/:bookId' element={<ReviewEdit/>}></Route>
                <Route path='edit/user/:userId' element={<EditAccount/>}></Route>
             <Route path='favorites/user/:userId' element={<Favorites/>}></Route>
+            <Route path='category' element={<CategoryView/>}></Route>
                  <Route path='admin/books'>
                     <Route index  element={<BookListView/>}></Route>
                     <Route path='modify/:id'element={<ModifyBook/>}></Route>
