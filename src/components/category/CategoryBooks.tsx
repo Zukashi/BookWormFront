@@ -5,7 +5,18 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {OneBookHome} from "../Home/OneBook";
 
 export const CategoryBooks = () => {
-    const {register, handleSubmit, formState:{errors}} = useForm();
+    const {register, handleSubmit, formState:{errors}} = useForm<{genres:string, author:string, year: string}>({
+        defaultValues:{
+            genres:'',
+            author:'',
+            year:'',
+        }
+    });
+    const [defaultAuthorsYearsGenres, setDefaultAuthorsYearsGenres] = useState<{genres:string[],years:string[],authors:string[]}>({
+        genres:[],
+        years:[],
+        authors:[]
+    })
     const [selectedValue, setSelectedValue] = useState('');
     const years = [2017, 2016, 2015];
     const authors = ['JK Rowling', 'Andrzej Sapkowski'];
@@ -18,8 +29,15 @@ export const CategoryBooks = () => {
             setBooks(res.data)
             const res2 = await axiosPrivate.get('http://localhost:3001/genres');
             console.log(res2.data)
-            const newGenres = res2.data.filter((genre:string) => genre !== '')
-            setGenres(newGenres)
+            const newGenres = res2.data.genres.filter((genre:string) => genre !== '')
+            const newYears = res2.data.years.filter((year:string) => year !== '')
+            const newAuthors = res2.data.authors.filter((author:string) => author !== '')
+            setDefaultAuthorsYearsGenres((prevState) => ({
+                ...prevState,
+                genres:newGenres,
+                authors:newAuthors,
+                years:newYears,
+            }))
         })()
     }, []);
     if(!books) return <Spinner/>
@@ -33,19 +51,19 @@ export const CategoryBooks = () => {
                          <option value="" hidden disabled className='' defaultChecked={true}>
                              Genres
                          </option>
-                         {genres?.map((genre) => <option value={genre} key={genre}>{genre}</option>)}
+                         {defaultAuthorsYearsGenres.genres?.map((genre) => <option value={genre} key={genre}>{genre}</option>)}
                      </Select>
                      <Select value={selectedValue} {...register('year')}>
                          <option value="" hidden disabled className='' defaultChecked={true}>
                              Year
                          </option>
-                         {years.map((year) => <option value={year}>{year}</option>)}
+                         {defaultAuthorsYearsGenres.years.map((year) => <option value={year}>{year}</option>)}
                      </Select>
                      <Select value={selectedValue} {...register('author')}>
                          <option value="" hidden disabled className='' defaultChecked={true}>
                              Author
                          </option>
-                         {authors.map((author) => <option value={author}>{author}</option>)}
+                         {defaultAuthorsYearsGenres.authors.map((author) => <option value={author}>{author}</option>)}
                      </Select>
                     <div className='flex justify-between'>
                         <Input placeholder='search here' width='90%'></Input><button className='bg-black font-bold text-white text-1xl px-4 py-2 rounded-xl '>Search</button>
