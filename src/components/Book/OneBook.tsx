@@ -233,7 +233,11 @@ export const OneBook = () => {
 
         <div className='flex flex-col gap-5 mt-4'>
 
-            {book.ratingTypeAmount.map((item,index) =>        <div className='flex gap-3 items-center' onClick={() => changeFilter(book?.ratingTypeAmount.length  - index)}>      <h3 className={`border-b-[0.19rem] border-b-black mb-0.5 ${isHighlighted[book?.ratingTypeAmount.length - 1 - index] && 'border-b-orange-400'} `}>{`${book?.ratingTypeAmount.length  - index}`} stars </h3>  <div className={`px-[0.6rem] py-[1rem] ${isHighlighted[book?.ratingTypeAmount.length - 1 - index] && 'bg-[#c1c1c1]'
+            {book.ratingTypeAmount.map((item,index) =>        <div className='flex gap-3 items-center' onClick={() => changeFilter(book?.ratingTypeAmount.length  - index)}>
+              <div className='w-[4rem]'>
+                <h3 className={`border-b-[0.19rem] w-fit   border-b-black mb-0.5 ${isHighlighted[book?.ratingTypeAmount.length - 1 - index] && 'border-b-orange-400'} `}>{`${book?.ratingTypeAmount.length  - index}`} stars </h3>
+              </div>
+           <div className={`px-[0.6rem] py-[1rem] ${isHighlighted[book?.ratingTypeAmount.length - 1 - index] && 'bg-[#c1c1c1]'
             } rounded-2xl`}><Progress className='h-3 w-[37vw] rounded-xl' size='xl' value={sumOfRatings && ((book?.ratingTypeAmount[book?.ratingTypeAmount.length - 1 -  index] / sumOfRatings ) * 100)} /></div> <p className='w-20 flex '> {book.ratingTypeAmount[book?.ratingTypeAmount.length - 1 - index]} { sumOfRatings ? <p>({((book.ratingTypeAmount[book?.ratingTypeAmount.length -1 - index] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>   </div> )}
 
 

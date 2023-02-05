@@ -39,10 +39,10 @@ export const AllRoutes = () => {
             <Routes>
                 <Route path='/' element={<LoginPageView/>}/>
                 <Route path='/create-account' element={<Register/>}/>
+                <Route path='/reset-password' element={<ResetPassword/>}/>
                <Route element={<PersistLogin/>}> <Route path='home' element={<HomeView/>}/>
                 <Route path='author/:authorId' element={<AuthorView/>}/>
               <Route path='book/:bookId' element={<BookView/>}/>
-              <Route path='reset-password' element={<ResetPassword/>}/>
               <Route path='user/:userId' element={<AccountView/>}>
               </Route>
                    <Route path='user/:userId/books' element={<UserBooks/>}></Route>
