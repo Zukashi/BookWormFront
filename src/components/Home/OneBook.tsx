@@ -93,18 +93,18 @@ export const OneBookHome = ({book,refresh}:Props) => {
       <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
   }
   return (<>
-    <div className='flex relative'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
-    <Link to={`/book/${book._id}`} className='relative  w-[180px] '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black' h='31px' w='83px'>View Book</Button><div className='h-[250px] flex justify-center items-center'><img ref={refImg} src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-40" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
+    <div className='flex relative mx-auto gap-5 w-full'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
+    <Link to={`/book/${book._id}`} className='relative  w-[180px] '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black invisible lg:visible' h='31px' w='83px'>View Book</Button><div className='h-[250px] flex items-center'><img ref={refImg} src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-40" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
 
     </Link>
 
   </div>
 
-    <div className='inline-block -ml-10 mt-20'><p className='text-[15px] font-bold w-40 leading-5
-    ml-16'>{book.title}</p>
-      <p className='text-[16px] mt-2 ml-16'>{book.author} </p>
-      <i className="fa-solid fa-cart-shopping fa-xl cursor-pointer ml-16 "></i>
-      <div className='w-32 h-7 absolute right-[2.5rem] bottom-[2rem] '>
+    <div className='inline-block mt-14 flex flex-col gap-4'><p className='text-[15px] font-bold w-40 leading-5
+    '>{book.title}</p>
+      <p className='text-[16px]'>{book.author} </p>
+
+      <div className=' h-7  right-[2.5rem] bottom-[2rem] w-full'>
         {
           stars.map((_, index) => {
             return (
@@ -118,8 +118,8 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
       </div>
 
-      {!favorite ?  <button onClick={changeFavorite} className='mt-6'><i className="fa-regular fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button> :
-         <button onClick={changeFavorite} className='mt-6'> <i className="fa-solid fa-heart fa-xl text-red-500 ml-4 cursor-pointer"></i></button>} </div>
+      {!favorite ?  <i onClick={changeFavorite} className="fa-regular fa-heart fa-xl text-red-500 cursor-pointer   w-2"></i>:
+         <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2"></i>} </div>
 
 
 
