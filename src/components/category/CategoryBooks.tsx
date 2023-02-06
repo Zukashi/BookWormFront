@@ -4,28 +4,49 @@ import {Button, Input, Select, Spinner} from "@chakra-ui/react";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {OneBookHome} from "../Home/OneBook";
 import shadows from "@mui/material/styles/shadows";
+import {isEqual} from "lodash";
 
 export const CategoryBooks = () => {
     const {register, handleSubmit, formState:{errors}, watch,    formState,
         formState: { isValidating }} = useForm<{genres:string, author:string, year: string}>({
         mode:'onChange',
         defaultValues:{
-            genres:'',
+                genres:'',
             author:'',
             year:'',
         }
     });
+    const [newBooks, setNewBooks] = useState<any>()
     const [defaultAuthorsYearsGenres, setDefaultAuthorsYearsGenres] = useState<{genres:string[],years:string[],authors:string[]}>({
         genres:[],
         years:[],
         authors:[]
-    })
-    const [selectedValue, setSelectedValue] = useState('');
-    const years = [2017, 2016, 2015];
-    const authors = ['JK Rowling', 'Andrzej Sapkowski'];
+    });
+    const [filterBooksBoolean, setFilterBooksBoolean] = useState(false)
     const axiosPrivate = useAxiosPrivate();
-    const [genres, setGenres] = useState<string[]>([])
-    const [books ,setBooks] = useState<null | any>()
+    const [books ,setBooks] = useState<null | any>();
+    const [form, setForm] = useState({
+        genres:'',
+        year:'',
+        author:'',
+        search:'',
+
+    })
+    const onChange = async (value:string, field:string) => {
+        console.log(123)
+        await setForm((prev) => ({
+            ...prev,
+            [field]:value
+        }) );
+        console.log(form);
+        setFilterBooksBoolean(true)
+    }
+    useEffect(() => {
+       (async() => {
+            const res  = await axiosPrivate.post('http://localhost:3001/filterBooks', JSON.stringify(form));
+            setBooks(res.data)
+        })()
+    }, [form])
     useEffect(() => {
         (async () => {
             const res = await axiosPrivate.get('http://localhost:3001/books')
@@ -35,6 +56,7 @@ export const CategoryBooks = () => {
             const newGenres = res2.data.genres.filter((genre:string) => genre !== '')
             const newYears = res2.data.years.filter((year:string) => year !== '')
             const newAuthors = res2.data.authors.filter((author:string) => author !== '')
+            console.log(res2.data)
             setDefaultAuthorsYearsGenres((prevState) => ({
                 ...prevState,
                 genres:newGenres,
@@ -43,17 +65,9 @@ export const CategoryBooks = () => {
             }))
         })()
     }, []);
+    //@TODO FILTER BOOKS PROPERLY
 
-    const data = watch();
-    React.useEffect(() => {
-        if (formState.isValid && !isValidating) {
-            console.log(data);
-        }
-    }, [formState, data, isValidating]);
-    const onSubmit = (data:any) => {
 
-        console.log(data)
-    }
     if(!books) return <Spinner/>
     return (<>
    <main>
@@ -61,20 +75,20 @@ export const CategoryBooks = () => {
        <section className='flex flex-col justify-center   gap-3  mx-auto w-11/12'>
                  <h1 className='font-bold text-[2rem] text-center'>Search by book name</h1>
 
-                     <form handleSubmit={onSubmit} className='flex flex-col w-full gap-4' >
-                         <Select  {...register('genres')}>
+                     <form className='flex flex-col w-full gap-4' >
+                         <Select value={form.genres} onChange={(e) => onChange(e.target.value, 'genres')}>
                              <option value="" hidden disabled className='' defaultChecked={true}>
                                  Genres
                              </option>
                              {defaultAuthorsYearsGenres.genres?.map((genre) => <option value={genre} key={genre}>{genre}</option>)}
                          </Select>
-                         <Select  {...register('year')}>
+                         <Select value={form.year}  onChange={(e) => onChange(e.target.value,'year')}>
                              <option value="" hidden disabled className='' defaultChecked={true}>
                                  Year
                              </option>
                              {defaultAuthorsYearsGenres.years.map((year) => <option value={year}>{year}</option>)}
                          </Select>
-                         <Select  {...register('author')}>
+                         <Select value={form.author}  onChange={(e) => onChange(e.target.value, 'author')}>
                              <option value="" hidden disabled className='' defaultChecked={true}>
                                  Author
                              </option>
@@ -82,13 +96,13 @@ export const CategoryBooks = () => {
                          </Select>
                      </form>
                     <div className='flex justify-between'>
-                        <Input placeholder='search here' width='90%'></Input><button className='bg-black font-bold text-white text-1xl px-4 py-2 rounded-xl '>Search</button>
+                        <Input value={form.search} onChange={(e) => onChange(e.target.value, 'search')} placeholder='search here' width='90%'></Input><button className='bg-black font-bold text-white text-1xl px-4 py-2 rounded-xl '>Search</button>
                     </div>
 
        </section>
        <section className='flex flex-col justify-center   gap-3  mx-auto w-11/12'>
-           {books.map((book:any, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null}/>)}
-
+           { books.map((book:any, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null}/>)}
+           {books.length < 1 && filterBooksBoolean && <span className='font-bold text-[2rem] mx-auto mt-[1rem]'>Book not found</span>}
        </section>
    </main>
 
