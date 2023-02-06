@@ -106,10 +106,12 @@ export const CategoryBooks = () => {
            { books.slice(currentPage * 2 - 2,currentPage * 2).map((book:any, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null}/>)}
            {books.length < 1 && filterBooksBoolean && <span className='font-bold text-[2rem] mx-auto mt-[1rem]'>Book not found</span>}
            { books.length >= 1 &&
-               <div className='flex  gap-2 items-center '>
-                   <div className='bg-blue-700 px-4 py-4' onClick={() => selectPageHandler(currentPage - 1)}>⬅</div>
-                   {[...Array(Math.ceil(books.length/2))].map((_, i) => <div className='bg-[#C8DAD9] px-4 py-4'  key={i} onClick={() => setCurrentPage(i+1)}>{i+1}</div>)}
-                   <div className='bg-blue-700 px-4 py-4' onClick={() => selectPageHandler(currentPage + 1)}>➡</div>
+               <div className='flex  gap-2 items-center  justify-center my-4 h-3'>
+                   <div className=' px-2 py-1 cursor-pointer  hover:bg-[#D2EAE9]' onClick={() => selectPageHandler(currentPage - 1)}><i
+                       className="fa-solid fa-angle-left text-[#667574] "></i></div>
+                   {[...Array(Math.ceil(books.length/2))].map((_, i) => <div className={`cursor-pointer px-2 py-0.5 ${currentPage === i + 1 && 'bg-[#4899E7] cursor-pointer'}`}  key={i} onClick={() => setCurrentPage(i+1)}>{i+1}</div>)}
+                   <div className=' px-2 py-1 cursor-pointer  hover:bg-[#D2EAE9]' onClick={() => selectPageHandler(currentPage + 1)}><i
+                       className="fa-solid fa-angle-right text-[#667574] "></i></div>
                </div>
            }
        </section>
