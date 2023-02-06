@@ -53,15 +53,24 @@ export const CategoryBooks = () => {
             setBooks(res.data)
             const res2 = await axiosPrivate.get('http://localhost:3001/genres');
             console.log(res2.data)
-            const newGenres = res2.data.genres.filter((genre:string) => genre !== '')
+            const newGenres = res2.data.genres.filter((genre:string) => genre !== '');
+            const removeDuplicatesGenres = [...new Set(newGenres)] as string[]
             const newYears = res2.data.years.filter((year:string) => year !== '')
+            const removeDuplicatesYears = [...new Set(newYears)] as string[]
+            console.log(removeDuplicatesGenres)
+            function removeDuplicateWords(arr: string[]): string[] {
+                return arr.filter(word => !arr.some(existingWord => existingWord.includes(word) && existingWord !== word));
+            }
+            const newArr = removeDuplicateWords(newGenres);
+            console.log(newArr)
             const newAuthors = res2.data.authors.filter((author:string) => author !== '')
+            const removeDuplicatesAuthors = [...new Set(newAuthors)] as string[]
             console.log(res2.data)
             setDefaultAuthorsYearsGenres((prevState) => ({
                 ...prevState,
-                genres:newGenres,
-                authors:newAuthors,
-                years:newYears,
+                genres:removeDuplicatesGenres,
+                authors:removeDuplicatesYears,
+                years:removeDuplicatesAuthors,
             }))
         })()
     }, []);
