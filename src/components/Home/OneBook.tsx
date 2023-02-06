@@ -38,7 +38,6 @@ export const OneBookHome = ({book,refresh}:Props) => {
       const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/favorites`);
 
       const res2 = await axiosPrivate.get(`http://localhost:3001/book/${book._id}`);
-
       setRating(res2.data.rating - 1)
       // const res3 = await fetch(`http://localhost:3001/books`, {
       //   credentials:'include'
@@ -94,7 +93,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
   }
   return (<>
     <div className='flex relative mx-auto gap-5 w-full'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
-    <Link to={`/book/${book._id}`} className='relative  w-[180px] '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black invisible lg:visible' h='31px' w='83px'>View Book</Button><div className='h-[250px] flex items-center'><img ref={refImg} src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-40" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
+    <Link to={`/book/${book._id}`} className='relative  w-[180px] '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black invisible lg:visible' h='31px' w='83px'>View Book</Button><div className='h-[250px] flex items-center'><img ref={refImg} src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-40 rounded-md" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
 
     </Link>
 

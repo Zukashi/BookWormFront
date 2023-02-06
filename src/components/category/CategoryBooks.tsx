@@ -7,15 +7,7 @@ import shadows from "@mui/material/styles/shadows";
 import {isEqual} from "lodash";
 
 export const CategoryBooks = () => {
-    const {register, handleSubmit, formState:{errors}, watch,    formState,
-        formState: { isValidating }} = useForm<{genres:string, author:string, year: string}>({
-        mode:'onChange',
-        defaultValues:{
-                genres:'',
-            author:'',
-            year:'',
-        }
-    });
+    const [currentPage, setCurrentPage] = useState(1)
     const [defaultAuthorsYearsGenres, setDefaultAuthorsYearsGenres] = useState<{genres:string[],years:string[],authors:string[]}>({
         genres:[],
         years:[],
@@ -23,7 +15,7 @@ export const CategoryBooks = () => {
     });
     const [filterBooksBoolean, setFilterBooksBoolean] = useState(false)
     const axiosPrivate = useAxiosPrivate();
-    const [books ,setBooks] = useState<null | any>();
+    const [books ,setBooks] = useState<any[]>([]);
     const [form, setForm] = useState({
         genres:'',
         year:'',
@@ -31,6 +23,7 @@ export const CategoryBooks = () => {
         search:'',
 
     })
+    const [loading,setLoading] = useState(true)
     const onChange = async (value:string, field:string) => {
         await setForm((prev) => ({
             ...prev,
@@ -55,26 +48,25 @@ export const CategoryBooks = () => {
             const newYears = res2.data.years.filter((year:string) => year !== '')
             const removeDuplicatesYears = [...new Set(newYears)] as string[]
             console.log(removeDuplicatesGenres)
-            function removeDuplicateWords(arr: string[]): string[] {
-                return arr.filter(word => !arr.some(existingWord => existingWord.includes(word) && existingWord !== word));
-            }
-            const newArr = removeDuplicateWords(newGenres);
-            console.log(newArr)
             const newAuthors = res2.data.authors.filter((author:string) => author !== '')
             const removeDuplicatesAuthors = [...new Set(newAuthors)] as string[]
-            console.log(res2.data)
             setDefaultAuthorsYearsGenres((prevState) => ({
                 ...prevState,
                 genres:removeDuplicatesGenres,
                 authors:removeDuplicatesAuthors,
                 years:removeDuplicatesYears,
             }))
+            setLoading(false)
         })()
     }, []);
     //@TODO FILTER BOOKS PROPERLY
+    const selectPageHandler = (page:number) => {
+        console.log(page)
+        if(page  >= 1 &&  page<=Math.ceil(books.length / 2) && page !== currentPage)
+        setCurrentPage(page)
+    }
 
-
-    if(!books) return <Spinner/>
+    if(loading) return <Spinner/>
     return (<>
    <main>
        <div className='pt-20'></div>
@@ -86,19 +78,19 @@ export const CategoryBooks = () => {
                              <option value="" hidden disabled className='' defaultChecked={true}>
                                  Genres
                              </option>
-                             {defaultAuthorsYearsGenres.genres?.map((genre) => <option value={genre} key={genre}>{genre}</option>)}
+                             {defaultAuthorsYearsGenres.genres?.map((genre,i) => <option value={genre} key={genre}>{genre}</option>)}
                          </Select>
                          <Select value={form.year}  onChange={(e) => onChange(e.target.value,'year')}>
                              <option value="" hidden disabled className='' defaultChecked={true}>
                                  Year
                              </option>
-                             {defaultAuthorsYearsGenres.years.map((year) => <option value={year}>{year}</option>)}
+                             {defaultAuthorsYearsGenres.years.map((year, i) => <option key={i} value={year}>{year}</option>)}
                          </Select>
                          <Select value={form.author}  onChange={(e) => onChange(e.target.value, 'author')}>
                              <option value="" hidden disabled className='' defaultChecked={true}>
                                  Author
                              </option>
-                             {defaultAuthorsYearsGenres.authors.map((author) => <option value={author}>{author}</option>)}
+                             {defaultAuthorsYearsGenres.authors.map((author, i ) => <option key={i} value={author}>{author}</option>)}
                          </Select>
                      </form>
                     <div className='flex justify-between'>
@@ -111,8 +103,15 @@ export const CategoryBooks = () => {
 
        </section>
        <section className='flex flex-col justify-center   gap-3  mx-auto w-11/12'>
-           { books.map((book:any, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null}/>)}
+           { books.slice(currentPage * 2 - 2,currentPage * 2).map((book:any, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null}/>)}
            {books.length < 1 && filterBooksBoolean && <span className='font-bold text-[2rem] mx-auto mt-[1rem]'>Book not found</span>}
+           { books.length >= 1 &&
+               <div className='flex  gap-2 items-center '>
+                   <div className='bg-blue-700 px-4 py-4' onClick={() => selectPageHandler(currentPage - 1)}>⬅</div>
+                   {[...Array(Math.ceil(books.length/2))].map((_, i) => <div className='bg-[#C8DAD9] px-4 py-4'  key={i} onClick={() => setCurrentPage(i+1)}>{i+1}</div>)}
+                   <div className='bg-blue-700 px-4 py-4' onClick={() => selectPageHandler(currentPage + 1)}>➡</div>
+               </div>
+           }
        </section>
    </main>
 
