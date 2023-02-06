@@ -16,7 +16,6 @@ export const CategoryBooks = () => {
             year:'',
         }
     });
-    const [newBooks, setNewBooks] = useState<any>()
     const [defaultAuthorsYearsGenres, setDefaultAuthorsYearsGenres] = useState<{genres:string[],years:string[],authors:string[]}>({
         genres:[],
         years:[],
@@ -33,12 +32,10 @@ export const CategoryBooks = () => {
 
     })
     const onChange = async (value:string, field:string) => {
-        console.log(123)
         await setForm((prev) => ({
             ...prev,
             [field]:value
         }) );
-        console.log(form);
         setFilterBooksBoolean(true)
     }
     useEffect(() => {
@@ -46,7 +43,7 @@ export const CategoryBooks = () => {
             const res  = await axiosPrivate.post('http://localhost:3001/filterBooks', JSON.stringify(form));
             setBooks(res.data)
         })()
-    }, [form])
+    }, [form]);
     useEffect(() => {
         (async () => {
             const res = await axiosPrivate.get('http://localhost:3001/books')
@@ -69,8 +66,8 @@ export const CategoryBooks = () => {
             setDefaultAuthorsYearsGenres((prevState) => ({
                 ...prevState,
                 genres:removeDuplicatesGenres,
-                authors:removeDuplicatesYears,
-                years:removeDuplicatesAuthors,
+                authors:removeDuplicatesAuthors,
+                years:removeDuplicatesYears,
             }))
         })()
     }, []);
@@ -107,6 +104,10 @@ export const CategoryBooks = () => {
                     <div className='flex justify-between'>
                         <Input value={form.search} onChange={(e) => onChange(e.target.value, 'search')} placeholder='search here' width='90%'></Input><button className='bg-black font-bold text-white text-1xl px-4 py-2 rounded-xl '>Search</button>
                     </div>
+           <Button onClick={() => setForm({  genres:'',
+               year:'',
+               author:'',
+               search:'',})}>Clear</Button>
 
        </section>
        <section className='flex flex-col justify-center   gap-3  mx-auto w-11/12'>
