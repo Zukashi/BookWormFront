@@ -77,6 +77,7 @@ export const OneBook = () => {
   };
   const deleteReview = async () => {
     navigate(`${`/book/${book?._id}`}`)
+    console.log(review)
     await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${personalRating}`);
     setPersonalRating(0)
     refresh();

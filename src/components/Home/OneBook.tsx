@@ -118,7 +118,9 @@ export const OneBookHome = ({book,refresh}:Props) => {
       </div>
 
       {!favorite ?  <i onClick={changeFavorite} className="fa-regular fa-heart fa-xl text-red-500 cursor-pointer   w-2"></i>:
-         <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2"></i>} </div>
+         <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2"></i>}
+      <div className='bg-[#409d69] flex rounded-xl text-[#ffffff]'><button className='px-2 cursor-pointer py-2 border-r-[1px] border-r-amber-800'>Want to Read</button><button className='w-11 flex justify-center items-center '><img className='w-6 cursor-pointer' src="https://cdn-icons-png.flaticon.com/512/5833/5833290.png" alt='icon of books'/></button></div>
+    </div>
 
 
 
