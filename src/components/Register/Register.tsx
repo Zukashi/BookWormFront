@@ -10,10 +10,11 @@ type Inputs = {
     email:string,
 };
 let schemaUserRegister = yup.object().shape({
-    username: yup.string().required().max(18,'username cannot be longer than 18 characters').min(6,'username must be at least 6 characters long'),
+    username: yup.string().required().max(18,'username cannot be longer than 18 characters').min(5,'username must be at least 6 characters long'),
     email: yup.string().required().email('must be a valid email'),
     password: yup.string().required().min(8, 'must be at least 8 characters long').max(24,`password can't be longer than 24 characters`)
 });
+const form = ['username', 'email', 'password']
 export const Register = () => {
     const [show, setShow] = React.useState(false);
     const toast = useToast();
@@ -38,9 +39,9 @@ export const Register = () => {
                 isClosable: true,
             })
         }catch(e:any){
-            console.log(e.response)
-            if(e?.response?.status === 409 && e?.response?.data.type === 'email'){
-                setError('email', { type: 'custom', message: e?.response?.data?.message });
+            const fieldNameError  = form.find((fieldName:string) => fieldName === e.response.data.type)
+            if(e?.response?.status.toString()[0] === '4' && fieldNameError !== undefined){
+                setError(fieldNameError as "username" | "email" | "password", { type: 'custom', message: e?.response?.data?.message });
                 toast({
                     position:'top',
                     title: 'warning',
@@ -50,17 +51,7 @@ export const Register = () => {
                     isClosable: true,
                 })
             }
-            else if(e?.response?.status === 409 && e?.response?.data.type === 'username'){
-                setError('username', { type: 'custom', message: e?.response?.data?.message });
-                toast({
-                    position:'top',
-                    title: 'warning',
-                    description: e.response.data.message,
-                    status: 'warning',
-                    duration: 5000,
-                    isClosable: true,
-                })
-            }
+
         }
     }
     return (<>
