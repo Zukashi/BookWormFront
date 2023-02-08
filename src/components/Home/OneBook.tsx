@@ -19,7 +19,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
   const [rating,setRating] = useState<number>(0);
   const [hover, setHover] = React.useState(0);
   const stars = Array(5).fill(0);
-
+  const [bookStatus, setBookStatus] = React.useState<string>('')
   const handleMouseOver = (value:number) => {
     setHover(value)
   }
@@ -36,7 +36,8 @@ export const OneBookHome = ({book,refresh}:Props) => {
   useEffect(() => {
     ( async () => {
       const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/favorites`);
-
+      const resStatusOfBook = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${book._id}/status`);
+      setBookStatus(prev => resStatusOfBook.data.typeOfShelf)
       const res2 = await axiosPrivate.get(`http://localhost:3001/book/${book._id}`);
       setRating(res2.data.rating - 1)
       // const res3 = await fetch(`http://localhost:3001/books`, {
@@ -74,11 +75,15 @@ export const OneBookHome = ({book,refresh}:Props) => {
       }
 
   };
+  const updateStatusOfBook = async () => {
+    await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${book._id}/read`)
+    setBookStatus('Read')
+  }
   const colors  = {
     orange: '#faaf00',
     grey:'#a9a9a9'
   }
-
+  console.log(book.rating)
 
   const mouseLeft = () => {
     if (refImg.current === null || refImg.current === undefined){
@@ -107,7 +112,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
         {
           stars.map((_, index) => {
             return (
-                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || rating) + 0.01 > index  && `text-[#faaf00]`} ` } key={index}></i>
+                <i className={`fa-solid fa-star text-xl cursor-pointer ${(hover || book.rating)- 1 + 0.01 > index  && `text-[#faaf00]`} ` } key={index}></i>
 
             )
           })
@@ -119,7 +124,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
       {!favorite ?  <i onClick={changeFavorite} className="fa-regular fa-heart fa-xl text-red-500 cursor-pointer   w-2"></i>:
          <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2"></i>}
-      <div className='bg-[#409d69] flex rounded-xl text-[#ffffff]'><button className='px-2 cursor-pointer py-2 border-r-[1px] border-r-amber-800'>Want to Read</button><button className='w-11 flex justify-center items-center '><img className='w-6 cursor-pointer' src="https://cdn-icons-png.flaticon.com/512/5833/5833290.png" alt='icon of books'/></button></div>
+      <div className='bg-[#409d69] flex rounded-xl text-[#ffffff]'><button className='px-2 cursor-pointer py-2 border-r-[1px] border-r-amber-800' onClick={() => updateStatusOfBook}>{!bookStatus && 'Want To Read'}</button><button className='w-11 flex justify-center items-center '><img className='w-6 cursor-pointer' src="https://cdn-icons-png.flaticon.com/512/5833/5833290.png" alt='icon of books'/></button></div>
     </div>
 
 

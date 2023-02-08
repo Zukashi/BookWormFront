@@ -28,7 +28,6 @@ export const AdminUserList = () => {
         setUsers(res.data);
 
     };
-
     const getUsersSearch = debounce(async (value:string) =>  {
         if (!value){
             refreshUsers()
