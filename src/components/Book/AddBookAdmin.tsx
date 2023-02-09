@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {userUpdate} from "../../features/User/userSlice";
-import {Button, Input, Spinner, useToast} from "@chakra-ui/react";
+import {Button, Input, position, Spinner, useToast} from "@chakra-ui/react";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useForm} from "react-hook-form";
 import * as yup from 'yup';
@@ -20,7 +20,7 @@ export const AddBookAdmin = () => {
     const toast = useToast();
     const axiosPrivate = useAxiosPrivate()
     const navigate = useNavigate()
-    const onSubmit =  async (data:any) => {
+    const onSubmit =  async (data:{isbn:string,title:string,author:string}) => {
         setLoading(true)
         try{
             await schema.validate(data)
@@ -29,11 +29,21 @@ export const AddBookAdmin = () => {
             navigate('/admin/books')
         }catch(e:any){
             if(e?.response?.status === 409){
-                console.log(e)
+                console.log(e.response.data)
                 toast({
                     position:'top',
                     title: 'Error',
-                    description: e.response.data.message,
+                    description: e.response.data,
+                    status: 'warning',
+                    duration: 9000,
+                    isClosable: true,
+                })
+            }
+            if (e.response.status === 500){
+                toast({
+                    position:'top',
+                    title: 'Error',
+                    description: e.response.data,
                     status: 'warning',
                     duration: 9000,
                     isClosable: true,

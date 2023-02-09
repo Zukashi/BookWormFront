@@ -114,7 +114,7 @@ export const OneBook = () => {
   const handleClick = async (value:number) => {
     setPersonalRating(value)
     await axiosPrivate.post(`http://localhost:3001/book/${book?._id}/${value}`);
-    const res = await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
+    await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
         rating:value,
         description:'',
         status:'read',
@@ -123,8 +123,6 @@ export const OneBook = () => {
       })
     );
 
-    setBook(res.data)
-    setRating(res.data.rating);
     refresh();
   };
   const stars = Array(5).fill(0);
