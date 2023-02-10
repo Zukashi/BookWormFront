@@ -116,9 +116,10 @@ export const OneBookHome = ({book,refresh}:Props) => {
     } )
     setModal(false)
   }
-  const colors  = {
-    orange: '#faaf00',
-    grey:'#a9a9a9'
+  const clearStatus = async () => {
+    await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book._id}/status`);
+    refreshOneBook();
+    toggleModal()
   }
   console.log(book.rating)
 
@@ -184,7 +185,8 @@ export const OneBookHome = ({book,refresh}:Props) => {
                     <img className='inline h-5 my-auto w-5 mr-1' src="https://cdn-icons-png.flaticon.com/512/2732/2732655.png" alt=""/>}<p className='inline'>Currently reading</p></span></button></div>
                 <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5 cursor-pointer flex ' onClick={() => updateStatusOfBook('read')}><button className='w-full '><span className='font-medium flex justify-center items-center'>{statusUnformatted === 'read' &&
                     <img className='inline h-5 my-auto w-5 mr-1' src="https://cdn-icons-png.flaticon.com/512/2732/2732655.png" alt=""/>}<p className='inline'>Read</p></span></button></div>
-
+                {bookStatus !== '' && <div className='w-full flex justify-center gap-2 py-2 cursor-pointer' onClick={clearStatus}><img className='w-5 h-5' src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" alt=""/><span className='font-bold text-sm'>Remove from my shelf</span></div>
+                }
               </div>
             </div>
           </div>
