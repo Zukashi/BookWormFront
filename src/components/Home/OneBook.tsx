@@ -37,8 +37,14 @@ export const OneBookHome = ({book,refresh}:Props) => {
     ( async () => {
       const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/favorites`);
       const resStatusOfBook = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${book._id}/status`);
-      setBookStatus(prev => resStatusOfBook.data.typeOfShelf)
+      console.log(resStatusOfBook)
+      if(resStatusOfBook.data === 'not found shelf'){
+              setBookStatus("")
+      }else{
+        setBookStatus(prev => resStatusOfBook.data.typeOfShelf)
+      }
       const res2 = await axiosPrivate.get(`http://localhost:3001/book/${book._id}`);
+      console.log(res2.data)
       setRating(res2.data.rating - 1)
       // const res3 = await fetch(`http://localhost:3001/books`, {
       //   credentials:'include'
@@ -91,6 +97,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
     }
     refImg.current.classList.remove('opacity-50')
   }
+  console.log(bookStatus)
   while (loading){
     return <>
       <div className='pt-20'></div>
