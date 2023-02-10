@@ -20,7 +20,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
   const [hover, setHover] = React.useState(0);
   const stars = Array(5).fill(0);
   const [modal, setModal] = useState<boolean>(false)
-  const [bookStatus, setBookStatus] = React.useState<string>('')
+  const [bookStatus, setBookStatus] = React.useState<any>('')
   const handleMouseOver = (value:number) => {
     setHover(value)
   }
@@ -34,16 +34,26 @@ export const OneBookHome = ({book,refresh}:Props) => {
       refImg.current.classList.add('opacity-50')
     }
   };
-  console.log(modal)
-  useEffect(() => {
+  console.log(modal);
+  const refreshOneBook = () => {
     ( async () => {
       const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/favorites`);
       const resStatusOfBook = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${book._id}/status`);
-      console.log(resStatusOfBook)
+      console.log(resStatusOfBook);
       if(resStatusOfBook.data === 'not found shelf'){
-              setBookStatus("")
+        setBookStatus("")
       }else{
-        setBookStatus(prev => resStatusOfBook.data.typeOfShelf)
+        setBookStatus((prev:string) => {
+          switch(resStatusOfBook.data){
+            case 'currentlyReading':
+              return 'Currently reading'
+            case 'wantToRead':
+              return 'Want to read'
+            case 'read':
+              return 'Read'
+          }
+
+        } )
       }
       const res2 = await axiosPrivate.get(`http://localhost:3001/book/${book._id}`);
       console.log(res2.data)
@@ -58,6 +68,9 @@ export const OneBookHome = ({book,refresh}:Props) => {
         }
       });
     })();
+  }
+  useEffect(() => {
+    refreshOneBook()
     const timer = setTimeout(() => {
       setLoading(false)
     }, 400)
@@ -87,9 +100,9 @@ export const OneBookHome = ({book,refresh}:Props) => {
     console.log(123)
     setModal((prev) => !prev)
   }
-  const updateStatusOfBook = async () => {
-    await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${book._id}/read`)
-    setBookStatus('Read')
+  const updateStatusOfBook = async (value:string) => {
+    await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${book._id}/${value}`)
+    setBookStatus(value.toUpperCase())
   }
   const colors  = {
     orange: '#faaf00',
@@ -137,7 +150,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
       {!favorite ?  <i onClick={changeFavorite} className="fa-regular fa-heart fa-xl text-red-500 cursor-pointer   w-2"></i>:
          <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2"></i>}
-      <div className='bg-[#409d69] flex rounded-xl text-[#ffffff]'><button className='px-2 cursor-pointer py-2 border-r-[1px] border-r-amber-800' onClick={toggleModal} >{!bookStatus && 'Want To Read'}</button><button className='w-11 flex justify-center items-center '><img className='w-6 cursor-pointer' src="https://cdn-icons-png.flaticon.com/512/5833/5833290.png" alt='icon of books'/></button></div>
+      <div className='bg-[#409d69] flex rounded-xl text-[#ffffff] cursor-pointer'><button className={`px-2 cursor-pointer py-2 ${bookStatus === "" && 'border-r-[1px] border-r-amber-800'}`} onClick={toggleModal} >{!bookStatus ? 'Want To Read' : bookStatus}</button>{bookStatus === "" && <button className='w-11 flex justify-center items-center '><img className='w-6 cursor-pointer' src="https://cdn-icons-png.flaticon.com/512/5833/5833290.png" alt='icon of books'/></button>}</div>
     </div>
 
 
@@ -150,9 +163,9 @@ export const OneBookHome = ({book,refresh}:Props) => {
             <div className='w-[85%] mx-auto'>
               <div className='flex  gap-16 pt-6 pb-8 justify-between'><h3 className='font-medium text-lg'>Choose a shelf for this book</h3><span onClick={toggleModal}>X</span></div>
               <div className='flex flex-col gap-3'>
-                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5'><button className='w-full'><span className='font-medium'>Want to read</span></button></div>
-                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5'><button className='w-full'><span className='font-medium'>Currently reading</span></button></div>
-                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5'><button className='w-full'><span className='font-medium'>Read</span></button></div>
+                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5 cursor-pointer' onClick={() => updateStatusOfBook('wantToRead')}><button className='w-full'><span className='font-medium'>Want to read</span></button></div>
+                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5 cursor-pointer' onClick={() => updateStatusOfBook('currentlyReading')}><button className='w-full'><span className='font-medium'>Currently reading</span></button></div>
+                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5 cursor-pointer' onClick={() => updateStatusOfBook('read')}><button className='w-full'><span className='font-medium'>Read</span></button></div>
               </div>
             </div>
           </div>
