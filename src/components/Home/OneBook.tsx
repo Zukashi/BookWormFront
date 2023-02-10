@@ -128,7 +128,6 @@ export const OneBookHome = ({book,refresh}:Props) => {
     }
     refImg.current.classList.remove('opacity-50')
   }
-  console.log(bookStatus)
   while (loading){
     return <>
       <div className='pt-20'></div>
@@ -162,8 +161,8 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
       {!favorite ?  <i onClick={changeFavorite} className="fa-regular fa-heart fa-xl text-red-500 cursor-pointer   w-2"></i>:
          <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2"></i>}
-      <div className={`${ bookStatus === '' ? 'bg-[#409d69] flex' :'bg-[#F2F2F2] border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer`}>
-        <button className={`px-2 cursor-pointer py-2 ${bookStatus === "" && 'border-r-[1px] border-r-amber-800'}`} onClick={toggleModal} ><span className={`${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want To Read' : bookStatus}</span></button>{bookStatus === "" ? <button className='w-11 flex justify-center items-center '><img className='w-6 cursor-pointer' src="https://cdn-icons-png.flaticon.com/512/5833/5833290.png" alt='icon of books'/></button>:
+      <div className={`${ bookStatus === '' ? 'bg-[#409d69] flex' :'bg-[#F2F2F2] border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer`} onClick={bookStatus !== '' ? toggleModal : undefined}>
+        <button className={`px-2 cursor-pointer py-2  ${bookStatus === "" && 'border-r-[1px] border-r-amber-800'}`} onClick={bookStatus === '' ?  () => updateStatusOfBook('wantToRead'): undefined } ><span className={`${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want to read' : bookStatus}</span></button>{bookStatus === "" ? <button onClick={toggleModal} className='w-11 flex justify-center items-center '><img className='w-6 cursor-pointer' src="https://cdn-icons-png.flaticon.com/512/5833/5833290.png" alt='icon of books'/></button>:
 
             <img className='h-4 w-4' src="https://cdn-icons-png.flaticon.com/512/57/57055.png" alt="down icon"/>}
           </div>
