@@ -19,6 +19,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
   const [rating,setRating] = useState<number>(0);
   const [hover, setHover] = React.useState(0);
   const stars = Array(5).fill(0);
+  const [statusUnformatted, setStatusUnformatted] = useState<string>("")
   const [modal, setModal] = useState<boolean>(false)
   const [bookStatus, setBookStatus] = React.useState<any>('')
   const handleMouseOver = (value:number) => {
@@ -43,6 +44,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
       if(resStatusOfBook.data === 'not found shelf'){
         setBookStatus("")
       }else{
+        setStatusUnformatted(resStatusOfBook.data)
         setBookStatus((prev:string) => {
           switch(resStatusOfBook.data){
             case 'currentlyReading':
@@ -102,7 +104,17 @@ export const OneBookHome = ({book,refresh}:Props) => {
   }
   const updateStatusOfBook = async (value:string) => {
     await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${book._id}/${value}`)
-    setBookStatus(value.toUpperCase())
+    setBookStatus((prev:string) => {
+      switch(value){
+        case 'currentlyReading':
+          return 'Currently reading'
+        case 'wantToRead':
+          return 'Want to read'
+        case 'read':
+          return 'Read'
+      }
+
+    } )
   }
   const colors  = {
     orange: '#faaf00',
@@ -150,7 +162,11 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
       {!favorite ?  <i onClick={changeFavorite} className="fa-regular fa-heart fa-xl text-red-500 cursor-pointer   w-2"></i>:
          <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2"></i>}
-      <div className='bg-[#409d69] flex rounded-xl text-[#ffffff] cursor-pointer'><button className={`px-2 cursor-pointer py-2 ${bookStatus === "" && 'border-r-[1px] border-r-amber-800'}`} onClick={toggleModal} >{!bookStatus ? 'Want To Read' : bookStatus}</button>{bookStatus === "" && <button className='w-11 flex justify-center items-center '><img className='w-6 cursor-pointer' src="https://cdn-icons-png.flaticon.com/512/5833/5833290.png" alt='icon of books'/></button>}</div>
+      <div className={`${ bookStatus === '' ? 'bg-[#409d69] flex' :'bg-[#F2F2F2] border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer`}>
+        <button className={`px-2 cursor-pointer py-2 ${bookStatus === "" && 'border-r-[1px] border-r-amber-800'}`} onClick={toggleModal} ><span className={`${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want To Read' : bookStatus}</span></button>{bookStatus === "" ? <button className='w-11 flex justify-center items-center '><img className='w-6 cursor-pointer' src="https://cdn-icons-png.flaticon.com/512/5833/5833290.png" alt='icon of books'/></button>:
+
+            <img className='h-4 w-4' src="https://cdn-icons-png.flaticon.com/512/57/57055.png" alt="down icon"/>}
+          </div>
     </div>
 
 
@@ -163,9 +179,13 @@ export const OneBookHome = ({book,refresh}:Props) => {
             <div className='w-[85%] mx-auto'>
               <div className='flex  gap-16 pt-6 pb-8 justify-between'><h3 className='font-medium text-lg'>Choose a shelf for this book</h3><span onClick={toggleModal}>X</span></div>
               <div className='flex flex-col gap-3'>
-                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5 cursor-pointer' onClick={() => updateStatusOfBook('wantToRead')}><button className='w-full'><span className='font-medium'>Want to read</span></button></div>
-                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5 cursor-pointer' onClick={() => updateStatusOfBook('currentlyReading')}><button className='w-full'><span className='font-medium'>Currently reading</span></button></div>
-                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5 cursor-pointer' onClick={() => updateStatusOfBook('read')}><button className='w-full'><span className='font-medium'>Read</span></button></div>
+                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5 cursor-pointer flex ' onClick={() => updateStatusOfBook('wantToRead')}><button className='w-full '><span className='font-medium flex justify-center items-center'>{statusUnformatted === 'wantToRead' &&
+                    <img className='inline h-5 my-auto w-5 mr-1' src="https://cdn-icons-png.flaticon.com/512/2732/2732655.png" alt=""/>}<p className='inline'>Want to read</p></span></button></div>
+                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5 cursor-pointer flex ' onClick={() => updateStatusOfBook('currentlyReading')}><button className='w-full '><span className='font-medium flex justify-center items-center'>{statusUnformatted === 'currentlyReading' &&
+                    <img className='inline h-5 my-auto w-5 mr-1' src="https://cdn-icons-png.flaticon.com/512/2732/2732655.png" alt=""/>}<p className='inline'>Currently reading</p></span></button></div>
+                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5 cursor-pointer flex ' onClick={() => updateStatusOfBook('read')}><button className='w-full '><span className='font-medium flex justify-center items-center'>{statusUnformatted === 'read' &&
+                    <img className='inline h-5 my-auto w-5 mr-1' src="https://cdn-icons-png.flaticon.com/512/2732/2732655.png" alt=""/>}<p className='inline'>Read</p></span></button></div>
+
               </div>
             </div>
           </div>
