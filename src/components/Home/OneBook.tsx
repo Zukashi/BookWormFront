@@ -137,5 +137,15 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
 
   </div>
+    <div className='fixed -bottom-2 left-0 w-screen bg-white rounded-lg pb-10'>
+      <div className='w-[85%] mx-auto'>
+        <div className='flex  gap-16 pt-6 pb-8 justify-between'><h3 className='font-medium text-lg'>Choose a shelf for this book</h3><span>X</span></div>
+        <div className='flex flex-col gap-3'>
+          <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5'><button className='w-full'><span className='font-medium'>Want to read</span></button></div>
+          <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5'><button className='w-full'><span className='font-medium'>Currently reading</span></button></div>
+          <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5'><button className='w-full'><span className='font-medium'>Read</span></button></div>
+        </div>
+      </div>
+    </div>
     </>)
 }
