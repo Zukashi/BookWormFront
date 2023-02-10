@@ -19,6 +19,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
   const [rating,setRating] = useState<number>(0);
   const [hover, setHover] = React.useState(0);
   const stars = Array(5).fill(0);
+  const [modal, setModal] = useState<boolean>(false)
   const [bookStatus, setBookStatus] = React.useState<string>('')
   const handleMouseOver = (value:number) => {
     setHover(value)
@@ -33,6 +34,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
       refImg.current.classList.add('opacity-50')
     }
   };
+  console.log(modal)
   useEffect(() => {
     ( async () => {
       const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/favorites`);
@@ -61,7 +63,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
     }, 400)
     return () => clearInterval(timer)
   },[]);
-
+  console.log(modal)
   const changeFavorite = () => {
       if(favorite === false){
         setFavorite(true);
@@ -81,6 +83,10 @@ export const OneBookHome = ({book,refresh}:Props) => {
       }
 
   };
+  const toggleModal = () => {
+    console.log(123)
+    setModal((prev) => !prev)
+  }
   const updateStatusOfBook = async () => {
     await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${book._id}/read`)
     setBookStatus('Read')
@@ -131,21 +137,27 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
       {!favorite ?  <i onClick={changeFavorite} className="fa-regular fa-heart fa-xl text-red-500 cursor-pointer   w-2"></i>:
          <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2"></i>}
-      <div className='bg-[#409d69] flex rounded-xl text-[#ffffff]'><button className='px-2 cursor-pointer py-2 border-r-[1px] border-r-amber-800' onClick={() => updateStatusOfBook}>{!bookStatus && 'Want To Read'}</button><button className='w-11 flex justify-center items-center '><img className='w-6 cursor-pointer' src="https://cdn-icons-png.flaticon.com/512/5833/5833290.png" alt='icon of books'/></button></div>
+      <div className='bg-[#409d69] flex rounded-xl text-[#ffffff]'><button className='px-2 cursor-pointer py-2 border-r-[1px] border-r-amber-800' onClick={toggleModal} >{!bookStatus && 'Want To Read'}</button><button className='w-11 flex justify-center items-center '><img className='w-6 cursor-pointer' src="https://cdn-icons-png.flaticon.com/512/5833/5833290.png" alt='icon of books'/></button></div>
     </div>
 
 
 
   </div>
-    <div className='fixed -bottom-2 left-0 w-screen bg-white rounded-lg pb-10'>
-      <div className='w-[85%] mx-auto'>
-        <div className='flex  gap-16 pt-6 pb-8 justify-between'><h3 className='font-medium text-lg'>Choose a shelf for this book</h3><span>X</span></div>
-        <div className='flex flex-col gap-3'>
-          <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5'><button className='w-full'><span className='font-medium'>Want to read</span></button></div>
-          <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5'><button className='w-full'><span className='font-medium'>Currently reading</span></button></div>
-          <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5'><button className='w-full'><span className='font-medium'>Read</span></button></div>
+    {
+      modal && <div className='w-screen h-screen top-0  left-0 right-0 fixed z-20'>
+          <div className='w-screen h-screen  bg-[#333]/[0.32] ' onClick={toggleModal}></div>
+          <div className={`w-screen mx-auto absolute -bottom-2 left-0 w-screen bg-white rounded-xl pb-10 ${!modal  ? '-bottom-[268px]' : '-bottom-2'}`}>
+            <div className='w-[85%] mx-auto'>
+              <div className='flex  gap-16 pt-6 pb-8 justify-between'><h3 className='font-medium text-lg'>Choose a shelf for this book</h3><span onClick={toggleModal}>X</span></div>
+              <div className='flex flex-col gap-3'>
+                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5'><button className='w-full'><span className='font-medium'>Want to read</span></button></div>
+                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5'><button className='w-full'><span className='font-medium'>Currently reading</span></button></div>
+                <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5'><button className='w-full'><span className='font-medium'>Read</span></button></div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+    }
+
     </>)
 }

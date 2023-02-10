@@ -34,7 +34,7 @@ export  function DrawerComponent() {
         navigate('/')
     }
     return (
-        <><div className='absolute top-0'>
+        <><div className='absolute top-0 '>
             <button ref={btnRef} onClick={onOpen} className='w-14 h-14 fixed z-20 mt-1 right-0.5 top-0.5'><img className='' src={preview} alt=""/></button>
             </div>
             <Drawer
