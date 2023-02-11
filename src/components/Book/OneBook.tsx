@@ -154,7 +154,6 @@ export const OneBook = () => {
       (accumulator, currentValue) => accumulator + currentValue,
       0
   );
-  console.log(filterStars)
   return (<>
     <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
       <HomeNav/>
@@ -188,7 +187,7 @@ export const OneBook = () => {
             })
           }
         </div>
-        {personalRating === 0 && <h3 className='text-[1rem] font-medium mb-2'>Rate this book</h3>}
+        {personalRating === 0 ? <h3 className='text-[1rem] font-medium mb-2'>Rate this book</h3>:<h3  className='font-medium'>Rated.<Link className='border-b-2 border-black ml-1' to={`/review/edit/${bookId}`}>{review.description.length > 0 ? 'Edit review' : 'Write a review'}</Link></h3>}
       </div>
 
         <div className='ml-[1.7rem] pb-4 mx-auto w-[90%] mt-4 font-mono font-[400] tracking-tighter text-[16px] leading-[25px] mr-[1.7rem]'>

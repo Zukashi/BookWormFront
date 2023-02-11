@@ -38,7 +38,7 @@ export const ReviewEdit = () => {
             try{
                 const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/book/${res.data._id}`);
 
-                setValue('description', res2.data.desc)
+                setValue('description', res2.data.description)
                 setValue('spoilers', res2.data.spoilers)
                 setReview(res2.data);
                 setLastReviewRating(res2.data.rating)
