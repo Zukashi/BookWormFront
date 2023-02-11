@@ -37,8 +37,6 @@ export interface Book {
 }
 
 export const OneBook = () => {
-  const location = useLocation();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const {user} = useSelector((state: RootState) => state.user);
 
@@ -56,12 +54,17 @@ export const OneBook = () => {
   const [originalReviews, setOriginalReviews] = useState<any[]>()
   const [filterStars, setFilterStars] = useState<boolean>(false);
   const [filterRate, setFilterRate] = useState<number>(0);
+  const [status , setStatus] = useState<string>('read')
   const [isHighlighted, setIsHighlighted] = useState<boolean[]>([false,false,false,false,false])
   const refresh = async () => {
     try{
       const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
       setBook(res.data);
       const res3 = await axiosPrivate.get(`http://localhost:3001/book/${res.data._id}`)
+      const res4 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${bookId}/status`);
+      if(res4.data !== '' && res4.data !== 'not found shelf'){
+        setStatus(res4.data)
+      }
 
       setRating(res3.data.rating);
       const res5 = await axiosPrivate.get(`http://localhost:3001/book/${res.data._id}/reviews`);
@@ -70,6 +73,7 @@ export const OneBook = () => {
       const res2 = await axiosPrivate(`http://localhost:3001/user/${user._id}/book/${res.data._id}`);
 
       setReview(res2.data)
+      console.log(res2.data)
       setPersonalRating(res2.data.rating)
     }catch (e) {
       console.log('catcherror')
@@ -108,17 +112,18 @@ export const OneBook = () => {
       setReviews(res5.data)
     }
   }
-  useEffect(() => {
-      refresh()
 
-  }, []);
   const handleClick = async (value:number) => {
-    setPersonalRating(value)
-    await axiosPrivate.post(`http://localhost:3001/book/${book?._id}/${value}`);
+    console.log(value
+    )
+    setPersonalRating(value);
+    console.log(user._id, bookId, status)
+    await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${status}`)
+    await axiosPrivate.post(`http://localhost:3001/book/${bookId}/${value}`);
     await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
         rating:value,
         description:'',
-        status:'read',
+        status:status,
         spoilers:false,
         comments:[]
       })
@@ -126,6 +131,10 @@ export const OneBook = () => {
 
     refresh();
   };
+  useEffect(() => {
+    refresh()
+
+  }, []);
   const stars = Array(5).fill(0);
   const handleMouseOver = (value:number) => {
     setHover(value)
@@ -165,8 +174,23 @@ export const OneBook = () => {
           <p className='inline-block text-[1.4rem] font-medium ml-2'>{book.rating.toFixed(2)}</p>
         </div>
         <div className='w-60 mx-auto my-4'>
-          <StatusCurrent refresh={refresh}/>
+          <StatusCurrent refresh={refresh} onDelete={deleteReview}/>
         </div>
+
+
+      <div className='flex flex-col items-center'>
+        <div className='flex justify-center mt-2 mb-2 '>
+          {
+            stars.map((_, index) => {
+              return (
+                  <i className={`fa-solid fa-star text-3xl cursor-pointer ${personalRating > index  && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}  ></i>
+              )
+            })
+          }
+        </div>
+        {personalRating === 0 && <h3 className='text-[1rem] font-medium mb-2'>Rate this book</h3>}
+      </div>
+
         <div className='ml-[1.7rem] pb-4 mx-auto w-[90%] mt-4 font-mono font-[400] tracking-tighter text-[16px] leading-[25px] mr-[1.7rem]'>
           {!book.description ? <p>This edition doesn't have a description yet.</p>:
           <p className='break'>{book.description}</p>}
