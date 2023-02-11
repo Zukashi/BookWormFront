@@ -120,7 +120,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
          <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2"></i>}
 
 
-      <StatusCurrent refresh={refreshOneBook}/>
+      <StatusCurrent refresh={refreshOneBook} onDelete={() => null}/>
     </div>
 
 
