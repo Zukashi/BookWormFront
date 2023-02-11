@@ -98,7 +98,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
   </div>
 
-    <div className='inline-block mt-14 flex flex-col gap-4'><p className='text-[15px] font-bold w-40 leading-5
+    <div className='inline-block mt-14 flex flex-col gap-4'><p className='text-[15px] font-bold w-36 leading-5
     '>{book.title}</p>
       <p className='text-[16px]'>{book.author} </p>
 

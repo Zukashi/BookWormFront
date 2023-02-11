@@ -11,6 +11,7 @@ import {RootState} from "../../app/store";
 import dayjs from "dayjs";
 import {OneReviewOrdinary} from "./OneReviewOrdinary";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import {StatusCurrent} from "../Repeatable/StatusCurrent";
 export interface Book {
   amountOfRates: number;
   ratingTypeAmount: number[];
@@ -162,6 +163,9 @@ export const OneBook = () => {
             })
           }
           <p className='inline-block text-[1.4rem] font-medium ml-2'>{book.rating.toFixed(2)}</p>
+        </div>
+        <div className='w-60 mx-auto my-4'>
+          <StatusCurrent refresh={refresh}/>
         </div>
         <div className='ml-[1.7rem] pb-4 mx-auto w-[90%] mt-4 font-mono font-[400] tracking-tighter text-[16px] leading-[25px] mr-[1.7rem]'>
           {!book.description ? <p>This edition doesn't have a description yet.</p>:
