@@ -42,6 +42,8 @@ export const ReviewAdd = () => {
     const [hover, setHover] = React.useState(0)
     useEffect(() => {
         (async () => {
+            const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${bookId}/status`)
+            setValue('status', res2.data);
             const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
             setBook(res.data);
 
