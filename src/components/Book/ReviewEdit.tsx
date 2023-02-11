@@ -11,13 +11,14 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 
 export const ReviewEdit = () => {
     const {user} = useSelector((state: RootState) => state.user);
-    const {register, handleSubmit, setValue} = useForm();
+    const {register, handleSubmit, setValue, getValues} = useForm();
     const [book, setBook] = useState<Book|null>();
     const navigate = useNavigate();
     const {bookId} = useParams();
     const [loading, setLoading] = useState<boolean>(true);
     const stars = Array(5).fill(0);
     const axiosPrivate = useAxiosPrivate();
+    const [status, setStatus] = useState('')
     const [review,setReview] = useState<any>({
         rating:0,
         description:'',
@@ -32,6 +33,8 @@ export const ReviewEdit = () => {
         (async () => {
             const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
             setBook(res.data);
+            const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${bookId}/status`)
+            setValue('status', res2.data);
             try{
                 const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/book/${res.data._id}`);
 
@@ -52,10 +55,14 @@ export const ReviewEdit = () => {
         window.location.reload();
     }
     const onSubmit = async (data:any) => {
-        data.rating = review.rating
+        data.rating = review.rating;
+        const currentStatus = getValues('status');
+        console.log(currentStatus)
         try{
             await axiosPrivate.put(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify(data));
-            await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/${lastReviewRating}`)
+            await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${bookId}/status`);
+            await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/${lastReviewRating}`);
+            await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${currentStatus}`)
             await axiosPrivate.put(`http://localhost:3001/book/${book?._id}/${review.rating}`);
             navigate(`/book/${bookId}`)
         }catch (e) {
