@@ -6,6 +6,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {OneBookUser} from "./OneBookUser";
 import {ShelfUser} from "./ShelfUser";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 export const UserBooks = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -27,6 +28,7 @@ export const UserBooks = () => {
     console.log(Object.keys(shelves).length)
     const statuses = ['read', 'currentlyReading', 'wantToRead']
     return (<>
+
         <HomeNav/>
         <div className='pt-16'></div>
         <Tabs width={'100vw'} variant='enclosed' colorScheme='green' align={'center'} orientation='horizontal'>

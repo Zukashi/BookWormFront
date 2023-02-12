@@ -4,6 +4,7 @@ import {OneBookUser} from "./OneBookUser";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {RootState} from "../../app/store";
 import {useSelector} from "react-redux";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 export const ShelfUser = (props:{shelves:any,status:string, refresh: () => Promise<void>}) => {
     const axiosPrivate = useAxiosPrivate();
@@ -11,7 +12,7 @@ export const ShelfUser = (props:{shelves:any,status:string, refresh: () => Promi
     const filterBooks = async (searchValue:string) => {
             await axiosPrivate.get(`http://localhost:3001/user/${user._id}/`)
     }
-
+    console.log(props)
     return (<>
         <TabPanel>
             {props.shelves[props.status].length > 0 && <div className='flex'><Input onChange={(e) => filterBooks(e.target.value)}  placeholder='Search your reading log'/>

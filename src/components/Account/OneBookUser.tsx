@@ -5,11 +5,13 @@ import {
     Modal, ModalBody,
     ModalCloseButton, ModalContent, ModalFooter,
     ModalHeader,
-    ModalOverlay,
+    ModalOverlay, Progress,
     Select,
     Spinner,
+    Stack,
     useDisclosure
 } from "@chakra-ui/react";
+import ProgressBar from "@ramonak/react-progress-bar";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
@@ -22,12 +24,15 @@ export const OneBookUser = (props:{id:string, status:string, refresh: () => Prom
     const [book, setBook] = useState<any>();
     const {register , handleSubmit, formState:{errors}} = useForm<{status:string}>()
     const [loading ,setLoading] = useState<boolean>(true);
+    const completed = 0;
     const {user} = useSelector((state:RootState) => state.user)
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [currentStatus, setCurrentStatus] = useState(props.status)
+    const [currentStatus, setCurrentStatus] = useState(props.status);
+    console.log(props)
     useEffect(() => {
         (async () => {
-            const res = await axiosPrivate.get(`http://localhost:3001/book/${props.id}`)
+            const res = await axiosPrivate.get(`http://localhost:3001/book/${props.id}`);
+            console.log(res.data)
             setBook(res.data)
             setLoading((prev) => !prev)
         })()
@@ -41,22 +46,23 @@ export const OneBookUser = (props:{id:string, status:string, refresh: () => Prom
             }))
             await props.refresh()
     }
-    while (loading ){
+    while (loading || !book ){
         return <>
             <div className='pt-20'></div>
             <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
     }
     return (<>
+
         <div className='flex relative'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
             <Link to={`/book/${book._id}`} className='  flex justify-center  items-center '><div className='h-[250px] flex justify-center items-center'><img  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-40"   alt=""/></div>
 
             </Link>
 
         </div>
-
             <div className='inline-block -ml-10 mt-20'><p className='text-[15px] font-bold w-40 leading-5
     ml-16'>{book.title}</p>
                 <p className='text-[16px] mt-2 ml-16'>{book.author} </p>
+
                     <div className='w-full flex justify-end'>
 
                         <label htmlFor="default"
