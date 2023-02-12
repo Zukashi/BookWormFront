@@ -5,14 +5,13 @@ import {RootState} from "../../app/store";
 import {useLocation, useParams} from "react-router";
 
 
-export const StatusCurrent = ({refresh, onDelete}:{
+export const StatusCurrent = ({refresh, onDelete, book}:{
     refresh : () => void
-    onDelete : () => void
+    onDelete : () => void,
+    book:any,
 }) => {
     const axiosPrivate = useAxiosPrivate();
     const {user} = useSelector((root:RootState) => root.user);
-    const {bookId} = useParams();
-    const [book, setBook] = useState<any>()
     const [bookStatus, setBookStatus] = React.useState<any>('');
     const [modal, setModal] = useState<boolean>(false);
     const [statusUnformatted, setStatusUnformatted] = useState<string>("");
@@ -59,11 +58,10 @@ export const StatusCurrent = ({refresh, onDelete}:{
 
         (async () => {
 
-            const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
-            setBook(res.data)
 
 
-            const resStatusOfBook = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${res.data._id}/status`);
+            const resStatusOfBook = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${book._id}/status`);
+            console.log(resStatusOfBook)
             if(resStatusOfBook.data === 'not found shelf'){
                 setBookStatus("")
             }else{
@@ -86,7 +84,7 @@ export const StatusCurrent = ({refresh, onDelete}:{
          refreshStatus()
     }, [bookStatus, onDelete]);
     if(!book) return <h1>123</h1>
-
+    console.log(bookStatus)
     return (<>
         {location.pathname.split('/')[1] !== 'book' ?<div className={`${ bookStatus === '' ? 'bg-[#409d69] w-40 flex' :'bg-[#F2F2F2] w-40 border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer w-full`} onClick={bookStatus !== '' ? toggleModal : undefined}>
             <button className={`w-36 cursor-pointer py-2  ${bookStatus === "" ? 'border-r-[1px] border-r-amber-800 ':'py-[7px]' }`} onClick={bookStatus === '' ?  () => updateStatusOfBook('wantToRead'): undefined } ><span className={`font-medium ${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want to read' : bookStatus}</span></button>{bookStatus === "" ? <button onClick={toggleModal} className='w-7 flex justify-center items-center '>

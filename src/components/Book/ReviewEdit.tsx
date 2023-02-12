@@ -61,12 +61,13 @@ export const ReviewEdit = () => {
         try{
             await axiosPrivate.put(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify(data));
             await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${bookId}/status`);
+            console.log(1234)
             await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/${lastReviewRating}`);
             await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${currentStatus}`)
             await axiosPrivate.put(`http://localhost:3001/book/${book?._id}/${review.rating}`);
             navigate(`/book/${bookId}`)
         }catch (e) {
-
+            console.log(e)
         }
     }
     const handleMouseOver = (value:number) => {

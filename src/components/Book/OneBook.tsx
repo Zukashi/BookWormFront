@@ -76,7 +76,7 @@ export const OneBook = () => {
       console.log(res2.data)
       setPersonalRating(res2.data.rating)
     }catch (e) {
-      console.log('catcherror')
+      console.log(e)
     }
     setLoading(false)
   };
@@ -173,7 +173,7 @@ export const OneBook = () => {
           <p className='inline-block text-[1.4rem] font-medium ml-2'>{book.rating.toFixed(2)}</p>
         </div>
         <div className='w-60 mx-auto my-4'>
-          <StatusCurrent refresh={refresh} onDelete={deleteReview}/>
+          <StatusCurrent book={book} refresh={refresh} onDelete={deleteReview}/>
         </div>
 
 
@@ -187,7 +187,7 @@ export const OneBook = () => {
             })
           }
         </div>
-        {personalRating === 0 ? <h3 className='text-[1rem] font-medium mb-2'>Rate this book</h3>:<h3  className='font-medium'>Rated.<Link className='border-b-2 border-black ml-1' to={`/review/edit/${bookId}`}>{review.description.length > 0 ? 'Edit review' : 'Write a review'}</Link></h3>}
+        {personalRating === 0 ? <h3 className='text-[1rem] font-medium mb-2'>Rate this book</h3>:<h3  className='font-medium'>Rated.<Link className='border-b-2 border-black ml-1' to={`/review/edit/${bookId}`}>{review?.description?.length > 0 ? 'Edit review' : 'Write a review'}</Link></h3>}
       </div>
 
         <div className='ml-[1.7rem] pb-4 mx-auto w-[90%] mt-4 font-mono font-[400] tracking-tighter text-[16px] leading-[25px] mr-[1.7rem]'>
