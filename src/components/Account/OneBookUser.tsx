@@ -24,11 +24,12 @@ export const OneBookUser = (props:{id:string, status:string, refresh: () => Prom
     const [book, setBook] = useState<any>();
     const {register , handleSubmit, formState:{errors}} = useForm<{status:string}>()
     const [loading ,setLoading] = useState<boolean>(true);
-    const completed = 0;
     const {user} = useSelector((state:RootState) => state.user)
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [currentStatus, setCurrentStatus] = useState(props.status);
+    const [completed ,setCompleted] = useState<number>(0)
     console.log(props)
+    console.log(props.status)
     useEffect(() => {
         (async () => {
             const res = await axiosPrivate.get(`http://localhost:3001/book/${props.id}`);
@@ -38,13 +39,17 @@ export const OneBookUser = (props:{id:string, status:string, refresh: () => Prom
         })()
     }, []);
     const changeStatus =async  (oldStatus:string, bookId:string) => {
+        setLoading(true)
             await axiosPrivate.put(`http://localhost:3001/book/${bookId}/user/${user._id}/changeStatus`, JSON.stringify({
                 statuses:{
                     oldStatus:oldStatus,
                     newStatus:currentStatus
                 }
             }))
-            await props.refresh()
+            await props.refresh();
+        setTimeout(() => {
+            setLoading(false)
+        }, 800)
     }
     while (loading || !book ){
         return <>
@@ -53,15 +58,15 @@ export const OneBookUser = (props:{id:string, status:string, refresh: () => Prom
     }
     return (<>
 
-        <div className='flex relative'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
+        <div className='flex relative gap-4'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
             <Link to={`/book/${book._id}`} className='  flex justify-center  items-center '><div className='h-[250px] flex justify-center items-center'><img  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-40"   alt=""/></div>
 
             </Link>
 
         </div>
-            <div className='inline-block -ml-10 mt-20'><p className='text-[15px] font-bold w-40 leading-5
-    ml-16'>{book.title}</p>
-                <p className='text-[16px] mt-2 ml-16'>{book.author} </p>
+            <div className='inline-block  mt-20 w-2/5'><p className='text-[15px] font-bold w-40 leading-5
+    '>{book.title}</p>
+                <p className='text-[16px] mt-2 '>{book.author} </p>
 
                     <div className='w-full flex justify-end'>
 
@@ -81,6 +86,11 @@ export const OneBookUser = (props:{id:string, status:string, refresh: () => Prom
                      <option className='text-ellipsis overflow-hidden whitespace-nowrap' value="wantToRead">Want To Read</option>
                  </select>
                     </div>
+                {props.status === 'currentlyReading' && <div className='h-5 w-full bg-[#e0e0de] rounded-3xl m-2'>
+                    <div className={`h-full w-[${completed}%] bg-blue-700 rounded-inherit `}>
+                        <span className='p-5 text-white font-bold'></span>
+                    </div>
+                </div>}
             </div>
             </div>
         <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} isCentered>
@@ -99,7 +109,11 @@ export const OneBookUser = (props:{id:string, status:string, refresh: () => Prom
                     }>
                         Yes
                     </Button>
-                    <Button onClick={onClose} colorScheme='red'>No</Button>
+                    <Button  onClick={() => {
+                        console.log(props.status)
+                        setCurrentStatus(props.status)
+                        onClose()}}
+                             colorScheme='red'>No</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>
