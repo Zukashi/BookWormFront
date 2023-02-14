@@ -146,7 +146,7 @@ export const OneBook = () => {
   while(loading || !book){
     return <>
       <div className='pt-20'></div>
-      <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div>
+      <div className='w-screen h-screen absolute top-[300%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div>
     </>
   };
   const [dayNumber,monthName,year]= (dayjs(review?.date).format('DD/MMMM/YYYY')).split('/');
