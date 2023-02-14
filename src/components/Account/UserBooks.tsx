@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {HomeNav} from "../Home/HomeNav";
-import {Button, Input, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs} from "@chakra-ui/react";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {OneBookUser} from "./OneBookUser";
 import {ShelfUser} from "./ShelfUser";
 import ProgressBar from "@ramonak/react-progress-bar";
-
+import {Tab, TabList, TabPanel, Tabs } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 export const UserBooks = () => {
     const axiosPrivate = useAxiosPrivate();
+    const [activeTab, setActiveTab] = useState('read')
     const {user} = useSelector((state: RootState) => state.user);
     const [shelves ,setShelves] = useState<{read:string[], wantToRead:string[], currentlyReading:string[]}>();
     const refresh = async() => {
@@ -31,19 +32,24 @@ export const UserBooks = () => {
 
         <HomeNav/>
         <div className='pt-16'></div>
-        <Tabs width={'100vw'} variant='enclosed' colorScheme='green' align={'center'} orientation='horizontal'>
-            <TabList mb='1em'>
-                <Tab _selected={{color:'white', bg:'blue.500'}}>Read</Tab>
-                <Tab _selected={{color:'white', bg:'blue.500'}}>Currently Reading</Tab>
-                <Tab _selected={{color:'white', bg:'blue.500'}}>Want To Read</Tab>
-            </TabList>
-            <TabPanels>
-                {
-                    statuses.map((status:string) => <ShelfUser key={status} shelves={shelves} status={status} refresh={refresh}/>)
-                }
+                <main className='w-screen flex justify-center flex-col '>
+                    <div className="w-full h-auto  bg-[#053742]   text-[#E8F0F2] rounded-[2rem] ">
+                        {/* Tab nav */}
+                       <div className='flex w-full justify-center'>
+                           <ul className="w-full my-auto   flex items-center justify-center border-2 border-[#39A2DB] rounded-[2rem] p-0">
+                               <li className={`${activeTab === "read" ? "bg-[#39A2DB]" : ""} text-[14px] font-medium w-1/2  leading-[3.5rem] h-full list-none text-center cursor-pointer transition-all  duration-500 rounded-b-[2rem] rounded-t-[2rem] `} onClick={() => setActiveTab('read')}>Read</li>
+                               <li className={`${activeTab === "currentlyReading" ? "bg-[#39A2DB]" : ""} text-[14px]  font-medium w-1/2 leading-[3.5rem] list-none text-center cursor-pointer transition-all  duration-500 rounded-b-[2rem] rounded-t-[2rem] `} onClick={() => setActiveTab('currentlyReading')}>Currently Reading</li>
+                               <li className={`${activeTab === "wantToRead" ? "bg-[#39A2DB]" : ""} text-[14px] font-medium w-1/2 leading-[3.5rem] list-none text-center cursor-pointer transition-all  duration-500 rounded-b-[2rem] rounded-t-[2rem] `} onClick={() => setActiveTab('wantToRead')}>Want To Read</li>
+                           </ul>
+                       </div>
+
+                    </div>
+                    <div className="outlet ">
+                        <ShelfUser key={activeTab} status={activeTab} refresh={refresh} shelves={shelves}/>
+                    </div>
 
 
-            </TabPanels>
-        </Tabs>
+
+                </main>
     </>)
 }
