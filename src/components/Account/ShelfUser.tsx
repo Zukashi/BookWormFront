@@ -11,15 +11,15 @@ export const ShelfUser = (props:{shelves:any,status:string, refresh: () => Promi
     const axiosPrivate = useAxiosPrivate();
     const {user} = useSelector((state:RootState) => state.user)
     const filterBooks = async (searchValue:string) => {
-            await axiosPrivate.get(`http://localhost:3001/user/${user._id}/`)
+            await axiosPrivate.get(`http://localhost:3001/user/${user._id}`)
     }
     console.log(props)
     return (<>
 
             {props.shelves[props.status].length > 0 && <div className='flex mt-[1rem]'><Input onChange={(e) => filterBooks(e.target.value)}  placeholder='Search your reading log'/>
                 <Button>Submit</Button></div>}
-            {props.shelves[props.status].length > 0 ? props.shelves[props.status].map((bookId:string) => {
-                    return <OneBookUser key={bookId} id={bookId} refresh={props.refresh} status={props.status} />}):
+            {props.shelves[props.status].length > 0 ? props.shelves[props.status].map((bookId:any) => {
+                    return <OneBookUser key={bookId} id={bookId.book} refresh={props.refresh} status={props.status} />}):
                 <p className={'text-center font-bold text-3xl mt-[10%]'}>This shelf is empty</p>}
           </>)
 }
