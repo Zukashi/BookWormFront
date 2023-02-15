@@ -8,10 +8,12 @@ import {ShelfUser} from "./ShelfUser";
 import ProgressBar from "@ramonak/react-progress-bar";
 import {Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import {useLocation} from "react-router";
 export const UserBooks = () => {
     const axiosPrivate = useAxiosPrivate();
     const [activeTab, setActiveTab] = useState('read')
     const {user} = useSelector((state: RootState) => state.user);
+    const location = useLocation();
     const [shelves ,setShelves] = useState<{read:string[], wantToRead:string[], currentlyReading:string[]}>();
     const refresh = async() => {
         const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/books`)
@@ -21,12 +23,11 @@ export const UserBooks = () => {
 
     useEffect(() => {
         refresh();
-    }, [])
-    console.log(shelves)
+        location.state && setActiveTab(location.state)
+    }, [location])
     if (!shelves){
         return <h1>1</h1>
     };
-    console.log(Object.keys(shelves).length)
     const statuses = ['read', 'currentlyReading', 'wantToRead']
     return (<>
 

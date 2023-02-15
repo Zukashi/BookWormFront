@@ -5,19 +5,16 @@ import {
     Modal, ModalBody,
     ModalCloseButton, ModalContent, ModalFooter,
     ModalHeader,
-    ModalOverlay, Progress,
-    Select,
+    ModalOverlay,
     Spinner,
-    Stack,
     useDisclosure
 } from "@chakra-ui/react";
-import ProgressBar from "@ramonak/react-progress-bar";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
-import {current} from "@reduxjs/toolkit";
+import {useLocation} from "react-router";
 
 export const OneBookUser = (props:{id:{
     book:string
@@ -27,6 +24,7 @@ export const OneBookUser = (props:{id:{
     const {register , handleSubmit, formState:{errors}} = useForm<{status:string}>()
     const [loading ,setLoading] = useState<boolean>(true);
     const {user} = useSelector((state:RootState) => state.user)
+    const location = useLocation();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [currentStatus, setCurrentStatus] = useState(props.status);
     const [completed ,setCompleted] = useState<number>(0);
@@ -96,7 +94,9 @@ export const OneBookUser = (props:{id:{
                 </div>
                 <p className='text-[12px] font-bold'>{((completed / book?.number_of_pages) * 100).toFixed(0)}% Done</p>
                 </div>}
-                <Link to={`/user/${user._id}/book/${book._id}/${props.status}/progress`}><button className='px-1 py-0.5 bg-[#F4F1EA] text-black border-2 border-[#bbb] font-medium cursor-pointer rounded-xl '>Update Progress</button></Link>
+                {
+                    props.status === 'currentlyReading' &&   <Link state={{location, status:props.status}} to={`/user/${user._id}/book/${book._id}/${props.status}/progress`}><button className='px-1 py-0.5 bg-[#F4F1EA] text-black border-2 border-[#bbb] font-medium cursor-pointer rounded-xl '>Update Progress</button></Link>
+                }
             </div>
             </div>
         <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} isCentered>
