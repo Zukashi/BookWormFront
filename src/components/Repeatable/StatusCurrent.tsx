@@ -38,7 +38,8 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
             }
 
         } )
-        setModal(false)
+        setModal(false);
+        refresh();
     }
     const toggleModal = () => {
         setModal((prev) => !prev)
