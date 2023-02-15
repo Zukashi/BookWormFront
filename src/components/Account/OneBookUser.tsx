@@ -19,7 +19,9 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {current} from "@reduxjs/toolkit";
 
-export const OneBookUser = (props:{id:string, status:string, refresh: () => Promise<void>}) => {
+export const OneBookUser = (props:{id:{
+    book:string
+    }, status:string, refresh: () => Promise<void>}) => {
     const axiosPrivate = useAxiosPrivate();
     const [book, setBook] = useState<any>();
     const {register , handleSubmit, formState:{errors}} = useForm<{status:string}>()
@@ -29,13 +31,16 @@ export const OneBookUser = (props:{id:string, status:string, refresh: () => Prom
     const [currentStatus, setCurrentStatus] = useState(props.status);
     const [completed ,setCompleted] = useState<number>(0)
     console.log(props)
-    console.log(props.status)
+    console.log(props.status);
+    console.log(completed)
     useEffect(() => {
         (async () => {
+            console.log(props)
             const res = await axiosPrivate.get(`http://localhost:3001/book/${props.id}`);
-            console.log(res.data)
+            const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/book/${props.id}/${props.status}`);
+            setCompleted(res2.data.progress)
             setBook(res.data)
-            setLoading((prev) => !prev)
+            setLoading(false)
         })()
     }, []);
     const changeStatus =async  (oldStatus:string, bookId:string) => {
@@ -58,13 +63,13 @@ export const OneBookUser = (props:{id:string, status:string, refresh: () => Prom
     }
     return (<>
 
-        <div className='flex relative gap-4'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
-            <Link to={`/book/${book._id}`} className='  flex justify-center  items-center '><div className='h-[250px] flex justify-center items-center'><img  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-40"   alt=""/></div>
+        <div className='flex relative gap-2  w-[95%] mx-auto'> <div className='mt-4 lg:bg-black  inline-block'>
+            <Link to={`/book/${book._id}`} className='  flex justify-center  items-center '><div className='h-[250px] flex justify-center items-center w-36'><img  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className=" cursor-default w-36"   alt=""/></div>
 
             </Link>
 
         </div>
-            <div className='inline-block  mt-20 w-2/5'><p className='text-[15px] font-bold w-40 leading-5
+            <div className='inline-block  mt-20 w-3/5'><p className='text-[15px] font-bold w-40 leading-5
     '>{book.title}</p>
                 <p className='text-[16px] mt-2 '>{book.author} </p>
 
@@ -86,11 +91,14 @@ export const OneBookUser = (props:{id:string, status:string, refresh: () => Prom
                      <option className='text-ellipsis overflow-hidden whitespace-nowrap' value="wantToRead">Want To Read</option>
                  </select>
                     </div>
-                {props.status === 'currentlyReading' && <div className='h-5 w-full bg-[#e0e0de] rounded-3xl m-2'>
-                    <div className={`h-full w-[${completed}%] bg-blue-700 rounded-inherit `}>
+                {props.status === 'currentlyReading' && completed !== 0 &&<div className='flex gap-0.5 items-center'> <p className='text-[12px] font-medium '>Progress</p><div className='h-3 w-20 bg-[#e0e0de] '>
+                    <div className={`h-3 w-[${((completed / book?.number_of_pages) * 100).toFixed(0)}%] bg-blue-700 rounded-inherit `}>
                         <span className='p-5 text-white font-bold'></span>
                     </div>
+                </div>
+                <p className='text-[12px] font-bold'>{((completed / book?.number_of_pages) * 100).toFixed(0)}% Done</p>
                 </div>}
+                <Link to={`/user/${user._id}/book/${book._id}/${props.status}/progress`}><button className='px-1 py-0.5 bg-[#F4F1EA] text-black border-2 border-[#bbb] font-medium cursor-pointer rounded-xl '>Update Progress</button></Link>
             </div>
             </div>
         <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} isCentered>
