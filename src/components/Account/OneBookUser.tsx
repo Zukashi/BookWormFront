@@ -90,7 +90,7 @@ export const OneBookUser = (props:{id:{
                  </select>
                     </div>
                 {props.status === 'currentlyReading' && completed !== 0 &&<div className='flex gap-0.5 items-center'> <p className='text-[12px] font-medium '>Progress</p><div className='h-3 w-20 bg-[#e0e0de] '>
-                    <div className={`h-3 w-[20%] ${((completed / book?.number_of_pages) * 100).toFixed(0) && `w-[${((completed / book?.number_of_pages) * 100).toFixed(0)}%]`} bg-blue-700 rounded-inherit `}>
+                    <div style={{width:`${((completed / book?.number_of_pages) * 100).toFixed(0) && `${((completed / book?.number_of_pages) * 100).toFixed(0)}%`}`}} className={`h-3 w-[20%]  bg-blue-700 rounded-inherit `}>
                         <span className='p-5 text-white font-bold'></span>
                     </div>
                 </div>
