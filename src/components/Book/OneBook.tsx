@@ -54,7 +54,7 @@ export const OneBook = () => {
   const [originalReviews, setOriginalReviews] = useState<any[]>()
   const [filterStars, setFilterStars] = useState<boolean>(false);
   const [filterRate, setFilterRate] = useState<number>(0);
-  const [status , setStatus] = useState<string>('read')
+  const [status , setStatus] = useState<string>('')
   const [isHighlighted, setIsHighlighted] = useState<boolean[]>([false,false,false,false,false])
   const refresh = async () => {
     try{
@@ -84,6 +84,7 @@ export const OneBook = () => {
     navigate(`${`/book/${book?._id}`}`)
     console.log(review)
     await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${personalRating}`);
+    await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book?._id}/status`);
     setPersonalRating(0)
     refresh();
   }
@@ -112,22 +113,36 @@ export const OneBook = () => {
       setReviews(res5.data)
     }
   }
-
+  console.log(personalRating)
   const handleClick = async (value:number) => {
     console.log(value
     )
     setPersonalRating(value);
-    console.log(user._id, bookId, status)
-    await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${status}`)
+    await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${status  === '' ? 'read' : status }`)
     await axiosPrivate.post(`http://localhost:3001/book/${bookId}/${value}`);
-    await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
-        rating:value,
-        description:'',
-        status:status,
-        spoilers:false,
-        comments:[]
-      })
-    );
+    if(personalRating === 0){
+      console.log(1234)
+      await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${bookId}/status`)
+      await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
+            rating:value,
+            description:'',
+            status:status  === '' ? 'read' : status,
+            spoilers:false,
+            comments:[]
+          })
+      );
+    }else if(personalRating <= 5 && personalRating >= 1){
+      console.log(345);
+      await axiosPrivate.delete(`http://localhost:3001/book/${bookId}/${personalRating}`)
+      await axiosPrivate.put(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
+            rating:value,
+            description:review.description,
+            status:status,
+            spoilers:review.spoilers,
+            comments:review.comments,
+          })
+      );
+    }
 
     refresh();
   };
