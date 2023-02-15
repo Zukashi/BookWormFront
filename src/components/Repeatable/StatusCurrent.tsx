@@ -61,7 +61,6 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
 
 
             const resStatusOfBook = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${book._id}/status`);
-            console.log(resStatusOfBook)
             if(resStatusOfBook.data === 'not found shelf'){
                 setBookStatus("")
             }else{
