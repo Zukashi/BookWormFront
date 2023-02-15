@@ -15,8 +15,6 @@ import {AddBookAdmin} from "./components/Book/AddBookAdmin";
 import { ModifyBook } from './components/Book/ModifyBook';
 import { ModifyUser } from './components/Account/admin/modifyUser';
 import {UserListView} from "./Views/UserListView";
-import {userUpdate} from "./features/User/userSlice";
-import {Spinner} from "@chakra-ui/react";
 import {ResetPassword} from "./components/Login/ResetPassword";
 import { ReviewAdd } from './components/Book/ReviewAdd';
 import {ReviewEdit} from "./components/Book/ReviewEdit";
@@ -25,6 +23,7 @@ import {useAxiosPrivate} from "./hooks/useAxiosPrivate";
 import PersistLogin from "./components/PersistLogin";
 import {UserBooks} from "./components/Account/UserBooks";
 import {CategoryView} from "./Views/CategoryView";
+import {ProgressBookChange} from "./components/Account/ProgressBookChange";
 
 export const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -44,7 +43,9 @@ export const AllRoutes = () => {
                 <Route path='author/:authorId' element={<AuthorView/>}/>
               <Route path='book/:bookId' element={<BookView/>}/>
               <Route path='user/:userId' element={<AccountView/>}>
+
               </Route>
+                   <Route path='user/:userId/book/:bookId/:status/progress' element={<ProgressBookChange/>}></Route>
                    <Route path='user/:userId/books' element={<UserBooks/>}></Route>
                 <Route path='review/new/:bookId' element={<ReviewAdd/>}></Route>
                 <Route path='review/edit/:bookId' element={<ReviewEdit/>}></Route>
