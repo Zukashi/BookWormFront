@@ -26,7 +26,7 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
     };
     const location = useLocation();
     const updateStatusOfBook = async (value:string) => {
-        await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${book._id}/${value}`)
+        await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${book._id}/${value}/${statusUnformatted ? statusUnformatted : 'notfound'}`)
         setBookStatus((prev:string) => {
             switch(value){
                 case 'currentlyReading':
@@ -41,7 +41,6 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
         setModal(false)
     }
     const toggleModal = () => {
-        console.log(123);
         setModal((prev) => !prev)
     }
 
@@ -57,9 +56,6 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
     const refreshStatus = () => {
 
         (async () => {
-
-
-
             const resStatusOfBook = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${book._id}/status`);
             if(resStatusOfBook.data === 'not found shelf'){
                 setBookStatus("")
