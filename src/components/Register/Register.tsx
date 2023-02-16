@@ -64,13 +64,12 @@ export const Register = () => {
                 <form onSubmit={handleSubmit(submit)}>
                     <label ><span className="block text-lg font-medium text-slate-700">Username:</span><input className={`focus:outline-none focus:ring-2 focus:ring-black  px-4 py-2 rounded-md  flex ${errors.username?.type ? `bg-yellow-400/[.7]` :`bg-[#f0efeb]/[.3]`} `} {...register('username')}></input>{errors.username && <p className='text-white-400 font-medium w-52' role="alert">{errors.username?.message}</p>}</label>
                     <label ><span className="block text-lg font-medium text-slate-700">Email:</span> <input className={` focus:outline-none focus:ring-2 focus:ring-black  px-4 py-2 rounded-md flex ${errors.email?.type  ? `bg-yellow-400/[.7]` :`bg-[#f0efeb]/[.3]`}`} {...register('email')} ></input>{errors.email && <p className='text-white-400 font-medium w-52 flex justify-center' role="alert">{errors.email?.message}</p>}</label>
-                    <InputGroup size='md'>
-                        <label ><span className='block text-lg font-medium text-slate-700'>Password:</span> <input   className={`focus:outline-none    focus:ring-2 focus:ring-black  px-4 py-2 rounded-md ${errors.password?.type  ? `bg-yellow-400/[.7]` :`bg-[#f0efeb]/[.3]`}  `}  {...register('password')}  type={show ? 'text' : 'password'}></input>{errors.password && <p className='text-white-400 font-medium w-52' role="alert">{errors.password?.message}</p>}</label> <InputRightElement width='4.5rem'>
-                        <Button h='1.75rem' size='sm' onClick={handleClick} className='mt-[57px]'>
+
+                        <label ><span className='block text-lg font-medium text-slate-700'>Password:</span> <div className='relative'>
+                            <input   className={`focus:outline-none    focus:ring-2 focus:ring-black  px-4 py-2 rounded-md ${errors.password?.type  ? `bg-yellow-400/[.7]` :`bg-[#f0efeb]/[.3]`}  `}  {...register('password')}  type={show ? 'text' : 'password'}></input><button   onClick={handleClick} className='h-[1.75rem] bg-[#000]/[0.35] text-white rounded-2xl font-medium px-2 absolute right-0 h-full top-[50%] -translate-y-1/2 -translate-x-[6%]'>
                             {show ? 'Hide' : 'Show'}
-                        </Button>
-                    </InputRightElement>
-                    </InputGroup>
+                        </button>
+                        </div>{errors.password && <p className='text-white-400 font-medium w-52' role="alert">{errors.password?.message}</p>}</label>
                     <div className='w-full flex justify-center '>
                         <button className='mt-5 bg-[#000]/[0.36] text-white px-8 py-3 rounded-lg text-2xl font-medium '  type='submit'>Register</button>
                     </div></form>
