@@ -29,6 +29,7 @@ export const Register = () => {
         const isValid = await schemaUserRegister.isValid(data);
         if (!isValid) return null;
         try{
+            console.log(1234)
             await axiosPrivate.post('http://localhost:3001/register',JSON.stringify(data));
             toast({
                 position:'top',
@@ -40,12 +41,14 @@ export const Register = () => {
             })
         }catch(e:any){
             const fieldNameError  = form.find((fieldName:string) => fieldName === e.response.data.type)
+            console.log(e.response)
             if(e?.response?.status.toString()[0] === '4' && fieldNameError !== undefined){
-                setError(fieldNameError as "username" | "email" | "password", { type: 'custom', message: e?.response?.data?.message });
+                console.log(fieldNameError)
+                setError(fieldNameError as "username" | "email" | "password", { type: 'custom', message: e?.response?.data?.result });
                 toast({
                     position:'top',
-                    title: 'warning',
-                    description: e.response.data.message,
+                    title: 'Warning',
+                    description: e.response.data.result,
                     status: 'warning',
                     duration: 5000,
                     isClosable: true,
@@ -68,7 +71,9 @@ export const Register = () => {
                         </Button>
                     </InputRightElement>
                     </InputGroup>
-                    <Button className='mt-5 ' colorScheme='blackAlpha'  type='submit'>Register</Button></form>
+                    <div className='w-full flex justify-center '>
+                        <button className='mt-5 bg-[#000]/[0.36] text-white px-8 py-3 rounded-lg text-2xl font-medium '  type='submit'>Register</button>
+                    </div></form>
             </div>
         </div>
 
