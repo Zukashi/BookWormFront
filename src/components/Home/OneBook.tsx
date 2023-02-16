@@ -50,6 +50,12 @@ export const OneBookHome = ({book,refresh}:Props) => {
       });
     })();
   }
+  const deleteReview = async () => {
+
+      await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${rating}`);
+      await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book?._id}/status`);
+
+  }
   useEffect(() => {
     refreshOneBook()
     const timer = setTimeout(() => {
@@ -120,7 +126,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
          <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2"></i>}
 
 
-      <StatusCurrent refresh={refreshOneBook} book={book} onDelete={() => null}/>
+      <StatusCurrent refresh={refreshOneBook} book={book} onDelete={deleteReview}/>
     </div>
 
 
