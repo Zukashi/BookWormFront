@@ -43,6 +43,7 @@ export const OneBook = () => {
   const [book, setBook] = useState<Book|null>();
   const {bookId} = useParams();
   const [loading, setLoading] = useState<boolean>(true);
+  const location = useLocation();
   const [rating,setRating] = useState<number>(0);
   const [personalRating, setPersonalRating] = useState<number>(0)
   const [hover, setHover] = React.useState(0);
@@ -54,8 +55,9 @@ export const OneBook = () => {
   const [originalReviews, setOriginalReviews] = useState<any[]>()
   const [filterStars, setFilterStars] = useState<boolean>(false);
   const [filterRate, setFilterRate] = useState<number>(0);
-  const [status , setStatus] = useState<string>('')
-  const [isHighlighted, setIsHighlighted] = useState<boolean[]>([false,false,false,false,false])
+  const [status , setStatus] = useState<string>('');
+  const [originalStatus, setOriginalStatus] = useState<string>('not found')
+  const [isHighlighted, setIsHighlighted] = useState<boolean[]>([false,false,false,false,false]);
   const refresh = async () => {
     try{
       const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
@@ -64,6 +66,7 @@ export const OneBook = () => {
       const res4 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${bookId}/status`);
       if(res4.data !== '' && res4.data !== 'not found shelf'){
         setStatus(res4.data)
+        setOriginalStatus(res4.data)
       }
 
       setRating(res3.data.rating);
@@ -118,7 +121,7 @@ export const OneBook = () => {
     console.log(value
     )
     setPersonalRating(value);
-    await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${status  === '' ? 'read' : status }`)
+    await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${status  === '' ? 'read' : status }/${originalStatus}`)
     await axiosPrivate.post(`http://localhost:3001/book/${bookId}/${value}`);
     if(personalRating === 0){
       console.log(1234)
@@ -149,7 +152,7 @@ export const OneBook = () => {
   useEffect(() => {
     refresh()
 
-  }, []);
+  }, [location.state]);
   const stars = Array(5).fill(0);
   const handleMouseOver = (value:number) => {
     setHover(value)

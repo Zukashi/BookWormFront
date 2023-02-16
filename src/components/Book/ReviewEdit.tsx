@@ -35,6 +35,7 @@ export const ReviewEdit = () => {
             setBook(res.data);
             const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${bookId}/status`)
             setValue('status', res2.data);
+            setStatus(res2.data)
             try{
                 const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/book/${res.data._id}`);
 
@@ -52,18 +53,18 @@ export const ReviewEdit = () => {
     const deleteReview = async () => {
         navigate(`${`/book/${book?._id}`}`)
         await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${lastReviewRating}`);
-        window.location.reload();
+        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book?._id}/status`)
+        navigate(`/book/${bookId}`, {replace:true, state:'delete'})
     }
     const onSubmit = async (data:any) => {
         data.rating = review.rating;
         const currentStatus = getValues('status');
-        console.log(currentStatus)
         try{
             await axiosPrivate.put(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify(data));
             await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${bookId}/status`);
             console.log(1234)
             await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/${lastReviewRating}`);
-            await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${currentStatus}`)
+            await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${currentStatus}/${status}`)
             await axiosPrivate.put(`http://localhost:3001/book/${book?._id}/${review.rating}`);
             navigate(`/book/${bookId}`)
         }catch (e) {
