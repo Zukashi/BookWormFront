@@ -97,18 +97,18 @@ export const OneBookHome = ({book,refresh}:Props) => {
       <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
   }
   return (<>
-    <div className='flex relative mx-auto gap-5 w-full'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
+    <div className='flex relative mx-auto gap-2 w-full'> <div className='mt-4 lg:bg-black w-[180px] inline-block'>
     <Link to={`/book/${book._id}`} className='relative  w-[180px] '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black invisible lg:visible' h='31px' w='83px'>View Book</Button><div className='h-[250px] flex items-center'><img ref={refImg} src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-40 rounded-md" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
 
     </Link>
 
   </div>
 
-    <div className='inline-block mt-14 flex flex-col gap-4'><p className='text-[15px] font-bold w-36 leading-5
+    <div className='inline-block mt-14 flex flex-col gap-1'><p className='text-[15px] font-bold w-36 leading-5
     '>{book.title}</p>
       <p className='text-[16px]'>{book.author} </p>
 
-      <div className=' h-7  right-[2.5rem] bottom-[2rem] w-full'>
+      <div className=' h-8  right-[2.5rem] bottom-[2rem] w-full flex items-center mb-2'>
         {
           stars.map((_, index) => {
             return (
@@ -118,13 +118,14 @@ export const OneBookHome = ({book,refresh}:Props) => {
           })
 
         }
-        <p className='inline-block text-[1.2rem] font-medium'>{book.rating.toFixed(2)}</p>
+        <div className='flex w-full justify-between items-start  ml-1'>
+          <p className='inline-block text-[1.2rem] font-medium'>{book.rating.toFixed(2)}</p>
+        </div>
+
 
       </div>
-
-      {!favorite ?  <i onClick={changeFavorite} className="fa-regular fa-heart fa-xl text-red-500 cursor-pointer   w-2"></i>:
-         <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2"></i>}
-
+      {!favorite ?  <i onClick={changeFavorite} className="flex items-center fa-regular fa-heart fa-xl text-red-500 cursor-pointer   w-2 mb-3"></i>:
+          <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2 mb-3"></i>}
 
       <StatusCurrent refresh={refreshOneBook} book={book} onDelete={deleteReview}/>
     </div>
