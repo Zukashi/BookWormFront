@@ -213,9 +213,13 @@ export const OneBook = () => {
           {!book.description ? <p>This edition doesn't have a description yet.</p>:
           <p className='break'>{book.description}</p>}
         </div>
-        <div className='ml-[1.7rem] w-full h-[1px] w-[90%] mx-auto bg-[#edbdf0]'></div>
-        <div className='ml-[1.7rem] mt-[1.5rem] pb-5'><p className='text-xl'>Author: <p className='inline-block font-bold'>{book.author}</p></p></div>
-        <div className='ml-[1.7rem] w-full h-[1px] w-[90%] mx-auto bg-[#edbdf0]'></div>
+
+        <div className='ml-[1.7rem] mt-[1.5rem] pb-5'>
+          <div className=' w-full h-[1px]  mx-auto bg-[#edbdf0] mb-5'></div>
+          <p className='text-xl'>Author: <p className='inline-block font-bold'>{book.author}</p></p>
+          <div className=' w-full h-[1px]  mx-auto bg-[#edbdf0] mt-5'></div>
+        </div>
+
         <h1 className='ml-[1.7rem]  py-5 text-[1.4rem] font-bold '>Ratings & Reviews</h1>
         { !personalRating ?  <div className='flex items-center flex-col'>
           <img className='w-12' src={user.base64Avatar} alt=""/>
