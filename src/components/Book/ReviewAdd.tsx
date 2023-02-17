@@ -103,7 +103,7 @@ export const ReviewAdd = () => {
             </div>
 
             <div className='mb-16'></div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete={'off'}>
                 <label htmlFor="status"></label>
                 <div className='flex justify-center'><Select className='h-5 w-[20vw]' w={'40%'} {...register('status')}>
                     <option value="read">Read</option>

@@ -50,12 +50,12 @@ export const Login = () => {
     }
 
     return (<>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete={'off'}>
             <div className='bg-gradient-to-r from-sky-500 to-indigo-500 w-screen h-screen flex items-end justify-center'>
                 <div className='flex flex-col  h-full justify-center '>
                     <h2 className='text-white text-center mb-[2vh] text-3xl'>Login</h2>
                     <label><span className="block text-lg font-medium text-slate-700">Username:</span></label>
-                    <Input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className={`focus:outline-none focus:ring focus:ring-blue-700   ${error && 'ring ring-[#ff0000] ring-[1.5px]'} `}focusBorderColor='none'   {...register('username')}></Input>
+                    <Input  style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className={`focus:outline-none focus:ring focus:ring-blue-700   ${error && 'ring ring-[#ff0000] ring-[1.5px]'} `}focusBorderColor='none'   {...register('username')}></Input>
                     <label><span className="block text-lg font-medium text-slate-700 mt-2 ">Password:</span></label>
                     <InputGroup size='md'>
 

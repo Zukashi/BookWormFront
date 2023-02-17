@@ -105,7 +105,7 @@ export const EditAccount = () => {
                 <i className="fa-solid fa-check"></i></button>}
             </div>
               {preview && <div className='w-full h-full flex justify-center items-start ml-20 '><div className='ml-3 font-bold text-xl '>Preview:<img className='' src={preview} alt=""/></div></div>}</div>}
-            <form onSubmit={handleSubmit(onSend)}>
+            <form onSubmit={handleSubmit(onSend)} autoComplete={'off'}>
             <div className='grid grid-cols-2'>  <div><div className='h-[70px] relative mt-5'><label className=" mb-3 inline-block mr-5">First Name:</label>
               <Input w='42vw'   {...register('firstName')} pos='absolute' left='0' bottom='0' placeholder='John' ></Input></div>
 
