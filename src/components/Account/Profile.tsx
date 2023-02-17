@@ -20,7 +20,6 @@ export const Profile = () => {
         })()
     }, []);
 
-    console.log(user?.dateOfBirth)
     while (loading){
         return <>
             <div className='pt-20'></div>
@@ -31,7 +30,7 @@ export const Profile = () => {
     <section className='bg-gradient-to-r from-sky-800 to-indigo-900 w-screen h-screen bg-[#fbfcff] pt-20  '>
     <div className='w-[90vw] h-full flex flex-col mx-auto'>
       <div className='flex flex-col gap-5 p-[25px] text-center  bg-white  pb-[2vw] shadow-black shadow-2xl rounded-md w-full items-center'>
-          <img className='w-16' src={user?.base64Avatar} alt=""/>
+          <img className='w-40' src={user?.base64Avatar} alt=""/>
         <h1 className='text-3xl font-[600]'>{user?.username}</h1>
       </div>
       <div className="flex flex-col gap-5 pt-[2vw] pb-[2vw] text-center w-[90vw] bg-white  mt-10  rounded-md shadow-black shadow-2xl">
