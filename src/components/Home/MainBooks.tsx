@@ -1,23 +1,20 @@
 import {Button, Spinner} from "@chakra-ui/react";
-import React, {useEffect, useRef, useState} from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import { OneBookHome} from "./OneBook";
-import {useNavigate} from "react-router-dom";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import {useQuery} from "@tanstack/react-query";
+import {SpinnerComponent} from "../../SpinnerComponent";
 export const MainBooks = () => {
-  const {user, token} = useSelector((rootState:any) => rootState.user)
-  const [books, setBooks] = useState([]);
-  const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate();
-  useEffect(() => {
-    (async() => {
+  const {data:books, isLoading,  isError} = useQuery({
+    queryKey:['books'],
+    keepPreviousData:true,
+    queryFn:async () => {
       const res = await axiosPrivate.get(`http://localhost:3001/books`);
-      setBooks(res.data)
-
-    // @TODO do that for each fetch but first make function that takes query and returns response from server
-    })()
-  },[]);
-
+      return res.data
+    }
+  })
+  const axiosPrivate = useAxiosPrivate();
+  if(isLoading) return <SpinnerComponent/>
   return (<>
     <main className='w-[90vw]  m-auto pt-20' >
     <div className='w-full border-black border-b-2 pb-3 relative'>
