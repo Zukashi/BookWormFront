@@ -1,4 +1,4 @@
-import {Button, useToast} from '@chakra-ui/react';
+import {Button, Select, useToast} from '@chakra-ui/react';
 import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom';
 import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
@@ -69,6 +69,14 @@ export const AdminBookList = () => {
                 text-white bg-black rounded-lg'><Link to='/addBook'>Add New Book</Link></button></div>
                </header>
                <div className='absolute left-0 right-0 h-[0.5px] bg-[#BBB]'></div>
+               <div className='flex justify-center gap-1 items-center mt-2'>
+                   <p className='font-medium'>Show</p><select className='ring-1 ring-teal-600 rounded-md px-1 py-0.5 appearance-none   focus:outline-blue-700'  autoComplete='off'  name="" id="" defaultChecked={true}>
+                   <option    value="10" >10</option>
+                   <option   value="20" >20</option>
+                   <option   value="50" >50</option>
+                   <option   value="100" >100</option>
+               </select><p className='font-medium'>entries</p>
+               </div>
                <label  className='flex gap-6 justify-center items-center pt-3'>
                    <p className=
                           'font-medium '>Search:</p><input className='outline-none ring-2 ring-teal-600 px-3 py-1.5 focus:outline-2 focus:ring-blue-600 '    onChange={(e) =>
