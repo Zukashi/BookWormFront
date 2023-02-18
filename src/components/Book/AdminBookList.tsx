@@ -1,5 +1,5 @@
 import {Button, Select, useToast} from '@chakra-ui/react';
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import { Link } from 'react-router-dom';
 import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
 import {OneRowInBookListAdmin} from "./OneRowInBookListAdmin";
@@ -30,6 +30,17 @@ export const AdminBookList = () => {
     const [value, setValue] = useState('');
     const axiosPrivate = useAxiosPrivate()
     const toast = useToast();
+    const [amountOfEntities, setAmountOfEntities] = useState<number>(10);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const pages = useMemo(() => {
+            let pages: number[] = []
+            for(let i = 0; i <= books.length / amountOfEntities; i++){
+                pages.push(i+1)
+            }
+            return pages
+    }, [amountOfEntities]);
+
+    console.log(pages)
     const refreshBooks = async () => {
         const res = await axiosPrivate.get('http://localhost:3001/books');
         setBooks(res.data);
@@ -70,7 +81,7 @@ export const AdminBookList = () => {
                </header>
                <div className='absolute left-0 right-0 h-[0.5px] bg-[#BBB]'></div>
                <div className='flex justify-center gap-1 items-center mt-2'>
-                   <p className='font-medium'>Show</p><select className='ring-1 ring-teal-600 rounded-md px-1 py-0.5 appearance-none   focus:outline-blue-700'  autoComplete='off'  name="" id="" defaultChecked={true}>
+                   <p className='font-medium'>Show</p><select className='ring-1 ring-teal-600 rounded-md px-1 py-0.5 appearance-none   focus:outline-blue-700' onChange={(e) => setAmountOfEntities(parseInt(e.target.value))}  autoComplete='off'  name="" id="" defaultChecked={true}>
                    <option    value="10" >10</option>
                    <option   value="20" >20</option>
                    <option   value="50" >50</option>
@@ -101,6 +112,19 @@ export const AdminBookList = () => {
                        </tbody>
                    </table>
                </div>
+                <div className='w-full h-10 flex justify-center items-center'>
+                    <i
+                        className="fa-solid fa-angle-left text-[#667574] mr-2"></i>
+                    <ol>
+
+                    {
+                    pages.map((page:number) => <li className='list-none px-2 py-0.5 bg-blue-600 font-medium text-white'>{page}</li>)
+                }
+
+                    </ol>
+                    <i
+                        className="fa-solid fa-angle-right text-[#667574] ml-2 "></i>
+                </div>
            </div>
           </div>
        </div>
