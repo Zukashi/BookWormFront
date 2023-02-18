@@ -5,22 +5,14 @@ import { Link } from 'react-router-dom';
 import {OneRowInUserListAdmin} from "./OneRowInUserListAdmin";
 import {HomeNavAdmin} from "../../Home/AdminHome/HomeNavAdmin";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
+import {UserEntity} from 'types'
 
 export interface Author {
     key:string,
 }
-export interface User {
-    _id:string,
-    username:string,
-    firstName:string,
-    lastName:string,
-    age:number,
-    city: string,
-    base64Avatar:string,
-}
 
 export const AdminUserList = () => {
-    const [users ,setUsers] = useState<User[]>([]);
+    const [users ,setUsers] = useState<UserEntity[]>([]);
     const [value, setValue] = useState('');
     const axiosPrivate = useAxiosPrivate()
     const refreshUsers = async () => {

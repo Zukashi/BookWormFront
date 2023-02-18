@@ -10,7 +10,6 @@ import {
     DrawerOverlay,
     useDisclosure
 } from "@chakra-ui/react";
-import {User} from "../../Account/admin/AdminUserList";
 import {Link, useNavigate} from "react-router-dom";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 

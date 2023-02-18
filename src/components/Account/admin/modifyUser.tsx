@@ -1,17 +1,17 @@
 import React, {MouseEventHandler, useEffect, useRef, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {HomeAdminNav} from "../../Home/AdminHome/HomeAdminNav";
-import {User} from "./AdminUserList";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
+import { UserEntity } from 'types';
 
 export const ModifyUser = () => {
     const {id} = useParams();
-    const [user, setUser] = useState<User|null>(null);
+    const [user, setUser] = useState<UserEntity|null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate()
     const [form ,setForm] = useState({
-        _id:user?._id,
+        _id:user?.id,
         username:user?.username,
         age:user?.age,
         city:user?.city,
@@ -40,7 +40,8 @@ export const ModifyUser = () => {
     }
     const onSubmit:MouseEventHandler<HTMLButtonElement> = async (e) => {
         e.preventDefault();
-        await axiosPrivate.put(`http://localhost:3001/user/admin/${user._id}`,JSON.stringify(form));
+
+        await axiosPrivate.put(`http://localhost:3001/user/admin/${user.id}`,JSON.stringify(form));
         navigate('/admin/users')
     }
     return (<>

@@ -5,16 +5,12 @@ import {
     Drawer,
     DrawerBody,
     DrawerCloseButton,
-    DrawerContent, DrawerFooter,
+    DrawerContent,
     DrawerOverlay,
-    Image,
     useDisclosure
 } from "@chakra-ui/react";
-import {Link} from "react-router-dom";
-import { SubcategoryMenu } from './SubcategoryMenu';
 import {CategoryHomeMenu} from "./CategoryHomeMenu";
 import { CategoryAdminMenu } from './CategoryAdminMenu';
-import {User} from "../../Account/admin/AdminUserList";
 import {AvatarComponent} from "./AvatarComponentForNav";
 
 export const DrawerComponentAdmin = () => {

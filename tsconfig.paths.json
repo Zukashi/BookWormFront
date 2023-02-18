@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "",
     "paths": {
-      "types":["../book-worm-back/types"]
+      "types":["../BookWormBack/types"]
     }
   }
 }
