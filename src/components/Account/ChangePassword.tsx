@@ -24,17 +24,19 @@ export const ChangePassword = () => {
 
 
   return (<>
-      <h1 className='font-bold text-2xl border-b-[1px] pb-5  border-b-[#f1f1f1]'>Change Password</h1>
-    <form onSubmit={handleSubmit(onSend)}>
-      <p className="mt-10 mb-3 w-[43vw]  mr-5">Current Password:</p>
-      <Input type='password' {...register('currentPassword')}></Input>
-      <p className="mt-4 mb-3 w-[43vw]  mr-5">New Password:</p>
-      <Input type='password' {...register('newPassword')}></Input>
-      <p className="mt-4 mb-3 w-[43vw]  mr-5">Verify Password:</p>
-      <Input type='password' {...register('verifyPassword')}></Input>
-      <div className='w-full flex justify-center mt-5'
-      ><input className='p-4 bg-black text-2xl font-bold text-white rounded-md mx-auto  ' type={"submit"} >
-
-      </input></div>
-    </form></>)
+     <div className='w-[90%] mx-auto'>
+       <h1 className='font-bold text-2xl border-b-[1px] pb-5  border-b-[#f1f1f1]'>Change Password</h1>
+       <form onSubmit={handleSubmit(onSend)}>
+         <p className="mt-10 mb-3 w-[43vw]  mr-5">Current Password:</p>
+         <Input type='password' {...register('currentPassword')}></Input>
+         <p className="mt-4 mb-3 w-[43vw]  mr-5">New Password:</p>
+         <Input type='password' {...register('newPassword')}></Input>
+         <p className="mt-4 mb-3 w-[43vw]  mr-5">Verify Password:</p>
+         <Input type='password' {...register('verifyPassword')}></Input>
+         <div className='w-full flex justify-center mt-5'
+         ><button className='p-4 bg-black text-2xl font-bold text-white rounded-md mx-auto  ' type={"submit"} >
+Submit
+         </button></div>
+       </form>
+     </div></>)
 }

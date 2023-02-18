@@ -58,7 +58,6 @@ export const EditAccount = () => {
   });
   const {register, handleSubmit}  = useForm<UserInterface>({
     values:form});
-  console.log(getFormattedDate(new Date(Date.now())))
   function getFormattedDate(date:Date) {
     let year = date.getFullYear();
     let month = (1 + date.getMonth()).toString().padStart(2, '0');
@@ -87,7 +86,7 @@ export const EditAccount = () => {
   };
   return (<>
     <HomeNav/>
-    <div className='w-90% flex justify-center '>
+    <div className='w-90% flex justify-center pb-12 '>
       <Tabs isFitted variant='line'  pt={20}   w={"100%"} border='0px' >
         <TabList mb='1em'>
           <Tab _selected={{backgroundColor:'#6366f1', color:'#fff'}}>Personal Information</Tab>
@@ -391,9 +390,9 @@ export const EditAccount = () => {
                      </Select></div></div></div>
 
                <div className='w-full flex justify-center mt-5'
-               ><input className='p-4 bg-black text-2xl font-bold text-white rounded-md mx-auto  ' type={"submit"} >
-
-               </input></div>
+               ><button className='p-4 bg-black text-2xl font-bold text-white rounded-md mx-auto  ' type={"submit"} >
+          Submit
+               </button></div>
              </form>
            </div>
           </TabPanel>
