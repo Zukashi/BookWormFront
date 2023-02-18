@@ -61,8 +61,11 @@ export const AdminBookList = () => {
         <HomeNavAdmin/>
     <div className='pt-20'></div>
         <div><Button><Link to='/addBook'>Add Book</Link></Button></div>
-        <div className='flex gap-6 justify-center'><p>Search:</p><input className='outline-none ring-2 ring-teal-600 px-3 py-1.5'    onChange={(e) =>
-            getBooksSearch(e.target.value)}/></div>
+       <label  className='flex gap-6 justify-center items-center'>
+            <p className=
+                   'font-medium '>Search:</p><input className='outline-none ring-2 ring-teal-600 px-3 py-1.5 focus:outline-2 focus:ring-blue-600 '    onChange={(e) =>
+            getBooksSearch(e.target.value)}/>
+        </label>
         <div className='overflow-x-auto max-w-[1000vw] w-[90vw] mx-auto '>
             <table className='h-[84px] table-fixed  '>
 
