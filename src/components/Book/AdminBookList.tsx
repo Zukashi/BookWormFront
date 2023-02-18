@@ -62,10 +62,14 @@ export const AdminBookList = () => {
     <div className='pt-16'></div>
 
        <div className='w-screen h-screen bg-[#fbfcff] pt-10'>
-          <div className='w-[90%] mx-auto bg-white shadow-2xl rounded-xl'>
-           <div className='w-[90%] mx-auto'>
-               <div><Button><Link to='/addBook'>Add Book</Link></Button></div>
-               <label  className='flex gap-6 justify-center items-center'>
+          <div className='w-[90%] mx-auto bg-white shadow-2xl rounded-xl relative'>
+           <div className='w-[90%] mx-auto pt-[1rem]'>
+               <header>
+                   <div className='flex justify-between items-center pb-5'><p className='font-bold text-xl'>Book List</p><button className='focus:outline-2 focus:outline-black font-bold px-5 py-2
+                text-white bg-black rounded-lg'><Link to='/addBook'>Add New Book</Link></button></div>
+               </header>
+               <div className='absolute left-0 right-0 h-[0.5px] bg-[#BBB]'></div>
+               <label  className='flex gap-6 justify-center items-center pt-3'>
                    <p className=
                           'font-medium '>Search:</p><input className='outline-none ring-2 ring-teal-600 px-3 py-1.5 focus:outline-2 focus:ring-blue-600 '    onChange={(e) =>
                    getBooksSearch(e.target.value)}/>
