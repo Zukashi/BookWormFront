@@ -37,7 +37,7 @@ export const AdminBookList = () => {
     const [value, setValue] = useState('');
     const axiosPrivate = useAxiosPrivate()
     const toast = useToast();
-    const [amountOfEntities, setAmountOfEntities] = useState<number>(3);
+    const [amountOfEntities, setAmountOfEntities] = useState<number>(10);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [{data:books, refetch}, {data:allBooks, status:allBooksStatus, isLoading:allBooksLoading}] = useQueries({
         queries:[
@@ -69,21 +69,6 @@ export const AdminBookList = () => {
             return pages
     };
     const pages = countPages();
-
-    // const refreshBooks = async () => {
-    //     // const res =  await axiosPrivate.get(`http://localhost:3001/books?page=${currentPage}&booksPerPage=${amountOfEntities}`);
-    //     const res2 =  await axiosPrivate.get(`http://localhost:3001/books`);
-    //     // setBooks(res.data);
-    //     allBooks = res2.data;
-    // }
-
-    // const getBooksOnPage = async () => {
-    //     const res = await axiosPrivate.get(`http://localhost:3001/books?page=${currentPage}&booksPerPage=${amountOfEntities}`);
-    //     setBooks(res.data)
-    // }
-    // useEffect(() => {
-    //     // void getBooksOnPage()
-    // }, [currentPage, amountOfEntities])
     const getBooksSearch = debounce(async (value:string) =>  {
         if (!value){
             return
@@ -103,16 +88,13 @@ export const AdminBookList = () => {
             }, delay)
         }
     }
-    // useEffect(() => {
-    //     refreshBooks()
-    // }, []);
 
     if(allBooksLoading) return <Spinner/>
     return (<>
         <HomeNavAdmin/>
     <div className='pt-16'></div>
 
-       <div className='w-screen h-screen bg-[#fbfcff] pt-10'>
+       <div className='w-screen  bg-[#fbfcff] pt-10'>
           <div className='w-[90%] mx-auto bg-white shadow-2xl rounded-xl relative'>
            <div className='w-[90%] mx-auto pt-[1rem]'>
                <header>
@@ -152,6 +134,7 @@ export const AdminBookList = () => {
                        </tbody>
                    </table>
                </div>
+               <div className='flex justify-center mt-2 mb-1'>Showing {(currentPage * amountOfEntities) - amountOfEntities + 1} to {currentPage * amountOfEntities > allBooks.length ? allBooks.length : currentPage* amountOfEntities} of {allBooks.length} entries</div>
                 <div className='w-full h-10 flex justify-center items-center'>
                     <i
                         className="fa-solid fa-angle-left text-[#667574] mr-2" onClick={() => {
