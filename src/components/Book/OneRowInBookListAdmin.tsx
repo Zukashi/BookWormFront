@@ -5,7 +5,6 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 export const OneRowInBookListAdmin = ({book, i, refresh }:any,) => {
     const [author, setAuthor] = useState<any>([]);
     const axiosPrivate = useAxiosPrivate();
-    console.log(book)
     useEffect(() => {
         ( async () => {
             const res2 = await axiosPrivate.get(`http://localhost:3001/author${book.authors[0].key}`);

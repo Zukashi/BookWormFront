@@ -31,20 +31,32 @@ export const AdminBookList = () => {
     const axiosPrivate = useAxiosPrivate()
     const toast = useToast();
     const [amountOfEntities, setAmountOfEntities] = useState<number>(10);
+    const [allBooks, setAllBooks] = useState([])
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pages = useMemo(() => {
             let pages: number[] = []
-            for(let i = 0; i <= books.length / amountOfEntities; i++){
+        console.log(allBooks.length, amountOfEntities)
+            for(let i = 0; i <= allBooks.length / amountOfEntities; i++){
                 pages.push(i+1)
             }
             return pages
-    }, [amountOfEntities]);
+    }, [amountOfEntities, allBooks.length]);
 
     console.log(pages)
     const refreshBooks = async () => {
-        const res = await axiosPrivate.get('http://localhost:3001/books');
+        const res =  await axiosPrivate.get(`http://localhost:3001/books?page=${currentPage}&booksPerPage=${amountOfEntities}`);
+        const res2 =  await axiosPrivate.get(`http://localhost:3001/books`);
         setBooks(res.data);
+        setAllBooks(res2.data);
     }
+
+    const getBooksOnPage = async () => {
+        const res = await axiosPrivate.get(`http://localhost:3001/books?page=${currentPage}&booksPerPage=${amountOfEntities}`);
+        setBooks(res.data)
+    }
+    useEffect(() => {
+        void getBooksOnPage()
+    }, [currentPage, amountOfEntities])
     const getBooksSearch = debounce(async (value:string) =>  {
         if (!value){
             refreshBooks()
@@ -115,10 +127,10 @@ export const AdminBookList = () => {
                 <div className='w-full h-10 flex justify-center items-center'>
                     <i
                         className="fa-solid fa-angle-left text-[#667574] mr-2"></i>
-                    <ol>
+                    <ol className='flex gap-2 '>
 
                     {
-                    pages.map((page:number) => <li className='list-none px-2 py-0.5 bg-blue-600 font-medium text-white'>{page}</li>)
+                    pages.map((page:number) => <li className={`list-none px-2 py-0.5 ${currentPage === page && 'bg-blue-600'} text-black font-medium  rounded-sm`} onClick={() => setCurrentPage(page)}>{page}</li>)
                 }
 
                     </ol>
