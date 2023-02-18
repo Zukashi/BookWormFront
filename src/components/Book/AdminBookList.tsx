@@ -1,10 +1,13 @@
-import {Button, Select, useToast} from '@chakra-ui/react';
+import {Button, Select, Spinner, useToast} from '@chakra-ui/react';
+import {useQuery, useQueries} from '@tanstack/react-query'
 import React, {useEffect, useMemo, useState} from 'react'
 import { Link } from 'react-router-dom';
 import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
 import {OneRowInBookListAdmin} from "./OneRowInBookListAdmin";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {log} from "util";
+import axios from "axios";
+import {SpinnerComponent} from "../../SpinnerComponent";
 export interface Author {
     key:string,
 }
@@ -24,48 +27,71 @@ export interface Book {
     amountOfRates:number,
     imageSrc:string,
 }
-
+const getBooksPaginated = async (page:number, amountToShow:number) => {
+    const res = await axios.get(`http://localhost:3001/books?page=${page}&booksPerPage=${amountToShow}`,{
+        withCredentials:true
+    });
+    return res.data
+}
 export const AdminBookList = () => {
-    const [books ,setBooks] = useState<Book[]>([]);
     const [value, setValue] = useState('');
     const axiosPrivate = useAxiosPrivate()
     const toast = useToast();
-    const [amountOfEntities, setAmountOfEntities] = useState<number>(10);
-    const [allBooks, setAllBooks] = useState([])
+    const [amountOfEntities, setAmountOfEntities] = useState<number>(3);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const pages = useMemo(() => {
+    const [{data:books, refetch}, {data:allBooks, status:allBooksStatus, isLoading:allBooksLoading}] = useQueries({
+        queries:[
+            {
+                queryKey:['books', {currentPage}],
+                keepPreviousData:true,
+                queryFn: () => getBooksPaginated(currentPage,amountOfEntities )
+            },
+
+            {
+                queryKey:['books'],
+                keepPreviousData:true,
+                queryFn:async () => {
+                    const res =  await axiosPrivate.get('http://localhost:3001/books');
+                    console.log(res.data)
+                    return res.data
+                }
+            }
+        ],
+
+    });
+    console.log(books)
+    if(!allBooks)return <SpinnerComponent/>
+    const countPages = () => {
             let pages: number[] = []
-        console.log(allBooks.length, amountOfEntities)
-            for(let i = 0; i <= allBooks.length / amountOfEntities; i++){
+            for(let i = 0; i < allBooks.length / amountOfEntities; i++){
                 pages.push(i+1)
             }
             return pages
-    }, [amountOfEntities, allBooks.length]);
+    };
+    const pages = countPages();
 
-    console.log(pages)
-    const refreshBooks = async () => {
-        const res =  await axiosPrivate.get(`http://localhost:3001/books?page=${currentPage}&booksPerPage=${amountOfEntities}`);
-        const res2 =  await axiosPrivate.get(`http://localhost:3001/books`);
-        setBooks(res.data);
-        setAllBooks(res2.data);
-    }
+    // const refreshBooks = async () => {
+    //     // const res =  await axiosPrivate.get(`http://localhost:3001/books?page=${currentPage}&booksPerPage=${amountOfEntities}`);
+    //     const res2 =  await axiosPrivate.get(`http://localhost:3001/books`);
+    //     // setBooks(res.data);
+    //     allBooks = res2.data;
+    // }
 
-    const getBooksOnPage = async () => {
-        const res = await axiosPrivate.get(`http://localhost:3001/books?page=${currentPage}&booksPerPage=${amountOfEntities}`);
-        setBooks(res.data)
-    }
-    useEffect(() => {
-        void getBooksOnPage()
-    }, [currentPage, amountOfEntities])
+    // const getBooksOnPage = async () => {
+    //     const res = await axiosPrivate.get(`http://localhost:3001/books?page=${currentPage}&booksPerPage=${amountOfEntities}`);
+    //     setBooks(res.data)
+    // }
+    // useEffect(() => {
+    //     // void getBooksOnPage()
+    // }, [currentPage, amountOfEntities])
     const getBooksSearch = debounce(async (value:string) =>  {
         if (!value){
-            refreshBooks()
             return
         }
 
         console.log(value)
             const res = await axiosPrivate.post(`http://localhost:3001/bookAdmin/search/${value}`,JSON.stringify({value}));
-            setBooks(res.data)
+            // setBooks(res.data)
 
     }, 300)
     function debounce (cb:any, delay=500){
@@ -77,9 +103,11 @@ export const AdminBookList = () => {
             }, delay)
         }
     }
-    useEffect(() => {
-        refreshBooks()
-    }, []);
+    // useEffect(() => {
+    //     refreshBooks()
+    // }, []);
+
+    if(allBooksLoading) return <Spinner/>
     return (<>
         <HomeNavAdmin/>
     <div className='pt-16'></div>
@@ -120,13 +148,15 @@ export const AdminBookList = () => {
                            <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='flex items-end h-5/6'>Action</p></th></tr></thead>
 
                        <tbody>
-                       {books.map((book, i) => <OneRowInBookListAdmin key={i} book={book} i={i} refresh={refreshBooks}/>)}
+                       {books.map((book:any, i:number) => <OneRowInBookListAdmin key={i} book={book} i={i} refresh={refetch}/>)}
                        </tbody>
                    </table>
                </div>
                 <div className='w-full h-10 flex justify-center items-center'>
                     <i
-                        className="fa-solid fa-angle-left text-[#667574] mr-2"></i>
+                        className="fa-solid fa-angle-left text-[#667574] mr-2" onClick={() => {
+                        if(currentPage !== 1) setCurrentPage(currentPage - 1)}
+                    }></i>
                     <ol className='flex gap-2 '>
 
                     {
@@ -135,7 +165,11 @@ export const AdminBookList = () => {
 
                     </ol>
                     <i
-                        className="fa-solid fa-angle-right text-[#667574] ml-2 "></i>
+                        className="fa-solid fa-angle-right text-[#667574] ml-2 " onClick={() => {
+                        if(currentPage < allBooks.length / amountOfEntities)
+                            setCurrentPage(currentPage + 1)
+                        }
+                    }></i>
                 </div>
            </div>
           </div>
