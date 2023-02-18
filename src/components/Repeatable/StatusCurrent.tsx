@@ -82,14 +82,14 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
     if(!book) return <h1>123</h1>
     console.log(bookStatus)
     return (<>
-        {location.pathname.split('/')[1] !== 'book' ?<div className={`${ bookStatus === '' ? 'bg-[#3f8363] w-40 flex' :'bg-[#F2F2F2] w-full border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer w-full`} onClick={bookStatus !== '' ? toggleModal : undefined}>
-            <button className={`w-32     cursor-pointer py-2  ${bookStatus === "" ? 'border-r-[1px] border-r-amber-800 ':'py-[7px]' }`} onClick={bookStatus === '' ?  () => updateStatusOfBook('wantToRead'): undefined } ><span className={`font-medium ${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want to read' : bookStatus}</span></button>{bookStatus === "" ? <button onClick={toggleModal} className='w-7 flex justify-center items-center '>
+        {location.pathname.split('/')[1] !== 'book' ?<div className={`${ bookStatus === '' ? 'bg-[#3f8363] w-full flex' :'bg-[#F2F2F2] w-full border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer w-full`} onClick={bookStatus !== '' ? toggleModal : undefined}>
+            <button className={`w-32     cursor-pointer py-2  ${bookStatus === "" ? 'border-r-[1px] border-r-amber-800 ':'py-[7px]' }`} onClick={bookStatus === '' ?  () => updateStatusOfBook('wantToRead'): undefined } ><span className={`font-medium ${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want to read' : bookStatus}</span></button>{bookStatus === "" ? <button onClick={toggleModal} className=' flex justify-center items-center '>
                 <i  className="fa-solid fa-angle-down color-[#fff] text-xl mt-1 ml-1 mr-1"></i></button>:
 
-            <img className='h-4 w-4 mr-1' src="https://cdn-icons-png.flaticon.com/512/57/57055.png" alt="down icon"/>}
+            <img className='h-4 w-auto mr-1' src="https://cdn-icons-png.flaticon.com/512/57/57055.png" alt="down icon"/>}
         </div>
             :
-        <div className={`${ bookStatus === '' ? 'bg-[#3f8363] flex  gap-2 ' :' bg-[#F2F2F2] border-2 border-[#777] flex justify-around  items-center'}  rounded-3xl text-[#ffffff] cursor-pointer w-full`} onClick={bookStatus !== '' ? toggleModal : undefined}>
+        <div className={`${ bookStatus === '' ? 'bg-[#3f8363] flex  gap-2 border-2 border-[#333] ' :' bg-[#F2F2F2] border-2 border-[#777] flex justify-around  items-center'}  rounded-3xl text-[#ffffff] cursor-pointer w-full`} onClick={bookStatus !== '' ? toggleModal : undefined}>
             <button className={`px-2 cursor-pointer py-2     ${bookStatus === "" ? 'border-r-[1px] ml-10 pr-12 border-r-amber-800 ': 'ml-4 pr-6 flex items-center gap-1 py-1.5 '}`} onClick={bookStatus === '' ?  () => updateStatusOfBook('wantToRead'): undefined } >{bookStatus !== '' && <img  className="h-4 w-4 inline-block" src="https://cdn-icons-png.flaticon.com/512/2997/2997896.png" alt="pen Icon for edit"/>}<span className={`font-medium ${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want to read' : bookStatus}</span></button>{bookStatus === "" && <button onClick={toggleModal} className='w-7 flex justify-center items-center '>
                 <i  className="fa-solid fa-angle-down color-[#fff] text-md mt-1 ml-1"></i></button>}
         </div>}

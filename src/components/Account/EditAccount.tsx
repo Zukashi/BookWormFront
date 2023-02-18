@@ -10,7 +10,7 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs
+  Tabs, useToast
 } from "@chakra-ui/react";
 
 import {ChangePassword} from "./ChangePassword";
@@ -37,6 +37,7 @@ export const EditAccount = () => {
   const [toggleAvatar, setToggleAvatar] = useState(false)
   const [src, setSrc] = useState(undefined);
   const [preview ,setPreview] = useState(null);
+  const toast = useToast();
   const axiosPrivate = useAxiosPrivate();
   const [previewSaved, setPreviewSaved] = useState<string | null>(null)
   const onClose = () => {
@@ -76,11 +77,14 @@ export const EditAccount = () => {
     })();
   },[]);
   const onSend = (data:any) => {
-
     (async() => {
       await axiosPrivate.put(`http://localhost:3001/user/${user._id}/avatar`,JSON.stringify({preview}))
       await axiosPrivate.put(`http://localhost:3001/user/${userId}`,JSON.stringify(data))
-      window.location.reload();
+      toast({
+        status:'success',
+        title:'User updated successfully',
+
+      })
     })();
 
   };
@@ -106,7 +110,7 @@ export const EditAccount = () => {
              </div>
 
              {toggleAvatar &&  <div className='flex w-full h-[200px]'>   <div className='relative w-[210px]'>
-               {toggleAvatar && <Avatar width={200} height={200}  src={src} onClose={onClose} onCrop={onCrop} />}
+               {toggleAvatar && <Avatar width={150}  height={150}  src={src} onClose={onClose} onCrop={onCrop} />}
                {preview && <button className='font-bold bg-black text-white text-xl rounded-xl border-[2px] px-5 py-2.5 absolute bottom-12 -right-2 'onClick={saveAvatar}>
                  <i className="fa-solid fa-check"></i></button>}
              </div>
