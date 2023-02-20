@@ -24,6 +24,7 @@ import PersistLogin from "./components/PersistLogin";
 import {UserBooks} from "./components/Account/UserBooks";
 import {CategoryView} from "./Views/CategoryView";
 import {ProgressBookChange} from "./components/Account/ProgressBookChange";
+import {Redirect} from "./components/Redirect";
 
 export const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -36,10 +37,11 @@ export const AllRoutes = () => {
     return (<>
 
             <Routes>
-                <Route path='/' element={<LoginPageView/>}/>
+                <Route path='/' element={<Redirect/>}></Route>
                 <Route path='/create-account' element={<Register/>}/>
                 <Route path='/reset-password' element={<ResetPassword/>}/>
-               <Route element={<PersistLogin/>}> <Route path='home' element={<HomeView/>}/>
+                <Route path='/login' element={<LoginPageView/>}/>
+               <Route element={<PersistLogin/>}>     <Route path='home' element={<HomeView/>}/>
                 <Route path='author/:authorId' element={<AuthorView/>}/>
               <Route path='book/:bookId' element={<BookView/>}/>
               <Route path='user/:userId' element={<AccountView/>}>
