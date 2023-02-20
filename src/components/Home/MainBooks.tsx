@@ -4,6 +4,7 @@ import { OneBookHome} from "./OneBook";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useQuery} from "@tanstack/react-query";
 import {SpinnerComponent} from "../../SpinnerComponent";
+import { BookEntity } from "types";
 export const MainBooks = () => {
   const {data:books, isLoading,  isError} = useQuery({
     queryKey:['books'],
@@ -24,7 +25,7 @@ export const MainBooks = () => {
       </div>
     </div>
     <div className='flex-col gap-0 justify-between items-center'>
-      {books.map((book:any, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
+      {books.map((book:BookEntity, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
     </div>
 
     </main>

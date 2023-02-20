@@ -5,9 +5,10 @@ import {useDispatch, useSelector} from 'react-redux'
 import {User, userUpdate} from '../../features/User/userSlice'
 import {useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import { UserEntity } from 'types';
 
 export interface Login {
-    user:User,
+    user:UserEntity,
     accessToken:string,
     error:any,
 };
@@ -25,8 +26,6 @@ export const Login = () => {
     const onSubmit =  async (formData:any) => {
         try{
             const res = await axiosPrivate.post('http://localhost:3001/login',JSON.stringify(formData));
-
-
             dispatch(userUpdate({
                 user:res.data.user,
                 token:res.data.accessToken

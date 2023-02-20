@@ -83,7 +83,6 @@ export const EditAccount = () => {
       toast({
         status:'success',
         title:'User updated successfully',
-
       })
     })();
 

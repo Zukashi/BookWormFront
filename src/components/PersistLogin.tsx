@@ -18,7 +18,7 @@ const PersistLogin = () => {
             try {
                 const res = await axiosPrivate.post(`http://localhost:3001/auth/refreshToken`)
                 if(res.status === 403){
-                    navigate('/')
+                    navigate('/login')
                 }
                 dispatch(userUpdate({
                     user:res.data.user,

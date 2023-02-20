@@ -1,13 +1,13 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
-import {Link} from "react-router-dom";
+import {Link, Route} from "react-router-dom";
 import {Button, Spinner} from "@chakra-ui/react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {Book} from "../Book/AdminBookList";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import axios from "axios";
 import {StatusCurrent} from "../Repeatable/StatusCurrent";
 import {setBook} from "../../features/Books/bookSlice";
+import {SpinnerComponent} from "../../SpinnerComponent";
 interface Props {
   book: Book,
   refresh: () => void,
@@ -92,9 +92,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
     refImg.current.classList.remove('opacity-50')
   }
   while (loading){
-    return <>
-      <div className='pt-20'></div>
-      <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
+    return <SpinnerComponent/>
   }
   return (<>
     <div className='flex relative mx-auto gap-[2rem] w-full'> <div className='mt-4 lg:bg-black w-[160px] inline-block'>
