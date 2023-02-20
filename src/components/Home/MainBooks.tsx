@@ -24,7 +24,7 @@ export const MainBooks = () => {
         <Button >View More</Button>
       </div>
     </div>
-    <div className='flex-col gap-0 justify-between items-center'>
+    <div className='grid grid-cols-1 gap-y-8 sm:grid-cols-2 lg:grid-cols-[200px minmax(250px, 300px) 100px] sm:gap-x-6 '>
       {books.map((book:BookEntity, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
     </div>
 
