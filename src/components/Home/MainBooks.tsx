@@ -1,11 +1,12 @@
 import {Button, Spinner} from "@chakra-ui/react";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { OneBookHome} from "./OneBook";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useQuery} from "@tanstack/react-query";
 import {SpinnerComponent} from "../../SpinnerComponent";
 import { BookEntity } from "types";
 export const MainBooks = () => {
+  const [loading ,setLoading] = useState(true)
   const {data:books, isLoading,  isError} = useQuery({
     queryKey:['books'],
     keepPreviousData:true,
@@ -14,8 +15,15 @@ export const MainBooks = () => {
       return res.data
     }
   })
+  useEffect(() => {
+      const timeout  = setTimeout(()=> {
+          setLoading(false);
+
+      }, 200);
+        return () => clearInterval(timeout)
+  }, [])
   const axiosPrivate = useAxiosPrivate();
-  if(isLoading) return <SpinnerComponent/>
+  if(loading) return <SpinnerComponent/>
   return (<>
     <main className='w-[90vw]  m-auto pt-20' >
     <div className='w-full border-black border-b-2 pb-3 relative'>
@@ -24,7 +32,7 @@ export const MainBooks = () => {
         <Button >View More</Button>
       </div>
     </div>
-    <div className='grid grid-cols-1 gap-y-8 sm:grid-cols-2 lg:grid-cols-[200px minmax(250px, 300px) 100px] sm:gap-x-6 '>
+    <div className='flex flex-wrap '>
       {books.map((book:BookEntity, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
     </div>
 
