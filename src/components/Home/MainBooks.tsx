@@ -32,7 +32,7 @@ export const MainBooks = () => {
         <Button >View More</Button>
       </div>
     </div>
-    <div className='flex flex-wrap '>
+    <div className='flex flex-wrap justify-center md:justify-start '>
       {books.map((book:BookEntity, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
     </div>
 
