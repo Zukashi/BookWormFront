@@ -91,33 +91,31 @@ export const OneBookHome = ({book,refresh}:Props) => {
     }
     refImg.current.classList.remove('opacity-50')
   }
-  while (loading){
-    return <SpinnerComponent/>
-  }
+
   return (<>
-    <div className='flex relative  gap-[1rem]   sm:h-[100%] mt-5    justify-center mb-4  sm:gap-[.5rem] items-center'> <div className=' lg:bg-black  inline-block  '>
+    <div className='flex relative  gap-[1rem]   sm:h-[100%] mt-5    justify-center mb-4   sm:gap-[.5rem] items-center md:h-[300px]'> <div className=' lg:bg-black  inline-block  '>
     <Link to={`/book/${book._id}`} className='relative   '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black invisible lg:visible' h='31px' w='83px'>View Book</Button><div className='  flex items-center'><img ref={refImg}  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-[35vw] max-w-[165px] rounded-md sm:w-[100%] sm:max-w-none md:w-[90%] md:w-[170px]" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
 
     </Link>
 
   </div>
 
-    <div className='inline-block  flex flex-col gap-1.5 sm:w-[50%]'><p className='text-[15px] font-bold w-36 leading-5  sm:text-[12px]
+    <div className='inline-block  flex flex-col gap-1.5 sm:w-[50%] '><p className='w-full text-[15px] md:h-14 font-bold w-36 leading-5  sm:text-[14px] md:text-[20px]
     '>{book.title}</p>
-      <p className='text-[16px] sm:text-[13px] '>{book.author} </p>
+      <p className='text-[16px] sm:text-[13px] w-full '>{book.author} </p>
 
       <div className=' h-8    w-full flex  justify-center   '>
         {
           stars.map((_, index) => {
             return (
-                <i className={`fa-solid fa-star  text-xl sm:text-xs  cursor-pointer ${(hover || book.rating)- 1 + 0.01 > index  && `text-[#faaf00]`} mb-2 sm:mb-0` } key={index}></i>
+                <i className={`fa-solid fa-star  text-xl sm:text-[16px]  cursor-pointer ${(hover || book.rating)- 1 + 0.01 > index  && `text-[#faaf00]`} mb-2 sm:mb-0` } key={index}></i>
 
             )
           })
 
         }
         <div className='flex w-full justify-between items-start  ml-1 h-full'>
-          <p className='inline-block text-[1.2rem] font-medium sm:text-[0.7rem] sm:font-[750]'>{book.rating.toFixed(2)}</p>
+          <p className='inline-block text-[1.2rem] font-medium sm:text-[1.2rem]  sm:font-[750]'>{book.rating.toFixed(2)}</p>
         </div>
 
 
