@@ -82,7 +82,7 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
     if(!book) return <h1>123</h1>
     console.log(bookStatus)
     return (<>
-        {location.pathname.split('/')[1] !== 'book' ?<div className={`${ bookStatus === '' ? 'bg-[#3f8363] w-full flex' :'bg-[#F2F2F2] w-full border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer w-full`} onClick={bookStatus !== '' ? toggleModal : undefined}>
+        {location.pathname.split('/')[1] !== 'book' ?<div className={`sm:min-w-[150px] sm:max-w-[150px] ${ bookStatus === '' ? 'bg-[#3f8363]  flex ' :'bg-[#F2F2F2]  border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer `} onClick={bookStatus !== '' ? toggleModal : undefined}>
             <button className={`w-32     cursor-pointer py-2  ${bookStatus === "" ? 'border-r-[1px] border-r-amber-800 ':'py-[7px]' }`} onClick={bookStatus === '' ?  () => updateStatusOfBook('wantToRead'): undefined } ><span className={`font-medium ${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want to read' : bookStatus}</span></button>{bookStatus === "" ? <button onClick={toggleModal} className=' flex justify-center items-center '>
                 <i  className="fa-solid fa-angle-down color-[#fff] text-xl mt-1 ml-1 mr-1"></i></button>:
 
