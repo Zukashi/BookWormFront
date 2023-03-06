@@ -23,7 +23,7 @@ let schemaAddReview = yup.object().shape({
 });
 export const ReviewAdd = () => {
     const {user} = useSelector((state: RootState) => state.user);
-    const {register, handleSubmit, formState:{errors}, setValue} = useForm<AddReview>({
+    const {register, handleSubmit, formState:{errors}, setValue, watch} = useForm<AddReview>({
         resolver: yupResolver(schemaAddReview)
     })
     const [book, setBook] = useState<Book|null>();
@@ -43,13 +43,13 @@ export const ReviewAdd = () => {
     useEffect(() => {
         (async () => {
             const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${bookId}/status`)
-            setValue('status', res2.data);
+            setValue('status', res2.data !== 'not found shelf' ? res2.data : 'read');
+            console.log(watch('status'))
             const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
             setBook(res.data);
 
             setLoading(false)
         })();
-
     }, []);
     const onSubmit = async (data:any) => {
         console.log(data)
@@ -105,7 +105,7 @@ export const ReviewAdd = () => {
             <div className='mb-16'></div>
             <form onSubmit={handleSubmit(onSubmit)} autoComplete={'off'}>
                 <label htmlFor="status"></label>
-                <div className='flex justify-center'><Select className='h-5 w-[20vw]' w={'40%'} {...register('status')}>
+                <div className='flex justify-center'><Select  className='h-5 w-[20vw]' w={'40%'} {...register('status')}>
                     <option value="read">Read</option>
                     <option value="currentlyReading">Currently Reading</option>
                     <option value="wantToRead">Want To Read</option>
