@@ -3,12 +3,12 @@ import { HomeNav } from '../Home/HomeNav';
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import { HomeAdminNav } from '../Home/AdminHome/HomeAdminNav';
-import {Book} from "../Book/AdminBookList";
 import {OneBookFavorite} from "./OneBookFavorite";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 export const Favorites = () => {
     const {user} = useSelector((state: RootState) => state.user);
-    const [favorites, setFavorites] = useState<null | Book[]>(null);
+    const [favorites, setFavorites] = useState<null | BookEntity[]>(null);
     const refImg = useRef<HTMLImageElement>(null);
     const axiosPrivate = useAxiosPrivate()
     const refresh = async () => {

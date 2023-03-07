@@ -11,22 +11,6 @@ import {SpinnerComponent} from "../../SpinnerComponent";
 export interface Author {
     key:string,
 }
-export interface Book {
-    _id:string,
-    isbn :string,
-    author:string,
-    title:string,
-    publish_date: string,
-    publishers?: string[],
-    authors:{key:string,_id:string}[],
-    subjects?:string[],
-    subject_people?:string[],
-    description:string,
-    rating:number,
-    sumOfRates:number,
-    amountOfRates:number,
-    imageSrc:string,
-}
 const getBooksPaginated = async (page:number, amountToShow:number) => {
     const res = await axios.get(`http://localhost:3001/books?page=${page}&booksPerPage=${amountToShow}`,{
         withCredentials:true
