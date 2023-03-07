@@ -12,7 +12,7 @@ export const MainBooks = () => {
     keepPreviousData:true,
     queryFn:async () => {
       const res = await axiosPrivate.get(`http://localhost:3001/books`);
-      if(res.data.length % 2 !== 0) return res.data.slice(0, -1)
+
       return res.data
     }
   })
@@ -34,7 +34,7 @@ export const MainBooks = () => {
       </div>
     </div>
 
-    <div className='flex flex-wrap justify-center sm:justify-around '>
+    <div className='flex flex-wrap justify-center sm:grid sm:grid-cols-2 lg:grid-cols-3 '>
       {books.map((book:BookEntity, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
     </div>
 
