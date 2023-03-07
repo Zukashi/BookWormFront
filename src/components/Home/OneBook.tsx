@@ -120,8 +120,15 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
 
       </div>
-      {!favorite ?  <i onClick={changeFavorite} className="flex items-center fa-regular fa-heart fa-xl text-red-500 cursor-pointer   w-2 mb-3"></i>:
-          <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2 mb-3"></i>}
+      <span className='flex  gap-6 '>
+        {!favorite ?  <i onClick={changeFavorite} className="flex items-center fa-regular fa-heart fa-xl text-red-500 cursor-pointer   w-2 mb-3 mt-3"></i>:
+            <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2 mb-3 mt-3"></i>}
+      <button className='  text-black text-md font-bold  rounded-2xl h-full hover:text-blue-600 px-1 '>
+        <b className='flex items-start h-full'>Add to list</b>
+      </button>
+     </span>
+
+
 
       <StatusCurrent refresh={refreshOneBook} book={book} onDelete={deleteReview}/>
     </div>
