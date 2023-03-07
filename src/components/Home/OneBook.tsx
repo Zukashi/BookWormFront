@@ -83,7 +83,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
   };
 
-  console.log(book.rating)
+  console.log(window.innerWidth)
 
   const mouseLeft = () => {
     if (refImg.current === null || refImg.current === undefined){
@@ -93,14 +93,14 @@ export const OneBookHome = ({book,refresh}:Props) => {
   }
 
   return (<>
-    <div className='flex relative  gap-[1rem]   sm:h-[100%] mt-5    justify-start mb-4   sm:gap-[.5rem] items-center'> <div className=' lg:bg-black  inline-block  '>
-    <Link to={`/book/${book._id}`} className='relative   '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black invisible lg:visible' h='31px' w='83px'>View Book</Button><div className='  flex items-center'><img ref={refImg}  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-[35vw] max-w-[165px] rounded-md  sm:w-[120px] sm:min-h-[180px] sm:h-[80%] md:h-64  md:w-[170px]" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
+    <div className='flex relative  gap-[1rem]   sm:h-[100%] mt-5    justify-start mb-4   sm:gap-[.5rem] items-start'> <div className=' lg:bg-black  inline-block  '>
+    <Link to={`/book/${book._id}`} className='relative   '><Button pos='absolute' onMouseEnter={mouseEntered} className='top-[50%] left-[50%]    translate-y-[-50%] translate-x-[-50%] text-lime-600 z-10  hover:bg-amber-500 hover:text-black invisible lg:visible' h='31px' w='83px'>View Book</Button><div className='  flex items-center'><img ref={refImg}  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="inline-block cursor-default w-[35vw] max-w-[165px] rounded-md  sm:w-[120px] sm:min-h-[180px] sm:h-[100%] md:h-64  md:w-[170px]" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
 
     </Link>
 
   </div>
 
-    <div className='inline-block  flex flex-col gap-1.5  w-[153px] sm:w-[131px]'><p className='w-full text-[15px] md:h-14 font-bold w-36 leading-5  sm:text-[14px] md:text-[20px] sm:h-[40px] sm:flex sm:items-center
+    <div className='inline-block  flex flex-col gap-1.5  w-[153px]  '><p className='w-full text-[15px] md:h-14 font-bold w-36 leading-5  sm:text-[14px] md:text-[20px] sm:h-[40px] sm:flex sm:items-start
     '>{book.title}</p>
       <p className='text-[16px] sm:text-[13px] w-full '>{book.author} </p>
 
