@@ -24,7 +24,7 @@ export const MainBooks = () => {
         return () => clearInterval(timeout)
   }, [])
   const axiosPrivate = useAxiosPrivate();
-  if(loading) return <SpinnerComponent/>
+  if(isLoading) return <SpinnerComponent/>
   return (<>
     <main className='w-[97.5vw]  m-auto pt-20' >
     <div className='w-full border-black border-b-2 pb-3 relative'>

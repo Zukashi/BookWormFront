@@ -1,12 +1,12 @@
 import React, {MouseEventHandler, useEffect, useRef, useState} from 'react'
 import { HomeAdminNav } from '../Home/AdminHome/HomeAdminNav'
 import {useNavigate, useParams} from "react-router-dom"
-import {Book} from "./AdminBookList";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import { BookEntity } from '../../../../BookWormBack/types/book';
 
 export const ModifyBook = () => {
     const {id} = useParams();
-    const [book, setBook] = useState<Book|null>(null);
+    const [book, setBook] = useState<BookEntity|null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const navigate = useNavigate();
