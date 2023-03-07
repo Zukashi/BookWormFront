@@ -3,11 +3,11 @@ import {Link} from "react-router-dom";
 import {Button, Spinner} from "@chakra-ui/react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
-import {Book} from "../Book/AdminBookList";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import { BookEntity } from '../../../../BookWormBack/types/book';
 
 interface Props {
-    book: Book,
+    book: BookEntity,
     refresh: () => void,
 }
 export const OneBookFavorite = ({book,refresh}:Props) => {

@@ -3,12 +3,13 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import { useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useLocation, useParams} from "react-router";
+import { BookEntity } from 'types';
 
 
 export const StatusCurrent = ({refresh, onDelete, book}:{
     refresh : () => void
     onDelete : () => void,
-    book:any,
+    book:BookEntity,
 }) => {
     const axiosPrivate = useAxiosPrivate();
     const {user} = useSelector((root:RootState) => root.user);
@@ -96,7 +97,7 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
 
         {
             modal && <div className='w-screen h-screen top-0  left-0 right-0 fixed z-20'>
-                <div className='w-screen h-screen  bg-[#333]/[0.5] ' onClick={toggleModal}></div>
+                <div className='w-screen h-screen  bg-[#333]/[0.5]' onClick={toggleModal}></div>
                 <div className={`w-screen mx-auto absolute -bottom-2 left-0 w-screen bg-white rounded-xl pb-10 ${!modal  ? '-bottom-[268px]' : '-bottom-2'}`}>
                     <div className='w-[85%] mx-auto'>
                         <div className='flex  gap-16 pt-6 pb-8 justify-between'><h3 className='font-medium text-lg'>Choose a shelf for this book</h3><span onClick={toggleModal}>X</span></div>
