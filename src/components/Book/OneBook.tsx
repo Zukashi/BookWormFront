@@ -83,13 +83,15 @@ export const OneBook = () => {
     }
     setLoading(false)
   };
+  console.log(hover)
   const deleteReview = async () => {
 
     console.log(review)
     await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${personalRating}`);
     await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book?._id}/status`);
     navigate(`${`/book/${book?._id}`}`)
-    setPersonalRating(0)
+    setPersonalRating(0);
+    setHover(0)
     refresh();
   }
   const changeFilter = async (rating:number) => {
@@ -228,7 +230,7 @@ export const OneBook = () => {
             {
               stars.map((_, index) => {
                 return (
-                    <i className={`fa-solid fa-star text-3xl cursor-pointer ${0 > index + 1 && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}  ></i>
+                    <i className={`fa-solid fa-star text-3xl cursor-pointer ${hover > index  && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}  ></i>
                 )
               })
             }
@@ -246,6 +248,7 @@ export const OneBook = () => {
           { <div className='flex justify-start mt-3 mb-1'>
             {
               stars.map((_, index) => {
+                console.log(hover, index)
                 return (
                     <i className={`fa-solid fa-star text-md cursor-pointer ${(hover || personalRating)  > index  && `text-[#faaf00]`} ` } key={index}  ></i>
 
@@ -255,7 +258,7 @@ export const OneBook = () => {
           </div>}
           <p className='font-medium'>{monthName} {dayNumber}, {year}</p>
           </div>
-             <div className={`    font-[450] ${showFullText ? 'overflow-auto max-h-screen': review?.description?.length > 160 ?  'max-h-[6rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `} onMouseOver={() => setHoverSpoiler(true)} onMouseLeave={() => setHoverSpoiler(false)}> {(review?.description && review.spoilers )&& <p className={`  inline  mt-3 bg-[#687a86] ${!hoverSpoiler ? 'text-transparent': 'text-black bg-[#e7e9ee]'}`} >{review?.description}</p>}</div>
+             <div className={`    font-[450] ${showFullText ? 'overflow-auto max-h-screen': review?.description?.length > 160 ?  'max-h-[6rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `} > {(review?.description && review.spoilers )&& <p className={`  inline  mt-3 bg-[#687a86] ${!hoverSpoiler ? 'text-transparent': 'text-black bg-[#e7e9ee]'}`} onMouseOver={() => setHoverSpoiler(true)} onMouseLeave={() => setHoverSpoiler(false)} >{review?.description}</p>}</div>
               {review?.description && !review.spoilers &&   <div className={` max-h-[6rem] overflow-hidden  font-[450] ${showFullText ? 'overflow-auto max-h-screen': review?.description.length > 160 ? 'overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}><p className='text-[1rem] font-[450] mt-3 ' >{review?.description}</p></div>}
               {review?.description?.length > 160 ? !showFullText ? <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(true)}>Show more <i
                   className="fa-solid fa-arrow-down" ></i></button> : <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(false)}>Show Less <i
