@@ -12,6 +12,7 @@ import {
 import {CategoryHomeMenu} from "./CategoryHomeMenu";
 import { CategoryAdminMenu } from './CategoryAdminMenu';
 import {AvatarComponent} from "./AvatarComponentForNav";
+import {AvatarComponentDesktop} from "../../Account/AvatarComponentDesktop";
 
 export const DrawerComponentAdmin = () => {
     const {user} = useSelector((state: RootState) => state.user);
@@ -46,30 +47,32 @@ export const DrawerComponentAdmin = () => {
     }
     return (
         <><div className='absolute top-0'>
-            <button ref={btnRef} onClick={onOpen} className='fixed z-20  left-24 mt-1.5'><i
+            <button ref={btnRef} onClick={onOpen} className='fixed z-20  left-24 top-3 lg:hidden'><i
                 className="fa-solid fa-bars text-4xl"></i></button>
-            <AvatarComponent/>
+
+
         </div>
-            <Drawer
-                isOpen={isOpen}
-                placement='left'
-                onClose={onClose}
-                finalFocusRef={btnRef}
-                size='xs'
-            >
-                <DrawerOverlay />
-                <DrawerContent className='relative'>
-                    <div className='h-10 bg-gray pb-[60px] border-b-[rgb(221,221,221)] border-[1px]'><DrawerCloseButton  className='absolute right-0 top-10 h-15 w-15 ' size='lg' />
-                        <h2 className='font-medium text-[21px] absolute left-12 top-[11px] tracking-wide'>BOOKWORM</h2>
-                    </div>
-                    <DrawerBody p={0}>
-                        <CategoryHomeMenu subcategories={subcategories.Home}/>
-                        <CategoryAdminMenu subcategories={subcategories.Admin}/>
+            <AvatarComponent/>
+               <Drawer
+                   isOpen={isOpen}
+                   placement='left'
+                   onClose={onClose}
+                   finalFocusRef={btnRef}
+                   size='xs'
+               >
+                   <DrawerOverlay />
+                   <DrawerContent className='relative'>
+                       <div className='h-10 bg-gray pb-[60px] border-b-[rgb(221,221,221)] border-[1px]'><DrawerCloseButton  className='absolute right-0 top-10 h-15 w-15 ' size='lg' />
+                           <h2 className='font-medium text-[21px] absolute left-12 top-[11px] tracking-wide'>BOOKWORM</h2>
+                       </div>
+                       <DrawerBody p={0}>
+                           <CategoryHomeMenu subcategories={subcategories.Home}/>
+                           <CategoryAdminMenu subcategories={subcategories.Admin}/>
 
-                    </DrawerBody>
+                       </DrawerBody>
 
 
-                </DrawerContent>
-            </Drawer>
+                   </DrawerContent>
+               </Drawer>
         </>);
 }
