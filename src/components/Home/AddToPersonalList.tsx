@@ -7,7 +7,7 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
     const axiosPrivate = useAxiosPrivate();
     useEffect(() => {
         (async() => {
-            const data = await axiosPrivate.get(`http://localhost:3000/book/${book.id}`);
+            const data = await axiosPrivate.get(`http://localhost:3000/book/${book._id}`);
 
         })()
     }, [])
