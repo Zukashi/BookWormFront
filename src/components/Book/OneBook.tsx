@@ -45,7 +45,8 @@ export const OneBook = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
   const [rating,setRating] = useState<number>(0);
-  const [personalRating, setPersonalRating] = useState<number>(0)
+  const [personalRating, setPersonalRating] = useState<number>(0);
+  const [hoverUpperRating, setHoverUpperRating] = useState<number>(0)
   const [hover, setHover] = React.useState(0);
   const [showFullText , setShowFullText] = useState(false)
   const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
@@ -152,6 +153,7 @@ export const OneBook = () => {
 
     refresh();
   };
+  console.log(hover, personalRating)
   useEffect(() => {
     refresh()
 
@@ -203,7 +205,7 @@ export const OneBook = () => {
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-3xl cursor-pointer ${personalRating > index  && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}  ></i>
+                  <i className={`fa-solid fa-star text-3xl cursor-pointer ${(hoverUpperRating || personalRating) > index  && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => setHoverUpperRating(index+ 1)} onMouseLeave={() => setHoverUpperRating(0)}  ></i>
               )
             })
           }
@@ -250,7 +252,7 @@ export const OneBook = () => {
               stars.map((_, index) => {
                 console.log(hover, index)
                 return (
-                    <i className={`fa-solid fa-star text-md cursor-pointer ${(hover || personalRating)  > index  && `text-[#faaf00]`} ` } key={index}  ></i>
+                    <i className={`fa-solid fa-star text-md cursor-pointer ${(hover || personalRating)  > index   && `text-[#faaf00]`} ` } key={index}  ></i>
 
                 )
               })
