@@ -11,9 +11,10 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
     const [modal, setModal] = useState<boolean>(false);
     const {user} = useSelector((state:RootState) => state.user);
     const {handleSubmit, register} = useForm<AddListValuesForm>();
-    const {handleSubmit: handleSubmitListEntityAdd, register:registerList} = useForm<AddListValuesForm>();
+    const {handleSubmit: handleSubmitListEntityAdd, register:registerList, setValue} = useForm<AddListValuesForm>();
     const [userRes, setUser] = useState<null | UserEntity>(null);
-    const [addListClicked, setAddListClicked] = useState<boolean>(false)
+    const [addListClicked, setAddListClicked] = useState<boolean>(false);
+    const [foundInlist, setFoundInList] = useState<boolean>(false)
     const axiosPrivate = useAxiosPrivate();
     type AddListValuesForm = {
         listName:string
@@ -21,6 +22,16 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
     const refreshLists = async () => {
         const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}`)
         setUser(res.data);
+        let found;
+        Object.keys(res.data.lists).forEach((key:string) => {
+                res.data.lists[key].find((id:string) => {
+                    if(id === book._id.toString()) {
+                        setFoundInList(true)
+                        found = key
+                    }
+                })
+        })
+        if(found) setValue('listName', found)
     }
     useEffect(() => {
         void refreshLists();
@@ -56,6 +67,7 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
                     }></i></div>
               <div className='h-full w-full flex flex-col   items-center  justify-center '>
                   { (Object.keys(userRes.lists).length === 0 && !addListClicked) && <p className='font-bold text-lg absolute top-8  '>You don't have any lists</p>}
+                  {foundInlist && <p className='font-bold text-lg absolute top-8'> Change List</p>}
                   {(Object.keys(userRes.lists).length > 0 && !addListClicked) && <form onSubmit={handleSubmitListEntityAdd(handleEntityAddSubmit)}>
                       <div className='relative'>
                           <select className='appearance-none px-2  rounded-md ring-1  text-xl px-2 py-1 pr-8 mb-20' {...registerList('listName')} id="">
