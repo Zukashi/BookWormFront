@@ -4,6 +4,7 @@ import bookReducer from "../features/Books/bookSlice";
 import authorReducer from "../features/Author/authorSlice";
 import searchReducer from "../features/Search/searchSlice";
 import categoryReducer from "../features/Search/categorySlice";
+import homeReducer from "../features/HomeSlice";
 export const store = configureStore({
   reducer: {
     user:userReducer,
@@ -11,6 +12,7 @@ export const store = configureStore({
     author:authorReducer,
     search:searchReducer,
     category:categoryReducer,
+    home:homeReducer,
   },
 })
 
