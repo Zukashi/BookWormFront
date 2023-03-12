@@ -18,20 +18,24 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
     type AddListValuesForm = {
         listName:string
     };
-
+    const refreshLists = async () => {
+        const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}`)
+        setUser(res.data);
+    }
     useEffect(() => {
-        (async() => {
-            // const data = await axiosPrivate.get(`http://localhost:3001/book/${book._id}`);
-            const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}`)
-            setUser(res.data);
-        })()
+        void refreshLists();
     }, []);
     if(!userRes){
         return <SpinnerComponent/>
     }
     const addListSubmit:SubmitHandler<AddListValuesForm> = async (data) => {
-        console.log(data)
-            await axiosPrivate.post(`http://localhost:3001/user/${user._id}/list/${data.listName}`)
+        await axiosPrivate.post(`http://localhost:3001/user/${user._id}/list/${data.listName}`);
+        void refreshLists();
+        setAddListClicked(false);
+    };
+    const handleEntityAddSubmit:SubmitHandler<AddListValuesForm> = async(data) => {
+        await axiosPrivate.put(`http://localhost:3001/user/${user._id}/list/${data.listName}/book/${book._id}`);
+
     }
     console.log(Object.keys(userRes?.lists).length)
     return <>
@@ -52,7 +56,7 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
                     }></i></div>
               <div className='h-full w-full flex flex-col   items-center  justify-center '>
                   { (Object.keys(userRes.lists).length === 0 && !addListClicked) && <p className='font-bold text-lg absolute top-8  '>You don't have any lists</p>}
-                  {(Object.keys(userRes.lists).length > 0 && !addListClicked) && <div>
+                  {(Object.keys(userRes.lists).length > 0 && !addListClicked) && <form onSubmit={handleSubmitListEntityAdd(handleEntityAddSubmit)}>
                       <div className='relative'>
                           <select className='appearance-none px-2  rounded-md ring-1  text-xl px-2 py-1 pr-8 mb-20' {...registerList('listName')} id="">
                               <option value="" disabled selected hidden>Choose a list</option>
@@ -61,11 +65,17 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
                           </select>
                           <div><i className="fa-solid fa-chevron-down absolute top-[11px] right-2"></i></div>
                       </div>
-                      <div className='absolute top-1/2 left-1/2 -translate-x-1/2 ring-1 -translate-y-1/2 font-medium px-4 py-2 ring-[#999] cursor-pointer hover:text-white hover:bg-black  hover:ring-black mt-2'>Add Book</div>
-                  </div>}
+                      <button className='absolute top-1/2 left-1/2 -translate-x-1/2 ring-1 -translate-y-1/2 font-medium px-4 py-2 ring-[#999] cursor-pointer hover:text-white hover:bg-black  hover:ring-black mt-2' type='submit'>Add Book</button>
+                  </form>}
                     <p className={`cursor-pointer hover:text-blue-200 hover:bg-black font-medium px-2 py-2 bg-blue-200 ${Object.keys(userRes).length > 0 && 'absolute bottom-6 right-4'} ${addListClicked && 'hidden'}`} onClick={() => setAddListClicked(true)}>Create New List</p>
                     {addListClicked &&
                         <div>
+                            <div className='absolute top-1 left-2 cursor-pointer ' onClick={() => {
+                            setAddListClicked(false)
+                            }
+                            }>
+                                <i className="fa-solid fa-arrow-left fa-lg"></i>
+                            </div>
                             <form onSubmit={handleSubmit(addListSubmit)} className='flex flex-col' autoComplete='off'>
                                 <input type="text" {...register('listName')}placeholder=' List name ...' className='ring-1 ring-black rounded-lg px-4 py-2 '/>
                                 <button type="submit" className='cursor-auto'><i className="cursor-pointer fa-solid fa-check px-3 py-2 rounded-xl text-3xl bg-black text-green-600 mt-3"></i></button>
