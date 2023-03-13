@@ -15,7 +15,7 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
     const {handleSubmit, register, watch, setValue} = useForm<AddListValuesForm>();
     const {handleSubmit: handleSubmitListEntityAdd, register:registerList} = useForm<AddListValuesForm>();
     const [userRes, setUser] = useState<null | UserEntity>(null);
-    const {home} = useSelector((root:RootState) => root.home)
+    const {home, modalFirst} = useSelector((root:RootState) => root.home);
     const [checkboxValue, setCheckboxValue] = useState();
     const dispatch = useDispatch();
     const [addListClicked, setAddListClicked] = useState<boolean>(false);
@@ -57,9 +57,9 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
 
     return <>
         <button onClick={() => setModal((prev) => !prev )} className='  text-black text-md font-bold  rounded-2xl h-full hover:text-blue-600 px-1 '>
-        <b className='flex items-start h-full'>Add to list</b>
+        <b className='flex items-start h-full'>{checked ? 'Change list': 'Add to list'}</b>
         </button>
-        {modal && <div className='w-screen h-screen top-0  left-0 right-0 fixed z-40'>
+        {(modal && modalFirst) && <div className='w-screen h-screen top-0  left-0 right-0 fixed z-40'>
             <div className='w-screen h-screen  bg-[#333]/[0.65] absolute z-20' onClick={() => {
                 if(home.modal === false){
                     setModal((prev) => !prev);
@@ -81,10 +81,6 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
                   {(Object.keys(userRes.lists).length > 0 && !addListClicked) && <div className='mt-8 '>
 
                               {Object.keys(userRes.lists).map((listName:string) => <CheckboxList refreshLists={refreshLists} key={listName} listName={listName} book={book} checked={checked} list={userRes.lists[listName]} />)}
-
-
-
-                      {/*<button className='absolute top-1/2 left-1/2 -translate-x-1/2 ring-1 -translate-y-1/2 font-medium px-4 py-2 ring-[#999] cursor-pointer hover:text-white hover:bg-black  hover:ring-black mt-2' type='submit'>Add Book</button>*/}
                   </div> }
                     <p className={`cursor-pointer hover:text-orange-600 font-medium flex w-full justify-center px-2  ${Object.keys(userRes).length > 0 && ''} ${addListClicked && 'hidden'}`} onClick={() => setAddListClicked(true)}>Create New List</p>
                     {addListClicked &&
@@ -97,8 +93,8 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
                                 <i className="fa-solid fa-arrow-left fa-lg"></i>
                             </div>
                             <form onSubmit={handleSubmit(addListSubmit)} className='flex flex-col items-center w-full' autoComplete='off'>
-                                <p>{watch('listName') ? watch('listName')?.length + '/50' : '0/50'}</p>
-                                <input maxLength={50} type="text" {...register('listName')}placeholder=' List name ...' className='ring-1 ring-black rounded-lg px-4 py-2 '/>
+                                <p>{watch('listName') ? watch('listName')?.length + '/20' : '0/20'}</p>
+                                <input maxLength={20} type="text" {...register('listName')}placeholder=' List name ...' className='ring-1 ring-black rounded-lg px-4 py-2 '/>
                                 <button type="submit" className='cursor-auto'><i className="cursor-pointer fa-solid fa-check px-3 py-2 rounded-xl text-3xl bg-black text-green-600 mt-3"></i></button>
                             </form>
                         </div>
