@@ -27,7 +27,9 @@ export const ProgressBookChange =() => {
 
     const updateProgress = async () => {
         if(checkboxValue) {
-            void axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/read/${status}`);
+            await  axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/read/${status}`);
+            navigate(-1);
+            setPageNumber(0)
             return;
         }
         if(pageNumber > book?.number_of_pages || pageNumber < 1) return toast({
