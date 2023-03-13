@@ -104,19 +104,21 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
         </div>}
 
         {
-            modal && <div className='w-screen h-screen top-0  left-0 right-0 fixed z-20'>
-                <div className='w-screen h-screen  bg-[#333]/[0.5]' onClick={toggleModal}></div>
-                <div className={`w-screen mx-auto absolute -bottom-2 left-0 w-screen bg-white rounded-xl pb-10 ${!modal  ? '-bottom-[268px]' : '-bottom-2'}`}>
-                    <div className='w-[85%] mx-auto'>
-                        <div className='flex  gap-16 pt-6 pb-8 justify-between'><h3 className='font-medium text-lg'>Choose a shelf for this book</h3><span onClick={toggleModal}>X</span></div>
-                        <div className='flex flex-col gap-3'>
-                            {Object.keys(statusObjectToMap).map((status:string) => <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5 cursor-pointer flex ' onClick={() => updateStatusOfBook(status)}><button className='w-full '><span className='font-medium flex justify-center items-center'>{statusUnformatted === status &&
-                                <img className='inline h-5 my-auto w-5 ' src="https://cdn-icons-png.flaticon.com/512/2732/2732655.png" alt=""/>}<p className='inline '>{statusObjectToMap[status as keyof typeof statusObjectToMap]}</p></span></button></div>)}
+            modal && <div className='w-screen h-screen top-0  left-0 right-0 fixed z-20 '>
+                <div className='w-screen h-screen  bg-[#333]/[0.5] ' onClick={toggleModal}></div>
 
-                            {bookStatus !== '' && <div className='w-full flex justify-center gap-2 py-2 cursor-pointer' onClick={clearStatus}><img className='w-5 h-5' src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" alt=""/><span className='font-bold text-sm'>Remove from my shelf</span></div>
-                            }
+                    <div className={` w-screen  absolute left-1/2 -translate-x-1/2 md:bottom-1/2 md:translate-y-1/2 w-screen bg-white rounded-xl pb-10 max-w-[410px]  ${!modal  ? '-bottom-[268px]' : '-bottom-2'}`}>
+                        <div className='w-[85%] mx-auto'>
+                            <div className='flex  gap-8 pt-6 pb-8 justify-between'><h3 className='font-medium text-lg '>Choose a shelf for this book</h3><span onClick={toggleModal} className='cursor-pointer px-2 py-0.5'><i className='fa-solid fa-xmark fa-xl '></i></span></div>
+                            <div className='flex flex-col gap-3'>
+                                {Object.keys(statusObjectToMap).map((status:string) => <div className='border-2 border-[#271c148f] rounded-3xl px-2 py-1.5 cursor-pointer flex ' onClick={() => updateStatusOfBook(status)}><button className='w-full '><span className='font-medium flex justify-center items-center'>{statusUnformatted === status &&
+                                    <img className='inline h-5 my-auto w-5 ' src="https://cdn-icons-png.flaticon.com/512/2732/2732655.png" alt=""/>}<p className='inline '>{statusObjectToMap[status as keyof typeof statusObjectToMap]}</p></span></button></div>)}
+
+                                {bookStatus !== '' && <div className='w-full flex justify-center gap-2 py-2 cursor-pointer' onClick={clearStatus}><img className='w-5 h-5' src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" alt=""/><span className='font-bold text-sm'>Remove from my shelf</span></div>
+                                }
+                            </div>
                         </div>
-                    </div>
+
                 </div>
             </div>
         }

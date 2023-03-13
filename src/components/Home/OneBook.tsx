@@ -98,7 +98,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
   console.log(book)
   return (<>
     <div className='flex relative  gap-[1rem]   sm:h-[100%] mt-5    justify-center mb-4   sm:gap-[.5rem] items-start'> <div className=' lg:bg-black  inline-block  '>
-    <Link to={`/book/${book._id}`} className='relative   '><div className='  flex items-center'><img ref={refImg}  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="cursor-pointer inline-block cursor-default w-[35vw] max-w-[165px] rounded-md  sm:w-[120px] sm:min-h-[180px] sm:h-[100%] md:h-64  md:w-[170px] xl:h-72 xl:min-w-[185px]" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
+    <Link to={`/book/${book._id}`} className='relative   '><div className='  flex items-center'><img ref={refImg}  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="cursor-pointer inline-block cursor-default w-[35vw] max-w-[165px] min-h-[190px] rounded-md  sm:w-[120px] sm:min-h-[180px] sm:h-[100%] md:h-64  md:w-[170px] xl:h-72 xl:min-w-[185px]" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
 
     </Link>
 
