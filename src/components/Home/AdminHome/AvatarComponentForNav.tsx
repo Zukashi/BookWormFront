@@ -47,7 +47,7 @@ export const AvatarComponent = () => {
         {(!open && delayBg === true || open)  && <div className='w-screen h-screen  bg-[#333]/[0.65] fixed left-0 ' onClick={() => changeModal()} ></div>}
 
 
-            <div className={`${open ? 'right-0 ease-in' : '-right-96 ease-out'} duration-200     w-96 h-screen fixed  duration-700 bg-white z-30`}>
+            <div className={`${open ? 'right-0    ' : '-right-96  '}   linear  w-72 h-screen fixed  duration-700 bg-white z-30`}>
 
                 <div className='h-10 bg-gray pb-[60px] border-b-[rgb(221,221,221)] border-[1px] relative'><button onClick={() => changeModal()}  className='absolute left-0 top-1/2 -translate-y-1/2 ' >
                     <i className="fa-solid fa-xmark px-2 py-4 fa-xl hover:bg-[#ddd] rounded-md"></i></button>
@@ -55,13 +55,18 @@ export const AvatarComponent = () => {
                 </div>
 
                 <div className='flex flex-col absolute z-10 bg-white  w-full items-center   '>
-                    <div className='w-full flex  w-full items-center py-2'><Link to={`/user/${user._id}/books`}className='w-full  hover:text-violet-600'><i className="fas fa-book "></i></Link><p className='w-full'>My books</p></div>
-                    <div className='w-full flex h-14 w-full items-center '><Link to={`/user/${user._id}/books`}className='w-full flex justify-center hover:text-violet-600'><i className="fas fa-book pt-[4px] absolute left-0"></i>My Lists</Link></div>
-                    <div className='w-full  flex items-center w-full h-14'><Link to={`/user/${user._id}`} className='w-full flex justify-center hover:text-violet-600'><i className="fa-regular fa-user pt-1.5 absolute left-0"></i>My Account</Link></div>
-                    <div className='w-full  flex h-14 w-full items-center '><Link to={`/edit/user/${user._id}`}className='w-full flex justify-center hover:text-violet-600'><i
-                        className="fa-regular fa-pen-to-square pt-[4px] absolute left-0"></i>Edit account</Link></div>
-                    <div className='w-full  flex h-14 w-full items-center'><Link to={`/favorites/user/${user._id}`} className='w-full flex justify-center hover:text-violet-600 '><i className="fa-regular fa-star pt-[4px] absolute left-0 "></i><p className='w-[86px] text-left'>Favorites</p></Link></div>
-                    <div className='w-full  flex h-14 w-full items-center' onClick={logOut}><div className='w-full flex justify-center hover:text-violet-600 '><i className="fa-solid fa-arrow-right-from-bracket pt-[4px] absolute left-0 "></i><p className='w-[86px] text-left'>Logout</p></div></div>
+                    <div className='w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer'><Link to={`/user/${user._id}/books`}className='w-32 h-full flex  gap-2 '><i className="fas fa-book mt-1"></i><p className=''>My Books</p></Link></div>
+                    <div className='w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer'><Link to={`/user/${user._id}/lists`}className='w-32 h-full flex  gap-2 '><i className="fas fa-list mt-1"></i><p className=''>My Lists</p></Link></div>
+                    <div className='w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer'><Link to={`/user/${user._id}`} className='ml-2 w-32 h-full flex  gap-2 mr-1.5 '><i className="fa-regular fa-user mt-1"></i><p>My Account</p></Link></div>
+
+                    <div className='w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer'><Link to={`/edit/user/${user._id}`} className='w-32 h-full flex  gap-2 '><i
+                        className="fa-regular fa-pen-to-square  mt-1  "></i><p className=''>Edit Account</p></Link></div>
+
+                    <div className='w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer'><Link to={`/favorites/user/${user._id}`} className='w-32 h-full flex  gap-2 mr-1'><i className="fa-regular fa-star  mt-1  "></i><p className=''>Favorites</p></Link></div>
+
+                        <div className='w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer' onClick={logOut}><div className='w-32 h-full flex  gap-2 '>
+                            <i className="fa-solid  fa-arrow-right-from-bracket  mt-1 "></i>
+                        <p className=''>Logout</p></div></div>
                 </div>
 
 
