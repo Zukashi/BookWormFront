@@ -37,7 +37,6 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
                     }
                 })
         });
-        console.log(found)
         if(typeof found ==='string') {
             isChecked(true)
         }
@@ -56,7 +55,6 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
         setValue('listName', '')
     };
 
-    console.log(Object.keys(userRes?.lists).length)
     return <>
         <button onClick={() => setModal((prev) => !prev )} className='  text-black text-md font-bold  rounded-2xl h-full hover:text-blue-600 px-1 '>
         <b className='flex items-start h-full'>Add to list</b>
@@ -82,7 +80,7 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
                   {(foundInlist && !addListClicked) && <p className=' text-lg absolute left-4 '> Save to...</p>}
                   {(Object.keys(userRes.lists).length > 0 && !addListClicked) && <div className='mt-8 '>
 
-                              {Object.keys(userRes.lists).map((listName:string) => <CheckboxList key={listName} listName={listName} book={book} checked={checked} list={userRes.lists[listName]} />)}
+                              {Object.keys(userRes.lists).map((listName:string) => <CheckboxList refreshLists={refreshLists} key={listName} listName={listName} book={book} checked={checked} list={userRes.lists[listName]} />)}
 
 
 

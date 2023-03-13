@@ -1,13 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {SubmitHandler} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {changeCurrentEditListName, setSecondModal} from "../../features/HomeSlice";
-import {current} from "@reduxjs/toolkit";
 
-export const CheckboxList = ({listName, book, checked, list}:{listName:string, book:BookEntity, checked:boolean, list:string[]}) => {
+export const CheckboxList = ({listName, book, checked, list, refreshLists}:{listName:string, book:BookEntity, checked:boolean, list:string[], refreshLists: () => void}) => {
     const axiosPrivate = useAxiosPrivate();
     const {home,currentEditListName} = useSelector((root:RootState) => root.home);
     const dispatch = useDispatch();
@@ -49,19 +47,19 @@ export const CheckboxList = ({listName, book, checked, list}:{listName:string, b
     const changeHandler = (value:string) => {
         setNewListName(value)
     }
-    console.log(editable);
     const handleChangeListName = async () => {
-        console.log(12345555)
-        await axiosPrivate.put(`http://localhost:3001/user/${user._id}/list/${currentEditListName}`, {newListName})
+        await axiosPrivate.put(`http://localhost:3001/user/${user._id}/list/${currentEditListName}`, {newListName});
+        refreshLists();
+        dispatch(setSecondModal(false))
     }
     const deleteList = async () => {
-        console.log('111')
-        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/list/${currentEditListName}`)
+        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/list/${currentEditListName}`);
+        refreshLists();
+        dispatch(setSecondModal(false))
     }
     return (<> <form className='ml-4  mb-3 flex items-center w-full '><div className='pr-3 flex items-center  w-full justify-between' >
         <label className='flex items-center gap-3  text-lg cursor-pointer' ><input checked={checkedCheckbox}  className="focus:ring-0 h-5 w-5 focus:ring-offset-0 cursor-pointer border-2 border-black  " onChange={() => {
             void handleEntityAddSubmit();
-            console.log(12345)
         }
         }  type="checkbox" value={listName} key={listName} /> <p>{listName}</p></label>
         <i className="fa-solid fa-pen cursor-pointer" onClick={() =>  {
