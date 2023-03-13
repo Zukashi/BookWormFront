@@ -31,7 +31,7 @@ export const MainBooks = () => {
     <div className='w-full border-black border-b-2 pb-1.5 relative'>
       <h1 className='text-3xl inline-block'>Browse Books</h1>
       <div className='absolute right-0 inline-block'>
-        <button className='px-4 py-1 text-bold text-2xl rounded-xl bg-black text-white hover:text-violet-300' ><Link to={'/category'}>View More</Link></button>
+        <button className='px-4 py-1 text-bold text-2xl rounded-xl bg-teal-500 active:bg-teal-700 hover:bg-teal-600  text-white' ><Link to={'/category'}>View More</Link></button>
       </div>
     </div>
 

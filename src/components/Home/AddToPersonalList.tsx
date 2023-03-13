@@ -15,7 +15,7 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
     const {handleSubmit, register, watch, setValue} = useForm<AddListValuesForm>();
     const {handleSubmit: handleSubmitListEntityAdd, register:registerList} = useForm<AddListValuesForm>();
     const [userRes, setUser] = useState<null | UserEntity>(null);
-    const {home, modalFirst} = useSelector((root:RootState) => root.home);
+    const {home} = useSelector((root:RootState) => root.home);
     const [checkboxValue, setCheckboxValue] = useState();
     const dispatch = useDispatch();
     const [addListClicked, setAddListClicked] = useState<boolean>(false);
@@ -59,7 +59,7 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
         <button onClick={() => setModal((prev) => !prev )} className='  text-black text-md font-bold  rounded-2xl h-full hover:text-blue-600 px-1 '>
         <b className='flex items-start h-full'>{checked ? 'Change list': 'Add to list'}</b>
         </button>
-        {(modal && modalFirst) && <div className='w-screen h-screen top-0  left-0 right-0 fixed z-40'>
+        {(modal) && <div className='w-screen h-screen top-0  left-0 right-0 fixed z-40'>
             <div className='w-screen h-screen  bg-[#333]/[0.65] absolute z-20' onClick={() => {
                 if(home.modal === false){
                     setModal((prev) => !prev);

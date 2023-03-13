@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {changeCurrentEditListName, setSecondModal} from "../../features/HomeSlice";
+import {Spinner} from "@chakra-ui/react";
 
 export const CheckboxList = ({listName, book, checked, list, refreshLists}:{listName:string, book:BookEntity, checked:boolean, list:string[], refreshLists: () => void}) => {
     const axiosPrivate = useAxiosPrivate();
@@ -11,6 +12,7 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
     const dispatch = useDispatch();
     const {user} = useSelector((root:RootState) => root.user);
     const [newListName, setNewListName] = useState<string>('');
+    const [loading ,setLoading] = useState(false);
 
     const [checkedCheckbox, setCheckedCheckbox] = useState<boolean>(false);
     const refP = useRef<HTMLParagraphElement | null>(null);
@@ -49,9 +51,12 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
         setNewListName(value)
     }
     const handleChangeListName = async () => {
+        setLoading(true);
         await axiosPrivate.put(`http://localhost:3001/user/${user._id}/list/${currentEditListName}`, {newListName});
         refreshLists();
-        dispatch(setSecondModal(false))
+        setLoading(false)
+        dispatch(setSecondModal(false));
+
     }
     const deleteList = async () => {
         await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/list/${currentEditListName}`);
@@ -79,13 +84,36 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
                         <i className="fa-solid fa-xmark fa-lg px-1 py-1 cursor-pointer absolute top-3 -right-2" onClick={() => {
                             dispatch(setSecondModal(false));
                         }}/>
-                        <h2 className='font-medium text-3xl text-center mt-4 mb-5 max-w-[230px] w-2xl  text-ellipsis whitespace-nowrap overflow-hidden'>Edit list: {currentEditListName}</h2>
+                      <div className='relative before:content-[attr(data-tip)] before:absolute before:px-3 before:py-2 before:left-1/2 before:top-5
+                      before:w-max before:max-w-xs
+                      before:-translate-x-1/2 before:-translate-y-full
+                      before:bg-[#333] before:text-white
+                      before:rounded-md before:opacity-0
+                      before:transition-all
+
+                      after:absolute
+                      after:left-1/2 after:top-[19px]
+                      after:h-0 after:w-0
+                      after:-translate-x-1/2 after:border-8
+                      after:border-b-transparent
+                      after:border-l-transparent
+                      after:border-t-[#333]
+                      after:border-r-transparent
+                      after:opacity-0
+                      after:transition-all
+                      hover:before:opacity-100 hover:after:opacity-100
+
+                      ' data-tip={currentEditListName}>
+                          <h2 className='font-medium text-3xl text-center mt-4 mb-5 max-w-[230px] w-2xl  text-ellipsis whitespace-nowrap overflow-hidden'>Edit list: {currentEditListName}</h2>
+                      </div>
                         <p>{newListName ? newListName.length + '/20' : '0/20'}</p>
                         <input type="text" maxLength={20} placeholder='Enter new list name...' onChange={e => changeHandler(e.target.value)} className='px-1 py-0.5 mt-1 border-2 rounded-xl border-black px-2 py-1'/>
-                        <i className="cursor-pointer fa-solid fa-check px-3 py-2 rounded-xl text-3xl bg-black text-green-600 mt-3" onClick={() => {
+                        {  loading ? <div className='bg-black px-3.5 py-2 rounded-xl text-3xl mt-3'>
+                            <Spinner className='' color={'white'}/>
+                        </div> : <i className="cursor-pointer fa-solid fa-check px-3 py-2 rounded-xl text-3xl bg-black text-green-600 mt-3" onClick={() => {
                             void handleChangeListName();
                             console.log(1234)
-                        }}></i>
+                        }}></i>}
                         <h3 className='font-medium text-red-800 hover:underline-offset-2 cursor-pointer absolute bottom-3 right-3' onClick={() => deleteList()}>Delete list</h3>
                     </div>
                 </div>
