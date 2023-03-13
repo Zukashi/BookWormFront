@@ -11,6 +11,7 @@ export const ProgressBookChange =() => {
     const {user} = useSelector((root:RootState) => root.user)
     const {bookId, status} = useParams();
     const toast = useToast();
+    const [checkboxValue, setCheckboxValue] = useState<boolean>(false)
     const location = useLocation();
     console.log(location);
     const navigate = useNavigate();
@@ -25,12 +26,15 @@ export const ProgressBookChange =() => {
     }, []);
 
     const updateProgress = async () => {
-
+        if(checkboxValue) {
+            void axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/read/${status}`);
+            return;
+        }
         if(pageNumber > book?.number_of_pages || pageNumber < 1) return toast({
             title:'Error',
             description:'Incorrect number provided',
             status:'warning',
-            duration:5000,
+            duration:3000,
             isClosable:true,
         })
         await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/book/${bookId}/${status}/${pageNumber}`);
@@ -44,7 +48,7 @@ export const ProgressBookChange =() => {
             <div className='flex font-medium justify-center mt-[10%]'><span>I'm on page <input  onChange={(e) => setPageNumber(parseInt(e.target.value))} className='w-12 border-[1px] border-[#888] rounded-md outline-0 focus:outline-black focus:outline-2  py-0.5  px-[6px]' type="number"/> of {book?.number_of_pages}</span></div>
 
             <div className='flex justify-center mt-4'>
-                <label ><input type="checkbox"/> I've finished this book</label>
+                <label ><input type="checkbox" onChange={() =>  setCheckboxValue(true)} /> I've finished this book</label>
             </div>
             <div className='flex justify-around mt-5'><button className='px-6 py-1 w-[45%] border-[1px] border-black text-black bg-white '>Cancel</button><button onClick={updateProgress} className='px-6 py-1 bg-[#382110] w-[45%] text-white border-[1px] border-[#382110]'>Save Progress</button></div>
         </main>
