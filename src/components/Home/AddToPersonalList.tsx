@@ -78,7 +78,7 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
               <div className={`h-full w-full flex flex-col    items-start  gap-2  ${addListClicked && 'justify-center'}`}>
                   { (Object.keys(userRes.lists).length === 0 && !addListClicked) && <p className='font-bold text-lg absolute top-8  '>You don't have any lists</p>}
                   {(foundInlist && !addListClicked) && <p className=' text-lg absolute left-4 '> Save to...</p>}
-                  {(Object.keys(userRes.lists).length > 0 && !addListClicked) && <div className='mt-8 '>
+                  {(Object.keys(userRes.lists).length > 0 && !addListClicked) && <div className={`mt-8 max-h-52   overflow-x-hidden   ${Object.keys(userRes.lists).length > 5 && 'max-h-48'}`}>
 
                               {Object.keys(userRes.lists).map((listName:string) => <CheckboxList refreshLists={refreshLists} key={listName} listName={listName} book={book} checked={checked} list={userRes.lists[listName]} />)}
                   </div> }
