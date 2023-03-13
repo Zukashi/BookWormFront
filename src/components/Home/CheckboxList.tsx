@@ -10,7 +10,8 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
     const {home,currentEditListName} = useSelector((root:RootState) => root.home);
     const dispatch = useDispatch();
     const {user} = useSelector((root:RootState) => root.user);
-    const [newListName, setNewListName] = useState<string>('')
+    const [newListName, setNewListName] = useState<string>('');
+
     const [checkedCheckbox, setCheckedCheckbox] = useState<boolean>(false);
     const refP = useRef<HTMLParagraphElement | null>(null);
     const [modal ,setModal] = useState<boolean>(home.modal);
@@ -57,11 +58,11 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
         refreshLists();
         dispatch(setSecondModal(false))
     }
-    return (<> <form className='ml-4  mb-3 flex items-center w-full '><div className='pr-3 flex items-center  w-full justify-between' >
-        <label className='flex items-center gap-3  text-lg cursor-pointer' ><input checked={checkedCheckbox}  className="focus:ring-0 h-5 w-5 focus:ring-offset-0 cursor-pointer border-2 border-black  " onChange={() => {
+    return (<> <form className='ml-4  mb-3 flex items-center w-full '><div className='pr-10 flex items-center  w-full justify-between' >
+        <label className='flex items-center gap-3  text-lg cursor-pointer' > <input checked={checkedCheckbox}  className="focus:ring-0 h-5 w-5 focus:ring-offset-0 cursor-pointer border-2 border-black  " onChange={() => {
             void handleEntityAddSubmit();
         }
-        }  type="checkbox" value={listName} key={listName} /> <p>{listName}</p></label>
+        }  type="checkbox" value={listName} key={listName} /> <p className='text-ellipsis overflow-hidden max-w-[100px] whitespace-nowrap'>{listName}</p></label>
         <i className="fa-solid fa-pen cursor-pointer" onClick={() =>  {
             dispatch(setSecondModal(true));
             console.log(listName)
@@ -73,13 +74,14 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
             <div className='fixed left-0 right-0 top-0  z-10'>
             <div className=' flex justify-start items-start absolute -z-10'>
 
-                <div className='h-60 w-60 bg-white rounded-md flex flex-col gap-3 absolute -translate-x-1/4 z-30 '>
+                <div className='h-72 w-72 bg-white rounded-md flex flex-col gap-3 absolute -right-[350px] -translate-x-[40%] z-30 '>
                     <div className='w-[90%] mx-auto relative h-full flex flex-col items-center'>
                         <i className="fa-solid fa-xmark fa-lg px-1 py-1 cursor-pointer absolute top-3 -right-2" onClick={() => {
                             dispatch(setSecondModal(false));
                         }}/>
-                        <h2 className='font-medium text-3xl text-center mt-4 mb-5'>Edit list: {currentEditListName}</h2>
-                        <input type="text" placeholder='Enter new list name...' onChange={e => changeHandler(e.target.value)} className='px-1 py-0.5 mt-1'/>
+                        <h2 className='font-medium text-3xl text-center mt-4 mb-5 max-w-[230px] w-2xl  text-ellipsis whitespace-nowrap overflow-hidden'>Edit list: {currentEditListName}</h2>
+                        <p>{newListName ? newListName.length + '/20' : '0/20'}</p>
+                        <input type="text" maxLength={20} placeholder='Enter new list name...' onChange={e => changeHandler(e.target.value)} className='px-1 py-0.5 mt-1 border-2 rounded-xl border-black px-2 py-1'/>
                         <i className="cursor-pointer fa-solid fa-check px-3 py-2 rounded-xl text-3xl bg-black text-green-600 mt-3" onClick={() => {
                             void handleChangeListName();
                             console.log(1234)

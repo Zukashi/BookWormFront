@@ -23,7 +23,7 @@ export const homeSlice = createSlice({
         },
         changeCurrentEditListName:(state, action:PayloadAction<string>) => {
             state.currentEditListName = action.payload
-        }
+        },
     },
 })
 
