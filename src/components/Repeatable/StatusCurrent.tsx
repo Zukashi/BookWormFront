@@ -4,6 +4,7 @@ import { useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useLocation, useParams} from "react-router";
 import { BookEntity } from 'types';
+import {Spinner} from "@chakra-ui/react";
 
 
 export const StatusCurrent = ({refresh, onDelete, book}:{
@@ -15,6 +16,7 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
     const {user} = useSelector((root:RootState) => root.user);
     const [bookStatus, setBookStatus] = React.useState<any>('');
     const [modal, setModal] = useState<boolean>(false);
+    const [loading , setLoading] = useState<boolean>(true)
     const [statusUnformatted, setStatusUnformatted] = useState<string>("");
     const statusObjectToMap:{
         [read:string]: string,
@@ -56,7 +58,6 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
     }
 
     const refreshStatus = () => {
-
         (async () => {
             const resStatusOfBook = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${book._id}/status`);
             if(resStatusOfBook.data === 'not found shelf'){
@@ -75,7 +76,12 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
 
                 } )
             }
-        })()
+            setTimeout(() => {
+                setLoading(false)
+            },
+                300)
+        })();
+
     };
     useEffect(() => {
          refreshStatus()
@@ -84,7 +90,9 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
     console.log(bookStatus)
     return (<>
         {location.pathname.split('/')[1] !== 'book' ?<div className={`sm:min-w-[130px] sm:max-w-[150px] ${ bookStatus === '' ? 'bg-[#3f8363]  flex ' :'bg-[#F2F2F2]  border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer `} onClick={bookStatus !== '' ? toggleModal : undefined}>
-            <button className={`w-32     cursor-pointer py-2  ${bookStatus === "" ? 'border-r-[1px] border-r-amber-800 ':'py-[7px]' }`} onClick={bookStatus === '' ?  () => updateStatusOfBook('wantToRead'): undefined } ><span className={`font-medium ${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want to read' : bookStatus}</span></button>{bookStatus === "" ? <button onClick={toggleModal} className=' flex justify-center items-center '>
+
+                <button className={`w-32     cursor-pointer py-2  ${bookStatus === "" ? 'border-r-[1px] border-r-amber-800 ':'py-[7px]' }`} onClick={bookStatus === '' ?  () => updateStatusOfBook('wantToRead'): undefined } >  {loading ? <Spinner color='black' size='sm'/> :<span className={`font-medium ${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want to read' : bookStatus}</span>}</button>
+            {bookStatus === "" ? <button onClick={toggleModal} className=' flex justify-center items-center '>
                 <i  className="fa-solid fa-angle-down color-[#fff] text-xl mt-1 ml-1 mr-1"></i></button>:
 
             <img className='h-4 w-auto mr-1' src="https://cdn-icons-png.flaticon.com/512/57/57055.png" alt="down icon"/>}

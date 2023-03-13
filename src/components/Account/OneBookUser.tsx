@@ -16,6 +16,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useLocation} from "react-router";
 import {StatusCurrent} from "../Repeatable/StatusCurrent";
+import {SpinnerComponent} from "../../SpinnerComponent";
 
 export const OneBookUser = (props:{id:{
     book:string
@@ -56,10 +57,7 @@ export const OneBookUser = (props:{id:{
         }, 800)
     }
     while (loading || !book ){
-        return <>
-            <div className='pt-20'></div>
-            <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
-    }
+        return null}
     return (<>
 
         <div className='flex relative gap-2  w-[95%] mx-auto'> <div className='mt-4 lg:bg-black  inline-block'>
