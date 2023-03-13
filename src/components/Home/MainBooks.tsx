@@ -36,7 +36,7 @@ export const MainBooks = () => {
     </div>
 
 
-      <div className='flex flex-wrap justify-center md:justify-items-center sm:grid sm:grid-cols-2 lg:grid-cols-3 max-w-[1200px] mx-auto'>
+      <div className='flex flex-wrap justify-center md:justify-items-center sm:grid sm:grid-cols-2 lg:grid-cols-3 max-w-[1024px] mx-auto'>
         {books.map((book:BookEntity, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
       </div>
 

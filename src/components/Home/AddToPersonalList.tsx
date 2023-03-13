@@ -54,7 +54,6 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
         setAddListClicked(false);
         setValue('listName', '')
     };
-
     return <>
         <button onClick={() => setModal((prev) => !prev )} className='  text-black text-md font-bold  rounded-2xl h-full hover:text-blue-600 px-1 '>
         <b className='flex items-start h-full'>{checked ? 'Change list': 'Add to list'}</b>
@@ -76,13 +75,13 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
                     }
                     }></i></div>
               <div className={`h-full w-full flex flex-col    items-start  gap-2  ${addListClicked && 'justify-center'}`}>
-                  { (Object.keys(userRes.lists).length === 0 && !addListClicked) && <p className='font-bold text-lg absolute top-8  '>You don't have any lists</p>}
+                  { (Object.keys(userRes.lists).length === 0 && !addListClicked) && <p className='font-bold text-md text-center absolute top-8  '>You don't have any lists</p>}
                   {(foundInlist && !addListClicked) && <p className=' text-lg absolute left-4 '> Save to...</p>}
                   {(Object.keys(userRes.lists).length > 0 && !addListClicked) && <div className={`mt-8 max-h-52   overflow-x-hidden   ${Object.keys(userRes.lists).length > 5 && 'max-h-48'}`}>
 
                               {Object.keys(userRes.lists).map((listName:string) => <CheckboxList refreshLists={refreshLists} key={listName} listName={listName} book={book} checked={checked} list={userRes.lists[listName]} />)}
                   </div> }
-                    <p className={`cursor-pointer hover:text-orange-600 font-medium flex w-full justify-center px-2  ${Object.keys(userRes).length > 0 && ''} ${addListClicked && 'hidden'}`} onClick={() => setAddListClicked(true)}>Create New List</p>
+                    <p className={`cursor-pointer hover:text-orange-600 font-medium flex w-full justify-center px-2 ${Object.keys(userRes.lists).length === 0 && 'mt-32'}  ${Object.keys(userRes.lists).length > 0 && ''} ${addListClicked && 'hidden'}`} onClick={() => setAddListClicked(true)}>Create New List</p>
                     {addListClicked &&
                         <div className='w-full'>
                             <div className='absolute top-1 left-2 cursor-pointer ' onClick={() => {
