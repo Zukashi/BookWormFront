@@ -21,6 +21,7 @@ export const AvatarComponent = () => {
     const btnRef :any = React.useRef();
     const navigate = useNavigate()
     const [preview, setPreview] = useState('');
+    const [delayBg, setDelayBg] = useState<boolean>(false);
     const logOut = async () => {
         await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/logout`);
         navigate('/')
@@ -32,15 +33,23 @@ export const AvatarComponent = () => {
             setPreview(res.data.base64Avatar)
         })()
     }, []);
+    const changeModal = () => {
 
+                setOpen(false)
+        setTimeout(() => {
+            setDelayBg(false)
+        }, 500)
+        setDelayBg(true)
+    }
     return (<>
 
-        <button ref={btnRef} onClick={() => setOpen((prev) => !prev)} className='w-14 h-14 fixed z-20 mt-1 right-0.5 top-0.5'><img src={preview} alt=""/></button>
-        {open && <div className='fixed w-screen h-screen left-0 right-0 top-0'>
-            <div className='w-screen h-screen  bg-[#333]/[0.65] absolute ' onClick={() => setOpen(false)} ></div>
-            <div className={`w-96 h-screen fixed ${open ? 'right-0' : '-right-96'} bg-white z-30`}>
+        <button ref={btnRef} onClick={() => setOpen((prev) => !prev)} className='peer w-14 h-14 fixed z-20 mt-1 right-0.5 top-0.5'><img src={preview} alt=""/></button>
+        {(!open && delayBg === true || open)  && <div className='w-screen h-screen  bg-[#333]/[0.65] fixed left-0 ' onClick={() => changeModal()} ></div>}
 
-                <div className='h-10 bg-gray pb-[60px] border-b-[rgb(221,221,221)] border-[1px] relative'><button onClick={() => setOpen(false)}  className='absolute left-0 top-1/2 -translate-y-1/2 ' >
+
+            <div className={`${open ? 'right-0 ease-in' : '-right-96 ease-out'} duration-200     w-96 h-screen fixed  duration-700 bg-white z-30`}>
+
+                <div className='h-10 bg-gray pb-[60px] border-b-[rgb(221,221,221)] border-[1px] relative'><button onClick={() => changeModal()}  className='absolute left-0 top-1/2 -translate-y-1/2 ' >
                     <i className="fa-solid fa-xmark px-2 py-4 fa-xl hover:bg-[#ddd] rounded-md"></i></button>
                     <h2 className='font-medium text-[21px] absolute left-12 top-1/2 -translate-y-1/2'>Settings</h2>
                 </div>
@@ -57,6 +66,6 @@ export const AvatarComponent = () => {
 
 
             </div>
-        </div>}
+
     </>)
 }
