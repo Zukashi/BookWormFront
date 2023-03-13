@@ -15,7 +15,7 @@ root.render(
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
   <App />
-      <ReactQueryDevtools/>
+
     </QueryClientProvider>
   </Provider>
 
