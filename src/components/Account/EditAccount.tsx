@@ -20,6 +20,7 @@ import {HomeNav} from "../Home/HomeNav";
 import Avatar from 'react-avatar-edit';
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import {SpinnerComponent} from "../../SpinnerComponent";
 export interface UserInterface {
   city:string,
   country:string,
@@ -87,6 +88,7 @@ export const EditAccount = () => {
     })();
 
   };
+  if(!form.username) return <SpinnerComponent/>
   return (<>
     <HomeNav/>
     <div className='w-90% flex justify-center pb-12 '>
@@ -104,8 +106,8 @@ export const EditAccount = () => {
              <h1 className='font-bold text-2xl border-b-[1px] pb-5  border-b-[#f1f1f1]'>Personal Information</h1>
              <div className='flex '>
 
-               <AvatarChakra size='xl' src={previewSaved === null ? form.base64Avatar : previewSaved}/>
-               <button className='outline-none bg-amber-300 px-4 py-2 border-2 border-black ml-20 mt-7 ' onClick={() => setToggleAvatar(prev => !prev)}>Change Avatar</button>
+               <img width='80px' className='mt-6'  src={previewSaved === null ? form.base64Avatar : previewSaved}/>
+               <button className='outline-none bg-black text-white font-bold text-xl px-4 py-2 border-2 border-black ml-20 mt-7 ' onClick={() => setToggleAvatar(prev => !prev)}>Change Avatar</button>
              </div>
 
              {toggleAvatar &&  <div className='flex w-full h-[200px]'>   <div className='relative w-[210px]'>
@@ -113,7 +115,7 @@ export const EditAccount = () => {
                {preview && <button className='font-bold bg-black text-white text-xl rounded-xl border-[2px] px-5 py-2.5 absolute bottom-12 -right-2 'onClick={saveAvatar}>
                  <i className="fa-solid fa-check"></i></button>}
              </div>
-               {preview && <div className='w-full h-full flex justify-center items-start ml-20 '><div className='ml-3 font-bold text-xl '>Preview:<img className='' src={preview} alt=""/></div></div>}</div>}
+               {preview && <div className='w-full h-full flex justify-center items-start ml-20 '><div className='ml-3 font-bold text-xl '>Preview:<img className='' alt='Image Avatar Picked' src={preview} /></div></div>}</div>}
              <form onSubmit={handleSubmit(onSend)} autoComplete={'off'}>
                <div className='grid grid-cols-2'>  <div><div className='h-[70px] relative mt-5'><label className=" mb-3 inline-block mr-5">First Name:</label>
                  <Input w='42vw'   {...register('firstName')} pos='absolute' left='0' bottom='0' placeholder='John' ></Input></div>

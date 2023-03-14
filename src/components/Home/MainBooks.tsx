@@ -21,23 +21,23 @@ export const MainBooks = () => {
       const timeout  = setTimeout(()=> {
           setLoading(false);
 
-      }, 200);
+      }, 300);
         return () => clearInterval(timeout)
   }, [])
   const axiosPrivate = useAxiosPrivate();
-  if(loading) return <SpinnerComponent/>
+  if(isLoading) return <SpinnerComponent/>
   return (<>
     <main className='w-[97.5vw]  m-auto pt-20' >
     <div className='w-full border-black border-b-2 pb-1.5 relative'>
       <h1 className='text-3xl inline-block'>Browse Books</h1>
       <div className='absolute right-0 inline-block'>
-        <button className='px-4 py-1 text-bold text-2xl rounded-xl bg-teal-500 active:bg-teal-700 hover:bg-teal-600  text-white' ><Link to={'/category'}>View More</Link></button>
+        <button className='px-4 py-1 text-bold text-2xl rounded-xl bg-teal-700 active:bg-teal-900 hover:bg-teal-800  text-white' ><Link to={'/category'}>View More</Link></button>
       </div>
     </div>
 
 
-      <div className='flex flex-wrap justify-center md:justify-items-center sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[1200px] 2xl:grid-cols-4 2xl:max-w-[1500px] mx-auto'>
-        {books.map((book:BookEntity, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
+      <div className={`${(books.length < 3) ? `flex flex-wrap gap-6  md:px-4 justify-center  max-w-[${347 * books.length}px]   rounded-lg  bg-white    mx-auto` :'flex flex-wrap justify-center md:justify-items-center sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[1200px] 2xl:grid-cols-4 2xl:max-w-[1500px] mx-auto'}`}>
+        {books?.map((book:BookEntity, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
       </div>
 
 
