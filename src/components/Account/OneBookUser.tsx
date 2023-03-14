@@ -17,12 +17,13 @@ import {RootState} from "../../app/store";
 import {useLocation} from "react-router";
 import {StatusCurrent} from "../Repeatable/StatusCurrent";
 import {SpinnerComponent} from "../../SpinnerComponent";
+import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 
 export const OneBookUser = (props:{id:{
     book:string
     }, status:string, refresh: () => Promise<void>}) => {
     const axiosPrivate = useAxiosPrivate();
-    const [book, setBook] = useState<any>();
+    const [book, setBook] = useState<BookEntity | null>(null);
     const {register , handleSubmit, formState:{errors}} = useForm<{status:string}>()
     const [loading ,setLoading] = useState<boolean>(true);
     const {user} = useSelector((state:RootState) => state.user)
@@ -30,7 +31,7 @@ export const OneBookUser = (props:{id:{
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [currentStatus, setCurrentStatus] = useState(props.status);
     const [completed ,setCompleted] = useState<number>(0);
-    console.log( typeof ((completed / book?.number_of_pages) * 100).toFixed(0))
+
     const refresh = async () => {
         console.log(props)
             const res = await axiosPrivate.get(`http://localhost:3001/book/${props.id}`);
@@ -61,7 +62,7 @@ export const OneBookUser = (props:{id:{
     return (<>
 
         <div className='flex relative gap-2  w-[95%] mx-auto'> <div className='mt-4 lg:bg-black  inline-block'>
-            <Link to={`/book/${book._id}`} className='  flex justify-center  items-center '><div className='h-[250px] flex justify-center items-center w-36'><img  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className=" cursor-default w-36"   alt=""/></div>
+            <Link to={`/book/${book._id}`} className='  flex justify-center  items-center  '><div className='h-[250px] flex justify-center items-center w-36'><img  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}  aria-label={`Click to redirect to ${book.title}`}   className=" cursor-pointer w-36"   alt=""/></div>
 
             </Link>
 
@@ -89,29 +90,6 @@ export const OneBookUser = (props:{id:{
                 }
             </div>
             </div>
-        <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} isCentered>
-            <ModalOverlay />
-            <ModalContent>
-                <ModalHeader>Do you wish to change category of {book.title}?</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody pb={6}>
-                </ModalBody>
 
-                <ModalFooter>
-                    <Button colorScheme='green' mr={3} onClick={() => {
-                        changeStatus(props.status, book._id)
-                        onClose()
-                    }
-                    }>
-                        Yes
-                    </Button>
-                    <Button  onClick={() => {
-                        console.log(props.status)
-                        setCurrentStatus(props.status)
-                        onClose()}}
-                             colorScheme='red'>No</Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
     </>)
 }

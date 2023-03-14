@@ -37,7 +37,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
       refImg.current.classList.add('opacity-50')
     }
   };
-  console.log(modal);
+
   const refreshOneBook = () => {
     ( async () => {
       const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/favorites`);
@@ -84,7 +84,6 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
   };
 
-  console.log(book)
 
   const mouseLeft = () => {
     if (refImg.current === null || refImg.current === undefined){
@@ -95,10 +94,9 @@ export const OneBookHome = ({book,refresh}:Props) => {
   if(!book){
     return <h1>123</h1>
   }
-  console.log(book)
   return (<>
-    <div className='flex relative  gap-[1rem]   sm:h-[100%] mt-5    justify-center mb-4   sm:gap-[.5rem] items-start'> <div className=' lg:bg-black  inline-block  '>
-    <Link to={`/book/${book._id}`} className='relative   '><div className='  flex items-center'><img ref={refImg}  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="cursor-pointer inline-block cursor-default w-[35vw] max-w-[165px] min-h-[190px] rounded-md  sm:w-[120px] sm:min-h-[180px] sm:h-[100%] md:h-64  md:w-[170px] xl:h-72 xl:min-w-[185px]" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
+    <div className='flex relative  gap-[1rem]   sm:h-[100%] mt-5    justify-center mb-4   sm:gap-[.5rem] items-start'> <div className='   inline-block  '>
+    <Link to={`/book/${book._id}`} className='relative   '><div className='flex items-center'><img ref={refImg} aria-label={`click this image to redirect to book ${book.title}` }  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="cursor-pointer inline-block  cursor-default w-[35vw] max-w-[165px] min-h-[190px] rounded-xl  sm:w-[120px] sm:min-h-[180px] sm:h-[100%] md:h-64  md:w-[170px] xl:h-72 xl:min-w-[185px]" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
 
     </Link>
 

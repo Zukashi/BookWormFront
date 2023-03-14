@@ -215,7 +215,7 @@ export const OneBook = () => {
 
         <div className='ml-[1.7rem] pb-4 mx-auto w-[90%] mt-4 font-mono font-[400] tracking-tighter text-[16px] leading-[25px] mr-[1.7rem]'>
           {!book.description ? <p>This edition doesn't have a description yet.</p>:
-          <p className='break'>{book.description}</p>}
+          <p className='break'>{typeof book.description  !== 'object' ? book.description : (book as any).description.value  }</p>}
         </div>
 
         <div className='ml-[1.7rem] mt-[1.5rem] pb-5'>
