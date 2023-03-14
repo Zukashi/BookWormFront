@@ -87,7 +87,6 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
          refreshStatus()
     }, [bookStatus, onDelete]);
     if(!book) return <h1>123</h1>
-    console.log(bookStatus)
     return (<>
         {location.pathname.split('/')[1] !== 'book' ?<div className={`sm:min-w-[130px] sm:max-w-[150px] ${ bookStatus === '' ? 'bg-[#3f8363]  flex ' :'bg-[#F2F2F2]  border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer `} onClick={bookStatus !== '' ? toggleModal : undefined}>
 
