@@ -8,8 +8,6 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {useNavigate} from "react-router-dom";
 let schema = yup.object().shape({
     isbn:yup.string().required().min(10).max(13),
-    title:yup.string(),
-    author:yup.string(),
 })
 
 export const AddBookAdmin = () => {
@@ -60,15 +58,16 @@ export const AddBookAdmin = () => {
     return (<>
 
        <div className='w-screen h-screen flex items-center'>
-           <h1 className='absolute font-semibold  absolute w-screen h-screen -z-10 '><p className='flex justify-center mt-[20%] text-[3em]'>Add book</p></h1>
-           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-11/12 mx-auto'>
+        <div className='flex flex-col items-center w-full'>
+            <p className='flex justify-center text-5xl font-medium mb-5'>Add book</p>
+            <form  autoComplete='off' onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-11/12 mx-auto items-center'>
 
-               <input type='number' style={{border:'none'}}{...register('isbn')}className={`focus:outline-none w-full focus:ring-2 focus:rounded-md px-3 py-2 mt-2 focus:ring focus:ring-blue-700 ring-2 rounded-md ring-black   placeholder:italic  ${errors.isbn?.message  && `bg-yellow-400/[.7]`}`} placeholder='isbn' ></input>
-               {errors.isbn?.message && <p className='text-white-400 font-medium text-center pt-1' role="alert">{errors.isbn?.message}</p>}
-               <input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}{...register('title')}className='focus:outline-none w-full focus:ring-2 focus:rounded-md px-3 py-2 mt-2 focus:ring focus:ring-blue-700 ring-2 rounded-md ring-black   placeholder:italic ' placeholder='title' ></input>
-               <input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}{...register('author')}className='focus:outline-none w-full focus:ring-2 focus:rounded-md px-3 py-2 mt-2 focus:ring focus:ring-blue-700 ring-2 rounded-md ring-black   placeholder:italic  '  placeholder='author' ></input>
-               <button className='mt-5 ring-2 ring-black rounded-xl px-4 py-2 text-2xl font-bold hover:bg-black hover:text-white hover:ring-blue-500 ' type={'submit'} >Add</button>
-           </form>
+                <input type='number' style={{border:'none'}}{...register('isbn')}className={`focus:outline-none max-w-[300px] w-full focus:ring-2 focus:rounded-md px-3 py-2 mt-2 focus:ring focus:ring-blue-700 ring-2 rounded-md ring-black   placeholder:italic  ${errors.isbn?.message  && `bg-yellow-400/[.7]`}`} placeholder='isbn' ></input>
+                {errors.isbn?.message && <p className='text-white-400 font-medium text-center pt-1' role="alert">{errors.isbn?.message}</p>}
+
+                <button className='mt-5 max-w-[300px] ring-2 ring-black rounded-xl px-4 py-2 text-2xl font-bold hover:bg-black hover:text-white hover:ring-blue-500 ' type={'submit'} >Add</button>
+            </form>
+        </div>
        </div>
 
     </>)
