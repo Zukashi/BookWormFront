@@ -8,11 +8,14 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {log} from "util";
 import axios from "axios";
 import {SpinnerComponent} from "../../SpinnerComponent";
+import { HomeNav } from '../Home/HomeNav';
 export interface Author {
     key:string,
 }
-const getBooksPaginated = async (page:number, amountToShow:number) => {
-    const res = await axios.get(`http://localhost:3001/books?page=${page}&booksPerPage=${amountToShow}`,{
+const getBooksPaginated = async (page:number, amountToShow:number, searchValue:string) => {
+    console.log(333, searchValue)
+
+    const res = await axios.get(`http://localhost:3001/books?page=${page}&booksPerPage=${amountToShow}&searchValue=${searchValue}`,{
         withCredentials:true
     });
     return res.data
@@ -22,13 +25,15 @@ export const AdminBookList = () => {
     const axiosPrivate = useAxiosPrivate()
     const toast = useToast();
     const [amountOfEntities, setAmountOfEntities] = useState<number>(10);
+    const [searchValue, setSearchValue] = useState('');
     const [currentPage, setCurrentPage] = useState<number>(1);
+    console.log(amountOfEntities)
     const [{data:books, refetch}, {data:allBooks, status:allBooksStatus, isLoading:allBooksLoading}] = useQueries({
         queries:[
             {
                 queryKey:['books', {currentPage}],
                 keepPreviousData:true,
-                queryFn: () => getBooksPaginated(currentPage,amountOfEntities )
+                queryFn: () => getBooksPaginated(currentPage,amountOfEntities, searchValue)
             },
 
             {
@@ -44,25 +49,33 @@ export const AdminBookList = () => {
 
     });
     console.log(books)
+    useEffect(() => {
+        refetch()
+    }, [searchValue, amountOfEntities])
     if(!allBooks)return <SpinnerComponent/>
     const countPages = () => {
             let pages: number[] = []
-            for(let i = 0; i < allBooks.length / amountOfEntities; i++){
-                pages.push(i+1)
+            if(!searchValue ){
+                for(let i = 0; i <= Math.floor(allBooks.length / amountOfEntities); i++){
+                    pages.push(i+1)
+                }
+                return pages
             }
-            return pages
+        for(let i = 0; i < Math.floor(books.length / amountOfEntities); i++){
+            pages.push(i+1)
+        }
+        return pages
     };
     const pages = countPages();
     const getBooksSearch = debounce(async (value:string) =>  {
-        if (!value){
-            return
-        }
 
-        console.log(value)
-            const res = await axiosPrivate.post(`http://localhost:3001/bookAdmin/search/${value}`,JSON.stringify({value}));
+        await setSearchValue(value)
+
+            // const res = await axiosPrivate.post(`http://localhost:3001/bookAdmin/search/${value}`,JSON.stringify({value}));
             // setBooks(res.data)
 
-    }, 300)
+    }, 300);
+
     function debounce (cb:any, delay=500){
         let timeout:any;
         return (...args:any) => {
@@ -75,31 +88,33 @@ export const AdminBookList = () => {
 
     if(allBooksLoading) return <Spinner/>
     return (<>
-        <HomeNavAdmin/>
+        <HomeNav/>
     <div className='pt-16'></div>
 
-       <div className='w-screen  bg-[#fbfcff] pt-10'>
-          <div className='w-[90%] mx-auto bg-white shadow-2xl rounded-xl relative'>
-           <div className='w-[90%] mx-auto pt-[1rem]'>
+       <main className='w-screen  bg-[#fbfcff] pt-10'>
+          <section className='w-[90%] mx-auto bg-white shadow-2xl rounded-xl relative '>
+           <div className='w-[90%] mx-auto pt-[1rem] pb-5'>
                <header>
                    <div className='flex justify-between items-center pb-5'><p className='font-bold text-xl'>Book List</p><button className='focus:outline-2 focus:outline-black font-bold px-5 py-2
                 text-white bg-black rounded-lg'><Link to='/addBook'>Add New Book</Link></button></div>
                </header>
                <div className='absolute left-0 right-0 h-[0.5px] bg-[#BBB]'></div>
+
                <div className='flex justify-center gap-1 items-center mt-2'>
-                   <p className='font-medium'>Show</p><select className='ring-1 ring-teal-600 rounded-md px-1 py-0.5 appearance-none   focus:outline-blue-700' onChange={(e) => setAmountOfEntities(parseInt(e.target.value))}  autoComplete='off'  name="" id="" defaultChecked={true}>
-                   <option    value="10" >10</option>
+                   <p className='font-medium'>Show</p><Select className=' appearance-none  font-medium  ' width={'90px'} onChange={(e) =>{
+                   setAmountOfEntities(parseInt(e.target.value));
+                   }
+               }  autoComplete='off'  name="" id="" defaultChecked={true}>
+                   <option    value="10"  >10</option>
                    <option   value="20" >20</option>
                    <option   value="50" >50</option>
                    <option   value="100" >100</option>
-               </select><p className='font-medium'>entries</p>
+               </Select><p className='font-medium'>entries</p>
                </div>
-               <label  className='flex gap-6 justify-center items-center pt-3'>
-                   <p className=
-                          'font-medium '>Search:</p><input className='outline-none ring-2 ring-teal-600 px-3 py-1.5 focus:outline-2 focus:ring-blue-600 '    onChange={(e) =>
+               <div  className='flex gap-6 justify-center items-center pt-3'><input placeholder='Search here...' className='mb-4 px-4 py-1  ring-1 rounded-md ring-[#555] px-2 '    onChange={(e) =>
                    getBooksSearch(e.target.value)}/>
-               </label>
-               <div className='overflow-x-auto max-w-[1000vw] w-full mx-auto '>
+               </div>
+               {books.length > 0 ? <div className='overflow-x-auto max-w-[1000vw] w-full mx-auto '>
                    <table className='h-[84px] table-fixed  '>
 
                        <thead><tr className='h-16'>
@@ -117,29 +132,31 @@ export const AdminBookList = () => {
                        {books.map((book:any, i:number) => <OneRowInBookListAdmin key={i} book={book} i={i} refresh={refetch}/>)}
                        </tbody>
                    </table>
-               </div>
-               <div className='flex justify-center mt-2 mb-1'>Showing {(currentPage * amountOfEntities) - amountOfEntities + 1} to {currentPage * amountOfEntities > allBooks.length ? allBooks.length : currentPage* amountOfEntities} of {allBooks.length} entries</div>
-                <div className='w-full h-10 flex justify-center items-center'>
-                    <i
-                        className="fa-solid fa-angle-left text-[#667574] mr-2" onClick={() => {
-                        if(currentPage !== 1) setCurrentPage(currentPage - 1)}
-                    }></i>
-                    <ol className='flex gap-2 '>
+               </div> : <div className='font-bold text-2xl mx-auto flex justify-center'><h2 className='my-4'>Specified book not found</h2></div>}
+               {books.length === 0 ? null : <> <div className='flex justify-center mt-2 mb-1'>Showing {(currentPage * amountOfEntities) - amountOfEntities + 1} to {currentPage * amountOfEntities <= books.length ? ((currentPage * amountOfEntities) - amountOfEntities  + amountOfEntities): currentPage *  amountOfEntities - books.length} of {books.length} entries</div>
+                   <div className='w-full h-10 flex justify-center items-center '>
+                   <i
+                   className="fa-solid fa-angle-left text-[#667574] mr-2 p-2 hover:bg-[#ddd] cursor-pointer" onClick={() => {
+                   if(currentPage !== 1) setCurrentPage(currentPage - 1)}
+               }></i>
+                   <ol className='flex gap-2 '>
 
-                    {
-                    pages.map((page:number) => <li className={`list-none px-2 py-0.5 ${currentPage === page && 'bg-blue-600'} text-black font-medium  rounded-sm`} onClick={() => setCurrentPage(page)}>{page}</li>)
-                }
+               {
+                   pages.map((page:number) => <li className={`list-none px-2.5 py-1 ${currentPage === page && 'bg-blue-600 hover:bg-blue-600'} hover:bg-[#ddd] cursor-pointer p-2 text-black font-medium  rounded-sm`} onClick={() => setCurrentPage(page)}>{page}</li>)
+               }
 
-                    </ol>
-                    <i
-                        className="fa-solid fa-angle-right text-[#667574] ml-2 " onClick={() => {
-                        if(currentPage < allBooks.length / amountOfEntities)
-                            setCurrentPage(currentPage + 1)
-                        }
-                    }></i>
-                </div>
+                   </ol>
+                   <i
+                   className="fa-solid fa-angle-right text-[#667574] ml-2 hover:bg-[#ddd]  p-2 cursor-pointer" onClick={() => {
+                   if(currentPage <= books.length / amountOfEntities){
+                   setCurrentPage(currentPage + 1)}
+               }
+               }></i>
+                   </div>
+
+               </>}
            </div>
-          </div>
-       </div>
+          </section>
+       </main>
     </>)
 }

@@ -46,7 +46,7 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
         void refreshLists();
     }, []);
     if(!userRes){
-        return <SpinnerComponent/>
+        return  null;
     }
     const addListSubmit:SubmitHandler<AddListValuesForm> = async (data) => {
         await axiosPrivate.post(`http://localhost:3001/user/${user._id}/list/${data.listName}`);
