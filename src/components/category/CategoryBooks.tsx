@@ -6,11 +6,12 @@ import {OneBookHome} from "../Home/OneBook";
 import shadows from "@mui/material/styles/shadows";
 import {isEqual} from "lodash";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
+import {SpinnerComponent} from "../../SpinnerComponent";
 
 export const CategoryBooks = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [changed, setChanged] = useState<boolean>(false)
-    const [perPage, setPerPage] = useState<number>(4)
+    const [perPage, setPerPage] = useState<number>(12)
     const [defaultAuthorsYearsGenres, setDefaultAuthorsYearsGenres] = useState<{genres:string[],years:string[],authors:string[]}>({
         genres:[],
         years:[],
@@ -68,12 +69,10 @@ export const CategoryBooks = () => {
     }, []);
     //@TODO FILTER BOOKS PROPERLY
     const selectPageHandler = (page:number) => {
-        console.log(page)
-        if(page  >= 1 &&  page<=Math.ceil(books.length / perPage) && page !== currentPage)
-        setCurrentPage(page)
+        if(page  >= 1 &&  page<=Math.ceil(books.length / perPage) && page !== currentPage) setCurrentPage(page)
     }
     console.log(books.length)
-    if(loading) return <Spinner/>
+    if(loading) return <SpinnerComponent/>
     return (<>
    <main className='bg-[#F5F5F5] min-h-screen'>
        <div className='pt-20'></div>
@@ -102,14 +101,14 @@ export const CategoryBooks = () => {
                             </select>
                         </form>
                         <div className='flex justify-between sm:w-2/3 sm:mx-auto gap-2'>
-                            <input value={form.search} className='w-3/4 ring-1 rounded-md ring-[#eee] px-2' onChange={(e) => onChange(e.target.value, 'search')} placeholder='Search here...' ></input><button className='bg-black font-bold text-white text-1xl px-4 py-2 rounded-xl '>Search</button>
-                            <button className="hidden sm:block py-2 rounded-xl bg-[#ddd] px-5" onClick={() => setForm({  genres:'',
+                            <input value={form.search} className='w-3/4 ring-1 rounded-md ring-[#eee] px-2' onChange={(e) => onChange(e.target.value, 'search')} placeholder='Search here...' ></input><button className='bg-black hover:text-[#bbb] font-bold text-white text-1xl px-4 py-2 rounded-xl '>Search</button>
+                            <button className="hidden sm:block py-2 rounded-xl bg-[#cacaca] hover:bg-[#aaa] px-5" onClick={() => setForm({  genres:'',
                                 year:'',
                                 author:'',
                                 search:'',})}>Clear</button>
                         </div>
                     </div>
-           <button className="sm:hidden bg-[#ccc] py-2 rounded-xl"onClick={() => setForm({  genres:'',
+           <button className="sm:hidden bg-[#BABABA] py-2 rounded-xl hover:bg-[#bbb]"onClick={() => setForm({  genres:'',
                year:'',
                author:'',
                search:'',})}>Clear</button>
