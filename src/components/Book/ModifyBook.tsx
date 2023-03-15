@@ -2,25 +2,24 @@ import React, {MouseEventHandler, useEffect, useRef, useState} from 'react'
 import { HomeAdminNav } from '../Home/AdminHome/HomeAdminNav'
 import {useNavigate, useParams} from "react-router-dom"
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import { BookEntity } from '../../../../BookWormBack/types/book';
+import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 
 export const ModifyBook = () => {
     const {id} = useParams();
-    const [book, setBook] = useState<BookEntity|null>(null);
+    const [book, setBook] = useState<any|null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate();
-    console.log(book)
     const [form ,setForm] = useState({
-        _id:book?._id,
-        title:book?.title,
-        author:book?.author,
-        description:book?.description,
-        subjects:book?.subjects,
-        subject_people:book?.subject_people,
-        publishers:book?.publishers,
-        imageSrc:book?.imageSrc,
+        _id:'',
+        title:'',
+        author:'',
+        description:'',
+        subjects:'',
+        subject_people:'',
+        publishers:'',
+        imageSrc:''
     });
     const updateForm = (value:string,fieldName:string) => {
         setForm((prev) => ({
@@ -32,7 +31,14 @@ export const ModifyBook = () => {
         (async() => {
            const res = await axiosPrivate.get(`http://localhost:3001/book/${id}`)
            setBook(res.data);
-           setForm(res.data)
+           setForm(res.data);
+            console.log(res.data)
+           if(res.data.description.value){
+               setForm((prev) => ({
+                   ...prev,
+                   description:res.data?.description?.value
+               }))
+           }
         })()
         if(inputRef.current){
             inputRef.current.focus()

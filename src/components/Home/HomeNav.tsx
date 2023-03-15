@@ -15,7 +15,6 @@ export const HomeNav = () => {
   const mapOfCategoriesWithLinks:any = new Map([['Home', '/home'], ['Category', '/Category'], ['Books','/admin/books'], ['Users', '/admin/users'], ['Authors', '/authors']])
   const [categories, setCategories] = useState<string[]>(['Home', 'Category', 'Books', 'Users', 'Authors']);
   const prevScroll = useRef(0);
-  console.log(categories)
   useEffect(() => {
     if(user.role === 'user') setCategories((prev) => prev.splice(0, 2))
     const onScroll = () => setOffset(window.pageYOffset);
@@ -27,7 +26,6 @@ export const HomeNav = () => {
   useEffect(() => {
       prevScroll.current = offset;
   }, [offset]);
-  console.log(mapOfCategoriesWithLinks.get('Home'))
  // const onChange = (value:string) => {
  //   (async() => {
  //     const encodedQuery = encodeURIComponent(value);
