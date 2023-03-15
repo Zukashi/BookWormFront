@@ -3,12 +3,12 @@ import {useNavigate, useParams} from "react-router-dom";
 import {HomeNav} from "../Home/HomeNav";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
-import {Book} from "./OneBook";
 import {Button, Checkbox, Select, Spinner, Textarea} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 
 export interface AddReview {
     rating :number,
@@ -26,7 +26,7 @@ export const ReviewAdd = () => {
     const {register, handleSubmit, formState:{errors}, setValue, watch} = useForm<AddReview>({
         resolver: yupResolver(schemaAddReview)
     })
-    const [book, setBook] = useState<Book|null>();
+    const [book, setBook] = useState<BookEntity|null>();
     const navigate = useNavigate();
     const {bookId} = useParams();
     const [loading, setLoading] = useState<boolean>(true);

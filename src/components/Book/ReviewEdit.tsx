@@ -3,16 +3,16 @@ import {useNavigate, useParams} from "react-router-dom";
 import {HomeNav} from "../Home/HomeNav";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
-import {Book} from "./OneBook";
 import {Button, Checkbox, Select, Spinner, Textarea} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 
 
 export const ReviewEdit = () => {
     const {user} = useSelector((state: RootState) => state.user);
     const {register, handleSubmit, setValue, getValues} = useForm();
-    const [book, setBook] = useState<Book|null>();
+    const [book, setBook] = useState<BookEntity|null>();
     const navigate = useNavigate();
     const {bookId} = useParams();
     const [loading, setLoading] = useState<boolean>(true);
