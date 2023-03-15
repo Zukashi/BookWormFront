@@ -12,35 +12,14 @@ import dayjs from "dayjs";
 import {OneReviewOrdinary} from "./OneReviewOrdinary";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {StatusCurrent} from "../Repeatable/StatusCurrent";
-export interface Book {
-  amountOfRates: number;
-  ratingTypeAmount: number[];
-  _id:string,
-  type: {
-    key:string,
-  },
-  title:string,
-  covers:number[],
-  key:string,
-  created:{
-    type:string,
-    value:string,
-  },
-  last_modified:{
-    type:string,
-    value:string,
-  },
-  author:string,
-  isbn:string,
-  description:string,
-  rating:number,
-}
+import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
+
 
 export const OneBook = () => {
   const navigate = useNavigate();
   const {user} = useSelector((state: RootState) => state.user);
 
-  const [book, setBook] = useState<Book|null>();
+  const [book, setBook] = useState<BookEntity|null>(null);
   const {bookId} = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
@@ -173,27 +152,32 @@ export const OneBook = () => {
     </>
   };
   const [dayNumber,monthName,year]= (dayjs(review?.date).format('DD/MMMM/YYYY')).split('/');
-  const sumOfRatings =  book.ratingTypeAmount.reduce(
+  const sumOfRatings =  book.ratingTypeAmount?.reduce(
       (accumulator, currentValue) => accumulator + currentValue,
       0
   );
   return (<>
-    <section className='w-screen bg-[#fbfcff]  mb-5 m-auto   '>
+    <main className='w-screen   mb-5 m-auto   '>
       <HomeNav/>
       <div className='pt-20'></div>
-      <div className='w-[90%] rounded-md  bg-white shadow-2xl mx-auto pb-10  h-full'>
-       <div className='flex justify-center pt-4'> <img src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt=""/></div>
-        <div className='mt-4 pl-[1.7rem] text-[1.5rem] font-medium'><p>{book.title}</p></div>
-        <div className='flex justify-start mt-4 pl-[1.7rem]'>
+      <div className='w-full bg-white'>
+      <section className='w-[90%] rounded-md    mx-auto pb-10  h-full'>
+       <div className='flex justify-center pt-7  '> <img className='rounded-r-3xl w-[40%]' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} alt="book image"/></div>
+        <div className='mt-4   font-medium flex justify-center text-[1.5rem]'><p className='w-[85%] text-center tracking-normal leading-8'>{book.title}</p></div>
+        <div className='mt-4   font-extralight text-center text-xl'><p>{book.author}</p></div>
+        <div className='flex justify-center mt-4 '>
           {
             stars.map((_, index) => {
               return (
-                  <i className={`fa-solid fa-star text-2xl cursor-pointer ${(rating) - 0.99 > index  && `text-[#faaf00]`} ` } key={index} ></i>
+                  <i className={`fa-solid fa-star text-3xl  ${(rating) - 0.99 > index  && `text-[#faaf00]`} ` } key={index} ></i>
 
               )
             })
           }
-          <p className='inline-block text-[1.4rem] font-medium ml-2'>{book.rating.toFixed(2)}</p>
+          <p className='inline-block text-3xl font-medium ml-2'>{book.rating.toFixed(2)}</p>
+        </div>
+        <div className='flex justify-center gap-4 font-medium text-sm text-[#707070] mt-3'>
+          <p>{book.amountOfRates} ratings</p> <p>{reviews?.length} reviews</p>
         </div>
         <div className='w-60 mx-auto my-4'>
           <StatusCurrent book={book} refresh={refresh} onDelete={deleteReview}/>
@@ -213,18 +197,26 @@ export const OneBook = () => {
         {personalRating === 0 ? <h3 className='text-[1rem] font-medium mb-2'>Rate this book</h3>:<h3  className='font-medium'>Rated.<Link className='border-b-2 border-black ml-1' to={`/review/edit/${bookId}`}>{review?.description?.length > 0 ? 'Edit review' : 'Write a review'}</Link></h3>}
       </div>
 
-        <div className='ml-[1.7rem] pb-4 mx-auto w-[90%] mt-4 font-mono font-[400] tracking-tighter text-[16px] leading-[25px] mr-[1.7rem]'>
+        <div className=' pb-4 mx-auto w-full mt-4 font-[500] tracking-tighter text-[1.6rem/1.4]  leading-[25px] '>
           {!book.description ? <p>This edition doesn't have a description yet.</p>:
-          <p className='break'>{typeof book.description  !== 'object' ? book.description : (book as any).description.value  }</p>}
+          <p className='text-[18px]'>{typeof book.description  !== 'object' ? book.description : (book as any).description.value  }</p>}
+        </div>
+        <div className='text-[#444] font-normal '>
+          <div>
+            <p> {book.number_of_pages} pages</p>
+          </div>
+          <div>
+            <p>First published in {book.publish_date}</p>
+          </div>
         </div>
 
-        <div className='ml-[1.7rem] mt-[1.5rem] pb-5'>
+        <div className=' mt-[1.5rem] pb-5'>
           <div className=' w-full h-[1px]  mx-auto bg-[#edbdf0] mb-5'></div>
           <p className='text-xl'>Author: <p className='inline-block font-bold'>{book.author}</p></p>
           <div className=' w-full h-[1px]  mx-auto bg-[#edbdf0] mt-5'></div>
         </div>
 
-        <h1 className='ml-[1.7rem]  py-5 text-[1.4rem] font-bold '>Ratings & Reviews</h1>
+        <h1 className='  pb-5  text-[1.4rem] font-bold '>Ratings & Reviews</h1>
         { !personalRating ?  <div className='flex items-center flex-col'>
           <img className='w-12' src={user.base64Avatar} alt=""/>
           <h2 className='text-2xl w-[70vw] flex justify-center mt-4 pb-3'>What do <p className='font-liberville px-1.5 pt-[2px]'>you</p> think?</h2>
@@ -240,13 +232,13 @@ export const OneBook = () => {
           <h3 className='text-[1rem] font-medium mb-5'>Rate this book</h3>
           <Link to={`/review/new/${bookId}`}><button className='bg-[#4f4f4d] py-2 px-6 rounded-3xl'><p className='text-white font-medium text-xl'>Write a Review</p></button></Link>
         </div>:
-            <div className='ml-[1.7rem] pb-5'>
+            <div className=' pb-5'>
           <h1 className='text-[1.1rem] font-[500] mb-3'>My Review</h1>
         <div className='w-full flex'>
           <img className='w-[1.9rem] pt-1.5' src={user.base64Avatar} alt=""/>
           <p className='ml-3 font-medium'>{user.username}</p>
         </div>
-          <div className='flex items-end gap-[4rem]'>
+          <div className='flex items-end justify-between gap-[4rem]'>
           { <div className='flex justify-start mt-3 mb-1'>
             {
               stars.map((_, index) => {
@@ -258,21 +250,21 @@ export const OneBook = () => {
               })
             }
           </div>}
-          <p className='font-medium'>{monthName} {dayNumber}, {year}</p>
+          <p className='font-medium text-[#707070]'>{monthName} {dayNumber}, {year}</p>
           </div>
              <div className={`    font-[450] ${showFullText ? 'overflow-auto max-h-screen': review?.description?.length > 160 ?  'max-h-[6rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `} > {(review?.description && review.spoilers )&& <p className={`  inline  mt-3 bg-[#687a86] ${!hoverSpoiler ? 'text-transparent': 'text-black bg-[#e7e9ee]'}`} onMouseOver={() => setHoverSpoiler(true)} onMouseLeave={() => setHoverSpoiler(false)} >{review?.description}</p>}</div>
               {review?.description && !review.spoilers &&   <div className={` max-h-[6rem] overflow-hidden  font-[450] ${showFullText ? 'overflow-auto max-h-screen': review?.description.length > 160 ? 'overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}><p className='text-[1rem] font-[450] mt-3 ' >{review?.description}</p></div>}
-              {review?.description?.length > 160 ? !showFullText ? <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(true)}>Show more <i
-                  className="fa-solid fa-arrow-down" ></i></button> : <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(false)}>Show Less <i
-                  className="fa-solid fa-arrow-up" ></i></button> : null }
+              {review?.description?.length > 160 ? !showFullText ? <button  className=' rounded-xl  text-black font-medium mt-2 '  type='submit' onClick={() => setShowFullText(true)}>Show more <i
+                  className="fa-solid fa-angle-down ml-1" ></i></button> : <button  className=' rounded-xl  py-2 text-black font-medium mt-2 '  type='submit' onClick={() => setShowFullText(false)}>Show Less <i
+                  className="fa-solid fa-angle-up ml-1" ></i></button> : null }
 
             <div className='flex justify-between'>
               <button className='bg-white w-36 inline-block font-medium rounded-2xl border-2 px-3 py-1 border-[#808080] flex items-center gap-2 mt-4'><Link to={`/review/edit/${bookId}`} className='flex  gap-2'>
                 <img src='https://cdn-icons-png.flaticon.com/512/2985/2985043.png' className='w-5 inline-block' alt="pen"/><p className='flex items-start '>Edit Review</p></Link></button>
-              <button className='bg-white font-medium rounded-2xl mr-[1.7rem] p-[.5rem]   border-[#808080] flex items-center gap-2 mt-4' onClick={deleteReview}><i className="fa-solid fa-trash"></i></button>
+
             </div>
         </div>}
-      <div className='ml-[1.7rem] mt-12'><h2 className='text-[1.22rem] font-bold'>Community Reviews</h2>
+      <section className=' mt-12'><h2 className='text-[1.22rem] font-bold'>Community Reviews</h2>
         <div className='flex justify-start mt-4 gap-3 items-center '>
           {
             stars.map((_, index) => {
@@ -284,24 +276,28 @@ export const OneBook = () => {
           }
           <p className='inline-block text-[1.7rem] font-medium ml-2 '>{book.rating.toFixed(2)} </p>
         </div>
+        <div className='flex  gap-4 font-medium text-sm text-[#707070] mt-3'>
+          <p>{book.amountOfRates} ratings</p> <p>{reviews?.length} reviews</p>
+        </div>
 
-        <div className='flex flex-col gap-5 mt-4'>
+        <div className='flex flex-col gap-y-5 gap-x-5 mt-4'>
 
-            {book.ratingTypeAmount.map((item,index) =>        <div className='flex gap-3 items-center' onClick={() => changeFilter(book?.ratingTypeAmount.length  - index)}>
+            {book.ratingTypeAmount?.map((item,index) =>        <div className='flex   items-center justify-between' onClick={() => changeFilter((book as any).ratingTypeAmount.length  - index)}>
               <div className='w-[4rem]'>
-                <h3 className={`border-b-[0.19rem] w-fit   border-b-black mb-0.5 ${isHighlighted[book?.ratingTypeAmount.length - 1 - index] && 'border-b-orange-400'} `}>{`${book?.ratingTypeAmount.length  - index}`} stars </h3>
+                <h3 className={`border-b-[0.19rem] w-fit   border-b-black mb-0.5 ${isHighlighted[(book as any).ratingTypeAmount?.length - 1 - index] && 'border-b-orange-400'} `}>{`${(book as any).ratingTypeAmount.length  - index}`} stars </h3>
               </div>
-           <div className={`px-[0.6rem] py-[1rem] ${isHighlighted[book?.ratingTypeAmount.length - 1 - index] && 'bg-[#c1c1c1]'
-            } rounded-2xl`}><Progress className='h-3 w-[37vw] rounded-xl' size='xl' value={sumOfRatings && ((book?.ratingTypeAmount[book?.ratingTypeAmount.length - 1 -  index] / sumOfRatings ) * 100)} /></div> <p className='w-20 flex '> {book.ratingTypeAmount[book?.ratingTypeAmount.length - 1 - index]} { sumOfRatings ? <p>({((book.ratingTypeAmount[book?.ratingTypeAmount.length -1 - index] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>   </div> )}
+           <div className={`px-[0.6rem] py-[1rem] w-5/6 ${isHighlighted[(book as any).ratingTypeAmount.length - 1 - index] && 'bg-[#c1c1c1]'
+            } rounded-2xl`}><Progress className='h-3 w-full rounded-xl' size='xl' value={sumOfRatings && (((book as any).ratingTypeAmount[(book as any).ratingTypeAmount.length - 1 -  index] / sumOfRatings ) * 100)} /></div> <p className='w-20 flex '> {(book as any).ratingTypeAmount[(book as any).ratingTypeAmount.length - 1 - index]} { sumOfRatings ? <p>({(((book as any).ratingTypeAmount[(book as any).ratingTypeAmount.length -1 - index] / sumOfRatings ) * 100).toFixed(0)}%)</p>: <p className='inline-block'>(0%)</p>}</p>   </div> )}
 
 
         </div>
-      </div>
-        <div className='flex flex-col gap-6 mt-3'>
+      </section>
+        <section className='flex flex-col gap-6 mt-3'>
         {reviews?.map((review) => <OneReviewOrdinary key={review._id} review={review}/>)}
-        </div>
-      </div>
-    </section>
+        </section>
+      </section>
+    </div>
+    </main>
 
   </>)
 }
