@@ -9,6 +9,7 @@ import {log} from "util";
 import axios from "axios";
 import {SpinnerComponent} from "../../SpinnerComponent";
 import { HomeNav } from '../Home/HomeNav';
+import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 export interface Author {
     key:string,
 }
@@ -28,7 +29,7 @@ export const AdminBookList = () => {
     const [searchValue, setSearchValue] = useState('');
     const [currentPage, setCurrentPage] = useState<number>(1);
     console.log(amountOfEntities)
-    const [{data:books, refetch}, {data:allBooks, status:allBooksStatus, isLoading:allBooksLoading}] = useQueries({
+    const [{data:books, refetch, isLoading}, {data:allBooks, status:allBooksStatus, isLoading:allBooksLoading}] = useQueries({
         queries:[
             {
                 queryKey:['books', {currentPage}],
@@ -48,24 +49,24 @@ export const AdminBookList = () => {
         ],
 
     });
-    console.log(books)
     useEffect(() => {
         refetch()
     }, [searchValue, amountOfEntities])
     if(!allBooks)return <SpinnerComponent/>
     const countPages = () => {
             let pages: number[] = []
-            if(!searchValue ){
-                for(let i = 0; i <= Math.floor(allBooks.length / amountOfEntities); i++){
+            if(searchValue ){
+                for(let i = 0; i <= Math.floor(books.length / amountOfEntities); i++){
                     pages.push(i+1)
                 }
                 return pages
             }
-        for(let i = 0; i < Math.floor(books.length / amountOfEntities); i++){
+        for(let i = 0; i < Math.ceil(allBooks.length / amountOfEntities); i++){
             pages.push(i+1)
         }
         return pages
     };
+
     const pages = countPages();
     const getBooksSearch = debounce(async (value:string) =>  {
 
@@ -86,7 +87,7 @@ export const AdminBookList = () => {
         }
     }
 
-    if(allBooksLoading) return <Spinner/>
+    if(allBooksLoading || isLoading) return <SpinnerComponent/>
     return (<>
         <HomeNav/>
     <div className='pt-16'></div>
@@ -102,6 +103,7 @@ export const AdminBookList = () => {
 
                <div className='flex justify-center gap-1 items-center mt-2'>
                    <p className='font-medium'>Show</p><Select className=' appearance-none  font-medium  ' width={'90px'} onChange={(e) =>{
+                   setCurrentPage(1)
                    setAmountOfEntities(parseInt(e.target.value));
                    }
                }  autoComplete='off'  name="" id="" defaultChecked={true}>
@@ -114,7 +116,7 @@ export const AdminBookList = () => {
                <div  className='flex gap-6 justify-center items-center pt-3'><input placeholder='Search here...' className='mb-4 px-4 py-1  ring-1 rounded-md ring-[#555] px-2 '    onChange={(e) =>
                    getBooksSearch(e.target.value)}/>
                </div>
-               {books.length > 0 ? <div className='overflow-x-auto max-w-[1000vw] w-full mx-auto '>
+               {books?.length > 0 ? <div className='overflow-x-auto max-w-[1000vw] w-full mx-auto '>
                    <table className='h-[84px] table-fixed  '>
 
                        <thead><tr className='h-16'>
@@ -129,11 +131,11 @@ export const AdminBookList = () => {
                            <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='flex items-end h-5/6'>Action</p></th></tr></thead>
 
                        <tbody>
-                       {books.map((book:any, i:number) => <OneRowInBookListAdmin key={i} book={book} i={i} refresh={refetch}/>)}
+                       {books.map((book:BookEntity, i:number) => <OneRowInBookListAdmin key={i} book={book} i={i} refresh={refetch}/>)}
                        </tbody>
                    </table>
                </div> : <div className='font-bold text-2xl mx-auto flex justify-center'><h2 className='my-4'>Specified book not found</h2></div>}
-               {books.length === 0 ? null : <> <div className='flex justify-center mt-2 mb-1'>Showing {(currentPage * amountOfEntities) - amountOfEntities + 1} to {currentPage * amountOfEntities <= books.length ? ((currentPage * amountOfEntities) - amountOfEntities  + amountOfEntities): currentPage *  amountOfEntities - books.length} of {books.length} entries</div>
+               {books?.length === 0 ? null : <> <div className='flex justify-center mt-2 mb-1'>Showing {amountOfEntities >= allBooks && value === '' ? allBooks.length : (currentPage * amountOfEntities) - amountOfEntities + 1 } to {amountOfEntities >= books.length ? currentPage === pages.at(-1) && pages.length > 1 ? allBooks.length : books.length : currentPage * amountOfEntities <= books.length ? ((currentPage * amountOfEntities) - amountOfEntities  + amountOfEntities): currentPage *  amountOfEntities - books.length} of {books.length} entries</div>
                    <div className='w-full h-10 flex justify-center items-center '>
                    <i
                    className="fa-solid fa-angle-left text-[#667574] mr-2 p-2 hover:bg-[#ddd] cursor-pointer" onClick={() => {
@@ -148,8 +150,11 @@ export const AdminBookList = () => {
                    </ol>
                    <i
                    className="fa-solid fa-angle-right text-[#667574] ml-2 hover:bg-[#ddd]  p-2 cursor-pointer" onClick={() => {
-                   if(currentPage <= books.length / amountOfEntities){
-                   setCurrentPage(currentPage + 1)}
+
+                   if((amountOfEntities !== 10 && currentPage < books.length / amountOfEntities) || (searchValue && currentPage < books.length / amountOfEntities)){
+                       setCurrentPage(currentPage + 1)
+                   }else if(!searchValue ? currentPage < allBooks.length / amountOfEntities : currentPage < Math.floor(books.length / amountOfEntities)){
+                       setCurrentPage(currentPage + 1)}
                }
                }></i>
                    </div>
