@@ -34,7 +34,7 @@ export const OneReviewOrdinary = (props:any) => {
     }
     // @ts-ignore
     return (<>
-        <div className='ml-[1.5rem]'>
+        <div className=''>
             <div className='w-full flex'>
                 <img className='w-[1.9rem] pt-1.5' src={props.review.user.base64Avatar} alt=""/>
                 <p className='ml-3 font-medium'>{props.review.user.username}</p>
@@ -54,9 +54,9 @@ export const OneReviewOrdinary = (props:any) => {
             </div>
             <div className={`    font-[600] ${showFullText ? 'overflow-auto max-h-screen': props.review?.description?.length > 160 ?  'max-h-[6rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `} onMouseOver={() => setHoverSpoiler(true)} onMouseLeave={() => setHoverSpoiler(false)}> {(props.review?.description && props.review.spoilers )&& <p className={`  inline  mt-3 bg-[#687a86] ${!hoverSpoiler ? 'text-transparent': 'text-black bg-[#e7e9ee]'}`} >{props.review?.description}</p>}</div>
             {props.review?.description && !props.review.spoilers &&   <div className={` max-h-[6rem] overflow-hidden  font-[450] ${showFullText ? 'overflow-auto max-h-screen': props.review.description.length > 160 ? 'overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}><p className='text-[1rem] font-[500] mt-3 ' >{props.review?.description}</p></div>}
-            {props.review?.description?.length > 160 ? !showFullText ? <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(true)}>Show more <i
-                className="fa-solid fa-arrow-down" ></i></button> : <button  className='bg-black rounded-xl px-4 py-2 text-white font-medium mt-5 '  type='submit' onClick={() => setShowFullText(false)}>Show Less <i
-                className="fa-solid fa-arrow-up" ></i></button> : null }
+            {props.review?.description?.length > 160 ? !showFullText ? <button  className=' rounded-xl  py-2 text-black font-medium mt-2 '  type='submit' onClick={() => setShowFullText(true)}>Show more <i
+                className="fa-solid fa-angle-down ml-1" ></i></button> : <button  className=' rounded-xl  py-2 text-black font-medium mt-2 '  type='submit' onClick={() => setShowFullText(false)}>Show Less <i
+                className="fa-solid fa-angle-up ml-1" ></i></button> : null }
             {<Comments personalReview={props.review} refresh={refreshReview}/>}
 
         </div>

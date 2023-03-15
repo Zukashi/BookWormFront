@@ -17,26 +17,12 @@ export const OneBookHome = ({book,refresh}:Props) => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
   const axiosPrivate = useAxiosPrivate()
-  const [loading, setLoading] = useState<boolean>(true)
+
   const {user} = useSelector((state: RootState) => state.user);
   const [rating,setRating] = useState<number>(0);
-  const [hover, setHover] = React.useState(0);
   const stars = Array(5).fill(0);
-  const [modal, setModal] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const handleMouseOver = (value:number) => {
-    setHover(value)
-  }
-  const handleMouseLeave = (value:number) => {
-    setHover(0)
-  }
-  const mouseEntered = () => {
-    if (refImg.current === null || refImg.current === undefined){
-      return null;
-    } else{
-      refImg.current.classList.add('opacity-50')
-    }
-  };
+
 
   const refreshOneBook = () => {
     ( async () => {
@@ -59,10 +45,6 @@ export const OneBookHome = ({book,refresh}:Props) => {
   }
   useEffect(() => {
     refreshOneBook()
-    const timer = setTimeout(() => {
-      setLoading(false)
-    }, 400)
-    return () => clearInterval(timer)
   },[]);
   const changeFavorite = () => {
       if(favorite === false){
@@ -96,7 +78,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
   }
   return (<>
     <div className='flex relative  gap-[1rem]   sm:h-[100%] mt-5    justify-center mb-4   sm:gap-[.5rem] items-start'> <div className='   inline-block  '>
-    <Link to={`/book/${book._id}`} className='relative   '><div className='flex items-center'><img ref={refImg} aria-label={`click this image to redirect to book ${book.title}` }  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="cursor-pointer inline-block  cursor-default w-[35vw] max-w-[165px] min-h-[190px] rounded-xl  sm:w-[120px] sm:min-h-[180px] sm:h-[100%] md:h-64  md:w-[170px] xl:h-72 xl:min-w-[185px]" onMouseEnter={mouseEntered} onMouseOut={mouseLeft}  alt=""/></div>
+    <Link to={`/book/${book._id}`} className='relative   '><div className='flex items-center bg-black rounded-xl'><img ref={refImg} aria-label={`click this image to redirect to book ${book.title}` }  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}   className="cursor-pointer  inline-block  cursor-default w-[35vw] max-w-[165px] min-h-[190px] rounded-xl  sm:w-[120px] sm:min-h-[180px] sm:h-[100%] md:h-64  md:w-[170px] xl:h-72 xl:min-w-[185px] hover:bg-black hover:opacity-50"   alt=""/></div>
 
     </Link>
 
