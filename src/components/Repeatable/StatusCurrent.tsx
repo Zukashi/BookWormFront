@@ -88,17 +88,17 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
     }, [bookStatus, onDelete]);
     if(!book) return <h1>123</h1>
     return (<>
-        {location.pathname.split('/')[1] !== 'book' ?<div className={`sm:min-w-[130px] sm:max-w-[150px] ${ bookStatus === '' ? 'bg-[#3f8363]  flex ' :'bg-[#F2F2F2]  border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer `} onClick={bookStatus !== '' ? toggleModal : undefined}>
+        {location.pathname.split('/')[1] !== 'book' ?<div className={`sm:min-w-[130px] sm:max-w-[150px] ${ bookStatus === '' ? 'bg-[#3f8363]  flex ' :'bg-[#F2F2F2] hover:bg-[#ddd] hover:transition-all hover:duration-300  border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer `} onClick={bookStatus !== '' ? toggleModal : undefined}>
 
-                <button className={`w-32     cursor-pointer py-2  ${bookStatus === "" ? 'border-r-[1px] border-r-amber-800 ':'py-[7px]' }`} onClick={bookStatus === '' ?  () => updateStatusOfBook('wantToRead'): undefined } >  {loading ? <Spinner color='black' size='sm'/> :<span className={`font-medium ${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want to read' : bookStatus}</span>}</button>
-            {bookStatus === "" ? <button onClick={toggleModal} className=' flex justify-center items-center '>
+                <button className={`w-32      cursor-pointer py-2  ${bookStatus === "" ? 'hover:bg-[#386B52] hover:rounded-l-xl border-r-[1px] border-r-amber-800 ':'py-[7px]' }`} aria-label='Want to read button' onClick={bookStatus === '' ?  () => updateStatusOfBook('wantToRead'): undefined } >  {loading ? <Spinner color='black' size='sm'/> :<span className={`font-medium ${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want to read' : bookStatus}</span>}</button>
+            {bookStatus === "" ? <button onClick={toggleModal} className=' flex justify-center items-center hover:bg-[#386B52] rounded-r-xl  '>
                 <i  className="fa-solid fa-angle-down color-[#fff] text-xl mt-1 ml-1 mr-1"></i></button>:
 
             <img className='h-4 w-auto mr-1' src="https://cdn-icons-png.flaticon.com/512/57/57055.png" alt="down icon"/>}
         </div>
             :
-        <div className={`${ bookStatus === '' ? 'bg-[#3f8363] flex  gap-2 border-2 border-[#333] ' :' bg-[#F2F2F2] border-2 border-[#777] flex justify-around  items-center'}  rounded-3xl text-[#ffffff] cursor-pointer w-full`} onClick={bookStatus !== '' ? toggleModal : undefined}>
-            <button className={`px-2 cursor-pointer py-2     ${bookStatus === "" ? 'border-r-[1px] ml-10 pr-12 border-r-amber-800 ': 'ml-4 pr-6 flex items-center gap-1 py-1.5 '}`} onClick={bookStatus === '' ?  () => updateStatusOfBook('wantToRead'): undefined } >{bookStatus !== '' && <img  className="h-4 w-4 inline-block" src="https://cdn-icons-png.flaticon.com/512/2997/2997896.png" alt="pen Icon for edit"/>} {loading ? <Spinner color='black' size='md'/> :<span className={`font-medium ${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want to read' : bookStatus}</span>}</button>{bookStatus === "" && <button onClick={toggleModal} className='w-7 flex justify-center items-center '>
+        <div className={`${ bookStatus === '' ? 'bg-[#3f8363] flex    border-2 border-[#333] ' :' bg-[#F2F2F2] hover:bg-[#ddd]  border-2 border-[#777] flex justify-around  items-center'}  rounded-3xl text-[#ffffff] cursor-pointer w-full`} onClick={bookStatus !== '' ? toggleModal : undefined}>
+            <button className={`px-2 cursor-pointer py-2     ${bookStatus === "" ? 'w-full border-r-[1px] pl-6 hover:bg-[#386B52] hover:rounded-l-3xl  border-r-amber-800 ': 'ml-4 pr-6 flex items-center gap-1 py-1.5 '}`} onClick={bookStatus === '' ?  () => updateStatusOfBook('wantToRead'): undefined } >{bookStatus !== '' && <img  className="h-4 w-4 inline-block" src="https://cdn-icons-png.flaticon.com/512/2997/2997896.png" alt="pen Icon for edit"/>} {loading ? <Spinner color='black' size='md'/> :<span className={`font-medium ${bookStatus !== "" && "text-black"}`}>{!bookStatus ? 'Want to read' : bookStatus}</span>}</button>{bookStatus === "" && <button onClick={toggleModal} className='w-7 px-6 hover:bg-[#386B52] hover:rounded-r-3xl flex justify-center items-center '>
                 <i  className="fa-solid fa-angle-down color-[#fff] text-md mt-1 ml-1"></i></button>}
         </div>}
 
