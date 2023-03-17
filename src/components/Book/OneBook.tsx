@@ -204,7 +204,7 @@ export const OneBook = () => {
          <div className='h-full max-w-[450px]'>
            <section className='hidden top-2 md:sticky md:flex md:flex-col  '>
              <div className='flex justify-center pt-7 sm:hidden '> <img className='rounded-r-3xl w-[40%]' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} alt="book image"/></div>
-             <div className='flex pt-7 justify-center hidden sm:flex '> <img className='rounded-r-3xl w-[70%] h-[35%]' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt="book image"/></div>
+             <div className='flex pb-3 pt-6 justify-center hidden sm:flex '> <img className='rounded-r-3xl w-[70%] h-[35%]' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt="book image"/></div>
 
 
 
