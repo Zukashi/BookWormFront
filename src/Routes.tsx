@@ -3,7 +3,7 @@ import {Route, Routes, useNavigate} from "react-router-dom";
 import {LoginPageView} from "./Views/LoginPageView";
 import {Register} from "./components/Register/Register";
 import { HomeView } from './Views/HomeView';
-import {useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import {RootState} from "./app/store";
 import {AuthorView} from "./Views/AuthorView";
 import {BookView} from "./Views/BookView";
@@ -18,8 +18,6 @@ import {UserListView} from "./Views/UserListView";
 import {ResetPassword} from "./components/Login/ResetPassword";
 import { ReviewAdd } from './components/Book/ReviewAdd';
 import {ReviewEdit} from "./components/Book/ReviewEdit";
-import {useLocation} from "react-router";
-import {useAxiosPrivate} from "./hooks/useAxiosPrivate";
 import PersistLogin from "./components/PersistLogin";
 import {UserBooks} from "./components/Account/UserBooks";
 import {CategoryView} from "./Views/CategoryView";
@@ -27,13 +25,9 @@ import {ProgressBookChange} from "./components/Account/ProgressBookChange";
 import {Redirect} from "./components/Redirect";
 
 export const AllRoutes = () => {
-  const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const axiosPrivate = useAxiosPrivate()
     const {user} = useSelector((state: RootState) => state.user);
-    const location = useLocation();
 
-    console.log(user)
+
     return (<>
 
             <Routes>

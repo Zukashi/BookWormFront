@@ -9,6 +9,7 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import {Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import {useLocation} from "react-router";
+import {SpinnerComponent} from "../../SpinnerComponent";
 export const UserBooks = () => {
     const axiosPrivate = useAxiosPrivate();
     const [activeTab, setActiveTab] = useState('read')
@@ -26,7 +27,7 @@ export const UserBooks = () => {
         location.state && setActiveTab(location.state)
     }, [location])
     if (!shelves){
-        return <h1>1</h1>
+        return  <SpinnerComponent/>
     };
     const statuses = ['read', 'currentlyReading', 'wantToRead']
     return (<>

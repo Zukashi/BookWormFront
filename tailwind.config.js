@@ -29,6 +29,9 @@ module.exports = {
       },
       fontFamily:{
         'liberville':['Libre Baskerville']
+      },
+      gridTemplateColumns: {
+        'OneBookMd':'1fr 2fr'
       }
     },
   },
