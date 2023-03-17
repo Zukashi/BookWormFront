@@ -7,11 +7,15 @@ import shadows from "@mui/material/styles/shadows";
 import {isEqual} from "lodash";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {SpinnerComponent} from "../../SpinnerComponent";
+import {useSelector} from "react-redux";
+import {RootState} from "../../app/store";
+import { Link } from 'react-router-dom';
 
 export const CategoryBooks = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [changed, setChanged] = useState<boolean>(false)
-    const [perPage, setPerPage] = useState<number>(12)
+    const [perPage, setPerPage] = useState<number>(12);
+    const {user} = useSelector((root:RootState) => root.user)
     const [defaultAuthorsYearsGenres, setDefaultAuthorsYearsGenres] = useState<{genres:string[],years:string[],authors:string[]}>({
         genres:[],
         years:[],
@@ -78,7 +82,6 @@ export const CategoryBooks = () => {
        <div className='pt-20'></div>
        <section className='flex flex-col justify-center   gap-3  mx-auto w-11/12 max-w-[1000px]'>
                  <h1 className='font-bold text-[2rem] text-center'>Search by book name</h1>
-
                     <div className='flex flex-col gap-3'>
                         <form className='flex  flex-col w-full gap-4 sm:flex sm:flex-row sm:w-3/4 sm:mx-auto' >
                             <select  className='w-full rounded-md border-[#eee] px-2 py-2' value={form.genres} onChange={(e) => onChange(e.target.value, 'genres')}>
@@ -115,6 +118,14 @@ export const CategoryBooks = () => {
 
        </section>
        <section className={`flex flex-col justify-center   gap-3  mx-auto    mt-4 pb-4   `} >
+           {
+               books.length === 0 && user.role ==='admin'  && <div className='w-full text-center font-bold text-2xl'>There are no books in our database <Link to={'/addBook'} className='text-blue-500 hover:text-blue-900'>Click To Add One</Link></div>
+
+           }
+           {
+               books.length === 0 && user.role ==='user'  && <div className='w-full text-center font-bold text-2xl'>There are no books in our database</div>
+
+           }
            <div className={`${changed || (books.length < 3) ? `flex flex-wrap gap-3  md:px-4 justify-center  max-w-[${347 * books.length}px]   rounded-lg  bg-white    mx-auto` :' flex flex-wrap  w-full justify-center   md:justify-items-center sm:grid sm:grid-cols-2  lg:grid-cols-3 rounded-lg lg:max-w-[1200px] bg-white    2xl:grid-cols-4 2xl:max-w-[1500px] mx-auto '}`}>
                { booksOnCurrentPage.map((book:BookEntity, i:number) => <OneBookHome  key={i}   book={book} refresh={() =>  null}/>)}
            </div>

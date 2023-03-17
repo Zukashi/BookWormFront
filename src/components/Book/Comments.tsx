@@ -51,10 +51,10 @@ export const Comments = (props:any) => {
     return (<>
     <div className='mt-4 '>
         <div className='text-[#808080] font-[500] flex gap-7 mb-2'>{props.personalReview?.likes.amount > 0 && <p>{props.personalReview?.likes.amount} likes</p>} {props.personalReview?.comments.length  > 0&&<p>{props.personalReview?.comments.length} comments</p>}</div>
-       <div className='flex gap-2 items-center '><div className='flex gap-2 items-center ' onClick={toggleLike}>
+       <div className='flex gap-2 items-center '><div className='flex gap-2 items-center cursor-pointer' onClick={toggleLike}>
 
-           {!liked ? <img src="https://cdn-icons-png.flaticon.com/512/739/739282.png" width={20} className='min-h-0 h-5' alt=""/> : <img src="https://cdn-icons-png.flaticon.com/512/739/739231.png" width={20} className='min-h-0 h-5' alt=""/>}<p>Like</p>
-       </div> <p onClick={commentsToggle}><i className="fa-regular fa-comment scale-x-[-1] mr-2 ml-2 "/>Comment</p></div>
+           {!liked ? <img src="https://cdn-icons-png.flaticon.com/512/739/739282.png" width={20} className='min-h-0 h-5' alt="thumbs up"/> : <img src="https://cdn-icons-png.flaticon.com/512/739/739231.png" width={20} className='min-h-0 h-5' alt="thumbs up active"/>}<p className='hover:text-blue-700'>Like</p>
+       </div> <p onClick={commentsToggle} className='cursor-pointer hover:text-blue-700'><i className="fa-regular fa-comment scale-x-[-1] mr-2 ml-2 "/>Comment</p></div>
         <div className='w-full h-[2px] bg-green-200 mt-5 mb-5'></div>
         {toggleComments && comments.map((comment:any) => <OneComment comment={comment} personalReview={props.personalReview} refresh={refresh} />)}
         { toggleComments &&
