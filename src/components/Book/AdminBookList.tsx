@@ -134,7 +134,7 @@ export const AdminBookList = () => {
                        {books.map((book:BookEntity, i:number) => <OneRowInBookListAdmin key={i} book={book} i={i} refresh={refetch}/>)}
                        </tbody>
                    </table>
-               </div> : <div className='font-bold text-2xl mx-auto flex justify-center'><h2 className='my-4'>Specified book not found</h2></div>}
+               </div> : <div className='font-bold text-2xl mx-auto flex justify-center'><h2 className='my-4'>Book not found</h2></div>}
                {books?.length === 0 ? null : <> <div className='flex justify-center mt-2 mb-1'>Showing {amountOfEntities >= allBooks && value === '' ? allBooks.length : (currentPage * amountOfEntities) - amountOfEntities + 1 } to {amountOfEntities >= books.length ? currentPage === pages.at(-1) && pages.length > 1 ? allBooks.length : books.length : currentPage * amountOfEntities <= books.length ? ((currentPage * amountOfEntities) - amountOfEntities  + amountOfEntities): currentPage *  amountOfEntities - books.length} of {books.length} entries</div>
                    <div className='w-full h-10 flex justify-center items-center '>
                    <i

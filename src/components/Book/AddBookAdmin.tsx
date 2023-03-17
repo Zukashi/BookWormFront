@@ -26,14 +26,23 @@ export const AddBookAdmin = () => {
             setLoading(false)
             navigate('/admin/books')
         }catch(e:any){
+            if(e?.response?.status === 404){
+                toast({
+                    position:'top',
+                    title: 'Error',
+                    description: e.response.data,
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                })
+            }
             if(e?.response?.status === 409){
-                console.log(e.response.data)
                 toast({
                     position:'top',
                     title: 'Error',
                     description: e.response.data,
                     status: 'warning',
-                    duration: 9000,
+                    duration: 5000,
                     isClosable: true,
                 })
             }
@@ -43,7 +52,7 @@ export const AddBookAdmin = () => {
                     title: 'Error',
                     description: e.response.data,
                     status: 'warning',
-                    duration: 9000,
+                    duration: 5000,
                     isClosable: true,
                 })
             }
@@ -62,7 +71,7 @@ export const AddBookAdmin = () => {
             <p className='flex justify-center text-5xl font-medium mb-5'>Add book</p>
             <form  autoComplete='off' onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-11/12 mx-auto items-center'>
 
-                <input type='number' style={{border:'none'}}{...register('isbn')}className={`focus:outline-none max-w-[300px] w-full focus:ring-2 focus:rounded-md px-3 py-2 mt-2 focus:ring focus:ring-blue-700 ring-2 rounded-md ring-black   placeholder:italic  ${errors.isbn?.message  && `bg-yellow-400/[.7]`}`} placeholder='isbn' ></input>
+                <input type='number' style={{border:'none'}}{...register('isbn', {maxLength:13, required:true})} className={`focus:outline-none max-w-[300px] w-full focus:ring-2 focus:rounded-md px-3 py-2 mt-2 focus:ring focus:ring-blue-700 ring-2 rounded-md ring-black   placeholder:italic  ${errors.isbn?.message  && `bg-yellow-400/[.7]`}`} placeholder='isbn' ></input>
                 {errors.isbn?.message && <p className='text-white-400 font-medium text-center pt-1' role="alert">{errors.isbn?.message}</p>}
 
                 <button className='mt-5 max-w-[300px] ring-2 ring-black rounded-xl px-4 py-2 text-2xl font-bold hover:bg-black hover:text-white hover:ring-blue-500 ' type={'submit'} >Add</button>

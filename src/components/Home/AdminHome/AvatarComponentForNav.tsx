@@ -26,7 +26,6 @@ export const AvatarComponent = () => {
         await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/logout`);
         navigate('/')
     };
-    console.log(open)
     useEffect(() => {
         ( async () => {
             const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}`)
