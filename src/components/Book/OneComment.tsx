@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {Comments} from "./Comments";
 import dayjs from "dayjs";
 import moment from "moment";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
@@ -9,27 +8,22 @@ import {
     AlertDialogCloseButton,
     AlertDialogContent, AlertDialogFooter, AlertDialogHeader,
     AlertDialogOverlay,
-    Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Modal,
+    Button,
     useDisclosure
 } from "@chakra-ui/react";
-import {useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import {RootState} from "../../app/store";
-import {DrawerOneComment} from "./DrawerOneComment";
-import {UserState, userUpdate} from "../../features/User/userSlice";
-import {useNavigate} from "react-router-dom";
 export const OneComment = (props:any) => {
     const [showFullText , setShowFullText] = useState(false)
-    const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false);
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = React.useRef(null);
-    const { getDisclosureProps, getButtonProps } = useDisclosure();
+
 
 
 
     const {user, token} = useSelector((state:RootState) => state.user)
     const axiosPrivate = useAxiosPrivate();
     const {bookId} = useParams();
-    const [dayNumber,monthName,year]= (dayjs(props.comment?.date).format('DD/MMMM/YYYY')).split('/');
     console.log(moment(props.comment?.date).fromNow());
     console.log(props.comment)
     const deleteComment = async () => {
