@@ -16,7 +16,10 @@ import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {motion, useAnimation} from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {ProgressBarSection} from "./ProgressBarSection";
+import {SpinnerComponent} from "../../SpinnerComponent";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const OneBook = () => {
   const navigate = useNavigate();
@@ -31,6 +34,7 @@ export const OneBook = () => {
   const [hover, setHover] = React.useState(0);
   const [showFullText , setShowFullText] = useState(false)
   const [showFullTextDesc , setShowFullTextDesc] = useState(false);
+  const [showFullTextDescMd , setShowFullTextDescMd] = useState(false);
 
   const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
   const [review, setReview] = useState<any>();
@@ -60,19 +64,21 @@ export const OneBook = () => {
       const res2 = await axiosPrivate(`http://localhost:3001/user/${user._id}/book/${res.data._id}`);
 
       setReview(res2.data)
-      console.log(res2.data)
       setPersonalRating(res2.data.rating)
     }catch (e) {
-      console.log(e)
     }
     setLoading(false)
   };
-  console.log(hover)
   const deleteReview = async () => {
 
-    console.log(review)
     await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${personalRating}`);
     await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book?._id}/status`);
+    console.log(333)
+    toast.success(`Review deleted successfully`, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      theme:'dark',
+      autoClose:3000
+    });
     navigate(`${`/book/${book?._id}`}`)
     setPersonalRating(0);
     setHover(0)
@@ -103,35 +109,56 @@ export const OneBook = () => {
       setReviews(res5.data)
     }
   }
-  console.log(personalRating)
   const handleClick = async (value:number) => {
-    console.log(value
-    )
+
     setPersonalRating(value);
     await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${status  === '' ? 'read' : status }/${originalStatus}`)
     await axiosPrivate.post(`http://localhost:3001/book/${bookId}/${value}`);
     if(personalRating === 0){
-      console.log(1234)
-      await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${bookId}/status`)
-      await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
-            rating:value,
-            description:'',
-            status:status  === '' ? 'read' : status,
-            spoilers:false,
-            comments:[]
-          })
-      );
+      try{
+        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${bookId}/status`)
+        await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
+              rating:value,
+              description:'',
+              status:status  === '' ? 'read' : status,
+              spoilers:false,
+              comments:[]
+            })
+        );
+        toast.success(`${value} star rating saved`, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          theme:'dark',
+          autoClose:3000
+        });
+      }catch(e){
+        toast.error(`Something went wrong try again`,{
+          position: toast.POSITION.BOTTOM_CENTER,
+          theme:'dark'
+        })
+      }
+
     }else if(personalRating <= 5 && personalRating >= 1){
-      console.log(345);
-      await axiosPrivate.delete(`http://localhost:3001/book/${bookId}/${personalRating}`)
-      await axiosPrivate.put(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
-            rating:value,
-            description:review.description,
-            status:status,
-            spoilers:review.spoilers,
-            comments:review.comments,
-          })
-      );
+     try{
+       await axiosPrivate.delete(`http://localhost:3001/book/${bookId}/${personalRating}`)
+       await axiosPrivate.put(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
+             rating:value,
+             description:review.description,
+             status:status,
+             spoilers:review.spoilers,
+             comments:review.comments,
+           })
+       );
+       toast.success(`Rating updated to ${value.toFixed()} stars`, {
+         position: toast.POSITION.BOTTOM_CENTER,
+         theme:'dark',
+         autoClose:3000
+       });
+     }catch(e){
+       toast.error('Something went wrong try again ', {
+         position:toast.POSITION.BOTTOM_CENTER,
+         theme:'dark'
+       })
+     }
     }
 
     refresh();
@@ -150,18 +177,16 @@ export const OneBook = () => {
   };
 
   while(loading || !book){
-    return <>
-      <div className='pt-20'></div>
-      <div className='w-screen h-screen absolute top-[300%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div>
-    </>
+    return <SpinnerComponent/>
   };
   const [dayNumber,monthName,year]= (dayjs(review?.date).format('DD/MMMM/YYYY')).split('/');
   return (<>
     <main className='w-screen   mb-5 m-auto   '>
+      <ToastContainer/>
       <HomeNav/>
       <div className='pt-20'></div>
       <div className='w-full bg-white'>
-      <div className='w-[90%] rounded-md    mx-auto pb-10  h-full md:w-[95%]'>
+      <div className='w-[90%] rounded-md md:w-[95%]   mx-auto pb-10  h-full md:w-[95%]'>
           <section className='md:hidden '>
             <div className='flex justify-center pt-7 sm:hidden '> <img className='rounded-r-3xl w-[40%]' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} alt="book image"/></div>
             <div className='flex justify-center pt-7 hidden sm:flex '> <img className='rounded-r-3xl w-[40%]' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt="book image"/></div>
@@ -200,11 +225,10 @@ export const OneBook = () => {
             </div>
           </section>
 
-        <div className='block md:grid md:grid-cols-OneBookMd ' >
-         <div className='h-full max-w-[450px]'>
-           <section className='hidden top-2 md:sticky md:flex md:flex-col  '>
-             <div className='flex justify-center pt-7 sm:hidden '> <img className='rounded-r-3xl w-[40%]' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} alt="book image"/></div>
-             <div className='flex pb-3 pt-6 justify-center hidden sm:flex '> <img className='rounded-r-3xl w-[70%] h-[35%]' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt="book image"/></div>
+        <div className='block md:grid md:grid-cols-OneBookMd xl:grid-cols-OneBookXl' >
+         <div className='h-full max-w-[450px] '>
+           <section className='hidden top-2 md:sticky md:flex md:flex-col md:z-20  '>
+             <div className='flex pb-3 pt-4 justify-center hidden sm:flex '> <img className='rounded-r-3xl w-[70%] h-[35%] lg:w-[50%] lg:rounded-r-xl ' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt="book image"/></div>
 
 
 
@@ -227,15 +251,42 @@ export const OneBook = () => {
              </div>
            </section>
          </div>
-          <div className='block md:w-11/12'>
-            <div className={` pb-4 mx-auto w-full mt-4 font-[500] tracking-tighter text-[1.6rem/1.4]  leading-[25px] ${showFullTextDesc ? 'overflow-auto max-h-screen': book?.description?.length && book.description.length > 200 ?  'max-h-[9rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}>
+          <div className='block md:w-11/12 xl:w-5/6 mt-1'>
+
+
+           <div className='flex flex-col items-start hidden md:flex  '>
+             <div className='mt-4   font-medium  text-[2.5rem] font-liberville  '><p className='leading-10  tracking-normal leading-8'>{book.title}</p></div>
+             <div className='mt-4   font-extralight text-2xl font-mono'><Link to={`/author/${book.authors}`} className='cursor-pointer border-b-2 border-b-transparent hover:border-b-black'>{book.author}</Link></div>
+            <Link className='lg:flex lg:items-end  lg:gap-5 rounded-lg ' to={'#Community_reviews'}>
+              <div className='flex  mt-4 '>
+                {
+                  stars.map((_, index) => {
+                    return (
+                        <i className={`fa-solid fa-star text-3xl  ${(rating) - 0.99 > index  && `text-[#faaf00]`} ` } key={index} ></i>
+
+                    )
+                  })
+                }
+                <p className='inline-block text-3xl font-medium ml-2'>{book.rating.toFixed(2)}</p>
+              </div>
+              <div className='flex  gap-4 font-medium text-sm text-[#707070] mt-4 mb-2'>
+                <p>{book.amountOfRates} ratings</p> <p>{reviews?.length} reviews</p>
+              </div>
+            </Link>
+           </div>
+
+
+
+
+
+            <div className={` pb-4 mx-auto w-full mt-4 font-[400] tracking-tighter text-[1.6rem/1.4] lg:w-4/5 lg:mx-0  leading-7 ${showFullTextDesc ? 'overflow-auto max-h-screen': book?.description?.length && book.description.length > 200 ?  'max-h-[9rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}>
               {!book.description ? <p>This edition doesn't have a description yet.</p>:
                   <p className='text-[18px]'>{typeof book.description  !== 'object' ? book.description : (book as any).description.value  }</p>}
 
             </div>
-            {typeof book.description?.length ==='number' && book.description.length > 160 ? !showFullTextDesc ? <button  className=' rounded-xl  py-2 text-black font-medium mt-2 '  type='submit' onClick={() => setShowFullTextDesc(true)}>Show more <i
-                className="fa-solid fa-angle-down ml-1" ></i></button> : <button  className=' rounded-xl  py-2 text-black font-medium mt-2 '  type='submit' onClick={() => setShowFullTextDesc(false)}>Show Less <i
-                className="fa-solid fa-angle-up ml-1" ></i></button> : null }
+            {typeof book.description?.length ==='number' && book.description.length > 160 ? !showFullTextDesc ? <button  className='flex items-center rounded-xl group  py-2 text-black font-medium mt-2 '  type='submit' onClick={() => setShowFullTextDesc(true)}><p className='group-hover:border-b-2 group-hover:border-b-black border-b-2 border-b-transparent'>Show more</p> <i
+                className="fa-solid fa-angle-down ml-2 mt-1" ></i></button> : <button  className='flex group items-center rounded-xl  py-2 text-black font-medium mt-2 '  type='submit' onClick={() => setShowFullTextDesc(false)}><p className='group-hover:border-b-2 group-hover:border-b-black border-b-2 border-b-transparent'>Show less</p> <i
+                className="fa-solid fa-angle-up ml-2 mt-1" ></i></button> : null }
             <div className='text-[#444] font-normal '>
               <div>
                 <p> {book.number_of_pages} pages</p>
@@ -277,7 +328,6 @@ export const OneBook = () => {
                     { <div className='flex justify-start mt-3 mb-1'>
                       {
                         stars.map((_, index) => {
-                          console.log(hover, index)
                           return (
                               <i className={`fa-solid fa-star text-md cursor-pointer ${(hover || personalRating)  > index   && `text-[#faaf00]`} ` } key={index}  ></i>
 
@@ -299,7 +349,7 @@ export const OneBook = () => {
 
                   </div>
                 </div>}
-            <section  className=' mt-12'><h2 className='text-[1.22rem] font-bold'>Community Reviews</h2>
+            <section id='Community_reviews'  className=' mt-12 lg:max-w-[70%]'><h2 className='text-[1.22rem] font-bold'>Community Reviews</h2>
               <div className='flex justify-start mt-4 gap-3 items-center '
               >
                 {
@@ -324,8 +374,8 @@ export const OneBook = () => {
               />
             </section>
             <section className='flex flex-col gap-6 mt-3'>
-              {reviews?.map((review) => <OneReviewOrdinary key={review._id} review={review}/>)}
-            </section>
+            {reviews?.map((review) => <OneReviewOrdinary key={review._id} review={review}/>)}
+          </section>
           </div>
         </div>
       </div>

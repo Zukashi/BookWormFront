@@ -84,9 +84,9 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
   </div>
 
-    <div className='inline-block  flex flex-col gap-1.5  w-[153px]  '><p className='w-full text-[15px] md:h-14 font-bold w-36 leading-5  sm:text-[14px] md:text-[20px] sm:h-[40px] sm:flex sm:items-start
+    <div className='inline-block  flex flex-col gap-1.5  w-[153px]   '><p className='w-full  text-[15px] md:h-14 font-bold w-36 leading-5  sm:text-[14px] md:text-[20px] sm:h-[40px] sm:flex sm:items-start
     '>{book.title}</p>
-      <p className='text-[16px] sm:text-[13px] w-full '>{book.author} </p>
+      <p className='text-[16px] sm:text-[13px] w-full '>{book.author ? book.author: 'Unkown Author'} </p>
 
       <div className=' h-8    w-full flex  justify-center   '>
         {
