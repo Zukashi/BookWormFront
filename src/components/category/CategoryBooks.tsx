@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {useForm} from "react-hook-form";
-import {Button, Input, Select, Spinner} from "@chakra-ui/react";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {OneBookHome} from "../Home/OneBook";
-import shadows from "@mui/material/styles/shadows";
-import {isEqual} from "lodash";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {SpinnerComponent} from "../../SpinnerComponent";
 import {useSelector} from "react-redux";
@@ -15,6 +11,7 @@ export const CategoryBooks = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [changed, setChanged] = useState<boolean>(false)
     const [perPage, setPerPage] = useState<number>(12);
+    const [allBooks, setAllBooks] = useState<null| BookEntity[]>(null)
     const {user} = useSelector((root:RootState) => root.user)
     const [defaultAuthorsYearsGenres, setDefaultAuthorsYearsGenres] = useState<{genres:string[],years:string[],authors:string[]}>({
         genres:[],
@@ -32,7 +29,6 @@ export const CategoryBooks = () => {
         search:'',
 
     });
-    console.log(books)
     const [loading,setLoading] = useState(true)
     const onChange = async (value:string, field:string) => {
         setChanged(true)
@@ -45,7 +41,6 @@ export const CategoryBooks = () => {
     useEffect(() => {
        (async() => {
             const res  = await axiosPrivate.post('http://localhost:3001/filterBooks', JSON.stringify(form));
-
             setBooks(res.data);
             setBooksOnCurrentPage(res.data.slice(currentPage * perPage - perPage,currentPage * perPage))
         })();
@@ -54,14 +49,16 @@ export const CategoryBooks = () => {
     useEffect(() => {
         (async () => {
             const res = await axiosPrivate.get('http://localhost:3001/books')
-            setBooks(res.data)
+            setBooks(res.data);
+            setAllBooks(res.data)
             const res2 = await axiosPrivate.get('http://localhost:3001/genres');
-            const newGenres = res2.data.genres.filter((genre:string) => genre !== '');
+            const newGenres = res2.data.genres.filter((genre:string) => genre !== '' && genre !== null);
             const removeDuplicatesGenres = [...new Set(newGenres)] as string[]
-            const newYears = res2.data.years.filter((year:string) => year !== '')
+            const newYears = res2.data.years.filter((year:string) => year !== '' && year !== null)
             const removeDuplicatesYears = [...new Set(newYears)] as string[]
-            const newAuthors = res2.data.authors.filter((author:string) => author !== '')
+            const newAuthors = res2.data.authors.filter((author:string) => author !== '' && author !== null)
             const removeDuplicatesAuthors = [...new Set(newAuthors)] as string[]
+            console.log(newAuthors)
             setDefaultAuthorsYearsGenres((prevState) => ({
                 ...prevState,
                 genres:removeDuplicatesGenres,
@@ -75,7 +72,6 @@ export const CategoryBooks = () => {
     const selectPageHandler = (page:number) => {
         if(page  >= 1 &&  page<=Math.ceil(books.length / perPage) && page !== currentPage) setCurrentPage(page)
     }
-    console.log(books.length)
     if(loading) return <SpinnerComponent/>
     return (<>
    <main className='bg-[#F5F5F5] min-h-screen'>
@@ -105,25 +101,25 @@ export const CategoryBooks = () => {
                         </form>
                         <div className='flex justify-between sm:w-2/3 sm:mx-auto gap-2'>
                             <input value={form.search} className='w-3/4 ring-1 rounded-md ring-[#eee] px-2' onChange={(e) => onChange(e.target.value, 'search')} placeholder='Search here...' ></input><button className='bg-black hover:text-[#bbb] font-bold text-white text-1xl px-4 py-2 rounded-xl '>Search</button>
-                            <button className="hidden sm:block py-2 rounded-xl bg-[#cacaca] hover:bg-[#aaa] px-5" onClick={() => setForm({  genres:'',
+                            <button className="hidden sm:block py-2 rounded-xl bg-[#cacaca] hover:bg-[#aaa] w-40" onClick={() => setForm({  genres:'',
                                 year:'',
                                 author:'',
-                                search:'',})}>Clear</button>
+                                search:'',})}>Clear Filters</button>
                         </div>
                     </div>
            <button className="sm:hidden bg-[#BABABA] py-2 rounded-xl hover:bg-[#bbb]"onClick={() => setForm({  genres:'',
                year:'',
                author:'',
-               search:'',})}>Clear</button>
+               search:'',})}>Clear Filters</button>
 
        </section>
        <section className={`flex flex-col justify-center   gap-3  mx-auto    mt-4 pb-4   `} >
            {
-               books.length === 0 && user.role ==='admin'  && <div className='w-full text-center font-bold text-2xl'>There are no books in our database <Link to={'/addBook'} className='text-blue-500 hover:text-blue-900'>Click To Add One</Link></div>
+               allBooks?.length === 0 && user.role ==='admin'  && <div className='w-full text-center font-bold text-2xl'>There are no books in our database <Link to={'/addBook'} className='text-blue-500 hover:text-blue-900'>Click To Add One</Link></div>
 
            }
            {
-               books.length === 0 && user.role ==='user'  && <div className='w-full text-center font-bold text-2xl'>There are no books in our database</div>
+               allBooks?.length === 0 && user.role ==='user'  && <div className='w-full text-center font-bold text-2xl'>There are no books in our database</div>
 
            }
            <div className={`${changed || (books.length < 3) ? `flex flex-wrap gap-3  md:px-4 justify-center  max-w-[${347 * books.length}px]   rounded-lg  bg-white    mx-auto` :' flex flex-wrap  w-full justify-center   md:justify-items-center sm:grid sm:grid-cols-2  lg:grid-cols-3 rounded-lg lg:max-w-[1200px] bg-white    2xl:grid-cols-4 2xl:max-w-[1500px] mx-auto '}`}>
