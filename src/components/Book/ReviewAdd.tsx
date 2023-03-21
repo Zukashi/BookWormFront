@@ -9,6 +9,8 @@ import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
+import {toast, ToastContainer} from "react-toastify";
+import {SpinnerComponent} from "../../SpinnerComponent";
 
 export interface AddReview {
     rating :number,
@@ -16,15 +18,10 @@ export interface AddReview {
     status:string,
     description:string,
 }
-let schemaAddReview = yup.object().shape({
-    rating:yup.number().required().min(1).max(5),
-    spoilers: yup.boolean().required(),
-    status:yup.string().required(),
-});
+
 export const ReviewAdd = () => {
     const {user} = useSelector((state: RootState) => state.user);
     const {register, handleSubmit, formState:{errors}, setValue, watch} = useForm<AddReview>({
-        resolver: yupResolver(schemaAddReview)
     })
     const [book, setBook] = useState<BookEntity|null>();
     const navigate = useNavigate();
@@ -54,11 +51,19 @@ export const ReviewAdd = () => {
     const onSubmit = async (data:any) => {
         console.log(data)
         data.rating = review.rating;
-        console.log(data)
+        if(!(data.rating > 0) ){
+            toast.error(`Please rate the book`, {
+                position: toast.POSITION.BOTTOM_CENTER,
+                theme:'dark',
+                autoClose:5000
+            });
+            return null;
+        }
         try{
             await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify(data));
             await axiosPrivate.put(`http://localhost:3001/book/${bookId}/${data.rating}`);
-            navigate(`/book/${bookId}`)
+            navigate(`/book/${bookId}`);
+
         }catch (e) {
 
         }
@@ -81,10 +86,11 @@ export const ReviewAdd = () => {
         // })
     }
     while(loading || !book){
-        return  <Spinner/>
+        return  <SpinnerComponent/>
     }
     return (<>
     <HomeNav/>
+        <ToastContainer/>
         <div className='pt-20 w-[90vw] mx-auto'>
 
 
@@ -122,7 +128,7 @@ export const ReviewAdd = () => {
                 }</div>
                 <div className=' flex justify-center'> <Textarea {...register('description')} className='' placeholder='Write a review (optional)'/></div>
                 <div className='flex mt-4 '><label><Checkbox {...register('spoilers')} iconSize='' className='w-4 h-4 mt-1 mr-2  '/>This review contains spoilers</label></div>
-                <input type='submit' className='font-medium text-xl bg-black px-4 py-2 rounded-xl text-white mt-5'></input>
+                <button type='submit' className='font-medium text-xl bg-black px-4 py-2 rounded-xl text-white mt-5'>Submit</button>
 
             </form>
         </div>
