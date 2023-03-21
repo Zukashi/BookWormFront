@@ -31,8 +31,7 @@ module.exports = {
         'liberville':['Libre Baskerville']
       },
       gridTemplateColumns: {
-        'OneBookMd':'1fr 2fr',
-        'OneBookXl':'1fr 3fr'
+        'OneBookMd':'1fr 3fr',
       }
     },
   },

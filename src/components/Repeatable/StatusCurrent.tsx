@@ -5,6 +5,7 @@ import {RootState} from "../../app/store";
 import {useLocation, useParams} from "react-router";
 import { BookEntity } from 'types';
 import {Spinner} from "@chakra-ui/react";
+import {SpinnerComponent} from "../../SpinnerComponent";
 
 
 export const StatusCurrent = ({refresh, onDelete, book}:{
@@ -86,7 +87,7 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
     useEffect(() => {
          refreshStatus()
     }, [bookStatus, onDelete]);
-    if(!book) return <h1>123</h1>
+    if(!book) return <SpinnerComponent/>
     return (<>
         {location.pathname.split('/')[1] !== 'book' ?<div className={`sm:min-w-[130px] sm:max-w-[150px] ${ bookStatus === '' ? 'bg-[#3f8363]  flex ' :'bg-[#F2F2F2] hover:bg-[#ddd] hover:transition-all hover:duration-300  border-[1px] border-[#ccc] flex justify-around  items-center'}  rounded-xl text-[#ffffff] cursor-pointer `} onClick={bookStatus !== '' ? toggleModal : undefined}>
 
