@@ -1,25 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useLocation, useParams} from "react-router";
-import {AuthorDocs} from "../../features/Author/authorSlice";
 import {Link, useNavigate} from "react-router-dom";
 import {HomeNav} from "../Home/HomeNav";
-import {BooksSearchBar} from "../Home/HintsSearchBar";
-import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
-import {Button, Progress, Spinner} from "@chakra-ui/react";
-import {useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import dayjs from "dayjs";
 import {OneReviewOrdinary} from "./OneReviewOrdinary";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {StatusCurrent} from "../Repeatable/StatusCurrent";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
-import {motion, useAnimation} from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
 import {ProgressBarSection} from "./ProgressBarSection";
 import {SpinnerComponent} from "../../SpinnerComponent";
 
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';;
 
 export const OneBook = () => {
   const navigate = useNavigate();
@@ -35,12 +29,14 @@ export const OneBook = () => {
   const [showFullText , setShowFullText] = useState(false)
   const [showFullTextDesc , setShowFullTextDesc] = useState(false);
   const [showFullTextDescMd , setShowFullTextDescMd] = useState(false);
+  const buttonToResetScroll = useRef<any>();
 
   const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false)
   const [review, setReview] = useState<any>();
   const axiosPrivate = useAxiosPrivate();
   const [reviews, setReviews] = useState<any[]>();
-  const [originalReviews, setOriginalReviews] = useState<any[]>()
+  const [originalReviews, setOriginalReviews] = useState<any[]>();
+  const refButtonText = useRef<any>()
   const [filterStars, setFilterStars] = useState<boolean>(false);
   const [filterRate, setFilterRate] = useState<number>(0);
   const [status , setStatus] = useState<string>('');
@@ -225,10 +221,10 @@ export const OneBook = () => {
             </div>
           </section>
 
-        <div className='block md:grid md:grid-cols-OneBookMd xl:grid-cols-OneBookXl' >
+        <div className='block md:grid md:grid-cols-OneBookMd ' >
          <div className='h-full max-w-[450px] '>
            <section className='hidden top-2 md:sticky md:flex md:flex-col md:z-20  '>
-             <div className='flex pb-3 pt-4 justify-center hidden sm:flex '> <img className='rounded-r-3xl w-[70%] h-[35%] lg:w-[50%] lg:rounded-r-xl ' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt="book image"/></div>
+             <div className='flex pb-3 pt-4 justify-center hidden sm:flex '> <img className='rounded-r-3xl w-[70%] h-[35%] lg:w-[65%] lg:rounded-r-xl ' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt="book image"/></div>
 
 
 
@@ -285,7 +281,11 @@ export const OneBook = () => {
 
             </div>
             {typeof book.description?.length ==='number' && book.description.length > 160 ? !showFullTextDesc ? <button  className='flex items-center rounded-xl group  py-2 text-black font-medium mt-2 '  type='submit' onClick={() => setShowFullTextDesc(true)}><p className='group-hover:border-b-2 group-hover:border-b-black border-b-2 border-b-transparent'>Show more</p> <i
-                className="fa-solid fa-angle-down ml-2 mt-1" ></i></button> : <button  className='flex group items-center rounded-xl  py-2 text-black font-medium mt-2 '  type='submit' onClick={() => setShowFullTextDesc(false)}><p className='group-hover:border-b-2 group-hover:border-b-black border-b-2 border-b-transparent'>Show less</p> <i
+                className="fa-solid fa-angle-down ml-2 mt-1" ></i></button> : <button ref={buttonToResetScroll}  className='flex group items-center rounded-xl  py-2 text-black font-medium mt-2 '  type='submit' onClick={(e) => {
+              console.log(buttonToResetScroll)
+                  buttonToResetScroll.current.scrollTop = 0
+              setShowFullTextDesc(false);
+            } }><p className='group-hover:border-b-2 group-hover:border-b-black border-b-2 border-b-transparent'>Show less</p> <i
                 className="fa-solid fa-angle-up ml-2 mt-1" ></i></button> : null }
             <div className='text-[#444] font-normal '>
               <div>
@@ -340,7 +340,10 @@ export const OneBook = () => {
                   <div className={`    font-[450] ${showFullText ? 'overflow-auto max-h-screen': review?.description?.length > 160 ?  'max-h-[6rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `} > {(review?.description && review.spoilers )&& <p className={`  inline  mt-3 bg-[#687a86] ${!hoverSpoiler ? 'text-transparent': 'text-black bg-[#e7e9ee]'}`} onMouseOver={() => setHoverSpoiler(true)} onMouseLeave={() => setHoverSpoiler(false)} >{review?.description}</p>}</div>
                   {review?.description && !review.spoilers &&   <div className={` max-h-[6rem] overflow-hidden  font-[450] ${showFullText ? 'overflow-auto max-h-screen': review?.description.length > 160 ? 'overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}><p className='text-[1rem] font-[450] mt-3 ' >{review?.description}</p></div>}
                   {review?.description?.length > 160 ? !showFullText ? <button  className='group text-black font-medium mt-2  flex items-center gap-1 '  type='submit' onClick={() => setShowFullText(true)}><p className='h-1/2 border-b-2 border-b-transparent group-hover:border-b-black'>Show more</p> <i
-                      className="fa-solid fa-angle-down ml-1 mt-1" ></i></button> : <button  className='group rounded-xl  py-2 text-black font-medium mt-2 flex gap-1 items-center  '  type='submit' onClick={() => setShowFullText(false)}><p className=' border-b-transparent border-b-2 group-hover:border-b-black '>Show Less</p> <i
+                      className="fa-solid fa-angle-down ml-1 mt-1" ></i></button> : <button ref={refButtonText}  className='group rounded-xl  py-2 text-black font-medium mt-2 flex gap-1 items-center  '  type='submit' onClick={(e) => {
+                    setShowFullText(false);
+                    refButtonText.current.scrollTop = 0;
+                  } }><p className=' border-b-transparent border-b-2 group-hover:border-b-black '>Show Less</p> <i
                       className="fa-solid fa-angle-up ml-0.5 mt-1  " ></i></button> : null }
 
                   <div className='flex justify-between '>
