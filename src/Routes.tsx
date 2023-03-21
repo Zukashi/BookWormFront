@@ -23,6 +23,7 @@ import {UserBooks} from "./components/Account/UserBooks";
 import {CategoryView} from "./Views/CategoryView";
 import {ProgressBookChange} from "./components/Account/ProgressBookChange";
 import {Redirect} from "./components/Redirect";
+import { UserBookListView } from './Views/UserBookListView';
 
 export const AllRoutes = () => {
     const {user} = useSelector((state: RootState) => state.user);
@@ -41,6 +42,7 @@ export const AllRoutes = () => {
               <Route path='user/:userId' element={<AccountView/>}>
 
               </Route>
+                   <Route path='user/:userId/lists' element={<UserBookListView/>}></Route>
                    <Route path='user/:userId/book/:bookId/:status/progress' element={<ProgressBookChange/>}></Route>
                    <Route path='user/:userId/books' element={<UserBooks/>}></Route>
                 <Route path='review/new/:bookId' element={<ReviewAdd/>}></Route>
