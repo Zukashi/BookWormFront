@@ -1,19 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import {RootState} from "../../../app/store";
-import {
-    Drawer,
-    DrawerBody,
-    DrawerCloseButton,
-    DrawerContent,
-    DrawerFooter,
-    DrawerOverlay,
-    useDisclosure
-} from "@chakra-ui/react";
 import {Link, useNavigate} from "react-router-dom";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 
-export const AvatarComponent = () => {
+export const    AvatarComponent = () => {
     const {user} = useSelector((state: RootState) => state.user);
     // const { isOpen, onOpen, onClose } = useDisclosure();
     const [open, setOpen] = useState<boolean>(false);
