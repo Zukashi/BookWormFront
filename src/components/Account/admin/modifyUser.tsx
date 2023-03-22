@@ -2,16 +2,28 @@ import React, {MouseEventHandler, useEffect, useRef, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {HomeAdminNav} from "../../Home/AdminHome/HomeAdminNav";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
-import { UserEntity } from 'types';
-
+import { HomeNav } from '../../Home/HomeNav';
+import {User} from "../../../features/User/userSlice";
+import {SpinnerComponent} from "../../../SpinnerComponent";
+import { object, string, number, date, InferType } from 'yup';
+import {toast, ToastContainer} from "react-toastify";
+let userSchema = object({
+    username: string().required().typeError('Username is a required field'),
+    age: number().positive().integer().typeError('must be a positive number'),
+    email: string().email(),
+    city:string(),
+    firstName:string(),
+    lastName:string(),
+    _id:string()
+});
 export const ModifyUser = () => {
     const {id} = useParams();
-    const [user, setUser] = useState<UserEntity|null>(null);
+    const [user, setUser] = useState<User|null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate()
     const [form ,setForm] = useState({
-        _id:user?.id,
+        _id:user?._id,
         username:user?.username,
         age:user?.age,
         city:user?.city,
@@ -30,28 +42,40 @@ export const ModifyUser = () => {
             const res = await axiosPrivate.get(`http://localhost:3001/user/${id}`)
             setUser(res.data);
             setForm(res.data)
+            if(!(res.data.age > 0)){
+                setForm((prev) => ({
+                    ...prev,
+                    age:undefined
+                }))
+            }
         })()
-        if(inputRef.current){
-            inputRef.current.focus()
-        }
+
     },[]);
     if (user === null) {
-        return <h1>123</h1>;
+        return <SpinnerComponent/>;
     }
     const onSubmit:MouseEventHandler<HTMLButtonElement> = async (e) => {
         e.preventDefault();
+        await userSchema.validate(form).catch(e => {
+            toast.error(e.message, {
+                position:toast.POSITION.BOTTOM_CENTER,
+                theme:'dark'
+            })
+            return null;
+        })
 
-        await axiosPrivate.put(`http://localhost:3001/user/admin/${user.id}`,JSON.stringify(form));
+        await axiosPrivate.put(`http://localhost:3001/user/admin/${user._id}`,JSON.stringify(form));
         navigate('/admin/users')
     }
     return (<>
-        <HomeAdminNav/>
+        <HomeNav/>
+        <ToastContainer/>
         <div className='pt-20'></div>
-        <div className='w-[90vw] m-auto'><form action="">
+        <div className='w-[90vw] m-auto max-w-[500px]'><form action="">
             <div><h2 className='mb-2'>Username:</h2>
                 <input ref={inputRef} className='mb-6 w-[100%] px-3 py-1.5 outline-none ring-[#E2E8F0] ring-1 focus:ring-[#3182ce] focus:ring-2 rounded-md' value={form.username} onChange={(event) => updateForm(event.target.value,'username')}/></div>
             <div><h2 className='mb-2'>Age:</h2>
-                <input ref={inputRef} className='mb-6 w-[100%] px-3 py-1.5 outline-none ring-[#E2E8F0] ring-1 focus:ring-[#3182ce] focus:ring-2 rounded-md' value={form.age} onChange={(event) => updateForm(event.target.value,'age')}/></div>
+                <input ref={inputRef}  className='appearance-none outline-none mb-6 w-[100%] px-3 py-1.5 outline-none ring-[#E2E8F0] ring-1 focus:ring-[#3182ce] focus:ring-2 rounded-md' value={form.age} onChange={(event) => updateForm(event.target.value,'age')}/></div>
             <div><h2 className='mb-2'>City:</h2>
                 <input ref={inputRef} className='mb-6 w-[100%] px-3 py-1.5 outline-none ring-[#E2E8F0] ring-1 focus:ring-[#3182ce] focus:ring-2 rounded-md' value={form.city} onChange={(event) => updateForm(event.target.value,'city')}/></div>
             <div><h2 className='mb-2'>First Name:</h2>
