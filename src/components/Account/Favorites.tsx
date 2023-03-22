@@ -20,7 +20,7 @@ export const Favorites = () => {
     },[]);
     return (<>
 
-        {user.role === 'admin' ?  <HomeAdminNav/> : <HomeNav/>}
+       <HomeNav/>
             <div className='pt-20'></div>
         {favorites?.map((favorite:any) => <OneBookFavorite  key={favorite._id} book={favorite} refresh={refresh} />)}
         </>
