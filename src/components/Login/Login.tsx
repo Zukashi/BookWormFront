@@ -54,12 +54,12 @@ export const Login = () => {
                 <div className='flex flex-col  h-full justify-center '>
                     <h2 className='text-white text-center mb-[2vh] text-3xl'>Login</h2>
                     <label><span className="block text-lg font-medium text-slate-700">Username:</span></label>
-                    <Input  style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className={`focus:outline-none focus:ring focus:ring-blue-700   ${error && 'ring ring-[#ff0000] ring-[1.5px]'} `}focusBorderColor='none'   {...register('username')}></Input>
+                    <input  style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className={`pr-16 focus:border-0 focus:ring-black focus:ring-1  focus:outline-none focus:ring      px-4 py-2 rounded-lg   ${error && 'ring ring-[#ff0000] ring-[1.5px]'} `}   {...register('username')}></input>
                     <label><span className="block text-lg font-medium text-slate-700 mt-2 ">Password:</span></label>
                     <InputGroup size='md'>
 
-                        <Input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className={` focus:outline-none focus:ring focus:ring-blue-700   ${error && 'ring ring-[#ff0000] ring-[1.5px]'} `} {...register('password')} focusBorderColor='none' type={show ? 'text' : 'password'}></Input> <InputRightElement width='4.5rem'>
-                        <button   onClick={handleClick} className='h-[1.75rem] bg-[#000]/[0.35] text-white rounded-2xl font-medium px-2 '>
+                        <input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className={`pr-16 focus:border-0 rounded-lg  focus:outline-none focus:ring focus:ring-black focus:ring-1   ${error && 'ring ring-[#ff0000] ring-[1.5px]'} `} {...register('password')}  type={show ? 'text' : 'password'}></input> <InputRightElement width='4.5rem'>
+                        <button type='button'   onClick={handleClick} className='h-[1.75rem] bg-[#000]/[0.35] text-white rounded-2xl font-medium px-2 '>
                             {show ? 'Hide' : 'Show'}
                         </button>
                     </InputRightElement>
@@ -67,7 +67,7 @@ export const Login = () => {
                     {error && <h1 className='text-center text-red-700 pt-2 font-semibold '>Password or username invalid.</h1>}
                     <div className='w-full flex justify-center'><button className='mt-2  px-3 py-3 w-[7rem] bg-[#000]/[0.36] rounded-md font-medium text-2xl text-white' type={"submit"} >Login</button></div>
                     <Link to='/reset-password' className='mt-3'><ChakraLink className='flex justify-center'>Forgot Password?</ChakraLink></Link>
-                    <Link to='/create-account'  className='mt-1'><ChakraLink className='flex justify-center'>Don't have an account?</ChakraLink></Link>
+                    <Link to='/register'  className='mt-1'><ChakraLink className='flex justify-center'>Don't have an account?</ChakraLink></Link>
                 </div>
             </div>
         </form>
