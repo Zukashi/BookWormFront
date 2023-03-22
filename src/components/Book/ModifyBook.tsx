@@ -3,6 +3,7 @@ import { HomeAdminNav } from '../Home/AdminHome/HomeAdminNav'
 import {useNavigate, useParams} from "react-router-dom"
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
+import { HomeNav } from '../Home/HomeNav';
 
 export const ModifyBook = () => {
     const {id} = useParams();
@@ -53,9 +54,9 @@ export const ModifyBook = () => {
         navigate('/admin/books')
     }
     return (<>
-                <HomeAdminNav/>
+                <HomeNav/>
                 <div className='pt-20'></div>
-        <div className='w-[90vw] m-auto'><form action="">
+        <div className='w-[90vw] m-auto max-w-[500px] mb-20'><form action="">
             <div><h2 className='mb-2'>Title:</h2>
                 <input ref={inputRef} className='mb-6 w-[100%] px-3 py-1.5 outline-none ring-[#E2E8F0] ring-1 focus:ring-[#3182ce] focus:ring-2 rounded-md' value={form.title} onChange={(event) => updateForm(event.target.value,'title')}/></div>
             <div><h2 className='mb-2'>Image:</h2>
