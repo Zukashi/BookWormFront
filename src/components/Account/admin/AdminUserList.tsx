@@ -6,6 +6,8 @@ import {OneRowInUserListAdmin} from "./OneRowInUserListAdmin";
 import {HomeNavAdmin} from "../../Home/AdminHome/HomeNavAdmin";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 import {UserEntity} from 'types'
+import {HomeNav} from "../../Home/HomeNav";
+import {SpinnerComponent} from "../../../SpinnerComponent";
 
 export interface Author {
     key:string,
@@ -43,26 +45,29 @@ export const AdminUserList = () => {
     console.log('rerender')
     useEffect(() => {
         refreshUsers()
-    }, [])
+    }, []);
+    if(!users){
+        return  <SpinnerComponent/>
+    }
     return (<>
-        <HomeNavAdmin/>
+        <HomeNav/>
         <div className='pt-20'></div>
-        <div className='flex gap-6 justify-center'><p>Search:</p><input className='outline-none ring-2 ring-teal-600 px-3 py-1.5'  onChange={(e) =>{
+        <div className='flex gap-6 justify-center items-center'><input placeholder='Search ...' className='shadow-lg pr-8  pl-2 py-1.5 rounded-xl ring-1 w-80'  onChange={(e) =>{
             setValue(value)
             return getUsersSearch(e.target.value)}
         }/></div>
-        <div className='overflow-x-auto max-w-[1000vw] w-[90vw] mx-auto '>
+        <div className='overflow-x-auto max-w-[1000vw] w-[90vw] mx-auto max-w-[700px] mt-6 '>
             <table className='h-[84px] table-fixed  '>
 
                 <thead><tr className='h-16'>
                     <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[#dee2e6]'><p className='flex items-end h-5/6'>No</p></th>
-                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>User Image</p></th>
-                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>Username</p></th>
-                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>First Name</p></th>
-                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>Last Name</p></th>
-                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>City</p></th>
-                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>Age</p></th>
-                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='flex items-end h-5/6'>Actions</p></th>
+                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[#dee2e6] '><p className='text-left'>User Image</p></th>
+                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[#dee2e6] '><p className='text-left'>Username</p></th>
+                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[#dee2e6] '><p className='text-left'>First Name</p></th>
+                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[#dee2e6] '><p className='text-left'>Last Name</p></th>
+                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[#dee2e6] '><p className='text-left'>City</p></th>
+                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[#dee2e6] '><p className='text-left'>Age</p></th>
+                    <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[#dee2e6] '><p className='flex items-end h-5/6'>Actions</p></th>
                 </tr></thead>
 
                 <tbody>
