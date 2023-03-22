@@ -10,6 +10,11 @@ export interface User {
     favorites?:[];
     role:string,
     base64Avatar:string,
+    age:number,
+    city:string,
+    lastName:string,
+    firstName:string,
+
 }
 
 
@@ -20,6 +25,10 @@ export interface UserState {
 }
 const initialState: UserState = {
       user:{
+          age:0,
+          city:'',
+          lastName:'',
+          firstName:'',
           _id:'',
           email:'',
           password:'',
