@@ -24,6 +24,7 @@ import {CategoryView} from "./Views/CategoryView";
 import {ProgressBookChange} from "./components/Account/ProgressBookChange";
 import {Redirect} from "./components/Redirect";
 import { UserBookListView } from './Views/UserBookListView';
+import {SearchComponent} from "./components/Home/SearchComponent";
 
 export const AllRoutes = () => {
     const {user} = useSelector((state: RootState) => state.user);
@@ -33,7 +34,7 @@ export const AllRoutes = () => {
 
             <Routes>
                 <Route path='/' element={<Redirect/>}></Route>
-                <Route path='/create-account' element={<Register/>}/>
+                <Route path='/register' element={<Register/>}/>
                 <Route path='/reset-password' element={<ResetPassword/>}/>
                 <Route path='/login' element={<LoginPageView/>}/>
                <Route element={<PersistLogin/>}>     <Route path='home' element={<HomeView/>}/>
@@ -43,6 +44,7 @@ export const AllRoutes = () => {
 
               </Route>
                    <Route path='user/:userId/lists' element={<UserBookListView/>}></Route>
+                   <Route path='search' element={<SearchComponent/>}></Route>
                    <Route path='user/:userId/book/:bookId/:status/progress' element={<ProgressBookChange/>}></Route>
                    <Route path='user/:userId/books' element={<UserBooks/>}></Route>
                 <Route path='review/new/:bookId' element={<ReviewAdd/>}></Route>

@@ -8,5 +8,5 @@ export interface Subcategory   {
 export const SubcategoryMenu = (props:Subcategory) => {
     const [selectedSubcategory, setSelectedSubcategory] = useState(false)
     return (<>
-        <Link to={props.link}><div className={`h-12 flex items-center pl-14 ${selectedSubcategory && 'text-amber-300'}`} onClick={() => setSelectedSubcategory(value => !value)}><h2>{props.name}</h2></div></Link></>)
+        <Link to={props.link}><div className={`h-12 transition-all hover:bg-[#ccc] flex items-center pl-14 ${selectedSubcategory && 'text-amber-300'}`} onClick={() => setSelectedSubcategory(value => !value)}><h2>{props.name}</h2></div></Link></>)
 }

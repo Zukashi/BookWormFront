@@ -71,7 +71,7 @@ export const ReviewAdd = () => {
     const handleMouseOver = (value:number) => {
         setHover(value)
     }
-    const handleMouseLeave = (value:number) => {
+    const handleMouseLeave = () => {
         setHover(0)
     };
     const handleClick = async (value:number) => {
@@ -91,7 +91,7 @@ export const ReviewAdd = () => {
     return (<>
     <HomeNav/>
         <ToastContainer/>
-        <div className='pt-20 w-[90vw] mx-auto'>
+        <div className='pt-20 w-[90vw] mx-auto max-w-[450px]'>
 
 
             <img src={`https://covers.openlibrary.org/b/isbn/${book?.isbn}-M.jpg`} className='w-20 float-left mr-3' alt=""/>
@@ -120,7 +120,7 @@ export const ReviewAdd = () => {
                 <div className='flex justify-center mb-4'>  {
                     stars.map((_, index) => {
                         return (
-                            <i className={`fa-solid fa-star text-3xl cursor-pointer ${(hover || review.rating)  > index  && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                            <i className={`fa-solid fa-star text-3xl cursor-pointer ${(hover || review.rating)  > index  && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave()}></i>
 
                         )
                     })
