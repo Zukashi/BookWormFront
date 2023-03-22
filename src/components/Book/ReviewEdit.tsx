@@ -7,6 +7,7 @@ import {Button, Checkbox, Select, Spinner, Textarea} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
+import {SpinnerComponent} from "../../SpinnerComponent";
 
 
 export const ReviewEdit = () => {
@@ -26,7 +27,7 @@ export const ReviewEdit = () => {
         user: {},
         spoilers:false,
     });
-    const [lastReviewRating, setLastReviewRating] = useState(null)
+    const [lastReviewRating, setLastReviewRating] = useState(0)
     const [hover, setHover] = React.useState(0)
 
     useEffect(() => {
@@ -54,7 +55,7 @@ export const ReviewEdit = () => {
         navigate(`${`/book/${book?._id}`}`)
         await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${lastReviewRating}`);
         await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book?._id}/status`)
-        navigate(`/book/${bookId}`, {replace:true, state:'delete'})
+        navigate(`/book/${bookId}`,{replace:true,state:'delete'})
     }
     const onSubmit = async (data:any) => {
         data.rating = review.rating;
@@ -74,8 +75,8 @@ export const ReviewEdit = () => {
     const handleMouseOver = (value:number) => {
         setHover(value)
     }
-    const handleMouseLeave = (value:number) => {
-        setHover(0)
+    const handleMouseLeave = () => {
+        setHover(lastReviewRating)
     };
     const handleClick = async (value:number) => {
         setReview((prev:any) => ({
@@ -84,11 +85,11 @@ export const ReviewEdit = () => {
         }))
     }
     while(loading || !book){
-        return  <Spinner/>
+        return  <SpinnerComponent/>
     }
     return (<>
         <HomeNav/>
-        <div className='pt-20 w-[90vw] mx-auto'>
+        <div className='pt-20 w-[90vw] mx-auto max-w-[450px]'>
 
             <img src={`https://covers.openlibrary.org/b/isbn/${book?.isbn}-M.jpg`} className='w-20 float-left mr-3' alt=""/>
             <h2 className='font-[700] font-sans text-2xl'>{book?.title}</h2>
@@ -96,7 +97,7 @@ export const ReviewEdit = () => {
             <div className='flex items-center'>  {
                 stars.map((_, index) => {
                     return (
-                        <i className={`fa-solid fa-star text-sm cursor-pointer ${(book?.rating)  > index  && `text-[#faaf00]`} ` } key={index} ></i>
+                        <i className={`fa-solid fa-star text-sm  ${(book?.rating)  > index  && `text-[#faaf00]`} ` } key={index} ></i>
 
                     )
                 })
@@ -116,7 +117,7 @@ export const ReviewEdit = () => {
               <div className='flex justify-center mb-4'>  {
                   stars.map((_, index) => {
                       return (
-                          <i className={`fa-solid fa-star text-3xl cursor-pointer ${(hover || review.rating)  > index  && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}></i>
+                          <i className={`fa-solid fa-star text-3xl cursor-pointer ${(hover || review.rating)  > index  && `text-[#faaf00]`} ` } key={index}  onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave()}></i>
 
                       )
                   })
