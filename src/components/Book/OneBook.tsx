@@ -104,7 +104,7 @@ export const OneBook = () => {
       const res5 = await axiosPrivate.get(`http://localhost:3001/book/${book?._id}/reviews`);
       setReviews(res5.data)
     }
-  }
+  };
   const handleClick = async (value:number) => {
 
     setPersonalRating(value);
@@ -161,14 +161,14 @@ export const OneBook = () => {
   };
 
   useEffect(() => {
-    refresh()
-
-  }, [location.state]);
+    void refresh()
+    if(location.state === 'delete') void refresh()
+  }, []);
   const stars = Array(5).fill(0);
   const handleMouseOver = (value:number) => {
     setHover(value)
   }
-  const handleMouseLeave = (value:number) => {
+  const handleMouseLeave = () => {
     setHover(0)
   };
 
@@ -177,12 +177,12 @@ export const OneBook = () => {
   };
   const [dayNumber,monthName,year]= (dayjs(review?.date).format('DD/MMMM/YYYY')).split('/');
   return (<>
-    <main className='w-screen   mb-5 m-auto   '>
+    <main className='   mb-5 m-auto   '>
       <ToastContainer/>
       <HomeNav/>
       <div className='pt-20'></div>
       <div className='w-full bg-white'>
-      <div className='w-[90%] rounded-md md:w-[95%]   mx-auto pb-10  h-full md:w-[95%]'>
+      <div className='w-[90%] rounded-md md:w-[95%]   mx-auto pb-10  h-full md:w-[95%] '>
           <section className='md:hidden '>
             <div className='flex justify-center pt-7 sm:hidden '> <img className='rounded-r-3xl w-[40%]' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} alt="book image"/></div>
             <div className='flex justify-center pt-7 hidden sm:flex '> <img className='rounded-r-3xl w-[40%]' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt="book image"/></div>
@@ -221,9 +221,9 @@ export const OneBook = () => {
             </div>
           </section>
 
-        <div className='block md:grid md:grid-cols-OneBookMd ' >
+        <div className='block md:grid md:grid-cols-OneBookMd mx-auto ' >
          <div className='h-full max-w-[450px] '>
-           <section className='hidden top-2 md:sticky md:flex md:flex-col md:z-20  '>
+           <section className='hidden top-16 md:sticky md:flex md:flex-col md:z-20  '>
              <div className='flex pb-3 pt-4 justify-center hidden sm:flex '> <img className='rounded-r-3xl w-[70%] h-[35%] lg:w-[65%] lg:rounded-r-xl ' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt="book image"/></div>
 
 
@@ -275,7 +275,7 @@ export const OneBook = () => {
 
 
 
-            <div className={` pb-4 mx-auto w-full mt-4 font-[400] tracking-tighter text-[1.6rem/1.4] lg:w-4/5 lg:mx-0  leading-7 ${showFullTextDesc ? 'overflow-auto max-h-screen': book?.description?.length && book.description.length > 200 ?  'max-h-[9rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}>
+            <div className={` pb-4 mx-auto w-full mt-4 font-[400] tracking-tighter text-[1.6rem/1.4] lg:w-4/5 lg:mx-0  leading-7 ${showFullTextDesc ? 'overflow-auto ': book?.description?.length && book.description.length > 200 ?  'max-h-[9rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}>
               {!book.description ? <p>This edition doesn't have a description yet.</p>:
                   <p className='text-[18px]'>{typeof book.description  !== 'object' ? book.description : (book as any).description.value  }</p>}
 
@@ -310,7 +310,7 @@ export const OneBook = () => {
                     {
                       stars.map((_, index) => {
                         return (
-                            <i className={`fa-solid fa-star text-3xl cursor-pointer ${hover > index  && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave}  ></i>
+                            <i className={`fa-solid fa-star text-3xl cursor-pointer ${hover > index  && `text-[#faaf00]`} ` } key={index} onClick={() => handleClick(index+1)} onMouseOver={() => handleMouseOver(index+1)} onMouseLeave={() => handleMouseLeave()}  ></i>
                         )
                       })
                     }
