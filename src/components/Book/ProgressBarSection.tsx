@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {motion, useAnimation} from "framer-motion";
-import {Progress} from "@chakra-ui/react";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
-import {useInView} from "react-intersection-observer";
 import {OneProgressBar} from "./OneProgressBar";
 
 export const ProgressBarSection = ({book, isHighlighted, changeFilter}:{book:BookEntity, isHighlighted:  boolean[], changeFilter:any}) => {

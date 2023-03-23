@@ -3,10 +3,7 @@ import {HomeNav} from "../Home/HomeNav";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
-import {OneBookUser} from "./OneBookUser";
 import {ShelfUser} from "./ShelfUser";
-import ProgressBar from "@ramonak/react-progress-bar";
-import {Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import {useLocation} from "react-router";
 import {SpinnerComponent} from "../../SpinnerComponent";
@@ -29,7 +26,6 @@ export const UserBooks = () => {
     if (!shelves){
         return  <SpinnerComponent/>
     };
-    const statuses = ['read', 'currentlyReading', 'wantToRead']
     return (<>
 
         <HomeNav/>

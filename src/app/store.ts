@@ -5,6 +5,7 @@ import authorReducer from "../features/Author/authorSlice";
 import searchReducer from "../features/Search/searchSlice";
 import categoryReducer from "../features/Search/categorySlice";
 import homeReducer from "../features/HomeSlice";
+import drawerReducer from "../features/Drawer";
 export const store = configureStore({
   reducer: {
     user:userReducer,
@@ -13,6 +14,7 @@ export const store = configureStore({
     search:searchReducer,
     category:categoryReducer,
     home:homeReducer,
+    drawer:drawerReducer,
   },
 })
 

@@ -52,7 +52,7 @@ export const ProgressBookChange =() => {
             <div className='flex justify-center mt-4'>
                 <label ><input type="checkbox" onChange={() =>  setCheckboxValue(true)} /> I've finished this book</label>
             </div>
-            <div className='flex justify-around mt-5'><button className='px-6 py-1 w-[45%] border-[1px] border-black text-black bg-white '>Cancel</button><button onClick={updateProgress} className='px-6 py-1 bg-[#382110] w-[45%] text-white border-[1px] border-[#382110]'>Save Progress</button></div>
+            <div className='flex justify-around mt-5'><button className='px-6 py-1 w-[45%] border-[1px] border-black text-black bg-white ' onClick={() => navigate(-1)}>Cancel</button><button onClick={updateProgress} className='px-6 py-1 bg-[#382110] w-[45%] text-white border-[1px] border-[#382110]'>Save Progress</button></div>
         </main>
     </>)
 }
