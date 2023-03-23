@@ -18,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';;
 export const OneBook = () => {
   const navigate = useNavigate();
   const {user} = useSelector((state: RootState) => state.user);
+  const {drawer} = useSelector((state: RootState) => state.drawer);
   const [book, setBook] = useState<BookEntity|null>(null);
   const {bookId} = useParams();
   const [loading, setLoading] = useState<boolean>(true);
@@ -223,7 +224,7 @@ export const OneBook = () => {
 
         <div className='block md:grid md:grid-cols-OneBookMd mx-auto ' >
          <div className='h-full max-w-[450px] '>
-           <section className='hidden top-16 md:sticky md:flex md:flex-col md:z-20  '>
+           <section className={`hidden top-16 md:sticky md:flex md:flex-col ${drawer ? 'md:z-10': 'md:z-20'}  `}>
              <div className='flex pb-3 pt-4 justify-center hidden sm:flex '> <img className='rounded-r-3xl w-[70%] h-[35%] lg:w-[65%] lg:rounded-r-xl ' src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`} alt="book image"/></div>
 
 

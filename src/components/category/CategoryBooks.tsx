@@ -58,7 +58,6 @@ export const CategoryBooks = () => {
             const removeDuplicatesYears = [...new Set(newYears)] as string[]
             const newAuthors = res2.data.authors.filter((author:string) => author !== '' && author !== null)
             const removeDuplicatesAuthors = [...new Set(newAuthors)] as string[]
-            console.log(newAuthors)
             setDefaultAuthorsYearsGenres((prevState) => ({
                 ...prevState,
                 genres:removeDuplicatesGenres,
@@ -68,7 +67,6 @@ export const CategoryBooks = () => {
             setLoading(false)
         })()
     }, []);
-    //@TODO FILTER BOOKS PROPERLY
     const selectPageHandler = (page:number) => {
         if(page  >= 1 &&  page<=Math.ceil(books.length / perPage) && page !== currentPage) setCurrentPage(page)
     }
