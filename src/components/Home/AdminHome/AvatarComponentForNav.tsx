@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../app/store";
 import {Link, useNavigate} from "react-router-dom";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
+import {setDrawer} from "../../../features/Drawer";
 
 export const    AvatarComponent = () => {
     const {user} = useSelector((state: RootState) => state.user);
-    // const { isOpen, onOpen, onClose } = useDisclosure();
+    const dispatch = useDispatch()
     const [open, setOpen] = useState<boolean>(false);
     const axiosPrivate = useAxiosPrivate();
     const btnRef :any = React.useRef();
@@ -23,6 +24,15 @@ export const    AvatarComponent = () => {
             setPreview(res.data.base64Avatar)
         })()
     }, []);
+    useEffect(() => {
+        if(delayBg) {
+            setTimeout(() => {
+                dispatch(setDrawer(open))
+            }, 500)
+        }else{
+            dispatch(setDrawer(open))
+        }
+    }, [open])
     const changeModal = () => {
 
                 setOpen(false)
@@ -35,7 +45,7 @@ export const    AvatarComponent = () => {
     return (<>
 
         <button ref={btnRef} role='navigation' aria-label='navigation' onClick={() => setOpen((prev) => !prev)} className='peer w-14 h-14 fixed z-20 mt-1 right-0.5 top-0.5'><img src={preview} alt="avatar that once clicked opens settings"/></button>
-        {(!open && delayBg === true || open)  && <div className='w-screen h-screen  bg-[#333]/[0.65] fixed left-0 ' onClick={() => changeModal()} ></div>}
+        {(!open && delayBg === true || open)  && <div className='w-screen h-screen  bg-[#333]/[0.65] fixed left-0   ' onClick={() => changeModal()} ></div>}
 
 
             <section className={`${open ? 'right-0    ' : '-right-96  '}   linear  w-72 h-screen fixed  duration-700 bg-white z-30`}>
