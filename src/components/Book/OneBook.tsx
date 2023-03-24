@@ -66,6 +66,10 @@ export const OneBook = () => {
     }
     setLoading(false)
   };
+  if(location.state === 'delete') {
+    location.state = ''
+    void refresh()
+  }
   const deleteReview = async () => {
 
     await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${personalRating}`);
@@ -330,7 +334,7 @@ export const OneBook = () => {
                       {
                         stars.map((_, index) => {
                           return (
-                              <i className={`fa-solid fa-star text-md cursor-pointer ${(hover || personalRating)  > index   && `text-[#faaf00]`} ` } key={index}  ></i>
+                              <i className={`fa-solid fa-star text-md  ${(personalRating)  > index   && `text-[#faaf00]`} ` } key={index}  ></i>
 
                           )
                         })
@@ -378,7 +382,7 @@ export const OneBook = () => {
               />
             </section>
             <section className='flex flex-col gap-6 mt-3'>
-            {reviews?.map((review) => <OneReviewOrdinary key={review._id} review={review}/>)}
+            {reviews?.map((review) => <OneReviewOrdinary key={review._id} review={review} refreshReviews={refresh}/>)}
           </section>
           </div>
         </div>
