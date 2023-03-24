@@ -23,6 +23,14 @@ export const AddBookAdmin = () => {
         try{
             await schema.validate(data)
             const res = await axiosPrivate.post('http://localhost:3001/book',JSON.stringify(data));
+            toast({
+                position:'top',
+                title: 'Success',
+                description: 'Book added successfully',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            })
             setLoading(false)
             navigate('/admin/books')
         }catch(e:any){
