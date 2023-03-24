@@ -14,7 +14,6 @@ export interface Author {
     key:string,
 }
 const getBooksPaginated = async (page:number, amountToShow:number, searchValue:string) => {
-    console.log(333, searchValue)
 
     const res = await axios.get(`http://localhost:3001/books?page=${page}&booksPerPage=${amountToShow}&searchValue=${searchValue}`,{
         withCredentials:true
@@ -96,8 +95,8 @@ export const AdminBookList = () => {
           <section className='w-[90%] mx-auto bg-white shadow-2xl rounded-xl relative '>
            <div className='w-[90%] mx-auto pt-[1rem] pb-5'>
                <header>
-                   <div className='flex justify-between items-center pb-5'><p className='font-bold text-xl'>Book List</p><button className='focus:outline-2 focus:outline-black font-bold px-5 py-2
-                text-white bg-black rounded-lg'><Link to='/addBook'>Add New Book</Link></button></div>
+                   <div className='flex justify-between items-center pb-5'><p className='font-bold text-xl'>Book List</p><Link to={'/addBook'} className='focus:outline-2 focus:outline-black font-bold px-5 py-2
+                text-white bg-black rounded-lg'><p>Add New Book</p></Link></div>
                </header>
                <div className='absolute left-0 right-0 h-[0.5px] bg-[#BBB]'></div>
 
