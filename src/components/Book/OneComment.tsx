@@ -24,13 +24,10 @@ export const OneComment = (props:any) => {
     const {user, token} = useSelector((state:RootState) => state.user)
     const axiosPrivate = useAxiosPrivate();
     const {bookId} = useParams();
-    console.log(moment(props.comment?.date).fromNow());
-    console.log(props.comment)
     const deleteComment = async () => {
         await axiosPrivate.delete(`http://localhost:3001/book/${bookId}/user/${user._id}/review/${props.personalReview._id}/comment/${props.comment._id}`);
         props.refresh();
-        // @ts-ignore
-
+        props.refreshCommentsAndLikes()
     }
 
     return  (<>
