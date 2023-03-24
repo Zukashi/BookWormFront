@@ -3,7 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {HomeNav} from "../Home/HomeNav";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
-import {Button, Checkbox, Select, Spinner, Textarea} from "@chakra-ui/react";
+import {Button, Checkbox, Select, Spinner, Textarea, useToast} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
@@ -16,6 +16,7 @@ export const ReviewEdit = () => {
     const [book, setBook] = useState<BookEntity|null>();
     const navigate = useNavigate();
     const {bookId} = useParams();
+    const toast = useToast()
     const [loading, setLoading] = useState<boolean>(true);
     const stars = Array(5).fill(0);
     const axiosPrivate = useAxiosPrivate();
@@ -55,7 +56,14 @@ export const ReviewEdit = () => {
         navigate(`${`/book/${book?._id}`}`)
         await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${lastReviewRating}`);
         await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book?._id}/status`)
-        navigate(`/book/${bookId}`,{replace:true,state:'delete'})
+        navigate(`/book/${bookId}`,{replace:true,state:'delete'});
+        toast({
+            position:'bottom',
+            title: 'Review deleted.',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+        })
     }
     const onSubmit = async (data:any) => {
         data.rating = review.rating;
@@ -68,8 +76,21 @@ export const ReviewEdit = () => {
             await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${currentStatus}/${status}`)
             await axiosPrivate.put(`http://localhost:3001/book/${book?._id}/${review.rating}`);
             navigate(`/book/${bookId}`)
+            toast({
+                position:'bottom',
+                title: 'Review edited.',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            })
         }catch (e) {
-            console.log(e)
+            toast({
+                position:'bottom',
+                title: 'Something went wrong try again.',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            })
         }
     }
     const handleMouseOver = (value:number) => {
@@ -125,7 +146,7 @@ export const ReviewEdit = () => {
               }</div>
                <div className=' flex justify-center'> <Textarea {...register('description')} className='' placeholder='Write a review (optional)'/></div>
                 <div className='flex mt-4 '><label><Checkbox {...register('spoilers')} iconSize='' className='w-4 h-4 mt-1 mr-2  '/>This review contains spoilers</label></div>
-                <input type='submit' className='font-medium text-xl bg-black px-4 py-2 rounded-xl text-white mt-5'></input>
+                <button type='submit' className='font-medium text-xl bg-black px-4 py-2 rounded-xl text-white mt-5'>Submit</button>
                 <button className='font-medium text-xl bg-white px-4 py-2 rounded-xl text-black border-2 border-amber-300 border-green-400 bg-blue-500 ml-4' onClick={deleteReview}>Delete</button>
             </form>
 
