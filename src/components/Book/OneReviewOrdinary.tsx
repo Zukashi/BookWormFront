@@ -25,10 +25,10 @@ export const OneReviewOrdinary = (props:any) => {
             setPersonalReview(res2.data);
     }
     useEffect(() => {
-       refreshReview()
+       void refreshReview()
     },[]);
     const [dayNumber,monthName,year]= (dayjs(props.review?.date).format('DD/MMMM/YYYY')).split('/');
-    while(!personalRating){
+    while(!personalReview){
         return <Spinner/>
     }
     // @ts-ignore
@@ -43,7 +43,7 @@ export const OneReviewOrdinary = (props:any) => {
                     {
                         stars.map((_, index) => {
                             return (
-                                <i className={`fa-solid fa-star text-md cursor-pointer ${(props.review.rating) > index  && `text-[#faaf00]`} ` } key={index}  ></i>
+                                <i className={`fa-solid fa-star text-md  ${(props.review.rating) > index  && `text-[#faaf00]`} ` } key={index}  ></i>
 
                             )
                         })
@@ -56,7 +56,7 @@ export const OneReviewOrdinary = (props:any) => {
             {props.review?.description?.length > 160 ? !showFullText ? <button  className='group flex items-center rounded-xl  py-2 text-black font-medium mt-2 '  type='submit' onClick={() => setShowFullText(true)}><p className='group-hover:border-b-2 group-hover:border-b-black border-b-2 border-b-transparent'>Show more</p> <i
                 className="fa-solid fa-angle-down ml-2 mt-1" ></i></button> : <button  className='group flex items-center  rounded-xl  py-2 text-black font-medium mt-2 '  type='submit' onClick={() => setShowFullText(false)}><p className='group-hover:border-b-2 group-hover:border-b-black border-b-2 border-b-transparent'>Show less</p> <i
                 className="fa-solid fa-angle-up ml-2 mt-1" ></i></button> : null }
-            {<Comments personalReview={props.review} refresh={refreshReview}/>}
+            {<Comments personalReview={personalReview} refresh={refreshReview} />}
 
         </section>
 
