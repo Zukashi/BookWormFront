@@ -24,7 +24,7 @@ import {CategoryView} from "./Views/CategoryView";
 import {ProgressBookChange} from "./components/Account/ProgressBookChange";
 import {Redirect} from "./components/Redirect";
 import { UserBookListView } from './Views/UserBookListView';
-import {SearchComponent} from "./components/Home/SearchComponent";
+import {SearchComponent} from "./components/Search/SearchComponent";
 
 export const AllRoutes = () => {
     const {user} = useSelector((state: RootState) => state.user);
