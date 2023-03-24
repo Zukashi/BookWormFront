@@ -3,7 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {HomeNav} from "../Home/HomeNav";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
-import {Button, Checkbox, Select, Spinner, Textarea} from "@chakra-ui/react";
+import {Button, Checkbox, Select, Spinner, Textarea, useToast} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -22,7 +22,8 @@ export interface AddReview {
 export const ReviewAdd = () => {
     const {user} = useSelector((state: RootState) => state.user);
     const {register, handleSubmit, formState:{errors}, setValue, watch} = useForm<AddReview>({
-    })
+    });
+    const toastify = useToast();
     const [book, setBook] = useState<BookEntity|null>();
     const navigate = useNavigate();
     const {bookId} = useParams();
@@ -63,9 +64,22 @@ export const ReviewAdd = () => {
             await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify(data));
             await axiosPrivate.put(`http://localhost:3001/book/${bookId}/${data.rating}`);
             navigate(`/book/${bookId}`);
+            toastify({
+                position:'bottom',
+                title: 'Review submitted.',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            })
 
         }catch (e) {
-
+            toastify({
+                position:'bottom',
+                title: 'Something went wrong try again.',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            })
         }
     }
     const handleMouseOver = (value:number) => {
