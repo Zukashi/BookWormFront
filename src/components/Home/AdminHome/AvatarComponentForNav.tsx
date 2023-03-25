@@ -4,6 +4,7 @@ import {RootState} from "../../../app/store";
 import {Link, useNavigate} from "react-router-dom";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 import {setDrawer} from "../../../features/Drawer";
+import {useLocation} from "react-router";
 
 export const    AvatarComponent = () => {
     const {user} = useSelector((state: RootState) => state.user);
@@ -11,7 +12,8 @@ export const    AvatarComponent = () => {
     const [open, setOpen] = useState<boolean>(false);
     const axiosPrivate = useAxiosPrivate();
     const btnRef :any = React.useRef();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const location = useLocation();
     const [preview, setPreview] = useState('');
     const [delayBg, setDelayBg] = useState<boolean>(false);
     const logOut = async () => {
@@ -35,7 +37,7 @@ export const    AvatarComponent = () => {
     }, [open])
     const changeModal = () => {
 
-                setOpen(false)
+        setOpen(false)
         setTimeout(() => {
             setDelayBg(false)
         }, 500)
@@ -56,14 +58,14 @@ export const    AvatarComponent = () => {
                 </header>
 
                 <main className='flex flex-col absolute z-10 bg-white  w-full items-center   '>
-                    <div className='w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer'><Link to={`/user/${user._id}/books`}className='w-32 h-full flex  gap-2 '><i className="fas fa-book mt-1"></i><p className=''>My Books</p></Link></div>
-                    <div className='w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer'><Link to={`/user/${user._id}/lists`}className='w-32 h-full flex  gap-2 '><i className="fas fa-list mt-1"></i><p className=''>My Lists</p></Link></div>
-                    <div className='w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer'><Link to={`/user/${user._id}`} className='ml-2 w-32 h-full flex  gap-2 mr-1.5 '><i className="fa-regular fa-user mt-1"></i><p>My Account</p></Link></div>
+                    <div className={`w-full flex   h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer ${location.pathname === `/user/${user._id}/books` ? 'border-black border-2 bg-[#ddd]' : 'border-2 border-transparent'}`}><Link to={`/user/${user._id}/books`}className={`w-32 h-full flex  gap-2 `}><i className="fas fa-book mt-1"></i><p className=''>My Books</p></Link></div>
+                    <div className={`w-full flex ${location.pathname === `/user/${user._id}/lists` ? 'border-black border-2 bg-[#ddd]' : 'border-2 border-transparent'} h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer`}><Link to={`/user/${user._id}/lists`}className='w-32 h-full flex  gap-2 '><i className="fas fa-list mt-1"></i><p className=''>My Lists</p></Link></div>
+                    <div className={`${location.pathname === `/user/${user._id}` ? 'border-black border-2 bg-[#ddd]' : 'border-2 border-transparent'} w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer`}><Link to={`/user/${user._id}`} className='ml-2 w-32 h-full flex  gap-2 mr-1.5 '><i className="fa-regular fa-user mt-1"></i><p>My Account</p></Link></div>
 
-                    <div className='w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer'><Link to={`/edit/user/${user._id}`} className='w-32 h-full flex  gap-2 '><i
+                    <div className={`${location.pathname === `/edit/user/${user._id}` ? 'border-black border-2 bg-[#ddd]' : 'border-2 border-transparent'} w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer`}><Link to={`/edit/user/${user._id}`} className='w-32 h-full flex  gap-2 '><i
                         className="fa-regular fa-pen-to-square  mt-1  "></i><p className=''>Edit Account</p></Link></div>
 
-                    <div className='w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer'><Link to={`/favorites/user/${user._id}`} className='w-32 h-full flex  gap-2 mr-1'><i className="fa-regular fa-star  mt-1  "></i><p className=''>Favorites</p></Link></div>
+                    <div className={`${location.pathname === `/favorites/user/${user._id}` ? 'border-black border-2 bg-[#ddd]' : 'border-2 border-transparent'} w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer`}><Link to={`/favorites/user/${user._id}`} className='w-32 h-full flex  gap-2 mr-1'><i className="fa-regular fa-star  mt-1  "></i><p className=''>Favorites</p></Link></div>
 
                         <div className='w-full flex  h-full  gap-2 flex   justify-center transition-all duration-200 w-full py-2 hover:bg-[#bbb] cursor-pointer' onClick={logOut}><div className='w-32 h-full flex  gap-2 '>
                             <i className="fa-solid  fa-arrow-right-from-bracket  mt-1 "></i>
