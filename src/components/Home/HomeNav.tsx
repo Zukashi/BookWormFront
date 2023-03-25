@@ -2,7 +2,7 @@ import React, {FormEvent, useEffect, useRef, useState} from 'react';
 import {Button, Input, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, Select, Image} from "@chakra-ui/react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import useWindowDimensions from './WindowDimensions';
 import {DrawerComponentAdmin} from "./AdminHome/DrawerComponentAdmin";
 import {AvatarComponent} from "./AdminHome/AvatarComponentForNav";
@@ -15,6 +15,7 @@ export const HomeNav = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [toggleSearchBarInSmMode, setToggleSearchBarInSmMode] = useState(false)
   const navigate = useNavigate();
+  const location = useLocation()
   const mapOfCategoriesWithLinks:any = new Map([['Home', '/home'], ['Category', '/Category'], ['Books','/admin/books'], ['Users', '/admin/users'], ['Authors', '/authors']])
   const [categories, setCategories] = useState(['Home', 'Category', 'Books', 'Users', 'Authors']);
   const prevScroll = useRef(0);
@@ -45,9 +46,8 @@ export const HomeNav = () => {
     e.preventDefault();
     navigate(`/search?q=${searchValue}`)
   }
-
-  return (<>{prevScroll.current >= offset &&
-    <nav className='w-screen  flex justify-center   h-16 fixed z-20  border-b-[rgb(221,221,221)] border-b-[1px] bg-[#fbfcff]'>
+  return (<>
+    <nav className={`${prevScroll.current > offset && '-translate-y-full'} ${offset ===0 && 'translate-y-0'} w-screen  flex justify-center transition-all   h-16 fixed z-20  border-b-[rgb(221,221,221)] border-b-[1px] bg-[#fbfcff]`}>
         <Link to='/home'><Image className='fixed top-2 left-5 z-30' alt='BookWorm app logo' boxSize='50px' src="https://cdn-icons-png.flaticon.com/512/2490/2490314.png"></Image></Link>
       {/*<Select w='100px' onChange={(e:any) => onChangeCategory(e.target.value)} bg='gray.500'>*/}
       {/*  <option value="q" selected disabled hidden style={{display:'none'}}  >Default</option>*/}
@@ -62,7 +62,7 @@ export const HomeNav = () => {
 
         <div className='hidden lg:flex justify-start w-full ml-32 gap-8   font-thin '>
           {categories.map((category:string) => <Link to={mapOfCategoriesWithLinks.get(category)}>
-            <div className='hover:text-violet-600 cursor-pointer flex items-center h-full text-2xl'>{category}</div>
+            <div className={`hover:text-violet-600 cursor-pointer flex items-center h-full text-2xl `}><h3 className={` ${location.pathname.toLowerCase() === mapOfCategoriesWithLinks.get(category).toLowerCase() ? 'border-b-2 border-b-black': 'border-b-2 border-b-transparent '}`}>{category}</h3></div>
           </Link>)}
           <div className=' items-center w-full hidden h-full lg:flex'>
             <form className='flex relative' onSubmit={onSubmit}>
@@ -106,6 +106,6 @@ export const HomeNav = () => {
 
 
       </div>
-    </nav>}
+    </nav>
   </>)
 }
