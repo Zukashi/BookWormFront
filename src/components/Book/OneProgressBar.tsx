@@ -28,7 +28,7 @@ export const OneProgressBar =({isHighlighted,sumOfRatings,book,index}:{book:Book
             })
         }
 
-    },[isInView])
+    },[isInView,result])
     return <>
 
         <div className={` py-[1rem]  px-[1rem] mr-2 group-hover:bg-[#ebebeb]   z-0 w-[80%] ${isHighlighted[(book as any).ratingTypeAmount.length - 1 - index] && 'bg-[#c1c1c1] group-hover:bg-[#9e9e9e]'
