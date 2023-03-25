@@ -44,7 +44,7 @@ export const AdminUserList = () => {
 
     console.log('rerender')
     useEffect(() => {
-        refreshUsers()
+        void refreshUsers()
     }, []);
     if(!users){
         return  <SpinnerComponent/>
@@ -56,8 +56,8 @@ export const AdminUserList = () => {
             setValue(value)
             return getUsersSearch(e.target.value)}
         }/></div>
-        <div className='overflow-x-auto max-w-[1000vw] w-[90vw] mx-auto max-w-[700px] mt-6 '>
-            <table className='h-[84px] table-fixed  '>
+        <div className='overflow-x-auto max-w-[1000vw] w-[90vw] mx-auto max-w-[1200px] mt-6 '>
+            <table className='h-[84px] mx-auto  '>
 
                 <thead><tr className='h-16'>
                     <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[#dee2e6]'><p className='flex items-end h-5/6'>No</p></th>
