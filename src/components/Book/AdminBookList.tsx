@@ -1,11 +1,9 @@
-import {Button, Select, Spinner, useToast} from '@chakra-ui/react';
-import {useQuery, useQueries} from '@tanstack/react-query'
+import { Select, useToast} from '@chakra-ui/react';
+import { useQueries} from '@tanstack/react-query'
 import React, {useEffect, useMemo, useState} from 'react'
 import { Link } from 'react-router-dom';
-import {HomeNavAdmin} from "../Home/AdminHome/HomeNavAdmin";
 import {OneRowInBookListAdmin} from "./OneRowInBookListAdmin";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import {log} from "util";
 import axios from "axios";
 import {SpinnerComponent} from "../../SpinnerComponent";
 import { HomeNav } from '../Home/HomeNav';
@@ -91,7 +89,7 @@ export const AdminBookList = () => {
         <HomeNav/>
     <div className='pt-16'></div>
 
-       <main className='w-screen  bg-[#fbfcff] pt-10'>
+       <main className='  bg-[#fbfcff] pt-10'>
           <section className='w-[90%] mx-auto bg-white shadow-2xl rounded-xl relative '>
            <div className='w-[90%] mx-auto pt-[1rem] pb-5'>
                <header>
@@ -134,7 +132,7 @@ export const AdminBookList = () => {
                        </tbody>
                    </table>
                </div> : <div className='font-bold text-2xl mx-auto flex justify-center'><h2 className='my-4'>Book not found</h2></div>}
-               {books?.length === 0 ? null : <> <div className='flex justify-center mt-2 mb-1'>Showing {amountOfEntities >= allBooks && value === '' ? allBooks.length : (currentPage * amountOfEntities) - amountOfEntities + 1 } to {amountOfEntities >= books.length ? currentPage === pages.at(-1) && pages.length > 1 ? allBooks.length : books.length : currentPage * amountOfEntities <= books.length ? ((currentPage * amountOfEntities) - amountOfEntities  + amountOfEntities): currentPage *  amountOfEntities - books.length} of {books.length} entries</div>
+               {books?.length === 0 ? null : <> <div className='flex justify-center mt-2 mb-1'>Showing {amountOfEntities >= allBooks && value === '' ? allBooks.length : (currentPage * amountOfEntities) - amountOfEntities + 1 } to {amountOfEntities >= books.length ? currentPage === pages.at(-1) && pages.length > 1 ? allBooks.length : books.length : currentPage * amountOfEntities <= books.length ? ((currentPage * amountOfEntities) - amountOfEntities  + amountOfEntities): currentPage *  amountOfEntities - books.length} of {allBooks.length} entries</div>
                    <div className='w-full h-10 flex justify-center items-center '>
                    <i
                    className="fa-solid fa-angle-left text-[#667574] mr-2 p-2 hover:bg-[#ddd] cursor-pointer" onClick={() => {
