@@ -11,7 +11,7 @@ export const OneRowInUserListAdmin = ({user, i, refresh }:any,) => {
     return (<>
         <tr className='h-16 font-normal text-[16px] max-h-[h-20] overflow-y-scroll'>
             <td className='p-3 border-[#dee2e6] border-[1px] '>{i+1}</td>
-            <td className='p-3 border-[#dee2e6] border-[1px] '><img src={`${user.base64Avatar}`} alt=""/></td>
+            <td className='p-3 border-[#dee2e6] border-[1px] '><img src={`${user.base64Avatar}`} width={65} className='mx-auto' alt=""/></td>
             <td className='p-3 border-[#dee2e6] border-[1px] '><p className='overflow-y-auto h-32 flex items-center'>{user.username}</p></td>
             <td className='p-3 border-[#dee2e6] border-[1px] '><span className='overflow-y-auto h-32 flex items-center'>{user.firstName.length !== 0 ? user.firstName:<Link className='decoration-solid underline text-violet-600' to={`modify/${user._id}`}><p className='w-full h-full flex flex-col justify-center'>Add first Name</p></Link>}</span></td>
             <td className='p-3 border-[#dee2e6] border-[1px] '><div className='h-24 overflow-y-auto flex items-center '>{user.lastName.length !== 0 ? user.lastName:<Link className='decoration-solid underline text-violet-600' to={`modify/${user._id}`}> <p className='flex flex-col justify-center w-full h-full'>Add last name</p></Link>}</div></td>
