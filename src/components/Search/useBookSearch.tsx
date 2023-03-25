@@ -19,7 +19,6 @@ export const useBookSearch = (query:string, pageNumber:number) => {
                     params:{q:query,page:pageNumber},
                     cancelToken: new axios.CancelToken(c => cancel = c)
                 });
-                console.log(res.data)
                 setBooks(prev => {
                     return [...prev, ...res.data.docs]
                 });
