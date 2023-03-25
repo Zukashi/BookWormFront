@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState, useCallback} from 'react';
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useSearchParams} from "react-router-dom";
 import { HomeNav } from '../Home/HomeNav';
-import {useForm} from "react-hook-form";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
-import {SpinnerComponent} from "../../SpinnerComponent";
 import {OneBookHome} from "../Home/OneBook";
 import {useInView} from "react-intersection-observer";
 import {useBookSearch} from "./useBookSearch";
 import { Spinner } from '@chakra-ui/react';
 import {OneBookOlSearch} from "./OneBookOlSearch";
+import {SpinnerComponent} from "../../SpinnerComponent";
+import {ToastContainer} from "react-toastify";
 function debounce (cb:any, delay=500){
     let timeout:any;
     return (...args:any) => {
@@ -19,23 +19,40 @@ function debounce (cb:any, delay=500){
         }, delay)
     }
 }
+
 export const SearchComponent = () => {
     const axiosPrivate = useAxiosPrivate();
     const [searchParams, setSearchParams] = useSearchParams();
     const [pageNumber, setPageNumber] = useState(1);
     const { ref, inView } = useInView();
+    const [loading, setLoading] = useState(false);
     const [query ,setQuery] = useState(searchParams.get('q') ?? '');
+    const {books:olBooks, loading:openLibraryLoading, hasMore, error} = useBookSearch(query,pageNumber);
+    const observer = useRef<any>();
+    console.log(olBooks[99]?.author_name)
+    const lastOlBookElement = useCallback((node:any) => {
+        console.log(node)
+        if(loading) return;
+        console.log(555)
+        if(observer.current) observer.current.disconnect();
+        observer.current = new IntersectionObserver(entries => {
+                if(entries[0].isIntersecting && hasMore){
+                    setPageNumber((prev) => prev + 1)
+                }
+        });
+        if(node) observer.current.observe(node)
+
+    },[loading, hasMore])
+
 
     const [books ,setBooks] = useState<BookEntity[] | null>(null);
     const [category, setCategory] = useState('title');
     const [instantInputUpdate, setInstantInputUpdate] = useState(searchParams.get('q') ?? '')
     const onChange = debounce(async (value:string) => {
             await setQuery(value);
-            await setPageNumber(1)
+            await setPageNumber(1);
     }, 400);
 
-    const {books:olBooks, loading:openLibraryLoading, hasMore, error} = useBookSearch(query,pageNumber);
-    const [loading, setLoading] = useState(false)
     useEffect(() => {
         (async () => {
             console.log(query)
@@ -47,23 +64,26 @@ export const SearchComponent = () => {
     }, [])
     const onSubmit = async (e:any) => {
         e.preventDefault()
-        setLoading(true);
-        searchParams.set('q', query)
-        const res = await axiosPrivate.get(`http://localhost:3001/search?q=${query}&category=${category}`);
-        setBooks(res.data);
-        setLoading(false)
+        searchParams.set('q', query);
+        console.log(query)
+
+        if(!query){
+            const res = await axiosPrivate.get(`http://localhost:3001/books`);
+            setBooks(res.data);
+
+        }else{
+            const res = await axiosPrivate.get(`http://localhost:3001/search?q=${e.target.value}&category=${category}`);
+            setBooks(res.data);
+
+        }
+
     }
 
-    // useEffect(() => {
-    //     console.log(1235555)
-    //     if(inView){
-    //         void fetchNextPage()
-    //     }
-    // }, [inView]);
     console.log(books)
-
+    if(!olBooks || !books) return <SpinnerComponent/>
     return (<>
     <HomeNav/>
+        <ToastContainer/>
         <div className='pt-16'></div>
 
         <div className='w-full   sm:max-w-lg sm:mx-auto'>
@@ -72,6 +92,7 @@ export const SearchComponent = () => {
                <div className='flex relative'>
                    <input type="text" value={instantInputUpdate}  onChange={(e) => {
                        onChange(e.target.value);
+                       void onSubmit(e);
                        setInstantInputUpdate(e.target.value)
                    }
                    } className='appearance-none   focus:border-transparent rounded-md px-2 py-1 w-full focus:ring-2 focus:ring-black' placeholder='Search' />
@@ -103,20 +124,30 @@ export const SearchComponent = () => {
 
         </div>
         <main>
-            {books && <section className={`${(books.length < 3) ? `flex flex-wrap gap-6  md:px-4 justify-center  max-w-[${347 * books.length}px]   rounded-lg  bg-white    mx-auto` :'flex flex-wrap justify-center md:justify-items-center sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[1200px] 2xl:grid-cols-4 2xl:max-w-[1500px] mx-auto'}`}>
-                {books?.map((book:BookEntity, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
-            </section>}
-            {
-                query.length > 0 && <><h2 className='text-3xl text-center w-full'>Open Library Books</h2>
-                    {openLibraryLoading && <div className='flex w-full justify-center mt-10'>
+            { books.length > 0 &&
+                <>
+                    <h2 className='text-3xl lg:text-5xl text-center w-full mt-3'>Our Books</h2>
+                    {loading ?<div className='flex w-full justify-center py-20 '>
                         <Spinner size='xl'/>
-                    </div>}<section className='mt-10 flex items-center flex-col'>
+                    </div>: <>{books && <section className={`${(books.length < 3) ? `flex flex-wrap gap-6  md:px-4 justify-center  max-w-[${347 * books.length}px]   rounded-lg  bg-white    mx-auto` :'flex flex-wrap justify-center md:justify-items-center sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[1200px] 2xl:grid-cols-4 2xl:max-w-[1500px] mx-auto'}`}>
+                        {books?.map((book:BookEntity, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
+                    </section>}</>}</>
+            }
+            {
+                query.length > 0 && <><h2 className='text-3xl lg:text-5xl text-center w-full my-10'>Open Library Books</h2>
+                    {openLibraryLoading && <div className='flex w-full justify-center py-20 pb-40'>
+                        <Spinner size='xl'/>
+                    </div>}<section className={`${(olBooks.length < 3) ? `flex flex-wrap gap-6  md:px-4 justify-center  max-w-[${347 * olBooks.length}px]   rounded-lg  bg-white    mx-auto` :'flex flex-wrap justify-center md:justify-items-center sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[1200px] 2xl:grid-cols-4 2xl:max-w-[1500px] mx-auto relative mb-96'}`}>
                         {olBooks.map((book:any, i) => {
-                            if(typeof book.isbn === 'object') {
-                                if( book.isbn[0].length >= 10){
-                                    return <OneBookOlSearch key={i} book={book} refresh={() => null}/>
-                                }
-                            }})}
+                            if(olBooks.length === i + 1)  {
+                                return <>
+                                    <OneBookOlSearch   key={i} book={book} refresh={() => null}/> <div ref={lastOlBookElement} className='my-6 absolute -bottom-40 left-1/2 -translate-x-1/2'><Spinner size='xl'/></div></>
+                            }
+                            return <OneBookOlSearch  key={i} book={book} refresh={() => null}/>
+
+
+                            })}
+
                     </section></>
             }
 
