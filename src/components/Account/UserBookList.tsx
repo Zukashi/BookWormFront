@@ -3,20 +3,29 @@ import { useQueries} from '@tanstack/react-query'
 import React, {useEffect, useMemo, useState} from 'react'
 import { Link } from 'react-router-dom';
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import axios from "axios";
+import axios, {all} from "axios";
 import {SpinnerComponent} from "../../SpinnerComponent";
 import { HomeNav } from '../Home/HomeNav';
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import { OneRowInBookListAdmin } from '../Book/OneRowInBookListAdmin';
 import {useParams} from "react-router";
+import {AddToPersonalList} from "../Home/AddToPersonalList";
+import {OneRowInBookList} from "./OneRowInBookList";
 export interface Author {
         key:string,
 }
-const getBooksPaginated = async (page:number, amountToShow:number, searchValue:string, list:string, userId:string) => {
+const getBooksPaginated = async (page:number, amountToShow:number, searchValue:string, list:string, userId:string, sort:boolean, typeOfSort:string, arrow:string) => {
         console.log(list)
-        const res = await axios.get(`http://localhost:3001/books/list?page=${page}&booksPerPage=${amountToShow}&searchValue=${searchValue}&list=${list}&id=${userId}`,{
+        const res = await axios.get(`http://localhost:3001/books/list?page=${page}&booksPerPage=${amountToShow}&searchValue=${searchValue}&list=${list}&id=${userId}&sort=${sort}&typeOfSort=${typeOfSort}&arrow=${arrow}`,{
                 withCredentials:true
         });
+        // if(sort && list){
+        //         if(typeOfSort === 'rating' && arrow === 'desc'){
+        //                 return res.data.sort((a:BookEntity,b:BookEntity) => a.rating < b.rating ? 1 : -1)
+        //         }else if(typeOfSort ==='rating' && arrow === 'asc'){
+        //                 return res.data.sort((a:BookEntity,b:BookEntity) => a.rating < b.rating ? -1 : 1)
+        //         }
+        // }
         return res.data
 }
 export const UserBookList = () => {
@@ -25,23 +34,33 @@ export const UserBookList = () => {
         const toast = useToast();
         const [list, setList] = useState<string>('')
         const {userId} = useParams()
+        const [loading ,setLoading] = useState<boolean>(false);
+        const [sort, setSort] = useState(false);
+        const [typeOfSort, setTypeOfSort] = useState('')
         const [amountOfEntities, setAmountOfEntities] = useState<number>(10);
         const [searchValue, setSearchValue] = useState('');
+        const [arrow, setArrow] = useState<string>('none')
         const [currentPage, setCurrentPage] = useState<number>(1);
-        const [{data:books, refetch, isLoading}, {data:allBooks, status:allBooksStatus, isLoading:allBooksLoading}, {data:userData}] = useQueries({
+        const [{data:books, refetch, isLoading}, {data:allBooks,refetch:refetchAll, status:allBooksStatus, isLoading:allBooksLoading}, {data:userData, refetch:refetchUser}] = useQueries({
                 queries:[
                         {
                                 queryKey:['books', {currentPage}],
                                 keepPreviousData:true,
-                                queryFn: () => getBooksPaginated(currentPage,amountOfEntities, searchValue, list, userId as string)
+                                queryFn: () => getBooksPaginated(currentPage,amountOfEntities, searchValue, list, userId as string, sort, typeOfSort, arrow)
                         },
 
                         {
-                                queryKey:['books'],
+                                queryKey:['Books'],
                                 keepPreviousData:true,
                                 queryFn:async () => {
-                                        const res =  await axiosPrivate.get('http://localhost:3001/books');
-                                        console.log(res.data)
+                                        const res =  await axiosPrivate.get('http://localhost:3001/books/list/all',{
+                                                params:{
+                                                        id:userId,
+                                                        list:list,
+
+                                                }
+                                        });
+
                                         return res.data
                                 }
                         },
@@ -55,17 +74,25 @@ export const UserBookList = () => {
                 ],
 
         });
+        const refreshAll = () => {
+                setCurrentPage(1);
+                setLoading(true);
+                refetch();
+                refetchUser();
+                refetchAll();
+                setLoading(false)
+        }
         useEffect(() => {
-                refetch()
-        }, [searchValue, amountOfEntities, list]);
-        useEffect(() => {
-                setCurrentPage(1)
-        }, [list])
-        if(!allBooks)return <SpinnerComponent/>
+                refreshAll()
+        }, [ amountOfEntities, list, searchValue, sort, arrow, userData]);
+        if(isLoading || allBooksLoading)return <SpinnerComponent/>
         const countPages = () => {
-                let pages: number[] = []
-                if(searchValue || list !== '' ){
-                        for(let i = 0; i < Math.ceil(allBooks.length / amountOfEntities); i++){
+                let pages: number[] = [];
+                if(list && books.length < amountOfEntities){
+
+                }
+                if(searchValue && list !== '' ){
+                        for(let i = 0; i < Math.ceil(books.length / amountOfEntities); i++){
                                 pages.push(i+1)
                         }
                         return pages
@@ -81,8 +108,6 @@ export const UserBookList = () => {
 
                 await setSearchValue(value)
 
-                // const res = await axiosPrivate.post(`http://localhost:3001/bookAdmin/search/${value}`,JSON.stringify({value}));
-                // setBooks(res.data)
 
         }, 300);
 
@@ -96,26 +121,22 @@ export const UserBookList = () => {
                 }
         }
 
-        if(allBooksLoading || isLoading) return <SpinnerComponent/>
+        if(allBooksLoading || isLoading || !userData || loading || isLoading) return <SpinnerComponent/>
+        console.log(arrow)
         return (<>
                 <HomeNav/>
                 <div className='pt-16'></div>
 
-                <main className='  bg-[#fbfcff] pt-10'>
+                <main className='  bg-[#fbfcff] pt-10 pb-20'>
                         <section className='w-[90%] mx-auto bg-white shadow-2xl rounded-xl relative '>
                                 <div className='w-[90%] mx-auto pt-[1rem] pb-5'>
-                                        <header>
-                                                <div className='flex justify-between items-center pb-5'><p className='font-bold text-xl'>Book List</p><Link to={'/addBook'} className='focus:outline-2 focus:outline-black font-bold px-5 py-2
-                text-white bg-black rounded-lg'><p>Add New Book</p></Link></div>
-                                        </header>
-                                        <div className='absolute left-0 right-0 h-[0.5px] bg-[#BBB]'></div>
                                         <div className='flex items-center w-full flex-col gap-y-2 mb-5'>
                                                 <h2 className='text-3xl font-medium mt-4'>Pick a list</h2>
                                                 <Select width='250px' autoComplete='off' value={list}    onChange={(e) => setList(e.target.value)}>
                                                         <option value="" hidden disabled className='' defaultChecked={true}>
                                                                 Lists
                                                         </option>
-                                                        {Object.keys(userData.lists).map((key:string) => <option
+                                                        {Object.keys(userData?.lists).map((key:string) => <option
                                                             value={key}>{key}</option>)}
                                                 </Select>
                                         </div>
@@ -140,20 +161,67 @@ export const UserBookList = () => {
                                                 <thead><tr className='h-16'>
                                                 <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[#dee2e6]'><p className='flex items-end h-5/6'>No</p></th>
                                                 <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>Book Image</p></th>
-                                                <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>Book Name</p></th>
-                                                <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>Avg Book Rating</p></th>
+                                                <th className={`py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] relative`}><p className='text-left'>Book Name</p><i className={`absolute bottom-2 right-2 text-xl cursor-pointer fa-solid ${arrow === 'none' ? 'fa-sort' : arrow==='desc' && typeOfSort ==='title' ? 'fa-sort-down': typeOfSort === 'title' && 'fa-sort-up' }`} onClick={() => {
+
+                                                        setSort(true);
+                                                        setTypeOfSort('title')
+                                                        if(!sort && arrow === 'none'){
+                                                                setArrow('desc')
+                                                        }else if(sort && arrow === 'desc'){
+                                                                setArrow('asc')
+                                                        }else if(sort && arrow ==='asc'){
+                                                                setSort(false);
+                                                                setArrow('none');
+                                                                setTypeOfSort('')
+                                                        }
+                                                }
+                                                }></i></th>
+                                                <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] relative'><p className='text-left'>Avg Book Rating</p>
+                                                        <i className={`absolute right-2 bottom-2 fa-solid text-xl cursor-pointer ${arrow === 'none' ? 'fa-sort' : arrow==='desc' && typeOfSort ==='rating' ? 'fa-sort-down': typeOfSort === 'rating' && 'fa-sort-up' }`} onClick={() => {
+                                                        setSort(true);
+                                                        setTypeOfSort('rating');
+
+                                                               if(!sort && arrow === 'none'){
+                                                                       setArrow('desc')
+                                                               }else if(sort && arrow === 'desc'){
+                                                                       setArrow('asc')
+                                                               }else if(sort && arrow ==='asc'){
+                                                                       setSort(false);
+                                                                       setArrow('none');
+                                                                       setTypeOfSort('')
+                                                               }
+
+                                                        }
+                                                        }></i>
+                                                </th>
                                                 <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>Publishers</p></th>
                                                 <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>Book Category</p></th>
-                                                <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>Book Author</p></th>
+                                                <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] relative '><p className='text-left'>Book Author</p> <i className={`absolute right-2 bottom-2 fa-solid text-xl cursor-pointer ${arrow === 'none' ? 'fa-sort' : arrow==='desc' && typeOfSort ==='author' ? 'fa-sort-down': typeOfSort === 'author' && 'fa-sort-up' }`} onClick={() => {
+                                                        setSort(true);
+                                                        setTypeOfSort('author');
+
+                                                        if(!sort && arrow === 'none'){
+                                                                setArrow('desc')
+                                                        }else if(sort && arrow === 'desc'){
+                                                                setArrow('asc')
+                                                        }else if(sort && arrow ==='asc'){
+                                                                setSort(false);
+                                                                setArrow('none');
+                                                                setTypeOfSort('')
+                                                        }
+
+                                                }
+                                                }></i></th>
                                                 <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='text-left'>Book Description</p></th>
                                                 <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='flex items-end h-5/6'>Action</p></th></tr></thead>
 
                                                 <tbody>
-                                        {books.map((book:BookEntity, i:number) => <OneRowInBookListAdmin key={i} book={book} i={i} refresh={refetch}/>)}
+                                        {books.map((book:BookEntity, i:number) => <OneRowInBookList key={i} book={book} i={i} refresh={refreshAll}/>)}
+
                                                 </tbody>
                                                 </table>
-                                                </div> : <div className='font-bold text-2xl mx-auto flex justify-center'><h2 className='my-4'>Book not found</h2></div>}
-                                        {books?.length === 0 ? null : <> <div className='flex justify-center mt-2 mb-1'>Showing {amountOfEntities >= allBooks && value === '' ? allBooks.length : (currentPage * amountOfEntities) - amountOfEntities + 1 } to {books.length >= amountOfEntities ? amountOfEntities : books.length < amountOfEntities ? currentPage > 1 ? books.length + amountOfEntities:books.length : allBooks.length} of {allBooks.length} entries</div>
+                                                </div> : <div className='font-bold text-2xl mx-auto flex justify-center'><h2 className='my-4'>List is empty</h2></div>}
+                                        {books?.length === 0 ? null : <> <div className='flex justify-center mt-2 mb-1'>Showing {amountOfEntities >= allBooks && value === '' ? allBooks.length : (currentPage * amountOfEntities) - amountOfEntities + 1 } to {books.length >= amountOfEntities ? amountOfEntities : books.length < amountOfEntities ? currentPage > 1 ? books.length + amountOfEntities:books.length : allBooks.length} of {books.length < amountOfEntities ? books.length : allBooks.length} entries</div>
                                                 <div className='w-full h-10 flex justify-center items-center '>
                                                 <i
                                                 className="fa-solid fa-angle-left text-[#667574] mr-2 p-2 hover:bg-[#ddd] cursor-pointer" onClick={() => {
