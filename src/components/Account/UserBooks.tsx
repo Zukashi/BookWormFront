@@ -7,25 +7,24 @@ import {ShelfUser} from "./ShelfUser";
 import 'react-tabs/style/react-tabs.css';
 import {useLocation} from "react-router";
 import {SpinnerComponent} from "../../SpinnerComponent";
+import {useSearchParams} from "react-router-dom";
 export const UserBooks = () => {
     const axiosPrivate = useAxiosPrivate();
-    const [activeTab, setActiveTab] = useState('read')
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [activeTab, setActiveTab] = useState(searchParams.get('status') ? searchParams.get('status') as string : 'read'  )
     const {user} = useSelector((state: RootState) => state.user);
     const location = useLocation();
-    const [shelves ,setShelves] = useState<{read:string[], wantToRead:string[], currentlyReading:string[]}>();
-    const refresh = async() => {
-        const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/books`)
-        console.log(res.data, 111)
-        setShelves(res.data)
-    };
 
+    console.log(location)
     useEffect(() => {
-        refresh();
-        location.state && setActiveTab(location.state)
-    }, [location])
-    if (!shelves){
-        return  <SpinnerComponent/>
-    };
+
+        setSearchParams({
+            status:activeTab
+
+        }
+        )
+    }, [activeTab])
+    console.log(activeTab)
     return (<>
 
         <HomeNav/>
@@ -43,7 +42,7 @@ export const UserBooks = () => {
 
                     </div>
                     <div className="outlet ">
-                        <ShelfUser key={activeTab} status={activeTab} refresh={refresh} shelves={shelves}/>
+                        <ShelfUser key={activeTab} status={activeTab} />
                     </div>
 
 
