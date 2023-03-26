@@ -31,7 +31,7 @@ export const OneProgressBar =({isHighlighted,sumOfRatings,book,index}:{book:Book
     },[isInView,result])
     return <>
 
-        <div className={` py-[1rem]  px-[1rem] mr-2 group-hover:bg-[#ebebeb]   z-0 w-[80%] ${isHighlighted[(book as any).ratingTypeAmount.length - 1 - index] && 'bg-[#c1c1c1] group-hover:bg-[#9e9e9e]'
+        <div className={` py-[1rem]  px-[1rem] mr-2 group-hover:bg-[#ebebeb]   z-0 w-[80%] ${isHighlighted[(book as any).ratingTypeAmount.length - 1 - index] && 'bg-[#c1c1c1] group-hover:bg-[#aaa]'
         } rounded-2xl`}>
             <motion.div ref={scrollRef}  className={`z-0 w-full bg-[#ebebeb] rounded-2xl group-hover:bg-[#ccc] ${isHighlighted[(book as any).ratingTypeAmount.length - 1 - index] && 'group-hover:bg-[#ccc]'} `}><motion.div   className='h-3  rounded-xl bg-blue-600 '  animate={animation} initial={{width:0}} />
             </motion.div>
