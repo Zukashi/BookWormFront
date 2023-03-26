@@ -38,9 +38,10 @@ export const ProgressBookChange =() => {
             status:'warning',
             duration:3000,
             isClosable:true,
-        })
+        });
+        console.log(location)
         await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/book/${bookId}/${status}/${pageNumber}`);
-         navigate(`${location.state.location.pathname}`,{replace:true,state:location.state.status})
+         navigate(`${location.state}`,{replace:true,state:location.state.status})
     }
     return (<>
     <HomeNav/>
