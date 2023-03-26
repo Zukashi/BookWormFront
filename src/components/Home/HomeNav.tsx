@@ -47,7 +47,7 @@ export const HomeNav = () => {
     navigate(`/search?q=${searchValue}`)
   }
   return (<>
-    <nav className={`${prevScroll.current > offset && '-translate-y-full'} ${offset ===0 && 'translate-y-0'} w-screen  flex justify-center transition-all   h-16 fixed z-20  border-b-[rgb(221,221,221)] border-b-[1px] bg-[#fbfcff]`}>
+    <nav className={`  w-screen  flex justify-center transition-all   h-16 fixed z-20  border-b-[rgb(221,221,221)] border-b-[1px] bg-[#fbfcff]`}>
         <Link to='/home'><Image className='fixed top-2 left-5 z-30' alt='BookWorm app logo' boxSize='50px' src="https://cdn-icons-png.flaticon.com/512/2490/2490314.png"></Image></Link>
       {/*<Select w='100px' onChange={(e:any) => onChangeCategory(e.target.value)} bg='gray.500'>*/}
       {/*  <option value="q" selected disabled hidden style={{display:'none'}}  >Default</option>*/}
