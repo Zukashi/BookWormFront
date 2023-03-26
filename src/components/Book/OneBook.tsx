@@ -172,7 +172,7 @@ export const OneBook = () => {
 
   useEffect(() => {
     void refresh()
-    if(location.state === 'delete') void refresh()
+
   }, []);
   const stars = Array(5).fill(0);
   const handleMouseOver = (value:number) => {

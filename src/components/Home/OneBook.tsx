@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
-import {Link, Route} from "react-router-dom";
+import {Link, Route, useSearchParams} from "react-router-dom";
 import {Button, Spinner} from "@chakra-ui/react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
@@ -9,6 +9,7 @@ import {setBook} from "../../features/Books/bookSlice";
 import {SpinnerComponent} from "../../SpinnerComponent";
 import {AddToPersonalList} from "./AddToPersonalList";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
+import {useLocation} from "react-router";
 interface Props {
   book: BookEntity,
   refresh: () => void,
@@ -17,7 +18,8 @@ export const OneBookHome = ({book,refresh}:Props) => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
   const axiosPrivate = useAxiosPrivate()
-
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const {user} = useSelector((state: RootState) => state.user);
   const [rating,setRating] = useState<number>(0);
   const stars = Array(5).fill(0);
@@ -26,6 +28,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
   const refreshOneBook = () => {
     ( async () => {
+
       const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/favorites`);
       const res2 = await axiosPrivate.get(`http://localhost:3001/book/${book._id}`);
       dispatch(setBook(res2.data))
@@ -35,12 +38,14 @@ export const OneBookHome = ({book,refresh}:Props) => {
           setFavorite(true)
         }
       });
+      refresh()
     })();
   }
   const deleteReview = async () => {
 
       await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${rating}`);
       await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book?._id}/status`);
+      refresh()
 
   }
   useEffect(() => {
@@ -65,14 +70,15 @@ export const OneBookHome = ({book,refresh}:Props) => {
       }
 
   };
-
+  console.log(location.pathname.split('/'))
 
   const mouseLeft = () => {
     if (refImg.current === null || refImg.current === undefined){
       return null;
     }
     refImg.current.classList.remove('opacity-50')
-  }
+  };
+  console.log((book as any).progress)
   if(!book){
     return <h1>123</h1>
   }
@@ -116,6 +122,13 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
 
       <StatusCurrent refresh={refreshOneBook} book={book} onDelete={deleteReview}/>
+      {location.pathname.split('/')[3] === 'books' && searchParams.get('status') === 'currentlyReading' && <><Link className='  rounded-xl p-1.5 bg-[#aaa] cursor-pointer font-medium hover:bg-[#ccc]' state={location.pathname + '?status=' + searchParams.get('status')} to={`/user/${user._id}/book/${book._id}/currentlyReading/progress`}>Change Progress</Link>
+        <div className='w-40 rounded-[15px] bg-[#ccc]'>
+            <div style={{width:`${(book as any).progress.toFixed(0)}%`, background:'blueviolet', borderRadius:'15px'}} className='text-white font-medium text-center'  >
+              {(book as any).progress}%
+            </div>
+        </div>
+      </>}
     </div>
 
 
