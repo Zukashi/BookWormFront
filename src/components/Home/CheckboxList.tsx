@@ -21,14 +21,13 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
     const [editable, setEditable] = useState<boolean>(false);
     const handleEntityAddSubmit = async() => {
         setCheckedCheckbox((prev) => !prev)
-        console.log(checkedCheckbox)
         if(checkedCheckbox === false) {
             console.log(333)
             await axiosPrivate.put(`http://localhost:3001/user/${user._id}/list/${listName}/book/${book._id}`);
         }else{
             await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/list/${listName}/book/${book._id}`)
         }
-
+        refreshLists();
     }
     useEffect(() => {
         (async() => {
@@ -41,14 +40,15 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
                     }
                 })
             });
-            console.log(found)
             if(typeof found ==='string') {
                 setCheckedCheckbox(true)
             }
         })()
     }, []);
     const changeHandler = (value:string) => {
-        setNewListName(value)
+        setNewListName(value);
+        void refreshLists();
+
     }
     const handleChangeListName = async () => {
         setLoading(true);
