@@ -1,21 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {HomeNav} from "../Home/HomeNav";
-import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import {useSelector} from "react-redux";
-import {RootState} from "../../app/store";
 import {ShelfUser} from "./ShelfUser";
 import 'react-tabs/style/react-tabs.css';
-import {useLocation} from "react-router";
-import {SpinnerComponent} from "../../SpinnerComponent";
 import {useSearchParams} from "react-router-dom";
 export const UserBooks = () => {
-    const axiosPrivate = useAxiosPrivate();
     const [searchParams, setSearchParams] = useSearchParams();
     const [activeTab, setActiveTab] = useState(searchParams.get('status') ? searchParams.get('status') as string : 'read'  )
-    const {user} = useSelector((state: RootState) => state.user);
-    const location = useLocation();
 
-    console.log(location)
     useEffect(() => {
 
         setSearchParams({
@@ -24,7 +15,6 @@ export const UserBooks = () => {
         }
         )
     }, [activeTab])
-    console.log(activeTab)
     return (<>
 
         <HomeNav/>
