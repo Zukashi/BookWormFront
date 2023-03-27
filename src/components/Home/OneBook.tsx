@@ -9,7 +9,7 @@ import {setBook} from "../../features/Books/bookSlice";
 import {SpinnerComponent} from "../SpinnerComponent";
 import {AddToPersonalList} from "./AddToPersonalList";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
-import {useLocation} from "react-router";
+import {useLocation, useParams} from "react-router";
 interface Props {
   book: BookEntity,
   refresh: () => void,
@@ -17,7 +17,8 @@ interface Props {
 export const OneBookHome = ({book,refresh}:Props) => {
   const refImg = useRef<HTMLImageElement>(null);
   const [favorite ,setFavorite] = useState<boolean>(false);
-  const axiosPrivate = useAxiosPrivate()
+  const axiosPrivate = useAxiosPrivate();
+  const {userId} = useParams()
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {user} = useSelector((state: RootState) => state.user);
@@ -120,7 +121,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
 
       <StatusCurrent refresh={refreshOneBook} book={book} onDelete={deleteReview}/>
-      {location.pathname.split('/')[3] === 'books' && searchParams.get('status') === 'currentlyReading' && <><Link className='  rounded-xl p-1.5 bg-[#aaa] cursor-pointer font-medium hover:bg-[#ccc]' state={location.pathname + '?status=' + searchParams.get('status')} to={`/user/${user._id}/book/${book._id}/currentlyReading/progress`}>Change Progress</Link>
+      {location.pathname.split('/')[3] === 'books' && searchParams.get('status') === 'currentlyReading' && userId === user._id && <><Link className='  rounded-xl p-1.5 bg-[#aaa] cursor-pointer font-medium hover:bg-[#ccc]' state={location.pathname + '?status=' + searchParams.get('status')} to={`/user/${user._id}/book/${book._id}/currentlyReading/progress`}>Change Progress</Link>
         <div className='w-40 rounded-[15px] bg-[#ccc] height-[30px] relative'>
           <div className='flex  w-full items-center  rounded-xl overflow-hidden h-full'> <div className='h-4 w-40 bg-[#e0e0de] rounded-xl  overflow-hidden'>
             <div style={{width:`${Math.ceil((book as any).progress.toFixed(0)) / book.number_of_pages * 100}%`}} className={`h-full w-40  bg-blue-500 rounded-xl `}>
