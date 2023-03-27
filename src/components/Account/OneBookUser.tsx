@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Button,
-    Input,
-    Modal, ModalBody,
-    ModalCloseButton, ModalContent, ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    Spinner,
     useDisclosure
 } from "@chakra-ui/react";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
@@ -16,7 +9,6 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useLocation} from "react-router";
 import {StatusCurrent} from "../Repeatable/StatusCurrent";
-import {SpinnerComponent} from "../../SpinnerComponent";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 
 export const OneBookUser = (props:{id:{

@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useSelector} from "react-redux";
 import {RootState} from "../../app/store";
+import { Link } from 'react-router-dom';
 export const OneComment = (props:any) => {
     const [showFullText , setShowFullText] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -61,10 +62,10 @@ export const OneComment = (props:any) => {
     </AlertDialog>
 <div className='mb-3'>
     <div className='w-full flex '>
-        <img className='w-[1.9rem] pt-1.5 absolute' src={props.comment.user.base64Avatar} alt=""/>
+        <Link to={`/user/${props.comment.user._id}`}><img className='w-[1.9rem] pt-1.5 absolute cursor-pointer' src={props.comment.user.base64Avatar} alt=""/></Link>
         <div className='flex ml-7 justify-between w-full mr-4'>
            <div className='flex '>
-               <p className='ml-3 font-medium h-5'>{props.comment.user.username}</p>
+               <Link  to={`/user/${props.comment.user._id}`}><span className='border-b-2 border-b-transparent hover:border-b-black ml-3 font-medium h-5  '>{props.comment.user.username}</span></Link>
                <div className='flex   ml-3'>
                    <p className='font-medium text-[#707070] font-normal'>{moment(props.comment?.date).fromNow()}</p>
                </div>
