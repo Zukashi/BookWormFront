@@ -10,7 +10,7 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {StatusCurrent} from "../Repeatable/StatusCurrent";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {ProgressBarSection} from "./ProgressBarSection";
-import {SpinnerComponent} from "../../SpinnerComponent";
+import {SpinnerComponent} from "../SpinnerComponent";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';;
@@ -74,7 +74,6 @@ export const OneBook = () => {
 
     await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${personalRating}`);
     await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book?._id}/status`);
-    console.log(333)
     toast.success(`Review deleted successfully`, {
       position: toast.POSITION.BOTTOM_CENTER,
       theme:'dark',
@@ -268,8 +267,8 @@ export const OneBook = () => {
 
            <div className='flex flex-col items-start hidden md:flex  '>
              <div className='mt-4   font-medium  text-[2.5rem] font-liberville  '><p className='leading-10  tracking-normal leading-8'>{book.title}</p></div>
-             <div className='mt-4   font-extralight text-2xl font-mono'><Link to={`/author/${book.authors}`} className='cursor-pointer border-b-2 border-b-transparent hover:border-b-black'>{book.author}</Link></div>
-            <Link className='lg:flex lg:items-end  lg:gap-5 rounded-lg ' to={'#Community_reviews'}>
+             <div className='mt-4   font-extralight text-2xl font-mono'><div  className=' border-b-2 border-b-transparent hover:border-b-black'>{book.author}</div></div>
+            <Link className='lg:flex lg:items-end  lg:gap-5 rounded-lg cursor-auto' to={'#Community_reviews'}>
               <div className='flex  mt-4 '>
                 {
                   stars.map((_, index) => {
@@ -291,7 +290,7 @@ export const OneBook = () => {
 
 
 
-            <div className={` pb-4 mx-auto w-full mt-4 font-[400] tracking-tighter text-[1.6rem/1.4] lg:w-4/5 lg:mx-0  leading-7 ${showFullTextDesc ? 'overflow-auto ': book?.description?.length && book.description.length > 200 ?  'max-h-[9rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}>
+            <div className={` pb-4 mx-auto w-full mt-4  font-[400] tracking-tighter text-[1.6rem/1.4] lg:w-4/5 lg:mx-0  leading-7 ${showFullTextDesc ? 'overflow-auto ': book?.description?.length && book.description.length > 200 ?  'max-h-[9rem] overflow-hidden relative before:content-[""] before:absolute before:h-12 before:w-full before:bottom-0               before:bg-gradient-to-b before:from-transparent before:to-white ' : ''} `}>
               {!book.description ? <p>This edition doesn't have a description yet.</p>:
                   <p className='text-[18px]'>{typeof book.description  !== 'object' ? book.description : (book as any).description.value  }</p>}
 

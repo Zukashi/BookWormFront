@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import { OneBookHome} from "./OneBook";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useQuery} from "@tanstack/react-query";
-import {SpinnerComponent} from "../../SpinnerComponent";
+import {SpinnerComponent} from "../SpinnerComponent";
 import { BookEntity } from "types";
 import {Link} from "react-router-dom";
 export const MainBooks = () => {

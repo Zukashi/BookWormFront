@@ -4,7 +4,7 @@ import {HomeAdminNav} from "../../Home/AdminHome/HomeAdminNav";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 import { HomeNav } from '../../Home/HomeNav';
 import {User} from "../../../features/User/userSlice";
-import {SpinnerComponent} from "../../../SpinnerComponent";
+import {SpinnerComponent} from "../../SpinnerComponent";
 import { object, string, number, date, InferType } from 'yup';
 import {toast, ToastContainer} from "react-toastify";
 let userSchema = object({
