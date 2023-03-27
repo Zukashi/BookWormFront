@@ -1,63 +1,47 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector} from "react-redux";
-import {RootState} from "../../app/store";
-import {useParams} from "react-router-dom";
-import {Spinner} from "@chakra-ui/react";
-import dayjs from "dayjs";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import { UserEntity } from '../../../../BookWormBack/types/users/user.entity';
+import {SpinnerComponent} from "../SpinnerComponent";
 
 export const Profile = () => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<UserEntity | null>(null);
   const params = useParams();
-  const axiosPrivate = useAxiosPrivate()
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
 
-  const [loading, setLoading] = useState<boolean>(true)
     useEffect(() => {
         (async () => {
            const res = await axiosPrivate.get(`http://localhost:3001/user/${params.userId}`);
+           if(res.status === 404) navigate('/home')
            setUser(res.data);
-           setLoading(prev => !prev)
         })()
     }, []);
 
-    while (loading){
-        return <>
-            <div className='pt-20'></div>
-            <div className='w-screen h-screen absolute top-[100%] left-[30%]'><Spinner size='xl'  pos='absolute' left={50}/></div></>
-    }
+    if (!user){
+        return <SpinnerComponent/>
+    };
     return (<>
 
-    <section className='bg-gradient-to-r from-sky-800 to-indigo-900 w-screen h-screen bg-[#fbfcff] pt-20  '>
-    <div className='w-[90%] h-full flex flex-col mx-auto'>
-      <div className='flex flex-col gap-5 p-[25px] text-center  bg-white  pb-[2vw] shadow-black shadow-2xl rounded-md w-full items-center'>
-          <img className='w-40' src={user?.base64Avatar} alt=""/>
+    <section className=' w-screen h-screen bg-[#fbfcff] pt-20  '>
+    <div className='w-[90%]  flex flex-col mx-auto  shadow-black shadow-2xl  rounded-lg max-w-[768px]'>
+      <div className='flex flex-col gap-5 p-[25px] text-center  bg-white  pb-[2vw]  w-full items-center border-b-2 border-b-[#ccc] rounded-t-lg'>
+          <img className='w-20' src={user?.base64Avatar} alt=""/>
         <h1 className='text-3xl font-[600]'>{user?.username}</h1>
+          <Link to={`/favorites/user/${params.userId}`} className='py-2 px-4 group'><h2 className='text-blue-600 text-medium cursor-pointer border-b-2 border-b-transparent group-hover:border-b-blue-600'>Favorites</h2></Link>
       </div>
-      <div className="flex flex-col gap-5 pt-[2vw] pb-[2vw] text-center w-[90vw] bg-white  mt-10  rounded-md shadow-black shadow-2xl">
-        <h2 className='text-left text-[1.5rem] font-[600] ml-[1rem] tracking-tight'>Personal Details</h2>
-          <div className='w-full  border-b-gray border-b-[1px] '></div>
-       <div className='flex flex-col'>
+      <div className="flex  gap-5 pt-[2vw] pb-[2vw] text-center w-11/12 mx-auto justify-start bg-white   rounded-lg ">
 
-           <div className='flex flex-col items-start ml-[1rem] mb-[1.3rem] '>
 
-             <h3 className='font-bold leading-5'>Birthday </h3>
-             <p className='font-medium'>{((dayjs(user.dateOfBirth).format('DD/MMMM')).split('/')).join(' ')}</p>
 
-           </div>
-         <div className='flex flex-col items-start ml-[1rem] mb-[1.3rem] '>
-             <h3 className='font-bold leading-5'>Country </h3>
-              <p className='font-medium'>{user.country ? user.country : "Unknown"}</p>
-           </div>
-         <div className='flex flex-col items-start ml-[1rem] mb-[1.3rem] '>
-             <h3 className='font-bold leading-5'>Phone  </h3>
-              <p>{user.phone ? user.phone :'Unknown'}</p>
-           </div>
-         <div className='flex flex-col items-start ml-[1rem]  mb-[1.3rem]'>
-             <h3 className='font-bold leading-5'>Email  </h3>
-           <p className='font-medium'>{user.email ? user.email : 'Unknown'}</p>
-           </div>
-         </div>
-
+            <div className='text-left font-bold uppercase w-full text-[13px] flex  justify-around '>
+                <h3 className=' border-b-[1px] border-b-[#c1c1c1] py-2 md:hidden'><span className=''>Bookshelves</span></h3>
+                <h3 className=' border-b-[1px] border-b-[#c1c1c1] '><Link to={`/user/${params.userId}/books?status=read`} className='pr-2 py-2  flex gap-0.5 group cursor-pointer ' ><span className='border-b-[1px] border-b-transparent hover:border-b-[1px] group-hover:border-black  '>Read </span><p className='text-[#999]'>({user?.shelves.read.length})</p></Link></h3>
+                <h3 className=' border-b-[1px] border-b-[#c1c1c1]  '><Link to={`/user/${params.userId}/books?status=currentlyReading`} className='pr-2 py-2  flex gap-0.5 group cursor-pointer '><span className='border-b-[1px] border-b-transparent hover:border-b-[1px] group-hover:border-black  '>Reading</span><p className='text-[#999]'>({user?.shelves.currentlyReading.length})</p></Link></h3>
+                <h3 className=' border-b-[1px] border-b-[#c1c1c1] '><Link to={`/user/${params.userId}/books?status=wantToRead`} className='pr-2 py-2  flex gap-0.5 group cursor-pointer '>
+                    <span className='border-b-[1px] border-b-transparent hover:border-b-[1px] group-hover:border-black '>Want to read</span><p className='text-[#999]'>({user?.shelves.wantToRead.length})</p>
+                </Link></h3>
+            </div>
       </div>
     </div>
 
