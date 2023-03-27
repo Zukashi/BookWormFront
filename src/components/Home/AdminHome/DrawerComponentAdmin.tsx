@@ -30,10 +30,7 @@ export const DrawerComponentAdmin = () => {
             name:'Category Lists',
             link:'/categories'
         },
-            {
-                name:'Author',
-                link:'/admin/author'
-            },
+
             {
                 name:'Books',
                 link:'/admin/books'

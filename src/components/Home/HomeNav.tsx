@@ -16,8 +16,8 @@ export const HomeNav = () => {
   const [toggleSearchBarInSmMode, setToggleSearchBarInSmMode] = useState(false)
   const navigate = useNavigate();
   const location = useLocation()
-  const mapOfCategoriesWithLinks:any = new Map([['Home', '/home'], ['Category', '/Category'], ['Books','/admin/books'], ['Users', '/admin/users'], ['Authors', '/authors']])
-  const [categories, setCategories] = useState(['Home', 'Category', 'Books', 'Users', 'Authors']);
+  const mapOfCategoriesWithLinks:any = new Map([['Home', '/home'], ['Category', '/Category'], ['Books','/admin/books'], ['Users', '/admin/users']])
+  const [categories, setCategories] = useState(['Home', 'Category', 'Books', 'Users']);
   const prevScroll = useRef(0);
   useEffect(() => {
     if(user.role === 'user') setCategories((prev) => prev.splice(0, 2))
