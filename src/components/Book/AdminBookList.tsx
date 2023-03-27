@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import {OneRowInBookListAdmin} from "./OneRowInBookListAdmin";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import axios from "axios";
-import {SpinnerComponent} from "../../SpinnerComponent";
+import {SpinnerComponent} from "../SpinnerComponent";
 import { HomeNav } from '../Home/HomeNav';
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 export interface Author {
@@ -132,16 +132,21 @@ export const AdminBookList = () => {
                        </tbody>
                    </table>
                </div> : <div className='font-bold text-2xl mx-auto flex justify-center'><h2 className='my-4'>Book not found</h2></div>}
-               {books?.length === 0 ? null : <> <div className='flex justify-center mt-2 mb-1'>Showing {amountOfEntities >= allBooks && value === '' ? allBooks.length : (currentPage * amountOfEntities) - amountOfEntities + 1 } to {amountOfEntities >= books.length ? currentPage === pages.at(-1) && pages.length > 1 ? allBooks.length : books.length : currentPage * amountOfEntities <= books.length ? ((currentPage * amountOfEntities) - amountOfEntities  + amountOfEntities): currentPage *  amountOfEntities - books.length} of {allBooks.length} entries</div>
+               {books?.length === 0 || amountOfEntities >= allBooks.length ? null : <> <div className='flex justify-center mt-2 mb-1'>Showing {amountOfEntities >= allBooks && value === '' ? allBooks.length : (currentPage * amountOfEntities) - amountOfEntities + 1 } to {amountOfEntities >= books.length ? currentPage === pages.at(-1) && pages.length > 1 ? allBooks.length : books.length : currentPage * amountOfEntities <= books.length ? ((currentPage * amountOfEntities) - amountOfEntities  + amountOfEntities): currentPage *  amountOfEntities - books.length} of {allBooks.length} entries</div>
                    <div className='w-full h-10 flex justify-center items-center '>
                    <i
                    className="fa-solid fa-angle-left text-[#667574] mr-2 p-2 hover:bg-[#ddd] cursor-pointer" onClick={() => {
-                   if(currentPage !== 1) setCurrentPage(currentPage - 1)}
+                   if(currentPage !== 1) {
+                       setCurrentPage(currentPage - 1)}   window.scrollTo({top:0, behavior:'smooth'});
+                   }
                }></i>
                    <ol className='flex gap-2 '>
 
                {
-                   pages.map((page:number) => <li className={`list-none px-2.5 py-1 ${currentPage === page && 'bg-blue-600 hover:bg-blue-600'} hover:bg-[#ddd] cursor-pointer p-2 text-black font-medium  rounded-sm`} onClick={() => setCurrentPage(page)}>{page}</li>)
+                   pages.map((page:number) => <li className={`list-none px-2.5 py-1 ${currentPage === page && 'bg-blue-600 hover:bg-blue-600'} hover:bg-[#ddd] cursor-pointer p-2 text-black font-medium  rounded-sm`} onClick={() => {
+                       setCurrentPage(page);
+                       window.scrollTo({top:0, behavior:'smooth'});
+                   }}>{page}</li>)
                }
 
                    </ol>
@@ -150,8 +155,10 @@ export const AdminBookList = () => {
 
                    if((amountOfEntities !== 10 && currentPage < books.length / amountOfEntities) || (searchValue && currentPage < books.length / amountOfEntities)){
                        setCurrentPage(currentPage + 1)
+                       window.scrollTo({top:0, behavior:'smooth'});
                    }else if(!searchValue ? currentPage < allBooks.length / amountOfEntities : currentPage < Math.floor(books.length / amountOfEntities)){
                        setCurrentPage(currentPage + 1)}
+                       window.scrollTo({top:0, behavior:'smooth'});
                }
                }></i>
                    </div>

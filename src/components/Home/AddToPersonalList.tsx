@@ -4,10 +4,11 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import { UserEntity } from "../../../../BookWormBack/types/users/user.entity";
-import {SpinnerComponent} from "../../SpinnerComponent";
+import {SpinnerComponent} from "../SpinnerComponent";
 import { SubmitHandler, useForm} from "react-hook-form";
 import {CheckboxList} from "./CheckboxList";
 import {setSecondModal} from "../../features/HomeSlice";
+import {ToastContainer} from "react-toastify";
 
 export const AddToPersonalList = ({book}:{book:BookEntity}) => {
     const [modal, setModal] = useState<boolean>(false);
@@ -55,8 +56,9 @@ export const AddToPersonalList = ({book}:{book:BookEntity}) => {
         setValue('listName', '')
     };
     return <>
+
         <button onClick={() => setModal((prev) => !prev )} className='  text-black text-md font-bold  rounded-2xl h-full hover:text-blue-600 px-1 '>
-        <b className='flex items-start h-full'>{checked ? 'Change list': 'Add to list'}</b>
+        <b className='flex items-start h-full'>{checked ? 'Change list': 'Add to list'} <ToastContainer/></b>
         </button>
         {(modal) && <div className='w-screen h-screen top-0  left-0 right-0 fixed z-40'>
             <div className='w-screen h-screen  bg-[#333]/[0.65] absolute z-20' onClick={() => {
