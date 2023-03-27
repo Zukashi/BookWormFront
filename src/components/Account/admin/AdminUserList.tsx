@@ -7,7 +7,7 @@ import {HomeNavAdmin} from "../../Home/AdminHome/HomeNavAdmin";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 import {UserEntity} from 'types'
 import {HomeNav} from "../../Home/HomeNav";
-import {SpinnerComponent} from "../../../SpinnerComponent";
+import {SpinnerComponent} from "../../SpinnerComponent";
 
 export interface Author {
     key:string,
