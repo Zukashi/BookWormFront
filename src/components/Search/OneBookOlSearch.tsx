@@ -42,7 +42,10 @@ export const OneBookOlSearch = ({book,refresh}:Props) => {
 
         }catch(e:any){
             setLoading(false);
-
+            if(e.response.status === 409){
+                const res = await axiosPrivate.get(`http://localhost:3001/book/isbn/${book.isbn[0]}`);
+                navigate(`/book/${res.data._id}`)
+            }
             toast.update(id, { render: e?.response?.data, type: "error", isLoading: false,position:'bottom-center',theme:'dark', autoClose:3500 });
 
         }
