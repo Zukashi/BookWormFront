@@ -20,7 +20,7 @@ import {HomeNav} from "../Home/HomeNav";
 import Avatar from 'react-avatar-edit';
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import {SpinnerComponent} from "../../SpinnerComponent";
+import {SpinnerComponent} from "../SpinnerComponent";
 export interface UserInterface {
   city:string,
   country:string,
