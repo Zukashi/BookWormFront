@@ -35,8 +35,8 @@ export const OneReviewOrdinary = (props:any) => {
     return (<>
         <section className='pb-6 border-b-2 border-b-[#707070]' >
             <div className='w-full flex'>
-                <img className='w-[1.9rem] pt-1.5' src={props.review.user.base64Avatar} alt=""/>
-                <p className='ml-3 font-medium'>{props.review.user.username}</p>
+                <Link to={`/user/${props.review.user._id}`}><img className='w-[1.9rem] pt-1.5 cursor-pointer   rounded-3xl' src={props.review.user.base64Avatar} alt=""/></Link>
+                <Link to={`/user/${props.review.user._id}`} className='ml-3 font-medium group '><p className='border-b-transparent border-b-2  group-hover:border-b-black'>{props.review.user.username}</p></Link>
             </div>
             <div className='flex items-end justify-between '>
                 { <div className='flex justify-start mt-3 mb-1'>
