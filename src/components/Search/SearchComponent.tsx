@@ -8,7 +8,7 @@ import {useInView} from "react-intersection-observer";
 import {useBookSearch} from "./useBookSearch";
 import { Spinner } from '@chakra-ui/react';
 import {OneBookOlSearch} from "./OneBookOlSearch";
-import {SpinnerComponent} from "../../SpinnerComponent";
+import {SpinnerComponent} from "../SpinnerComponent";
 import {ToastContainer} from "react-toastify";
 function debounce (cb:any, delay=500){
     let timeout:any;
@@ -29,11 +29,8 @@ export const SearchComponent = () => {
     const [query ,setQuery] = useState(searchParams.get('q') ?? '');
     const {books:olBooks, loading:openLibraryLoading, hasMore, error} = useBookSearch(query,pageNumber);
     const observer = useRef<any>();
-    console.log(olBooks[99]?.author_name)
     const lastOlBookElement = useCallback((node:any) => {
-        console.log(node)
         if(loading) return;
-        console.log(555)
         if(observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver(entries => {
                 if(entries[0].isIntersecting && hasMore){
@@ -55,7 +52,6 @@ export const SearchComponent = () => {
 
     useEffect(() => {
         (async () => {
-            console.log(query)
             const res = await axiosPrivate.get(`http://localhost:3001/search?q=${query}&category=${category}`)
             setBooks(res.data)
             setLoading(false)
@@ -79,7 +75,6 @@ export const SearchComponent = () => {
 
     }
 
-    console.log(books)
     if(!olBooks || !books) return <SpinnerComponent/>
     return (<>
     <HomeNav/>
