@@ -1,10 +1,10 @@
 import { Select, useToast} from '@chakra-ui/react';
 import { useQueries} from '@tanstack/react-query'
 import React, {useEffect, useMemo, useState} from 'react'
-import { Link } from 'react-router-dom';
+import {Link, useSearchParams} from 'react-router-dom';
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import axios, {all} from "axios";
-import {SpinnerComponent} from "../../SpinnerComponent";
+import {SpinnerComponent} from "../SpinnerComponent";
 import { HomeNav } from '../Home/HomeNav';
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import { OneRowInBookListAdmin } from '../Book/OneRowInBookListAdmin';
@@ -32,7 +32,8 @@ export const UserBookList = () => {
         const [value, setValue] = useState('');
         const axiosPrivate = useAxiosPrivate()
         const toast = useToast();
-        const [list, setList] = useState<string>('')
+        const [searchParams, setSearchParams] = useSearchParams();
+        const [list, setList] = useState<string>(searchParams.get('list') ?? '')
         const {userId} = useParams()
         const [loading ,setLoading] = useState<boolean>(false);
         const [sort, setSort] = useState(false);
@@ -81,7 +82,12 @@ export const UserBookList = () => {
                 refetchUser();
                 refetchAll();
                 setLoading(false)
-        }
+        };
+        useEffect(() => {
+
+
+                searchParams.set('list', list);
+        }, [list])
         useEffect(() => {
                 refreshAll()
         }, [ amountOfEntities, list, searchValue, sort, arrow, userData]);
@@ -122,7 +128,6 @@ export const UserBookList = () => {
         }
 
         if(allBooksLoading || isLoading || !userData || loading || isLoading) return <SpinnerComponent/>
-        console.log(arrow)
         return (<>
                 <HomeNav/>
                 <div className='pt-16'></div>
@@ -131,14 +136,14 @@ export const UserBookList = () => {
                         <section className='w-[90%] mx-auto bg-white shadow-2xl rounded-xl relative '>
                                 <div className='w-[90%] mx-auto pt-[1rem] pb-5'>
                                         <div className='flex items-center w-full flex-col gap-y-2 mb-5'>
-                                                <h2 className='text-3xl font-medium mt-4'>Pick a list</h2>
-                                                <Select width='250px' autoComplete='off' value={list}    onChange={(e) => setList(e.target.value)}>
-                                                        <option value="" hidden disabled className='' defaultChecked={true}>
-                                                                Lists
-                                                        </option>
-                                                        {Object.keys(userData?.lists).map((key:string) => <option
-                                                            value={key}>{key}</option>)}
-                                                </Select>
+                                                {Object.keys(userData?.lists).length > 0 ?<> <h2 className='text-3xl font-medium mt-4'>Pick a list</h2>
+                                                    <Select width='250px' autoComplete='off' value={list}    onChange={(e) => setList(e.target.value)}>
+                                                            <option value="" hidden disabled className='' defaultChecked={true}>
+                                                                    Lists
+                                                            </option>
+                                                            {Object.keys(userData?.lists).map((key:string) => <option
+                                                                value={key}>{key}</option>)}
+                                                    </Select> </>: <h2 className='text-5xl font-bold'>There are no lists </h2>}
                                         </div>
                                         {list  && <> <div className='flex justify-center gap-1 items-center mt-2'>
                                                 <p className='font-medium'>Show</p><Select className=' appearance-none  font-medium  ' width={'90px'} onChange={(e) =>{
@@ -221,16 +226,23 @@ export const UserBookList = () => {
                                                 </tbody>
                                                 </table>
                                                 </div> : <div className='font-bold text-2xl mx-auto flex justify-center'><h2 className='my-4'>List is empty</h2></div>}
-                                        {books?.length === 0 ? null : <> <div className='flex justify-center mt-2 mb-1'>Showing {amountOfEntities >= allBooks && value === '' ? allBooks.length : (currentPage * amountOfEntities) - amountOfEntities + 1 } to {books.length >= amountOfEntities ? amountOfEntities : books.length < amountOfEntities ? currentPage > 1 ? books.length + amountOfEntities:books.length : allBooks.length} of {books.length < amountOfEntities ? books.length : allBooks.length} entries</div>
+                                        {books?.length === 0  ? null : <> <div className='flex justify-center mt-2 mb-1'>Showing {amountOfEntities >= allBooks && value === '' ? allBooks.length : (currentPage * amountOfEntities) - amountOfEntities + 1 } to {books.length >= amountOfEntities ? amountOfEntities : books.length < amountOfEntities ? currentPage > 1 ? books.length + amountOfEntities:books.length : allBooks.length} of {books.length < amountOfEntities ? books.length : allBooks.length} entries</div>
                                                 <div className='w-full h-10 flex justify-center items-center '>
                                                 <i
                                                 className="fa-solid fa-angle-left text-[#667574] mr-2 p-2 hover:bg-[#ddd] cursor-pointer" onClick={() => {
-                                                if(currentPage !== 1) setCurrentPage(currentPage - 1)}
+                                                if(currentPage !== 1) {
+                                                        setCurrentPage(currentPage - 1)
+                                                        window.scrollTo({top:0, behavior:'smooth'});
+                                                }
+                                                }
                                         }></i>
                                                 <ol className='flex gap-2 '>
 
                                         {
-                                                pages.map((page:number) => <li className={`list-none px-2.5 py-1 ${currentPage === page && 'bg-blue-600 hover:bg-blue-600'} hover:bg-[#ddd] cursor-pointer p-2 text-black font-medium  rounded-sm`} onClick={() => setCurrentPage(page)}>{page}</li>)
+                                                pages.map((page:number) => <li className={`list-none px-2.5 py-1 ${currentPage === page && 'bg-blue-600 hover:bg-blue-600'} hover:bg-[#ddd] cursor-pointer p-2 text-black font-medium  rounded-sm`} onClick={() => {
+                                                        setCurrentPage(page);
+                                                        window.scrollTo({top:0, behavior:'smooth'})
+                                                }}>{page}</li>)
                                         }
 
                                                 </ol>
@@ -238,7 +250,8 @@ export const UserBookList = () => {
                                                 className="fa-solid fa-angle-right text-[#667574] ml-2 hover:bg-[#ddd]  p-2 cursor-pointer" onClick={() => {
 
                                                 if(amountOfEntities < allBooks.length && books.length >= amountOfEntities){
-                                                        setCurrentPage(currentPage + 1)
+                                                        setCurrentPage(currentPage + 1);
+                                                        window.scrollTo({top:0, behavior:'smooth'});
                                                 }
                                         }
                                         }></i>

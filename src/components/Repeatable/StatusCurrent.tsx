@@ -5,7 +5,7 @@ import {RootState} from "../../app/store";
 import {useLocation, useParams} from "react-router";
 import { BookEntity } from 'types';
 import {Spinner} from "@chakra-ui/react";
-import {SpinnerComponent} from "../../SpinnerComponent";
+import {SpinnerComponent} from "../SpinnerComponent";
 
 
 export const StatusCurrent = ({refresh, onDelete, book}:{
