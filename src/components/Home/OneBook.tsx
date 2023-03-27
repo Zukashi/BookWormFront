@@ -6,7 +6,7 @@ import {RootState} from "../../app/store";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {StatusCurrent} from "../Repeatable/StatusCurrent";
 import {setBook} from "../../features/Books/bookSlice";
-import {SpinnerComponent} from "../../SpinnerComponent";
+import {SpinnerComponent} from "../SpinnerComponent";
 import {AddToPersonalList} from "./AddToPersonalList";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {useLocation} from "react-router";
@@ -70,7 +70,6 @@ export const OneBookHome = ({book,refresh}:Props) => {
       }
 
   };
-  console.log(location.pathname.split('/'))
 
   const mouseLeft = () => {
     if (refImg.current === null || refImg.current === undefined){
@@ -78,7 +77,6 @@ export const OneBookHome = ({book,refresh}:Props) => {
     }
     refImg.current.classList.remove('opacity-50')
   };
-  console.log((book as any).progress)
   if(!book){
     return <h1>123</h1>
   }
@@ -123,10 +121,13 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
       <StatusCurrent refresh={refreshOneBook} book={book} onDelete={deleteReview}/>
       {location.pathname.split('/')[3] === 'books' && searchParams.get('status') === 'currentlyReading' && <><Link className='  rounded-xl p-1.5 bg-[#aaa] cursor-pointer font-medium hover:bg-[#ccc]' state={location.pathname + '?status=' + searchParams.get('status')} to={`/user/${user._id}/book/${book._id}/currentlyReading/progress`}>Change Progress</Link>
-        <div className='w-40 rounded-[15px] bg-[#ccc]'>
-            <div style={{width:`${(book as any).progress.toFixed(0)}%`, background:'blueviolet', borderRadius:'15px'}} className='text-white font-medium text-center'  >
-              {(book as any).progress}%
+        <div className='w-40 rounded-[15px] bg-[#ccc] height-[30px] relative'>
+          <div className='flex  w-full items-center  rounded-xl overflow-hidden h-full'> <div className='h-4 w-40 bg-[#e0e0de] rounded-xl  overflow-hidden'>
+            <div style={{width:`${Math.ceil((book as any).progress.toFixed(0)) / book.number_of_pages * 100}%`}} className={`h-full w-40  bg-blue-500 rounded-xl `}>
+              <span className='absolute right-2 -top-1 text-[#222]'>{(Math.ceil((book as any).progress.toFixed(0)) / book.number_of_pages * 100).toFixed(0)}%</span>
             </div>
+          </div>
+          </div>
         </div>
       </>}
     </div>
