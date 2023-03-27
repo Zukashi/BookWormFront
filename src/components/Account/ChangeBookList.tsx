@@ -4,7 +4,6 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import { UserEntity } from "../../../../BookWormBack/types/users/user.entity";
-import {SpinnerComponent} from "../../SpinnerComponent";
 import { SubmitHandler, useForm} from "react-hook-form";
 
 import {setSecondModal} from "../../features/HomeSlice";

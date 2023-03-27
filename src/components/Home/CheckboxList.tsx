@@ -4,7 +4,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {changeCurrentEditListName, setSecondModal} from "../../features/HomeSlice";
-import {Spinner} from "@chakra-ui/react";
+import {Spinner, useToast} from "@chakra-ui/react";
+import {toast} from "react-toastify";
+import {useLocation} from "react-router";
+import {useNavigate} from "react-router-dom";
 
 export const CheckboxList = ({listName, book, checked, list, refreshLists}:{listName:string, book:BookEntity, checked:boolean, list:string[], refreshLists: () => void}) => {
     const axiosPrivate = useAxiosPrivate();
@@ -13,19 +16,46 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
     const {user} = useSelector((root:RootState) => root.user);
     const [newListName, setNewListName] = useState<string>('');
     const [loading ,setLoading] = useState(false);
-
+    const toastify = useToast();
+    const location = useLocation();
+    const navigate = useNavigate();
     const [checkedCheckbox, setCheckedCheckbox] = useState<boolean>(false);
-    const refP = useRef<HTMLParagraphElement | null>(null);
-    const [modal ,setModal] = useState<boolean>(home.modal);
-    console.log(list)
     const [editable, setEditable] = useState<boolean>(false);
     const handleEntityAddSubmit = async() => {
         setCheckedCheckbox((prev) => !prev)
         if(checkedCheckbox === false) {
-            console.log(333)
             await axiosPrivate.put(`http://localhost:3001/user/${user._id}/list/${listName}/book/${book._id}`);
+            toast.success(`${book.title} added to ${listName}`, {
+                position: toast.POSITION.BOTTOM_CENTER,
+                theme:'dark',
+                autoClose:3000
+            });
+            if(location.pathname.split('/')[3] === 'lists'){
+                toastify({
+                    title: 'Success',
+                    description: `${book.title} added to ${listName}`,
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                })
+            }
+
         }else{
-            await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/list/${listName}/book/${book._id}`)
+            await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/list/${listName}/book/${book._id}`);
+            toast.success(`${book.title} removed from ${listName}`, {
+                position: toast.POSITION.BOTTOM_CENTER,
+                theme:'dark',
+                autoClose:3000
+            });
+            if(location.pathname.split('/')[3] === 'lists'){
+                toastify({
+                    title: 'Success',
+                    description: `${book.title} removed from ${listName}`,
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                })
+            }
         }
         refreshLists();
     }
@@ -53,6 +83,22 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
     const handleChangeListName = async () => {
         setLoading(true);
         await axiosPrivate.put(`http://localhost:3001/user/${user._id}/list/${currentEditListName}`, {newListName});
+        toast.success(`List name changed from ${currentEditListName} to ${newListName}`, {
+            position: toast.POSITION.BOTTOM_CENTER,
+            theme:'dark',
+            autoClose:3000
+        });
+        if(location.pathname.split('/')[3] === 'lists'){
+            navigate(`/user/${user._id}/lists?list=${newListName}`)
+            toastify({
+                title: 'Success',
+                description: `List name changed from ${currentEditListName} to ${newListName}`,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            })
+            window.location.reload()
+        }
         refreshLists();
         setLoading(false)
         dispatch(setSecondModal(false));
@@ -60,6 +106,22 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
     }
     const deleteList = async () => {
         await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/list/${currentEditListName}`);
+        toast.success(`List ${currentEditListName} deleted`, {
+            position: toast.POSITION.BOTTOM_CENTER,
+            theme:'dark',
+            autoClose:3000
+        });
+        if(location.pathname.split('/')[3] === 'lists'){
+            navigate(`/user/${user._id}/lists`)
+            toastify({
+                title: 'Success',
+                description:`List ${currentEditListName} deleted`,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            })
+            window.location.reload()
+        }
         refreshLists();
         dispatch(setSecondModal(false))
     }
