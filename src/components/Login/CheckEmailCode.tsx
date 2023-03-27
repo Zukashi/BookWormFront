@@ -10,43 +10,48 @@ export const CheckEmailCode =(props:{code:number | null, email:string}) => {
     const [isValid ,setIsValid] = useState(false);
     const [user, setUser] = useState();
     const axiosPrivate = useAxiosPrivate();
-    console.log(watch('code'))
     const onSubmit = async (data:{code:string}) => {
-        console.log(data, props)
         if (data.code === props?.code?.toString()){
-            const res = await axiosPrivate.put(`http://localhost:3001/user/reset-password/confirm`,JSON.stringify({email:props.email}));
+            try{
+                const res = await axiosPrivate.put(`http://localhost:3001/user/reset-password/confirm`,JSON.stringify({email:props.email}));
 
-            setUser(res.data);
-            setIsValid(prev => !prev)
-            toast({
-                title: `Password Reset`,
-                description: `Password has been cleared`,
-                status: 'success',
-                duration: 9000,
-                isClosable: true,
-            });
+                setUser(res.data);
+                setIsValid(prev => !prev)
+                toast({
+                    title: `Password Reset`,
+                    description: `Password has been cleared`,
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                });
+            }catch(e){
 
-        }else{
-            toast({
-                title:'Failure',
-                description:'Incorrect code',
-                status:'error',
-                duration:9000,
-                isClosable:true,
-            })
+                    toast({
+                        title:'Failure',
+                        description:'Email doesnt exist in our database',
+                        status:'error',
+                        duration:5000,
+                        isClosable:true,
+                    });
+
+
+            }
+
         }
     }
     return (<>
         {   !isValid ?
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} className='flex justify-center items-center flex-col h-screen w-screen gap-4'>
                 <h1>INPUT CODE</h1>
-                <PinInput onChange={(e) => setValue('code', e)}>
-                    <PinInputField />
-                    <PinInputField />
-                    <PinInputField />
-                    <PinInputField />
-                </PinInput>
-                <input type="submit"/>
+                <div className='flex'>
+                    <PinInput onChange={(e) => setValue('code', e)}>
+                        <PinInputField />
+                        <PinInputField />
+                        <PinInputField />
+                        <PinInputField />
+                    </PinInput>
+                </div>
+                <button className='px-4 py-2 bg-black text-white rounded-lg font-medium'>Proceed</button>
 
 
             </form>
