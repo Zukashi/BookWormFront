@@ -3,7 +3,7 @@ import {useAxiosPrivate} from "../hooks/useAxiosPrivate";
 import {userUpdate} from "../features/User/userSlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {SpinnerComponent} from "../SpinnerComponent";
+import {SpinnerComponent} from "./SpinnerComponent";
 
 export const  Redirect = () => {
     const axiosPrivate = useAxiosPrivate();

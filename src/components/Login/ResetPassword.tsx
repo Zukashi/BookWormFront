@@ -27,10 +27,10 @@ export const ResetPassword = () => {
 
     return (<>
         {   !sentEmail ?
-            <form onSubmit={handleSubmit(onSubmit)}>
-
-                <Input {...register('email')}/>
-                <input type="submit"/>
+            <form onSubmit={handleSubmit(onSubmit)} className='flex justify-center items-center flex-col h-screen w-screen gap-4'>
+                <h2 className='font-medium text-3xl'>Input your email</h2>
+                <Input {...register('email')} className='w-40 max-w-md'/>
+                <button type={'submit'} className='px-4 py-2 bg-black text-white rounded-lg font-medium'>Send</button>
             </form>
             :   <CheckEmailCode code={code} email={getValues('email')}/>
 

@@ -6,6 +6,7 @@ import {RootState} from "../../app/store";
 import {useLocation, useParams} from "react-router";
 import {useNavigate} from "react-router-dom";
 import {useToast} from "@chakra-ui/react";
+import {SpinnerComponent} from "../SpinnerComponent";
 export const ProgressBookChange =() => {
     const axiosPrivate = useAxiosPrivate();
     const {user} = useSelector((root:RootState) => root.user)
@@ -42,7 +43,8 @@ export const ProgressBookChange =() => {
         console.log(location)
         await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/book/${bookId}/${status}/${pageNumber}`);
          navigate(`${location.state}`,{replace:true,state:location.state.status})
-    }
+    };
+    if(!book) return <SpinnerComponent/>
     return (<>
     <HomeNav/>
         <main>
