@@ -7,7 +7,7 @@ import {Button, Checkbox, Select, Spinner, Textarea, useToast} from "@chakra-ui/
 import {useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
-import {SpinnerComponent} from "../../SpinnerComponent";
+import {SpinnerComponent} from "../SpinnerComponent";
 
 
 export const ReviewEdit = () => {

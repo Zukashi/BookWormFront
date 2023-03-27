@@ -5,12 +5,10 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {Button, Checkbox, Select, Spinner, Textarea, useToast} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
-import * as yup from "yup";
-import {yupResolver} from "@hookform/resolvers/yup";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {toast, ToastContainer} from "react-toastify";
-import {SpinnerComponent} from "../../SpinnerComponent";
+import {SpinnerComponent} from "../SpinnerComponent";
 
 export interface AddReview {
     rating :number,

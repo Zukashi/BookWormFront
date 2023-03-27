@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import {LoginPageView} from "./Views/LoginPageView";
 import {Register} from "./components/Register/Register";
 import { HomeView } from './Views/HomeView';
@@ -63,6 +63,7 @@ export const AllRoutes = () => {
 
                  <Route path='addBook' element={<AddBookAdmin/>}></Route>
                </Route>
+                <Route path="*" element={<Navigate to="/" />} />
             </Routes>
 
     </>)
