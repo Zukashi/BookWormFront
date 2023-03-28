@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
+import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 export const useBookSearch = (query:string, pageNumber:number) => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false);
     const [books, setBooks] = useState<any[]>([]);
     const [hasMore, setHasMore] = useState(false);
+    const axiosPrivate = useAxiosPrivate();
     useEffect(() => {
         setBooks([])
     }, [query]);
@@ -15,7 +17,7 @@ export const useBookSearch = (query:string, pageNumber:number) => {
         let cancel: () => void;
         try{
             (async() => {
-                const res = await axios.get('http://localhost:3001/searchOL', {
+                const res = await axiosPrivate.get('http://localhost:3001/searchOL', {
                     params:{q:query,page:pageNumber},
                     cancelToken: new axios.CancelToken(c => cancel = c)
                 });
