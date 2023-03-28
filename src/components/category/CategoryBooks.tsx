@@ -12,7 +12,8 @@ export const CategoryBooks = () => {
     const [changed, setChanged] = useState<boolean>(false)
     const [perPage, setPerPage] = useState<number>(12);
     const [allBooks, setAllBooks] = useState<null| BookEntity[]>(null)
-    const {user} = useSelector((root:RootState) => root.user)
+    const {user} = useSelector((root:RootState) => root.user);
+    const [searchValue, setSearchValue] = useState<string>('');
     const [defaultAuthorsYearsGenres, setDefaultAuthorsYearsGenres] = useState<{genres:string[],years:string[],authors:string[]}>({
         genres:[],
         years:[],
@@ -29,7 +30,16 @@ export const CategoryBooks = () => {
         search:'',
 
     });
-    const [loading,setLoading] = useState(true)
+    const [loading,setLoading] = useState(true);
+    function debounce (cb:any, delay=500){
+        let timeout:any;
+        return (...args:any) => {
+                clearTimeout(timeout)
+                timeout = setTimeout(() => {
+                        cb(...args)
+                }, delay)
+        }
+}
     const onChange = async (value:string, field:string) => {
         setChanged(true)
         await setForm((prev) => ({
@@ -37,15 +47,23 @@ export const CategoryBooks = () => {
             [field]:value
         }) );
         setFilterBooksBoolean(true)
-    }
+    };
+    const getBooksSearch = debounce(async (value:string) =>  {
+        console.log(value);
+        
+         setSearchValue(value)
+
+
+}, 300);
     useEffect(() => {
+        form.search = searchValue;
        (async() => {
             const res  = await axiosPrivate.post('http://localhost:3001/filterBooks', JSON.stringify(form));
             setBooks(res.data);
-            setBooksOnCurrentPage(res.data.slice(currentPage * perPage - perPage,currentPage * perPage))
+            setBooksOnCurrentPage(res.data.slice(currentPage * perPage - perPage,currentPage * perPage));
         })();
 
-    }, [form, currentPage]);
+    }, [form.genres,form.year,form.author, currentPage, searchValue]);
     useEffect(() => {
         (async () => {
             const res = await axiosPrivate.get('http://localhost:3001/books')
@@ -99,7 +117,7 @@ export const CategoryBooks = () => {
                             </select>
                         </form>
                         <div className='flex justify-between sm:w-2/3 sm:mx-auto gap-2'>
-                            <input value={form.search} className='w-3/4 ring-1 rounded-md ring-[#eee] px-2' onChange={(e) => onChange(e.target.value, 'search')} placeholder='Search here...' ></input><button className='bg-black hover:text-[#bbb] font-bold text-white text-1xl px-4 py-2 rounded-xl '>Search</button>
+                            <input  className='w-3/4 ring-1 rounded-md ring-[#eee] px-2' onChange={(e) => getBooksSearch(e.target.value)} placeholder='Search here...' ></input><button className='bg-black hover:text-[#bbb] font-bold text-white text-1xl px-4 py-2 rounded-xl '>Search</button>
                             <button className="hidden sm:block py-2 rounded-xl bg-[#cacaca] hover:bg-[#aaa] w-40" onClick={() => setForm({  genres:'',
                                 year:'',
                                 author:'',
