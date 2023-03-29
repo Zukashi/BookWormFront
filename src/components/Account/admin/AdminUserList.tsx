@@ -5,7 +5,7 @@ import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 
 import {HomeNav} from "../../Home/HomeNav";
 import {SpinnerComponent} from "../../SpinnerComponent";
-import { UserEntity } from '../../../../../BookWormBack/types/users/user.entity';
+import { UserEntity } from '../../../../../BookWormBack/types/users';
 
 export interface Author {
     key:string,
