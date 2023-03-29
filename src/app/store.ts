@@ -7,6 +7,7 @@ import categoryReducer from "../features/Search/categorySlice";
 import homeReducer from "../features/HomeSlice";
 import drawerReducer from "../features/Drawer";
 export const store = configureStore({
+  devTools:false,
   reducer: {
     user:userReducer,
     book:bookReducer,
