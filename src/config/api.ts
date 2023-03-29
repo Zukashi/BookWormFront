@@ -1,0 +1,1 @@
+export const apiUrl = process.env.REACT_APP ?? 'http://localhost:3001'
