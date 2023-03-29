@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import { UserEntity } from '../../../../BookWormBack/types/users/user.entity';
 import {SpinnerComponent} from "../SpinnerComponent";
 
 export const Profile = () => {
-  const [user, setUser] = useState<UserEntity | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const params = useParams();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();

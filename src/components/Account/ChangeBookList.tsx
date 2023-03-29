@@ -3,7 +3,6 @@ import { BookEntity } from "../../../../BookWormBack/types/book/book-entity";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
-import { UserEntity } from "../../../../BookWormBack/types/users/user.entity";
 import { SubmitHandler, useForm} from "react-hook-form";
 
 import {setSecondModal} from "../../features/HomeSlice";
@@ -14,7 +13,7 @@ export const ChangeBookList = ({book, refresh}:{book:BookEntity, refresh: () => 
     const {user} = useSelector((state:RootState) => state.user);
     const {handleSubmit, register, watch, setValue} = useForm<AddListValuesForm>();
     const {handleSubmit: handleSubmitListEntityAdd, register:registerList} = useForm<AddListValuesForm>();
-    const [userRes, setUser] = useState<null | UserEntity>(null);
+    const [userRes, setUser] = useState<null | any>(null);
     const {home} = useSelector((root:RootState) => root.home);
     const [checkboxValue, setCheckboxValue] = useState();
     const dispatch = useDispatch();

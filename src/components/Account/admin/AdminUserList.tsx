@@ -5,14 +5,13 @@ import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 
 import {HomeNav} from "../../Home/HomeNav";
 import {SpinnerComponent} from "../../SpinnerComponent";
-import { UserEntity } from '../../../../../BookWormBack/types/users/index';
 
 export interface Author {
     key:string,
 }
 
 export const AdminUserList = () => {
-    const [users ,setUsers] = useState<UserEntity[]>([]);
+    const [users ,setUsers] = useState<any[]>([]);
     const [value, setValue] = useState('');
     const axiosPrivate = useAxiosPrivate()
     const refreshUsers = async () => {
