@@ -3,6 +3,7 @@ import {Link, Route, useNavigate} from "react-router-dom";
 import {Id, toast, ToastContainer } from 'react-toastify';
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useToast} from "@chakra-ui/react";
+import {apiUrl} from "../../config/api";
 
 interface Props {
     book: any,
@@ -26,7 +27,7 @@ export const OneBookOlSearch = ({book,refresh}:Props) => {
             position:'bottom-center'
         })
         try{
-            const res =  await axiosPrivate.post('http://localhost:3001/book',JSON.stringify({
+            const res =  await axiosPrivate.post('book',JSON.stringify({
                 isbn:book.isbn[0]
             }))
 
@@ -43,7 +44,7 @@ export const OneBookOlSearch = ({book,refresh}:Props) => {
         }catch(e:any){
             setLoading(false);
             if(e.response.status === 409){
-                const res = await axiosPrivate.get(`http://localhost:3001/book/isbn/${book.isbn[0]}`);
+                const res = await axiosPrivate.get(`${apiUrl}/book/isbn/${book.isbn[0]}`);
                 navigate(`/book/${res.data._id}`)
             }
             toast.update(id, { render: e?.response?.data, type: "error", isLoading: false,position:'bottom-center',theme:'dark', autoClose:3500 });

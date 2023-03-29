@@ -12,7 +12,10 @@ import {ProgressBarSection} from "./ProgressBarSection";
 import {SpinnerComponent} from "../SpinnerComponent";
 
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';;
+import { apiUrl } from '../../config/api';
+import 'react-toastify/dist/ReactToastify.css';
+
+;
 
 export const OneBook = () => {
   const navigate = useNavigate();
@@ -44,20 +47,20 @@ export const OneBook = () => {
   const [isHighlighted, setIsHighlighted] = useState<boolean[]>([false,false,false,false,false]);
   const refresh = async () => {
     try{
-      const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
+      const res = await axiosPrivate.get(`${apiUrl}/book/${bookId}`);
       setBook(res.data);
-      const res3 = await axiosPrivate.get(`http://localhost:3001/book/${res.data._id}`)
-      const res4 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${bookId}/status`);
+      const res3 = await axiosPrivate.get(`${apiUrl}/book/${res.data._id}`)
+      const res4 = await axiosPrivate.get(`${apiUrl}/user/${user._id}/${bookId}/status`);
       if(res4.data !== '' && res4.data !== 'not found shelf'){
         setStatus(res4.data)
         setOriginalStatus(res4.data)
       }
 
       setRating(res3.data.rating);
-      const res5 = await axiosPrivate.get(`http://localhost:3001/book/${res.data._id}/reviews`);
+      const res5 = await axiosPrivate.get(`${apiUrl}/book/${res.data._id}/reviews`);
       setReviews(res5.data);
       setOriginalReviews(res5.data)
-      const res2 = await axiosPrivate(`http://localhost:3001/user/${user._id}/book/${res.data._id}`);
+      const res2 = await axiosPrivate(`${apiUrl}/user/${user._id}/book/${res.data._id}`);
 
       setReview(res2.data)
       setPersonalRating(res2.data.rating)
@@ -71,8 +74,8 @@ export const OneBook = () => {
   }
   const deleteReview = async () => {
 
-    await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${personalRating}`);
-    await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book?._id}/status`);
+    await axiosPrivate.delete(`${apiUrl}/book/${book?._id}/user/${user._id}/review/${personalRating}`);
+    await axiosPrivate.delete(`${apiUrl}/user/${user._id}/book/${book?._id}/status`);
     toast.success(`Review deleted successfully`, {
       position: toast.POSITION.BOTTOM_CENTER,
       theme:'dark',
@@ -104,7 +107,7 @@ export const OneBook = () => {
       setReviews(filteredReviewsByRating)
     } else if (filterRate === rating){
       setFilterRate(0)
-      const res5 = await axiosPrivate.get(`http://localhost:3001/book/${book?._id}/reviews`);
+      const res5 = await axiosPrivate.get(`${apiUrl}/book/${book?._id}/reviews`);
       setReviews(res5.data)
     }
   };
@@ -113,15 +116,15 @@ export const OneBook = () => {
     setPersonalRating(value);
     setStatus(status  === '' ? 'read' : status)
     try{
-      await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${status  === '' ? 'read' : status }/${originalStatus}`)
-      await axiosPrivate.post(`http://localhost:3001/book/${bookId}/${value}`);
+      await axiosPrivate.patch(`${apiUrl}/user/${user._id}/${bookId}/${status  === '' ? 'read' : status }/${originalStatus}`)
+      await axiosPrivate.post(`${apiUrl}/book/${bookId}/${value}`);
     }catch(e){
       console.log(e)
     }
     if(personalRating === 0){
       try{
-        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${bookId}/status`)
-        await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
+        await axiosPrivate.delete(`${apiUrl}/user/${user._id}/book/${bookId}/status`)
+        await axiosPrivate.post(`${apiUrl}/user/${user._id}/book/${bookId}`,JSON.stringify({
               rating:value,
               description:'',
               status:status  === '' ? 'read' : status,
@@ -143,8 +146,8 @@ export const OneBook = () => {
 
     }else if(personalRating <= 5 && personalRating >= 1){
      try{
-       await axiosPrivate.delete(`http://localhost:3001/book/${bookId}/${personalRating}`)
-       await axiosPrivate.put(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify({
+       await axiosPrivate.delete(`${apiUrl}/book/${bookId}/${personalRating}`)
+       await axiosPrivate.put(`${apiUrl}/user/${user._id}/book/${bookId}`,JSON.stringify({
              rating:value,
              description:review.description,
              status:status,

@@ -4,6 +4,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {userUpdate} from "../features/User/userSlice";
 import {useDispatch} from "react-redux";
+import {apiUrl} from "../config/api";
 
 
 export const useAxiosPrivate = () => {
@@ -24,7 +25,7 @@ export const useAxiosPrivate = () => {
                 const prevRequest = error?.config;
                 if (error?.response?.status === 401 && !prevRequest?.sent) {
                     prevRequest.sent = true;
-                    const res = await axios(`http://localhost:3001/auth/refreshToken`,{
+                    const res = await axios(`${apiUrl}/auth/refreshToken`,{
                         method:'POST',
                         withCredentials:true,
                     });

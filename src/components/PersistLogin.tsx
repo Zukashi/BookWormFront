@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import {userUpdate} from "../features/User/userSlice";
 import {useDispatch} from "react-redux";
 import {useAxiosPrivate} from "../hooks/useAxiosPrivate";
+import {apiUrl} from "../config/api";
 
 const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -16,7 +17,7 @@ const PersistLogin = () => {
 
         const verifyRefreshToken = async () => {
             try {
-                const res = await axiosPrivate.post(`http://localhost:3001/auth/refreshToken`)
+                const res = await axiosPrivate.post(`${apiUrl}/auth/refreshToken`);
                 if(res.status === 403){
                     navigate('/login')
                 }

@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import {Link} from "react-router-dom";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {Comments} from "./Comments";
+import {apiUrl} from "../../config/api";
 
 
 export const OneReviewOrdinary = (props:any) => {
@@ -20,7 +21,7 @@ export const OneReviewOrdinary = (props:any) => {
     const [hoverSpoiler, setHoverSpoiler] = useState<boolean>(false);
     const refreshReview =  async () => {
 
-            const res2 = await axiosPrivate.get(`http://localhost:3001/user/${props.review.user._id}/book/${params.bookId}`);
+            const res2 = await axiosPrivate.get(`${apiUrl}/user/${props.review.user._id}/book/${params.bookId}`);
             setPersonalRating(res2.data.rating);
             setPersonalReview(res2.data);
     }

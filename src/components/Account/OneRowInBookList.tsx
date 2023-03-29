@@ -4,13 +4,14 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {SpinnerComponent} from "../SpinnerComponent";
 import {AddToPersonalList} from "../Home/AddToPersonalList";
 import {ChangeBookList} from "./ChangeBookList";
+import {apiUrl} from "../../config/api";
 
 export const OneRowInBookList = ({book, i, refresh }:{book:any, i:number, refresh: () => void},) => {
     const axiosPrivate = useAxiosPrivate();
 
 
     const deleteBook = async () =>  {
-        await axiosPrivate.delete(`http://localhost:3001/book/${book._id}`)
+        await axiosPrivate.delete(`${apiUrl}/book/${book._id}`)
         refresh();
     };
     if(!book) return <SpinnerComponent/>

@@ -10,12 +10,13 @@ import { HomeNav } from '../Home/HomeNav';
 import {useParams} from "react-router";
 
 import {OneRowInBookList} from "./OneRowInBookList";
+import {apiUrl} from "../../config/api";
 export interface Author {
         key:string,
 }
 const getBooksPaginated = async (page:number, amountToShow:number, searchValue:string, list:string, userId:string, sort:boolean, typeOfSort:string, arrow:string) => {
         console.log(list)
-        const res = await axios.get(`http://localhost:3001/books/list?page=${page}&booksPerPage=${amountToShow}&searchValue=${searchValue}&list=${list}&id=${userId}&sort=${sort}&typeOfSort=${typeOfSort}&arrow=${arrow}`,{
+        const res = await axios.get(`${apiUrl}/books/list?page=${page}&booksPerPage=${amountToShow}&searchValue=${searchValue}&list=${list}&id=${userId}&sort=${sort}&typeOfSort=${typeOfSort}&arrow=${arrow}`,{
                 withCredentials:true
         });
         // if(sort && list){
@@ -53,7 +54,7 @@ export const UserBookList = () => {
                                 queryKey:['Books'],
                                 keepPreviousData:true,
                                 queryFn:async () => {
-                                        const res =  await axiosPrivate.get('http://localhost:3001/books/list/all',{
+                                        const res =  await axiosPrivate.get(`${apiUrl}/books/list/all`,{
                                                 params:{
                                                         id:userId,
                                                         list:list,
@@ -67,7 +68,7 @@ export const UserBookList = () => {
                         {
                                 queryKey:['user'],
                                 queryFn:async () => {
-                                        const res =  await axiosPrivate.get(`http://localhost:3001/user/${userId}`);
+                                        const res =  await axiosPrivate.get(`${apiUrl}/user/${userId}`);
                                         return res.data
                                 }
                         }

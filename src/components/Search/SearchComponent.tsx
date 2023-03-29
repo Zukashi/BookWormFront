@@ -9,6 +9,7 @@ import { Spinner } from '@chakra-ui/react';
 import {OneBookOlSearch} from "./OneBookOlSearch";
 import {SpinnerComponent} from "../SpinnerComponent";
 import {ToastContainer} from "react-toastify";
+import {apiUrl} from "../../config/api";
 function debounce (cb:any, delay=500){
     let timeout:any;
     return (...args:any) => {
@@ -51,7 +52,7 @@ export const SearchComponent = () => {
 
     useEffect(() => {
         (async () => {
-            const res = await axiosPrivate.get(`http://localhost:3001/search?q=${query}&category=${category}`)
+            const res = await axiosPrivate.get(`${apiUrl}/search?q=${query}&category=${category}`)
             setBooks(res.data)
             setLoading(false)
 
@@ -63,11 +64,11 @@ export const SearchComponent = () => {
         console.log(query)
 
         if(!query){
-            const res = await axiosPrivate.get(`http://localhost:3001/books`);
+            const res = await axiosPrivate.get(`${apiUrl}/books`);
             setBooks(res.data);
 
         }else{
-            const res = await axiosPrivate.get(`http://localhost:3001/search?q=${e.target.value}&category=${category}`);
+            const res = await axiosPrivate.get(`${apiUrl}/search?q=${e.target.value}&category=${category}`);
             setBooks(res.data);
 
         }

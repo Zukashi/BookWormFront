@@ -7,6 +7,7 @@ import {Spinner, useToast} from "@chakra-ui/react";
 import {toast} from "react-toastify";
 import {useLocation} from "react-router";
 import {useNavigate} from "react-router-dom";
+import {apiUrl} from "../../config/api";
 
 export const CheckboxList = ({listName, book, checked, list, refreshLists}:{listName:string, book:any, checked:boolean, list:string[], refreshLists: () => void}) => {
     const axiosPrivate = useAxiosPrivate();
@@ -23,7 +24,7 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
     const handleEntityAddSubmit = async() => {
         setCheckedCheckbox((prev) => !prev)
         if(checkedCheckbox === false) {
-            await axiosPrivate.put(`http://localhost:3001/user/${user._id}/list/${listName}/book/${book._id}`);
+            await axiosPrivate.put(`${apiUrl}/user/${user._id}/list/${listName}/book/${book._id}`);
             toast.success(`${book.title} added to ${listName}`, {
                 position: toast.POSITION.BOTTOM_CENTER,
                 theme:'dark',
@@ -40,7 +41,7 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
             }
 
         }else{
-            await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/list/${listName}/book/${book._id}`);
+            await axiosPrivate.delete(`${apiUrl}/user/${user._id}/list/${listName}/book/${book._id}`);
             toast.success(`${book.title} removed from ${listName}`, {
                 position: toast.POSITION.BOTTOM_CENTER,
                 theme:'dark',
@@ -60,7 +61,7 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
     }
     useEffect(() => {
         (async() => {
-            const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}`)
+            const res = await axiosPrivate.get(`${apiUrl}/user/${user._id}`)
             let found = null;
             Object.keys(res.data.lists).forEach((key:string) => {
                 res.data.lists[listName].find((id:string) => {
@@ -81,7 +82,7 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
     }
     const handleChangeListName = async () => {
         setLoading(true);
-        await axiosPrivate.put(`http://localhost:3001/user/${user._id}/list/${currentEditListName}`, {newListName});
+        await axiosPrivate.put(`${apiUrl}/user/${user._id}/list/${currentEditListName}`, {newListName});
         toast.success(`List name changed from ${currentEditListName} to ${newListName}`, {
             position: toast.POSITION.BOTTOM_CENTER,
             theme:'dark',
@@ -104,7 +105,7 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
 
     }
     const deleteList = async () => {
-        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/list/${currentEditListName}`);
+        await axiosPrivate.delete(`${apiUrl}/user/${user._id}/list/${currentEditListName}`);
         toast.success(`List ${currentEditListName} deleted`, {
             position: toast.POSITION.BOTTOM_CENTER,
             theme:'dark',

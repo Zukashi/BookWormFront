@@ -9,6 +9,7 @@ import {setBook} from "../../features/Books/bookSlice";
 import {SpinnerComponent} from "../SpinnerComponent";
 import {AddToPersonalList} from "./AddToPersonalList";
 import {useLocation, useParams} from "react-router";
+import {apiUrl} from "../../config/api";
 interface Props {
   book: any,
   refresh: () => void,
@@ -29,8 +30,8 @@ export const OneBookHome = ({book,refresh}:Props) => {
   const refreshOneBook = () => {
     ( async () => {
 
-      const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/favorites`);
-      const res2 = await axiosPrivate.get(`http://localhost:3001/book/${book._id}`);
+      const res = await axiosPrivate.get(`${apiUrl}/user/${user._id}/favorites`);
+      const res2 = await axiosPrivate.get(`${apiUrl}/book/${book._id}`);
       dispatch(setBook(res2.data))
       setRating(res2.data.rating - 1)
       res.data.forEach((favorite:any) => {
@@ -43,8 +44,8 @@ export const OneBookHome = ({book,refresh}:Props) => {
   }
   const deleteReview = async () => {
 
-      await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${rating}`);
-      await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book?._id}/status`);
+      await axiosPrivate.delete(`${apiUrl}/book/${book?._id}/user/${user._id}/review/${rating}`);
+      await axiosPrivate.delete(`${apiUrl}/user/${user._id}/book/${book?._id}/status`);
       refresh()
 
   }
@@ -56,14 +57,14 @@ export const OneBookHome = ({book,refresh}:Props) => {
         setFavorite(true);
         (async() => {
 
-          await axiosPrivate.put(`http://localhost:3001/user/${user._id}/favorite`, JSON.stringify(book))
+          await axiosPrivate.put(`${apiUrl}/user/${user._id}/favorite`, JSON.stringify(book))
           refresh();
         })();
 
       }else{
         setFavorite(false);
         (async() => {
-          await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book._id}/favorite`)
+          await axiosPrivate.delete(`${apiUrl}/user/${user._id}/book/${book._id}/favorite`)
           refresh();
         })();
 

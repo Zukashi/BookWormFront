@@ -5,6 +5,7 @@ import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 
 import {HomeNav} from "../../Home/HomeNav";
 import {SpinnerComponent} from "../../SpinnerComponent";
+import {apiUrl} from "../../../config/api";
 
 export interface Author {
     key:string,
@@ -15,7 +16,7 @@ export const AdminUserList = () => {
     const [value, setValue] = useState('');
     const axiosPrivate = useAxiosPrivate()
     const refreshUsers = async () => {
-        const res = await axiosPrivate.get('http://localhost:3001/user/users');
+        const res = await axiosPrivate.get(`${apiUrl}/user/users`);
         setUsers(res.data);
 
     };
@@ -25,7 +26,7 @@ export const AdminUserList = () => {
             return
         }
 
-        const res = await axiosPrivate.post(`http://localhost:3001/user/search/${value}`,JSON.stringify({value}))
+        const res = await axiosPrivate.post(`${apiUrl}/user/search/${value}`,JSON.stringify({value}))
         setUsers(res.data)
 
     }, 350);

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {SpinnerComponent} from "../SpinnerComponent";
+import {apiUrl} from "../../config/api";
 
 export const Profile = () => {
   const [user, setUser] = useState<any | null>(null);
@@ -11,7 +12,7 @@ export const Profile = () => {
 
     useEffect(() => {
         (async () => {
-           const res = await axiosPrivate.get(`http://localhost:3001/user/${params.userId}`);
+           const res = await axiosPrivate.get(`${apiUrl}/user/${params.userId}`);
            if(res.status === 404) navigate('/home')
            setUser(res.data);
         })()

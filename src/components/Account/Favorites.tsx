@@ -6,6 +6,7 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {OneBookHome} from "../Home/OneBook";
 import { SpinnerComponent } from '../SpinnerComponent';
 import {useParams} from "react-router";
+import {apiUrl} from "../../config/api";
 function debounce (cb:any, delay= 500){
     let timeout:any;
     return (...args:any) => {
@@ -23,13 +24,13 @@ export const Favorites = () => {
     console.log(params)
     const axiosPrivate = useAxiosPrivate()
     const refresh = async () => {
-            const res = await axiosPrivate.get(`http://localhost:3001/user/${params.userId}/favorites`)
+            const res = await axiosPrivate.get(`${apiUrl}/user/${params.userId}/favorites`)
             setFavorites(res.data)
     }
     const filterBooks = debounce( async (value:string) => {
         if(value){
             setSearchValue(value)
-            const res = await axiosPrivate.get(`http://localhost:3001/user/${params.userId}/favorites/filter/${value}`);
+            const res = await axiosPrivate.get(`${apiUrl}/user/${params.userId}/favorites/filter/${value}`);
             setFavorites(res.data)
         }else{
             void refresh()

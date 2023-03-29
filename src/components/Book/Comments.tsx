@@ -6,6 +6,7 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useSelector} from "react-redux";
 import {useParams} from "react-router";
 import {OneComment} from "./OneComment";
+import {apiUrl} from "../../config/api";
 
 export const Comments = (props:any) => {
     const axiosPrivate = useAxiosPrivate();
@@ -16,9 +17,9 @@ export const Comments = (props:any) => {
     const [toggleComments, setToggleComments] = useState<boolean>(false);
     const [liked, setLiked] = useState<boolean>(false);
     const refresh = async () => {
-        const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}/user/${props.personalReview.user._id}/review/${props.personalReview._id}`);
+        const res = await axiosPrivate.get(`${apiUrl}/book/${bookId}/user/${props.personalReview.user._id}/review/${props.personalReview._id}`);
         setComments(res.data.comments);
-        const res2= await axiosPrivate.get(`http://localhost:3001/book/${bookId}/user/${props.personalReview.user._id}/review/${props.personalReview._id}/user/${user._id}`);
+        const res2= await axiosPrivate.get(`${apiUrl}/book/${bookId}/user/${props.personalReview.user._id}/review/${props.personalReview._id}/user/${user._id}`);
         console.log(res2.data)
 
             setLiked(res2.data.hasLiked)
@@ -32,16 +33,16 @@ export const Comments = (props:any) => {
     const toggleLike = async () => {
         if (liked){
             setLiked(false)
-            await axiosPrivate.delete(`http://localhost:3001/book/${bookId}/user/${props.personalReview.user._id}/review/${props.personalReview._id}/user/${user._id}`);
+            await axiosPrivate.delete(`${apiUrl}/book/${bookId}/user/${props.personalReview.user._id}/review/${props.personalReview._id}/user/${user._id}`);
         }else{
             setLiked(true)
-            await axiosPrivate.put(`http://localhost:3001/book/${bookId}/user/${props.personalReview.user._id}/review/${props.personalReview._id}/user/${user._id}`);
+            await axiosPrivate.put(`${apiUrl}/book/${bookId}/user/${props.personalReview.user._id}/review/${props.personalReview._id}/user/${user._id}`);
         };
         props.refresh()
 
     };
     const onSubmit =  async (data:any) => {
-            const res = await axiosPrivate.put(`http://localhost:3001/book/${bookId}/user/${user._id}/review/${props.personalReview._id}/comment`, data);
+            const res = await axiosPrivate.put(`${apiUrl}/book/${bookId}/user/${user._id}/review/${props.personalReview._id}/comment`, data);
         void refresh();
         props.refresh();
     }

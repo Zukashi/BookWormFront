@@ -17,7 +17,7 @@ export const useBookSearch = (query:string, pageNumber:number) => {
         let cancel: () => void;
         try{
             (async() => {
-                const res = await axiosPrivate.get('http://localhost:3001/searchOL', {
+                const res = await axiosPrivate.get('searchOL', {
                     params:{q:query,page:pageNumber},
                     cancelToken: new axios.CancelToken(c => cancel = c)
                 });

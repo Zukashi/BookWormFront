@@ -22,7 +22,7 @@ export const AddBookAdmin = () => {
         setLoading(true)
         try{
             await schema.validate(data)
-            const res = await axiosPrivate.post('http://localhost:3001/book',JSON.stringify(data));
+            const res = await axiosPrivate.post('book',JSON.stringify(data));
             toast({
                 position:'top',
                 title: 'Success',

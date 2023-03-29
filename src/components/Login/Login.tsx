@@ -24,7 +24,7 @@ export const Login = () => {
     const axiosPrivate = useAxiosPrivate();
     const onSubmit =  async (formData:any) => {
         try{
-            const res = await axiosPrivate.post('http://localhost:3001/login',JSON.stringify(formData));
+            const res = await axiosPrivate.post(`login`,JSON.stringify(formData));
             dispatch(userUpdate({
                 user:res.data.user,
                 token:res.data.accessToken
@@ -49,7 +49,7 @@ export const Login = () => {
 
     const onSubmitDemo =  async () => {
 
-            const res = await axiosPrivate.post('http://localhost:3001/demo');
+            const res = await axiosPrivate.post('demo');
             dispatch(userUpdate({
                 user:res.data.user,
                 token:res.data.accessToken

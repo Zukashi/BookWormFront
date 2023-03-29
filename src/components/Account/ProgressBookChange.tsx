@@ -7,6 +7,7 @@ import {useLocation, useParams} from "react-router";
 import {useNavigate} from "react-router-dom";
 import {useToast} from "@chakra-ui/react";
 import {SpinnerComponent} from "../SpinnerComponent";
+import {apiUrl} from "../../config/api";
 export const ProgressBookChange =() => {
     const axiosPrivate = useAxiosPrivate();
     const {user} = useSelector((root:RootState) => root.user)
@@ -20,7 +21,7 @@ export const ProgressBookChange =() => {
     const [pageNumber, setPageNumber] = useState<number>(0)
     useEffect(() => {
         (async() => {
-            const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/book/${bookId}/${status}`);
+            const res = await axiosPrivate.get(`${apiUrl}/user/${user._id}/book/${bookId}/${status}`);
             console.log(res.data)
             setBook(res.data.book)
         })()
@@ -28,7 +29,7 @@ export const ProgressBookChange =() => {
 
     const updateProgress = async () => {
         if(checkboxValue) {
-            await  axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/read/${status}`);
+            await  axiosPrivate.patch(`${apiUrl}/user/${user._id}/${bookId}/read/${status}`);
             navigate(-1);
             setPageNumber(0)
             return;
@@ -41,7 +42,7 @@ export const ProgressBookChange =() => {
             isClosable:true,
         });
         console.log(location)
-        await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/book/${bookId}/${status}/${pageNumber}`);
+        await axiosPrivate.patch(`${apiUrl}/user/${user._id}/book/${bookId}/${status}/${pageNumber}`);
          navigate(`${location.state}`,{replace:true,state:location.state.status})
     };
     if(!book) return <SpinnerComponent/>

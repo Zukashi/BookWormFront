@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {Link} from "react-router-dom";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
+import {apiUrl} from "../../../config/api";
 
 export const OneRowInUserListAdmin = ({user, i, refresh }:any,) => {
     const axiosPrivate = useAxiosPrivate()
     const deleteUser = async () =>  {
-        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}`)
+        await axiosPrivate.delete(`${apiUrl}/user/${user._id}`)
         refresh();
     }
     return (<>

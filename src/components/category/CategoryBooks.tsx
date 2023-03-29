@@ -57,7 +57,7 @@ export const CategoryBooks = () => {
     useEffect(() => {
         form.search = searchValue;
        (async() => {
-            const res  = await axiosPrivate.post('http://localhost:3001/filterBooks', JSON.stringify(form));
+            const res  = await axiosPrivate.post('filterBooks', JSON.stringify(form));
             setBooks(res.data);
             setBooksOnCurrentPage(res.data.slice(currentPage * perPage - perPage,currentPage * perPage));
         })();
@@ -65,10 +65,10 @@ export const CategoryBooks = () => {
     }, [form.genres,form.year,form.author, currentPage, searchValue]);
     useEffect(() => {
         (async () => {
-            const res = await axiosPrivate.get('http://localhost:3001/books')
+            const res = await axiosPrivate.get('books')
             setBooks(res.data);
             setAllBooks(res.data)
-            const res2 = await axiosPrivate.get('http://localhost:3001/genres');
+            const res2 = await axiosPrivate.get('genres');
             const newGenres = res2.data.genres.filter((genre:string) => genre !== '' && genre !== null);
             const removeDuplicatesGenres = [...new Set(newGenres)] as string[]
             const newYears = res2.data.years.filter((year:string) => year !== '' && year !== null)

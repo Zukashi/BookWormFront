@@ -3,6 +3,7 @@ import { HomeAdminNav } from '../Home/AdminHome/HomeAdminNav'
 import {useNavigate, useParams} from "react-router-dom"
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import { HomeNav } from '../Home/HomeNav';
+import {apiUrl} from "../../config/api";
 
 export const ModifyBook = () => {
     const {id} = useParams();
@@ -29,7 +30,7 @@ export const ModifyBook = () => {
     }
     useEffect(() => {
         (async() => {
-           const res = await axiosPrivate.get(`http://localhost:3001/book/${id}`)
+           const res = await axiosPrivate.get(`${apiUrl}/book/${id}`)
            setBook(res.data);
            setForm(res.data);
             console.log(res.data)
@@ -49,7 +50,7 @@ export const ModifyBook = () => {
     }
     const onSubmit:MouseEventHandler<HTMLButtonElement> = async (e) => {
         e.preventDefault();
-        await axiosPrivate.put(`http://localhost:3001/book/${book._id}`,JSON.stringify(form));
+        await axiosPrivate.put(`${apiUrl}/book/${book._id}`,JSON.stringify(form));
         navigate('/admin/books')
     }
     return (<>

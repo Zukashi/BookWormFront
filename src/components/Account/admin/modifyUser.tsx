@@ -7,6 +7,7 @@ import {User} from "../../../features/User/userSlice";
 import {SpinnerComponent} from "../../SpinnerComponent";
 import { object, string, number, date, InferType } from 'yup';
 import {toast, ToastContainer} from "react-toastify";
+import {apiUrl} from "../../../config/api";
 let userSchema = object({
     username: string().required().typeError('Username is a required field'),
     age: number().positive().integer().typeError('must be a positive number'),
@@ -39,7 +40,7 @@ export const ModifyUser = () => {
     }
     useEffect(() => {
         (async() => {
-            const res = await axiosPrivate.get(`http://localhost:3001/user/${id}`)
+            const res = await axiosPrivate.get(`${apiUrl}/user/${id}`)
             setUser(res.data);
             setForm(res.data)
             if(!(res.data.age > 0)){
@@ -64,7 +65,7 @@ export const ModifyUser = () => {
             return null;
         })
 
-        await axiosPrivate.put(`http://localhost:3001/user/admin/${user._id}`,JSON.stringify(form));
+        await axiosPrivate.put(`${apiUrl}/user/admin/${user._id}`,JSON.stringify(form));
         navigate('/admin/users')
     }
     return (<>

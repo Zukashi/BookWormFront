@@ -5,6 +5,7 @@ import {RootState} from "../../app/store";
 import {useLocation, useParams} from "react-router";
 import {Spinner} from "@chakra-ui/react";
 import {SpinnerComponent} from "../SpinnerComponent";
+import {apiUrl} from "../../config/api";
 
 
 export const StatusCurrent = ({refresh, onDelete, book}:{
@@ -29,7 +30,7 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
     };
     const location = useLocation();
     const updateStatusOfBook = async (value:string) => {
-        await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${book._id}/${value}/${statusUnformatted ? statusUnformatted : 'notfound'}`)
+        await axiosPrivate.patch(`${apiUrl}/user/${user._id}/${book._id}/${value}/${statusUnformatted ? statusUnformatted : 'notfound'}`)
         setBookStatus((prev:string) => {
             switch(value){
                 case 'currentlyReading':
@@ -49,7 +50,7 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
     }
 
     const clearStatus = async () => {
-        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book._id}/status`);
+        await axiosPrivate.delete(`${apiUrl}/user/${user._id}/book/${book._id}/status`);
         refresh();
         setStatusUnformatted('')
         refreshStatus()
@@ -59,7 +60,7 @@ export const StatusCurrent = ({refresh, onDelete, book}:{
 
     const refreshStatus = () => {
         (async () => {
-            const resStatusOfBook = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${book._id}/status`);
+            const resStatusOfBook = await axiosPrivate.get(`${apiUrl}/user/${user._id}/${book._id}/status`);
             if(resStatusOfBook.data === 'not found shelf'){
                 setBookStatus("")
             }else{

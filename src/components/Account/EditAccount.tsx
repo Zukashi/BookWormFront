@@ -21,6 +21,7 @@ import Avatar from 'react-avatar-edit';
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {SpinnerComponent} from "../SpinnerComponent";
+import { apiUrl } from '../../config/api';
 export interface UserInterface {
   city:string,
   country:string,
@@ -73,14 +74,14 @@ export const EditAccount = () => {
   }
   useEffect(() => {
     (async() =>{
-      const res = await axiosPrivate.get(`http://localhost:3001/user/${userId}`)
+      const res = await axiosPrivate.get(`${apiUrl}/user/${userId}`)
       setForm(res.data);
     })();
   },[]);
   const onSend = (data:any) => {
     (async() => {
-      await axiosPrivate.put(`http://localhost:3001/user/${user._id}/avatar`,JSON.stringify({preview}))
-      await axiosPrivate.put(`http://localhost:3001/user/${userId}`,JSON.stringify(data))
+      await axiosPrivate.put(`${apiUrl}/user/${user._id}/avatar`,JSON.stringify({preview}))
+      await axiosPrivate.put(`${apiUrl}/user/${userId}`,JSON.stringify(data))
       toast({
         status:'success',
         title:'User updated successfully',

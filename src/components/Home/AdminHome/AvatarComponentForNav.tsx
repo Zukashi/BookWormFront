@@ -5,6 +5,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 import {setDrawer} from "../../../features/Drawer";
 import {useLocation} from "react-router";
+import {apiUrl} from "../../../config/api";
 
 export const    AvatarComponent = () => {
     const {user} = useSelector((state: RootState) => state.user);
@@ -17,12 +18,12 @@ export const    AvatarComponent = () => {
     const [preview, setPreview] = useState('');
     const [delayBg, setDelayBg] = useState<boolean>(false);
     const logOut = async () => {
-        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/logout`);
+        await axiosPrivate.delete(`${apiUrl}/user/${user._id}/logout`);
         navigate('/')
     };
     useEffect(() => {
         ( async () => {
-            const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}`)
+            const res = await axiosPrivate.get(`${apiUrl}/user/${user._id}`)
             setPreview(res.data.base64Avatar)
         })()
     }, []);

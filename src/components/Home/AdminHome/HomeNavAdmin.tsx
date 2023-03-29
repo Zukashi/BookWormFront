@@ -27,7 +27,7 @@ export const HomeNavAdmin = () => {
     // const onChange = (value:string) => {
     //   (async() => {
     //     const encodedQuery = encodeURIComponent(value);
-    //     const res = await fetch(`http://localhost:3001/search/${category}/${encodedQuery} `);
+    //     const res = await fetch(`${apiUrl}/search/${category}/${encodedQuery} `);
     //     const data = await res.json();
     //     dispatch(searchUpdate(data));
     //

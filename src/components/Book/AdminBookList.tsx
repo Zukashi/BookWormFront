@@ -7,12 +7,13 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import axios from "axios";
 import {SpinnerComponent} from "../SpinnerComponent";
 import { HomeNav } from '../Home/HomeNav';
+import {apiUrl} from "../../config/api";
 export interface Author {
     key:string,
 }
 const getBooksPaginated = async (page:number, amountToShow:number, searchValue:string) => {
 
-    const res = await axios.get(`http://localhost:3001/books?page=${page}&booksPerPage=${amountToShow}&searchValue=${searchValue}`,{
+    const res = await axios.get(`${apiUrl}/books?page=${page}&booksPerPage=${amountToShow}&searchValue=${searchValue}`,{
         withCredentials:true
     });
     return res.data
@@ -37,7 +38,7 @@ export const AdminBookList = () => {
                 queryKey:['books'],
                 keepPreviousData:true,
                 queryFn:async () => {
-                    const res =  await axiosPrivate.get('http://localhost:3001/books');
+                    const res =  await axiosPrivate.get('books');
                     console.log(res.data)
                     return res.data
                 }
@@ -68,7 +69,7 @@ export const AdminBookList = () => {
 
         await setSearchValue(value)
 
-            // const res = await axiosPrivate.post(`http://localhost:3001/bookAdmin/search/${value}`,JSON.stringify({value}));
+            // const res = await axiosPrivate.post(`${apiUrl}/bookAdmin/search/${value}`,JSON.stringify({value}));
             // setBooks(res.data)
 
     }, 300);

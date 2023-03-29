@@ -6,6 +6,7 @@ import {SpinnerComponent} from "../SpinnerComponent";
 import {OneBookHome} from "../Home/OneBook";
 
 import {useParams} from "react-router";
+import {apiUrl} from "../../config/api";
 
 export const ShelfUser = (props:{status:string}) => {
     const axiosPrivate = useAxiosPrivate();
@@ -16,7 +17,7 @@ export const ShelfUser = (props:{status:string}) => {
     const filterBooks = async (searchValue:string) => {
         setSearchValue(searchValue)
         if(searchValue){
-            const res = await axiosPrivate.get(`http://localhost:3001/user/${params.userId}/shelf/${props.status}/${searchValue}/filtered`);
+            const res = await axiosPrivate.get(`${apiUrl}/user/${params.userId}/shelf/${props.status}/${searchValue}/filtered`);
 
             setShelfBooks(res.data)
         }else{
@@ -24,7 +25,7 @@ export const ShelfUser = (props:{status:string}) => {
         }
     }
     const refresh = async () => {
-        const response = await axiosPrivate.get(`http://localhost:3001/user/${params.userId}/shelf/${props.status}`);
+        const response = await axiosPrivate.get(`${apiUrl}/user/${params.userId}/shelf/${props.status}`);
         setShelfBooks(response.data)
         setAllBooks(response.data)
     }

@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {toast, ToastContainer} from 'react-toastify';
 import * as yup from 'yup';
+import {apiUrl} from "../../config/api";
 const schema = yup.object().shape({
     currentPassword:yup.string().required().min(8, 'Current Password must be at least 8 characters long').max(24, 'Current Password cannot be longer than 24 characters'),
     newPassword:yup.string().required().min(8, 'New Password must be at least 8 characters long').max(24, 'New Password cannot be longer than 24 characters'),
@@ -25,7 +26,7 @@ export const ChangePassword = () => {
 
     (async() => {
       try{
-        await axiosPrivate.put('http://localhost:3001/user/password',JSON.stringify(data));
+        await axiosPrivate.put(`${apiUrl}/user/password`,JSON.stringify(data));
         toast.success(`Password changed`, {
           position: toast.POSITION.BOTTOM_CENTER,
           theme:'dark',

@@ -9,6 +9,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useLocation} from "react-router";
 import {StatusCurrent} from "../Repeatable/StatusCurrent";
+import {apiUrl} from "../../config/api";
 
 export const OneBookUser = (props:{id:{
     book:string
@@ -25,8 +26,8 @@ export const OneBookUser = (props:{id:{
 
     const refresh = async () => {
         console.log(props)
-            const res = await axiosPrivate.get(`http://localhost:3001/book/${props.id}`);
-            const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/book/${props.id}/${props.status}`);
+            const res = await axiosPrivate.get(`${apiUrl}/book/${props.id}`);
+            const res2 = await axiosPrivate.get(`${apiUrl}/user/${user._id}/book/${props.id}/${props.status}`);
             setCompleted(res2.data.progress)
             setBook(res.data)
             setLoading(false)
@@ -37,7 +38,7 @@ export const OneBookUser = (props:{id:{
     }, []);
     const changeStatus =async  (oldStatus:string, bookId:string) => {
         setLoading(true)
-            await axiosPrivate.put(`http://localhost:3001/book/${bookId}/user/${user._id}/changeStatus`, JSON.stringify({
+            await axiosPrivate.put(`${apiUrl}/book/${bookId}/user/${user._id}/changeStatus`, JSON.stringify({
                 statuses:{
                     oldStatus:oldStatus,
                     newStatus:currentStatus

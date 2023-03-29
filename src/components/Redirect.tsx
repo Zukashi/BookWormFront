@@ -4,6 +4,7 @@ import {userUpdate} from "../features/User/userSlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {SpinnerComponent} from "./SpinnerComponent";
+import {apiUrl} from "../config/api";
 
 export const  Redirect = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -12,7 +13,7 @@ export const  Redirect = () => {
     useEffect(() => {
         (async() => {
             try{
-                const res = await axiosPrivate.post(`http://localhost:3001/auth/refreshToken`);
+                const res = await axiosPrivate.post(`${apiUrl}/auth/refreshToken`);
                 dispatch(userUpdate({
                     user:res.data.user,
                     token:res.data.token

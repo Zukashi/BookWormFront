@@ -4,6 +4,7 @@ import {Button, Spinner} from "@chakra-ui/react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import {apiUrl} from "../../config/api";
 
 interface Props {
     book: any,
@@ -20,7 +21,7 @@ export const OneBookFavorite = ({book,refresh}:Props) => {
     const axiosPrivate = useAxiosPrivate()
     const handleClick = async (value:number) => {
         setRating(value)
-        await axiosPrivate.put(`http://localhost:3001/book/${book._id}/${value}`)
+        await axiosPrivate.put(`${apiUrl}/book/${book._id}/${value}`)
     }
 
     const handleMouseOver = (value:number) => {
@@ -38,10 +39,10 @@ export const OneBookFavorite = ({book,refresh}:Props) => {
     };
     useEffect(() => {
         ( async () => {
-            const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/favorites`);
-            const res2 = await axiosPrivate.get(`http://localhost:3001/book/${book._id}`);
+            const res = await axiosPrivate.get(`${apiUrl}/user/${user._id}/favorites`);
+            const res2 = await axiosPrivate.get(`${apiUrl}/book/${book._id}`);
             setRating(res2.data.rating)
-            // const res3 = await fetch(`http://localhost:3001/books`, {
+            // const res3 = await fetch(`${apiUrl}/books`, {
             //   credentials:'include'
             // });
             // const data3 = await res3.json();
@@ -62,7 +63,7 @@ export const OneBookFavorite = ({book,refresh}:Props) => {
             setFavorite(true);
             (async() => {
 
-                await axiosPrivate.put(`http://localhost:3001/user/${user._id}/favorite`,JSON.stringify(book))
+                await axiosPrivate.put(`${apiUrl}/user/${user._id}/favorite`,JSON.stringify(book))
                 refresh();
             })();
 
@@ -70,7 +71,7 @@ export const OneBookFavorite = ({book,refresh}:Props) => {
             setFavorite(false);
             (async() => {
                 // @ts-ignore
-                await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book._id}/favorite`,JSON.stringify(book))
+                await axiosPrivate.delete(`${apiUrl}/user/${user._id}/book/${book._id}/favorite`,JSON.stringify(book))
                 refresh();
             })();
 

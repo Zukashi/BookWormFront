@@ -6,6 +6,7 @@ import { SubmitHandler, useForm} from "react-hook-form";
 
 import {setSecondModal} from "../../features/HomeSlice";
 import {CheckboxList} from "../Home/CheckboxList";
+import {apiUrl} from "../../config/api";
 
 export const ChangeBookList = ({book, refresh}:{book:any, refresh: () => void}) => {
     const [modal, setModal] = useState<boolean>(false);
@@ -24,7 +25,7 @@ export const ChangeBookList = ({book, refresh}:{book:any, refresh: () => void}) 
         listName:string
     };
     const refreshLists = async () => {
-        const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}`);
+        const res = await axiosPrivate.get(`${apiUrl}/user/${user._id}`);
         void refresh();
         setUser(res.data);
         let found = null;
@@ -49,7 +50,7 @@ export const ChangeBookList = ({book, refresh}:{book:any, refresh: () => void}) 
         return  null;
     }
     const addListSubmit:SubmitHandler<AddListValuesForm> = async (data) => {
-        await axiosPrivate.post(`http://localhost:3001/user/${user._id}/list/${data.listName}`);
+        await axiosPrivate.post(`${apiUrl}/user/${user._id}/list/${data.listName}`);
         void refreshLists();
         setAddListClicked(false);
         void refresh();

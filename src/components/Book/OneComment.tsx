@@ -14,6 +14,7 @@ import {
 import { useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import { Link } from 'react-router-dom';
+import {apiUrl} from "../../config/api";
 export const OneComment = (props:any) => {
     const [showFullText , setShowFullText] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -26,7 +27,7 @@ export const OneComment = (props:any) => {
     const axiosPrivate = useAxiosPrivate();
     const {bookId} = useParams();
     const deleteComment = async () => {
-        await axiosPrivate.delete(`http://localhost:3001/book/${bookId}/user/${user._id}/review/${props.personalReview._id}/comment/${props.comment._id}`);
+        await axiosPrivate.delete(`${apiUrl}/book/${bookId}/user/${user._id}/review/${props.personalReview._id}/comment/${props.comment._id}`);
         props.refresh();
         props.refreshCommentsAndLikes()
     }

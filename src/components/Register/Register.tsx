@@ -44,7 +44,7 @@ export const Register = () => {
         }
         if (!isValid) return null;
         try{
-            await axiosPrivate.post('http://localhost:3001/register',JSON.stringify(data));
+            await axiosPrivate.post('register',JSON.stringify(data));
             toast({
                 position:'top',
                 title: 'Account created.',

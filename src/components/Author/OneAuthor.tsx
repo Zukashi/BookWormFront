@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from "react-router";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import {apiUrl} from "../../config/api";
 
 export interface AuthorInterface {
   alternate_names : string[],
@@ -32,7 +33,7 @@ export const OneAuthor = () => {
   console.log(state)
   useEffect( () => {
     (async () => {
-      const res = await axiosPrivate(`http://localhost:3001/author/${params.authorId}`)
+      const res = await axiosPrivate(`${apiUrl}/author/${params.authorId}`)
       setData(res.data);
     })()
   },[]);

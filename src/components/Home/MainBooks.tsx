@@ -5,13 +5,14 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useQuery} from "@tanstack/react-query";
 import {SpinnerComponent} from "../SpinnerComponent";
 import {Link} from "react-router-dom";
+import {apiUrl} from "../../config/api";
 export const MainBooks = () => {
   const [loading ,setLoading] = useState(true)
   const {data:books, isLoading,  isError} = useQuery({
     queryKey:['books'],
     keepPreviousData:true,
     queryFn:async () => {
-      const res = await axiosPrivate.get(`http://localhost:3001/books`);
+      const res = await axiosPrivate.get(`${apiUrl}/books`);
 
       return res.data
     }

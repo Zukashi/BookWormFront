@@ -7,6 +7,7 @@ import {Button, Checkbox, Select, Spinner, Textarea, useToast} from "@chakra-ui/
 import {useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {SpinnerComponent} from "../SpinnerComponent";
+import {apiUrl} from "../../config/api";
 
 
 export const ReviewEdit = () => {
@@ -32,13 +33,13 @@ export const ReviewEdit = () => {
 
     useEffect(() => {
         (async () => {
-            const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
+            const res = await axiosPrivate.get(`${apiUrl}/book/${bookId}`);
             setBook(res.data);
-            const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${bookId}/status`)
+            const res2 = await axiosPrivate.get(`${apiUrl}/user/${user._id}/${bookId}/status`)
             setValue('status', res2.data);
             setStatus(res2.data)
             try{
-                const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/book/${res.data._id}`);
+                const res2 = await axiosPrivate.get(`${apiUrl}/user/${user._id}/book/${res.data._id}`);
 
                 setValue('description', res2.data.description ? res2.data.description : res2.data.desc)
                 setValue('spoilers', res2.data.spoilers)
@@ -53,8 +54,8 @@ export const ReviewEdit = () => {
     }, []);
     const deleteReview = async () => {
         navigate(`${`/book/${book?._id}`}`)
-        await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/user/${user._id}/review/${lastReviewRating}`);
-        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${book?._id}/status`)
+        await axiosPrivate.delete(`${apiUrl}/book/${book?._id}/user/${user._id}/review/${lastReviewRating}`);
+        await axiosPrivate.delete(`${apiUrl}/user/${user._id}/book/${book?._id}/status`)
         navigate(`/book/${bookId}`,{replace:true,state:'delete'});
         toast({
             position:'bottom',
@@ -68,12 +69,12 @@ export const ReviewEdit = () => {
         data.rating = review.rating;
         const currentStatus = getValues('status');
         try{
-            await axiosPrivate.put(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify(data));
-            await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/book/${bookId}/status`);
+            await axiosPrivate.put(`${apiUrl}/user/${user._id}/book/${bookId}`,JSON.stringify(data));
+            await axiosPrivate.delete(`${apiUrl}/user/${user._id}/book/${bookId}/status`);
             console.log(1234)
-            await axiosPrivate.delete(`http://localhost:3001/book/${book?._id}/${lastReviewRating}`);
-            await axiosPrivate.patch(`http://localhost:3001/user/${user._id}/${bookId}/${currentStatus}/${status}`)
-            await axiosPrivate.put(`http://localhost:3001/book/${book?._id}/${review.rating}`);
+            await axiosPrivate.delete(`${apiUrl}/book/${book?._id}/${lastReviewRating}`);
+            await axiosPrivate.patch(`${apiUrl}/user/${user._id}/${bookId}/${currentStatus}/${status}`)
+            await axiosPrivate.put(`${apiUrl}/book/${book?._id}/${review.rating}`);
             navigate(`/book/${bookId}`)
             toast({
                 position:'bottom',

@@ -3,6 +3,7 @@ import {Input, PinInput, PinInputField, useToast} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {CreateNewPassword} from "./CreateNewPassword";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import { apiUrl } from '../../config/api';
 
 export const CheckEmailCode =(props:{code:number | null, email:string}) => {
     const {register, handleSubmit, setValue, watch}  = useForm<any>();
@@ -13,7 +14,7 @@ export const CheckEmailCode =(props:{code:number | null, email:string}) => {
     const onSubmit = async (data:{code:string}) => {
         if (data.code === props?.code?.toString()){
             try{
-                const res = await axiosPrivate.put(`http://localhost:3001/user/reset-password/confirm`,JSON.stringify({email:props.email}));
+                const res = await axiosPrivate.put(`${apiUrl}/user/reset-password/confirm`,JSON.stringify({email:props.email}));
 
                 setUser(res.data);
                 setIsValid(prev => !prev)

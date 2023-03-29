@@ -8,6 +8,7 @@ import {useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {toast, ToastContainer} from "react-toastify";
 import {SpinnerComponent} from "../SpinnerComponent";
+import {apiUrl} from "../../config/api";
 
 export interface AddReview {
     rating :number,
@@ -37,10 +38,10 @@ export const ReviewAdd = () => {
     const [hover, setHover] = React.useState(0)
     useEffect(() => {
         (async () => {
-            const res2 = await axiosPrivate.get(`http://localhost:3001/user/${user._id}/${bookId}/status`)
+            const res2 = await axiosPrivate.get(`${apiUrl}/user/${user._id}/${bookId}/status`)
             setValue('status', res2.data !== 'not found shelf' ? res2.data : 'read');
             console.log(watch('status'))
-            const res = await axiosPrivate.get(`http://localhost:3001/book/${bookId}`);
+            const res = await axiosPrivate.get(`${apiUrl}/book/${bookId}`);
             setBook(res.data);
 
             setLoading(false)
@@ -58,8 +59,8 @@ export const ReviewAdd = () => {
             return null;
         }
         try{
-            await axiosPrivate.post(`http://localhost:3001/user/${user._id}/book/${bookId}`,JSON.stringify(data));
-            await axiosPrivate.put(`http://localhost:3001/book/${bookId}/${data.rating}`);
+            await axiosPrivate.post(`${apiUrl}/user/${user._id}/book/${bookId}`,JSON.stringify(data));
+            await axiosPrivate.put(`${apiUrl}/book/${bookId}/${data.rating}`);
             navigate(`/book/${bookId}`);
             toastify({
                 position:'bottom',
@@ -91,7 +92,7 @@ export const ReviewAdd = () => {
             ...prev,
             rating:value,
         }))
-        // await fetch(`http://localhost:3001/book/${book?._id}/${value}`,{
+        // await fetch(`${apiUrl}/book/${book?._id}/${value}`,{
         //     method:'PUT',
         //     credentials:'include'
         // })

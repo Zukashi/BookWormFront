@@ -13,6 +13,7 @@ import {RootState} from "../../app/store";
 import {useEffect, useState} from "react";
 
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import {apiUrl} from "../../config/api";
 
 
 
@@ -24,13 +25,13 @@ export  function DrawerComponent() {
     const navigate = useNavigate();
     useEffect(() => {
         ( async () => {
-            const res = await axiosPrivate.get(`http://localhost:3001/user/${user._id}`)
+            const res = await axiosPrivate.get(`${apiUrl}/user/${user._id}`)
             setPreview(res.data.base64Avatar)
         })()
     }, [])
     const btnRef :any = React.useRef()
     const logOut = async () => {
-        await axiosPrivate.delete(`http://localhost:3001/user/${user._id}/logout`);
+        await axiosPrivate.delete(`${apiUrl}/user/${user._id}/logout`);
         navigate('/')
     }
     return (
