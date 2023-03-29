@@ -2,14 +2,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {changeCurrentEditListName, setSecondModal} from "../../features/HomeSlice";
 import {Spinner, useToast} from "@chakra-ui/react";
 import {toast} from "react-toastify";
 import {useLocation} from "react-router";
 import {useNavigate} from "react-router-dom";
 
-export const CheckboxList = ({listName, book, checked, list, refreshLists}:{listName:string, book:BookEntity, checked:boolean, list:string[], refreshLists: () => void}) => {
+export const CheckboxList = ({listName, book, checked, list, refreshLists}:{listName:string, book:any, checked:boolean, list:string[], refreshLists: () => void}) => {
     const axiosPrivate = useAxiosPrivate();
     const {home,currentEditListName} = useSelector((root:RootState) => root.home);
     const dispatch = useDispatch();

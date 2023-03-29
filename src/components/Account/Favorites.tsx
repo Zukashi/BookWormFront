@@ -3,7 +3,6 @@ import { HomeNav } from '../Home/HomeNav';
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {OneBookHome} from "../Home/OneBook";
 import { SpinnerComponent } from '../SpinnerComponent';
 import {useParams} from "react-router";
@@ -18,7 +17,7 @@ function debounce (cb:any, delay= 500){
 }
 export const Favorites = () => {
     const {user} = useSelector((state: RootState) => state.user);
-    const [favorites, setFavorites] = useState<null | BookEntity[]>(null);
+    const [favorites, setFavorites] = useState<null | any[]>(null);
     const [searchValue, setSearchValue] = useState('');
     const params = useParams();
     console.log(params)

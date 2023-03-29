@@ -6,14 +6,13 @@ import {RootState} from "../../app/store";
 import {Button, Checkbox, Select, Spinner, Textarea, useToast} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {SpinnerComponent} from "../SpinnerComponent";
 
 
 export const ReviewEdit = () => {
     const {user} = useSelector((state: RootState) => state.user);
     const {register, handleSubmit, setValue, getValues} = useForm();
-    const [book, setBook] = useState<BookEntity|null>();
+    const [book, setBook] = useState<any|null>();
     const navigate = useNavigate();
     const {bookId} = useParams();
     const toast = useToast()

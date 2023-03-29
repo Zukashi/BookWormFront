@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {OneBookHome} from "../Home/OneBook";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {SpinnerComponent} from "../SpinnerComponent";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
@@ -11,7 +10,7 @@ export const CategoryBooks = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [changed, setChanged] = useState<boolean>(false)
     const [perPage, setPerPage] = useState<number>(12);
-    const [allBooks, setAllBooks] = useState<null| BookEntity[]>(null)
+    const [allBooks, setAllBooks] = useState<null| any[]>(null)
     const {user} = useSelector((root:RootState) => root.user);
     const [searchValue, setSearchValue] = useState<string>('');
     const [defaultAuthorsYearsGenres, setDefaultAuthorsYearsGenres] = useState<{genres:string[],years:string[],authors:string[]}>({
@@ -21,8 +20,8 @@ export const CategoryBooks = () => {
     });
     const [filterBooksBoolean, setFilterBooksBoolean] = useState(false)
     const axiosPrivate = useAxiosPrivate();
-    const [books ,setBooks] = useState<BookEntity[]>([]);
-    const [booksOnCurrentPage ,setBooksOnCurrentPage] = useState<BookEntity[]>([]);
+    const [books ,setBooks] = useState<any[]>([]);
+    const [booksOnCurrentPage ,setBooksOnCurrentPage] = useState<any[]>([]);
     const [form, setForm] = useState({
         genres:'',
         year:'',
@@ -140,7 +139,7 @@ export const CategoryBooks = () => {
 
            }
            <div className={`${changed || (books.length < 3) ? `flex flex-wrap gap-3  md:px-4 justify-center  max-w-[${347 * books.length}px]   rounded-lg  bg-white    mx-auto` :' flex flex-wrap  w-full justify-center   md:justify-items-center sm:grid sm:grid-cols-2  lg:grid-cols-3 rounded-lg lg:max-w-[1200px] bg-white    2xl:grid-cols-4 2xl:max-w-[1500px] mx-auto '}`}>
-               { booksOnCurrentPage.map((book:BookEntity, i:number) => <OneBookHome  key={i}   book={book} refresh={() =>  null}/>)}
+               { booksOnCurrentPage.map((book:any, i:number) => <OneBookHome  key={i}   book={book} refresh={() =>  null}/>)}
            </div>
            {books.length < 1 && filterBooksBoolean && <span className='font-bold text-[2rem] mx-auto mt-[1rem]'>Book not found</span>}
            { books.length >= 12 &&

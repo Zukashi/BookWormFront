@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from "react";
-import { BookEntity } from "../../../../BookWormBack/types/book/book-entity";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
@@ -9,7 +8,7 @@ import {CheckboxList} from "./CheckboxList";
 import {setSecondModal} from "../../features/HomeSlice";
 import {ToastContainer} from "react-toastify";
 
-export const AddToPersonalList = ({book}:{book:BookEntity}) => {
+export const AddToPersonalList = ({book}:{book:any}) => {
     const [modal, setModal] = useState<boolean>(false);
     const {user} = useSelector((state:RootState) => state.user);
     const {handleSubmit, register, watch, setValue} = useForm<AddListValuesForm>();

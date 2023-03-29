@@ -6,7 +6,6 @@ import {RootState} from "../../app/store";
 import {Button, Checkbox, Select, Spinner, Textarea, useToast} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {toast, ToastContainer} from "react-toastify";
 import {SpinnerComponent} from "../SpinnerComponent";
 
@@ -22,7 +21,7 @@ export const ReviewAdd = () => {
     const {register, handleSubmit, formState:{errors}, setValue, watch} = useForm<AddReview>({
     });
     const toastify = useToast();
-    const [book, setBook] = useState<BookEntity|null>();
+    const [book, setBook] = useState<any|null>();
     const navigate = useNavigate();
     const {bookId} = useParams();
     const [loading, setLoading] = useState<boolean>(true);

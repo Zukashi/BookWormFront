@@ -9,13 +9,12 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useLocation} from "react-router";
 import {StatusCurrent} from "../Repeatable/StatusCurrent";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 
 export const OneBookUser = (props:{id:{
     book:string
     }, status:string, refresh: () => Promise<void>}) => {
     const axiosPrivate = useAxiosPrivate();
-    const [book, setBook] = useState<BookEntity | null>(null);
+    const [book, setBook] = useState<any | null>(null);
     const {register , handleSubmit, formState:{errors}} = useForm<{status:string}>()
     const [loading ,setLoading] = useState<boolean>(true);
     const {user} = useSelector((state:RootState) => state.user)

@@ -4,10 +4,9 @@ import {Button, Spinner} from "@chakra-ui/react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import { BookEntity } from '../../../../BookWormBack/types/book';
 
 interface Props {
-    book: BookEntity,
+    book: any,
     refresh: () => void,
 }
 export const OneBookFavorite = ({book,refresh}:Props) => {

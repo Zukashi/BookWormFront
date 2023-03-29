@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState, useCallback} from 'react';
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useSearchParams} from "react-router-dom";
 import { HomeNav } from '../Home/HomeNav';
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {OneBookHome} from "../Home/OneBook";
 import {useInView} from "react-intersection-observer";
 import {useBookSearch} from "./useBookSearch";
@@ -42,7 +41,7 @@ export const SearchComponent = () => {
     },[loading, hasMore])
 
 
-    const [books ,setBooks] = useState<BookEntity[] | null>(null);
+    const [books ,setBooks] = useState<any[] | null>(null);
     const [category, setCategory] = useState('title');
     const [instantInputUpdate, setInstantInputUpdate] = useState(searchParams.get('q') ?? '')
     const onChange = debounce(async (value:string) => {
@@ -125,7 +124,7 @@ export const SearchComponent = () => {
                     {loading ?<div className='flex w-full justify-center py-20 '>
                         <Spinner size='xl'/>
                     </div>: <>{books && <section className={`${(books.length < 3) ? `flex flex-wrap gap-6  md:px-4 justify-center  max-w-[${347 * books.length}px]   rounded-lg  bg-white    mx-auto` :'flex flex-wrap justify-center md:justify-items-center sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[1200px] 2xl:grid-cols-4 2xl:max-w-[1500px] mx-auto'}`}>
-                        {books?.map((book:BookEntity, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
+                        {books?.map((book:any, i:number) => <OneBookHome key={i}  book={book} refresh={() =>  null} />)}
                     </section>}</>}</>
             }
             {

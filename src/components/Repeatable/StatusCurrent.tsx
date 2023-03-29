@@ -5,13 +5,12 @@ import {RootState} from "../../app/store";
 import {useLocation, useParams} from "react-router";
 import {Spinner} from "@chakra-ui/react";
 import {SpinnerComponent} from "../SpinnerComponent";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 
 
 export const StatusCurrent = ({refresh, onDelete, book}:{
     refresh : () => void
     onDelete : () => void,
-    book:BookEntity,
+    book:any,
 }) => {
     const axiosPrivate = useAxiosPrivate();
     const {user} = useSelector((root:RootState) => root.user);

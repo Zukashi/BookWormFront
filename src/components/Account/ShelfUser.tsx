@@ -1,24 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Input} from "@chakra-ui/react";
-import {OneBookUser} from "./OneBookUser";
+
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import {RootState} from "../../app/store";
-import {useSelector} from "react-redux";
-import ProgressBar from "@ramonak/react-progress-bar";
-import {TabPanel} from "react-tabs";
+
 import {SpinnerComponent} from "../SpinnerComponent";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {OneBookHome} from "../Home/OneBook";
-import {ProgressBookChange} from "./ProgressBookChange";
-import {Link, Route} from "react-router-dom";
+
 import {useParams} from "react-router";
 
 export const ShelfUser = (props:{status:string}) => {
     const axiosPrivate = useAxiosPrivate();
     const params = useParams();
-    const [shelfBooks, setShelfBooks] = useState<BookEntity[] | null>(null);
+    const [shelfBooks, setShelfBooks] = useState<any[] | null>(null);
     const [searchValue, setSearchValue] = useState<string>('');
-    const [allBooks, setAllBooks] = useState<BookEntity[] | null>(null)
+    const [allBooks, setAllBooks] = useState<any[] | null>(null)
     const filterBooks = async (searchValue:string) => {
         setSearchValue(searchValue)
         if(searchValue){
@@ -45,7 +39,7 @@ export const ShelfUser = (props:{status:string}) => {
                 <i className='fa-solid fa-search absolute right-2 text-xl top-1/2 -translate-y-1/2 cursor-pointer'></i>
             </label> </div>}
         <div className={`${(shelfBooks?.length < 3) ? `flex flex-wrap gap-6  md:px-4 justify-center  max-w-[${347 * shelfBooks?.length}px]   rounded-lg  bg-white    mx-auto` :'flex flex-wrap justify-center md:justify-items-center sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[1200px] 2xl:grid-cols-4 2xl:max-w-[1500px] mx-auto'}`}>
-            {shelfBooks?.map((book:BookEntity) => {
+            {shelfBooks?.map((book:any) => {
                     return <OneBookHome key={book._id.toString()} book={book} refresh={refresh}/>
 
             })}

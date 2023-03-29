@@ -8,10 +8,9 @@ import {StatusCurrent} from "../Repeatable/StatusCurrent";
 import {setBook} from "../../features/Books/bookSlice";
 import {SpinnerComponent} from "../SpinnerComponent";
 import {AddToPersonalList} from "./AddToPersonalList";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {useLocation, useParams} from "react-router";
 interface Props {
-  book: BookEntity,
+  book: any,
   refresh: () => void,
 }
 export const OneBookHome = ({book,refresh}:Props) => {

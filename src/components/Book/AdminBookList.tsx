@@ -7,7 +7,6 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import axios from "axios";
 import {SpinnerComponent} from "../SpinnerComponent";
 import { HomeNav } from '../Home/HomeNav';
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 export interface Author {
     key:string,
 }
@@ -128,7 +127,7 @@ export const AdminBookList = () => {
                            <th className='py-3 pl-3 pr-[30px] h-[84px] border-[2px] border-x-[1px] border-b-[3px] border-[ #dee2e6] '><p className='flex items-end h-5/6'>Action</p></th></tr></thead>
 
                        <tbody>
-                       {books.map((book:BookEntity, i:number) => <OneRowInBookListAdmin key={i} book={book} i={i} refresh={refetch}/>)}
+                       {books.map((book:any, i:number) => <OneRowInBookListAdmin key={i} book={book} i={i} refresh={refetch}/>)}
                        </tbody>
                    </table>
                </div> : <div className='font-bold text-2xl mx-auto flex justify-center'><h2 className='my-4'>Book not found</h2></div>}

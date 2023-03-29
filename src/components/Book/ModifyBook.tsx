@@ -2,7 +2,6 @@ import React, {MouseEventHandler, useEffect, useRef, useState} from 'react'
 import { HomeAdminNav } from '../Home/AdminHome/HomeAdminNav'
 import {useNavigate, useParams} from "react-router-dom"
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import { HomeNav } from '../Home/HomeNav';
 
 export const ModifyBook = () => {

@@ -1,9 +1,8 @@
 import React, {useEffect} from 'react'
 import {motion, useAnimation} from "framer-motion";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {useInView} from "react-intersection-observer";
 
-export const OneProgressBar =({isHighlighted,sumOfRatings,book,index}:{book:BookEntity, index:number,isHighlighted:  boolean[], sumOfRatings:number}) => {
+export const OneProgressBar =({isHighlighted,sumOfRatings,book,index}:{book:any, index:number,isHighlighted:  boolean[], sumOfRatings:number}) => {
     const {ref:scrollRef, inView:isInView} = useInView({
         threshold:0.6
     })

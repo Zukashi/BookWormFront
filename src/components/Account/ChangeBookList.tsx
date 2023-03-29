@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from "react";
-import { BookEntity } from "../../../../BookWormBack/types/book/book-entity";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
@@ -8,7 +7,7 @@ import { SubmitHandler, useForm} from "react-hook-form";
 import {setSecondModal} from "../../features/HomeSlice";
 import {CheckboxList} from "../Home/CheckboxList";
 
-export const ChangeBookList = ({book, refresh}:{book:BookEntity, refresh: () => void}) => {
+export const ChangeBookList = ({book, refresh}:{book:any, refresh: () => void}) => {
     const [modal, setModal] = useState<boolean>(false);
     const {user} = useSelector((state:RootState) => state.user);
     const {handleSubmit, register, watch, setValue} = useForm<AddListValuesForm>();

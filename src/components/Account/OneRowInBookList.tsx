@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {Link} from "react-router-dom";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {SpinnerComponent} from "../SpinnerComponent";
 import {AddToPersonalList} from "../Home/AddToPersonalList";
 import {ChangeBookList} from "./ChangeBookList";
 
-export const OneRowInBookList = ({book, i, refresh }:{book:BookEntity, i:number, refresh: () => void},) => {
+export const OneRowInBookList = ({book, i, refresh }:{book:any, i:number, refresh: () => void},) => {
     const axiosPrivate = useAxiosPrivate();
 
 

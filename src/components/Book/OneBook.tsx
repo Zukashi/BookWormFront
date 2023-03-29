@@ -8,7 +8,6 @@ import dayjs from "dayjs";
 import {OneReviewOrdinary} from "./OneReviewOrdinary";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {StatusCurrent} from "../Repeatable/StatusCurrent";
-import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 import {ProgressBarSection} from "./ProgressBarSection";
 import {SpinnerComponent} from "../SpinnerComponent";
 
@@ -19,7 +18,7 @@ export const OneBook = () => {
   const navigate = useNavigate();
   const {user} = useSelector((state: RootState) => state.user);
   const {drawer} = useSelector((state: RootState) => state.drawer);
-  const [book, setBook] = useState<BookEntity|null>(null);
+  const [book, setBook] = useState<any|null>(null);
   const {bookId} = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
