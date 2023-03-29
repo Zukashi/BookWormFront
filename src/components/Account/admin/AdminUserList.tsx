@@ -1,13 +1,11 @@
-import { Button } from '@chakra-ui/react';
 import React, {useEffect, useState} from 'react'
-import { Link } from 'react-router-dom';
 
 import {OneRowInUserListAdmin} from "./OneRowInUserListAdmin";
-import {HomeNavAdmin} from "../../Home/AdminHome/HomeNavAdmin";
 import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
-import {UserEntity} from 'types'
+
 import {HomeNav} from "../../Home/HomeNav";
 import {SpinnerComponent} from "../../SpinnerComponent";
+import { UserEntity } from '../../../../../BookWormBack/types/users/user.entity';
 
 export interface Author {
     key:string,

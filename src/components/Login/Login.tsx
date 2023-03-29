@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {User, userUpdate} from '../../features/User/userSlice'
 import {useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
-import { UserEntity } from 'types';
+import { UserEntity } from '../../../../BookWormBack/types/users/user.entity';
 
 export interface Login {
     user:UserEntity,

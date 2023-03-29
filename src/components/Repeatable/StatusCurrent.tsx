@@ -3,9 +3,9 @@ import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import { useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {useLocation, useParams} from "react-router";
-import { BookEntity } from 'types';
 import {Spinner} from "@chakra-ui/react";
 import {SpinnerComponent} from "../SpinnerComponent";
+import { BookEntity } from '../../../../BookWormBack/types/book/book-entity';
 
 
 export const StatusCurrent = ({refresh, onDelete, book}:{
