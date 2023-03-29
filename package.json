@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-app-rewired build",
+    "build": "set REACT_APP_API_URL=https://book-worm-kjh8.onrender.com&&react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
