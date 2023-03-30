@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useAxiosPrivate} from "../hooks/useAxiosPrivate";
 import {userUpdate} from "../features/User/userSlice";
 import {useNavigate} from "react-router-dom";
@@ -9,21 +9,32 @@ import {apiUrl} from "../config/api";
 export const  Redirect = () => {
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const [loading , setLoading] = useState(true)
     useEffect(() => {
         (async() => {
+
             try{
                 const res = await axiosPrivate.post(`${apiUrl}/auth/refreshToken`);
                 dispatch(userUpdate({
                     user:res.data.user,
                     token:res.data.token
                 }))
+                setLoading(false)
                 navigate('/home')
+
             }
-              catch{  navigate('/login')}
+              catch{
+                setLoading(false)
+                navigate('/login')
+            }
 
 
         })()
     }, [])
-    return <><SpinnerComponent/></>
+    if(loading){
+        return <SpinnerComponent/>
+    }else{
+        return null
+    }
 }

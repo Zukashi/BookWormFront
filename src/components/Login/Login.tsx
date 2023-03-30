@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {User, userUpdate} from '../../features/User/userSlice'
 import {useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
+import {SpinnerComponent} from "../SpinnerComponent";
 
 export interface Login {
     user:any,
@@ -19,11 +20,13 @@ export const Login = () => {
     const [show, setShow] = React.useState(false)
     const handleClick = () => setShow(!show)
     const [error,setError] = useState(false);
+    const [loading, setLoading] = useState(false)
     const {register, handleSubmit}  = useForm<any>();
     const toast = useToast();
     const axiosPrivate = useAxiosPrivate();
     const onSubmit =  async (formData:any) => {
         try{
+            setLoading(true)
             const res = await axiosPrivate.post(`login`,JSON.stringify(formData));
             dispatch(userUpdate({
                 user:res.data.user,
@@ -43,6 +46,8 @@ export const Login = () => {
                 isClosable: true,
             });
             setError(true)
+        }finally{
+            setLoading(false)
         }
 
     }
@@ -60,6 +65,9 @@ export const Login = () => {
 
 
 
+    };
+    if(loading){
+        return <SpinnerComponent/>
     }
     return (<>
         <form onSubmit={handleSubmit(onSubmit)} autoComplete={'off'}>
