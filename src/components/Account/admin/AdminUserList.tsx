@@ -6,6 +6,7 @@ import {useAxiosPrivate} from "../../../hooks/useAxiosPrivate";
 import {HomeNav} from "../../Home/HomeNav";
 import {SpinnerComponent} from "../../SpinnerComponent";
 import {apiUrl} from "../../../config/api";
+import { Spinner } from '@chakra-ui/react';
 
 export interface Author {
     key:string,
@@ -14,15 +15,16 @@ export interface Author {
 export const AdminUserList = () => {
     const [users ,setUsers] = useState<any[]>([]);
     const [value, setValue] = useState('');
+    const [loading, setLoading] = useState(true)
     const axiosPrivate = useAxiosPrivate()
     const refreshUsers = async () => {
         const res = await axiosPrivate.get(`${apiUrl}/user/users`);
         setUsers(res.data);
-
+        setLoading(false)
     };
     const getUsersSearch = debounce(async (value:string) =>  {
         if (!value){
-            refreshUsers()
+            void refreshUsers()
             return
         }
 
@@ -44,7 +46,7 @@ export const AdminUserList = () => {
     useEffect(() => {
         void refreshUsers()
     }, []);
-    if(!users){
+    if(loading){
         return  <SpinnerComponent/>
     }
     return (<>
