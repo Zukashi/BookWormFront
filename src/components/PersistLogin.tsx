@@ -5,6 +5,7 @@ import {userUpdate} from "../features/User/userSlice";
 import {useDispatch} from "react-redux";
 import {useAxiosPrivate} from "../hooks/useAxiosPrivate";
 import {apiUrl} from "../config/api";
+import {SpinnerComponent} from "./SpinnerComponent";
 
 const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +25,8 @@ const PersistLogin = () => {
                 dispatch(userUpdate({
                     user:res.data.user,
                     token:res.data.token
-                }))
+                }));
+                navigate('/home')
             }
             catch (err) {
                 navigate('/')
@@ -40,10 +42,9 @@ const PersistLogin = () => {
         return () => isMounted = false;
     }, [])
 
-    useEffect(() => {
-
-    }, [isLoading])
-    console.log(isLoading)
+    if(isLoading){
+        return <SpinnerComponent/>
+    }
     return (
         <>
             {!isLoading && <Outlet/>}

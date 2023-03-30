@@ -111,7 +111,7 @@ export const OneBookHome = ({book,refresh}:Props) => {
 
 
       </div>
-      <span className='flex  gap-6 '>
+      <span className='flex items-center gap-6 '>
         {!favorite ?  <i onClick={changeFavorite} className="flex items-center fa-regular fa-heart fa-xl text-red-500 cursor-pointer   w-2 mb-3 mt-3"></i>:
             <i onClick={changeFavorite} className="fa-solid fa-heart fa-xl text-red-500  cursor-pointer w-2 mb-3 mt-3"></i>}
 
