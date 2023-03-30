@@ -57,9 +57,11 @@ export const CategoryBooks = () => {
     useEffect(() => {
         form.search = searchValue;
        (async() => {
+           setLoading(true)
             const res  = await axiosPrivate.post('filterBooks', JSON.stringify(form));
             setBooks(res.data);
             setBooksOnCurrentPage(res.data.slice(currentPage * perPage - perPage,currentPage * perPage));
+            setLoading(false)
         })();
 
     }, [form.genres,form.year,form.author, currentPage, searchValue]);
@@ -88,7 +90,6 @@ export const CategoryBooks = () => {
         if(page  >= 1 &&  page<=Math.ceil(books.length / perPage) && page !== currentPage) setCurrentPage(page)
         window.scrollTo({top:0, behavior:'smooth'});
     }
-    if(loading) return <SpinnerComponent/>
     return (<>
    <main className='bg-[#F5F5F5] min-h-screen'>
        <div className='pt-20'></div>
@@ -129,7 +130,7 @@ export const CategoryBooks = () => {
                search:'',})}>Clear Filters</button>
 
        </section>
-       <section className={`flex flex-col justify-center   gap-3  mx-auto    mt-4 pb-4   `} >
+       {loading ? <SpinnerComponent/> :  <section className={`flex flex-col justify-center   gap-3  mx-auto    mt-4 pb-4   `} >
            {
                allBooks?.length === 0 && user.role ==='admin'  && <div className='w-full text-center font-bold text-2xl'>There are no books in our database <Link to={'/addBook'} className='text-blue-500 hover:text-blue-900'>Click To Add One</Link></div>
 
@@ -154,7 +155,7 @@ export const CategoryBooks = () => {
                        className="fa-solid fa-angle-right text-[#667574] "></i></div>
                </div>
            }
-       </section>
+       </section>}
    </main>
         {/*flex flex-wrap justify-center md:justify-items-center sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[1200px] 2xl:grid-cols-4 2xl:max-w-[1500px] mx-auto*/}
 

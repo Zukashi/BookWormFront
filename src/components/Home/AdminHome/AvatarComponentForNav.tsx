@@ -23,7 +23,10 @@ export const    AvatarComponent = () => {
     };
     useEffect(() => {
         ( async () => {
-            const res = await axiosPrivate.get(`${apiUrl}/user/${user._id}`)
+            const res = await axiosPrivate.get(`${apiUrl}/user/${user._id}`, {
+                withCredentials:true
+
+            })
             setPreview(res.data.base64Avatar)
         })()
     }, []);
