@@ -19,7 +19,7 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
     const toastify = useToast();
     const location = useLocation();
     const navigate = useNavigate();
-    const [checkedCheckbox, setCheckedCheckbox] = useState<boolean>(false);
+    const [checkedCheckbox, setCheckedCheckbox] = useState<boolean | null>(null);
     const [editable, setEditable] = useState<boolean>(false);
     const handleEntityAddSubmit = async() => {
         setCheckedCheckbox((prev) => !prev)
@@ -72,6 +72,8 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
             });
             if(typeof found ==='string') {
                 setCheckedCheckbox(true)
+            }else{
+                setCheckedCheckbox(false)
             }
         })()
     }, []);
@@ -126,10 +128,10 @@ export const CheckboxList = ({listName, book, checked, list, refreshLists}:{list
         dispatch(setSecondModal(false))
     }
     return (<> <form className='ml-4  mb-3 flex items-center w-full '><div className='pr-10 flex items-center  w-full justify-between' >
-        <label className='flex items-center gap-3  text-lg cursor-pointer' > <input checked={checkedCheckbox}  className="focus:ring-0 h-5 w-5 focus:ring-offset-0 cursor-pointer border-2 border-black  " onChange={() => {
+        <label className='flex items-center gap-3  text-lg cursor-pointer' > {typeof checkedCheckbox === 'boolean' ? <input checked={checkedCheckbox}  className="focus:ring-0 h-5 w-5 focus:ring-offset-0 cursor-pointer border-2 border-black  " onChange={() => {
             void handleEntityAddSubmit();
         }
-        }  type="checkbox" value={listName} key={listName} /> <p className='text-ellipsis overflow-hidden max-w-[100px] whitespace-nowrap'>{listName}</p></label>
+        }  type="checkbox" value={listName} key={listName} /> : <Spinner size='sm'/>} <p className='text-ellipsis overflow-hidden max-w-[100px] whitespace-nowrap'>{listName}</p></label>
         <i className="fa-solid fa-pen cursor-pointer" onClick={() =>  {
             dispatch(setSecondModal(true));
             console.log(listName)
