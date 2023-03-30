@@ -34,7 +34,7 @@ export const Profile = () => {
 
 
 
-            <div className='text-left font-bold uppercase w-full text-[13px] flex  justify-around '>
+            <div className='text-left font-bold uppercase w-full text-[13px] flex flex-col md:flex-row justify-around '>
                 <h3 className=' border-b-[1px] border-b-[#c1c1c1] py-2 md:hidden'><span className=''>Bookshelves</span></h3>
                 <h3 className=' border-b-[1px] border-b-[#c1c1c1] '><Link to={`/user/${params.userId}/books?status=read`} className='pr-2 py-2  flex gap-0.5 group cursor-pointer ' ><span className='border-b-[1px] border-b-transparent hover:border-b-[1px] group-hover:border-black  '>Read </span><p className='text-[#999]'>({user?.shelves.read.length})</p></Link></h3>
                 <h3 className=' border-b-[1px] border-b-[#c1c1c1]  '><Link to={`/user/${params.userId}/books?status=currentlyReading`} className='pr-2 py-2  flex gap-0.5 group cursor-pointer '><span className='border-b-[1px] border-b-transparent hover:border-b-[1px] group-hover:border-black  '>Reading</span><p className='text-[#999]'>({user?.shelves.currentlyReading.length})</p></Link></h3>

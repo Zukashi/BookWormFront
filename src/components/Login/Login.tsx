@@ -79,7 +79,7 @@ export const Login = () => {
                     <label><span className="block text-lg font-medium text-slate-700 mt-2 ">Password:</span></label>
                     <InputGroup size='md'>
 
-                        <input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className={`pr-16 focus:border-0 rounded-lg  focus:outline-none focus:ring focus:ring-black focus:ring-1   ${error && 'ring ring-[#ff0000] ring-[1.5px]'} `} {...register('password')}  type={show ? 'text' : 'password'}></input> <InputRightElement width='4.5rem'>
+                        <input style={{border:'none', backgroundColor:'rgba(240, 239, 235,0.3)'}}className={`pr-16 focus:border-0 rounded-lg  focus:outline-none focus:ring focus:ring-black focus:ring-1  px-4 py-2   ${error && 'ring ring-[#ff0000] ring-[1.5px]'} `} {...register('password')}  type={show ? 'text' : 'password'}></input> <InputRightElement width='4.5rem'>
                         <button type='button'   onClick={handleClick} className='h-[1.75rem] bg-[#000]/[0.35] text-white rounded-2xl font-medium px-2 '>
                             {show ? 'Hide' : 'Show'}
                         </button>
