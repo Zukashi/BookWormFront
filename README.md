@@ -86,7 +86,7 @@
 * User can change his details along with password
 * User can reset his password 
 * User can search for books 
-* User can add books to database through searching them and clicking on them
+* User can add books
 * User can add books to his his want to read / reading / read list
 * User can change progress of reading of his book while it's in reading list
 * User can rate books 
