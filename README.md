@@ -26,7 +26,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Zukashi/BookWormFront">
-    <img src="https://cdn-icons-png.flaticon.com/512/2490/2490314.png" alt="Logo" width="80" height="80">
+    <img src="https://cdn-icons-png.flaticon.com/512/2490/2490307.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">BookWorm</h3>
