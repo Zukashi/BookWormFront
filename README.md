@@ -88,7 +88,9 @@
 
 ![alt screenshot of app](https://i.imgur.com/YNeeEJM.png)
 
-![alt screenshot of app](https://i.imgur.com/cFeom5E.png)
+![alt screenshot of app](https://i.imgur.com/7ZeftOs.jpeg)
+
+![alt screenshot of app](https://i.imgur.com/odflOyV.jpeg)
 #### Common functionalities
 * JWT Auth
 * This project consumes OpenLibrary API
