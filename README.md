@@ -71,7 +71,22 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+
+![alt screenshot of app](https://i.imgur.com/DXTDK2r.jpeg)
+
+![alt screenshot of app](https://i.imgur.com/L6bhs01.jpeg)
+
+![alt screenshot of app](https://i.imgur.com/RFEPVWs.png)
+
+![alt screenshot of app](https://i.imgur.com/2ZYU4hy.png)
+
+![alt screenshot of app](https://i.imgur.com/eNTJT46.png)
+
+![alt screenshot of app](https://i.imgur.com/jhcsJcm.png)
+
+![alt screenshot of app](https://i.imgur.com/PMviI6a.png)
+
+![alt screenshot of app](https://i.imgur.com/YNeeEJM.png)
 
 #### Common functionalities
 * JWT Auth
