@@ -32,14 +32,12 @@
 <h3 align="center">BookWorm</h3>
 
   <p align="center">
-    
-    <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    BookWorm
+    <br/>
+    <br/>
+    <a href="https://book-worm-kjh8.onrender.com/demo">Demo</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Live</a>
+    <a href="https://book-worm-kjh8.onrender.com">Live</a>
    
   </p>
 </div>
@@ -53,6 +51,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#common-functionalities">Common Functionalities</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -111,15 +110,16 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 
 ### Built With
-
-* [![Next][Next.js]][Next-url]
+* [![Javascript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://www.ecmascript.org/)
+* [![Typescript](https://img.shields.io/badge/typescript-1DA1F2?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org/)
 * [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+* [![NodeJs](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+* [![Express](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)](https://expressjs.com/)
+* [![MongoDb](https://img.shields.io/badge/MongoDB-409C52?style=for-the-badge&logo=mongodb&logoColor=green)](https://mongodb.com/)
+* [![Tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+* [![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)](https://redux.js.org/)
+* [![ReactRouter](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)](https://reactrouter.com/)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
