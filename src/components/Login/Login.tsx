@@ -54,7 +54,7 @@ export const Login = () => {
 
     const onSubmitDemo =  async () => {
 
-            const res = await axiosPrivate.post('demo');
+            const res = await axiosPrivate.get('demo');
             dispatch(userUpdate({
                 user:res.data.user,
                 token:res.data.accessToken
