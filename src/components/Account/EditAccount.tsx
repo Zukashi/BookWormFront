@@ -38,15 +38,19 @@ export const EditAccount = () => {
   const {user} = useSelector((state: RootState) => state.user);
   const [toggleAvatar, setToggleAvatar] = useState(false)
   const [src, setSrc] = useState(undefined);
-  const [preview ,setPreview] = useState(null);
+  const [preview ,setPreview] = useState('');
   const toast = useToast();
   const axiosPrivate = useAxiosPrivate();
   const [previewSaved, setPreviewSaved] = useState<string | null>(null)
   const onClose = () => {
-    setPreview(null)
+    setPreview('')
   }
   const onCrop = (view:any) => {
-    console.log(view)
+    console.log(view);
+    setForm((prev) => ({
+      ...prev,
+      base64Avatar: view
+    }));
     setPreview(view)
   }
   const [form, setForm] = useState({
@@ -57,7 +61,6 @@ export const EditAccount = () => {
     country:'',
     dateOfBirth:'',
     _id: '',
-    base64Avatar:''
   });
   const {register, handleSubmit}  = useForm<UserInterface>({
     values:form});
@@ -70,17 +73,18 @@ export const EditAccount = () => {
   };
   const saveAvatar = async () => {
       setPreviewSaved(preview)
-      setToggleAvatar(prev => !prev)
+      setToggleAvatar(prev => !prev);
+      await axiosPrivate.put(`${apiUrl}/user/${user._id}/avatar`,JSON.stringify({preview}))
   }
   useEffect(() => {
     (async() =>{
       const res = await axiosPrivate.get(`${apiUrl}/user/${userId}`)
       setForm(res.data);
+      setPreview(res.data.base64Avatar)
     })();
   },[]);
   const onSend = (data:any) => {
     (async() => {
-      await axiosPrivate.put(`${apiUrl}/user/${user._id}/avatar`,JSON.stringify({preview}))
       await axiosPrivate.put(`${apiUrl}/user/${userId}`,JSON.stringify(data))
       toast({
         status:'success',
@@ -107,7 +111,7 @@ export const EditAccount = () => {
              <h1 className='font-bold text-2xl border-b-[1px] pb-5  border-b-[#f1f1f1]'>Personal Information</h1>
              <div className='flex '>
 
-               <img width='80px' className='mt-6'  src={previewSaved === null ? form.base64Avatar : previewSaved}/>
+               <img width='80px' className='mt-6'  src={previewSaved === null ? preview : previewSaved}/>
                <button className='outline-none bg-black text-white font-bold text-xl px-4 py-2 border-2 border-black ml-20 mt-7 ' onClick={() => setToggleAvatar(prev => !prev)}>Change Avatar</button>
              </div>
 
