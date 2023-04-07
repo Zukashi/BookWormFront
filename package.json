@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "set REACT_APP_API_URL=https://bookworm-8nw5.onrender.com&&react-app-rewired build",
+    "build": "set REACT_APP_API_URL=https://celebrated-conkies-03aa5f.netlify.app&&react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
