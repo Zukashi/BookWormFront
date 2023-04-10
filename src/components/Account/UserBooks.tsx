@@ -17,7 +17,6 @@ export const UserBooks = () => {
     }, [activeTab])
     return (<>
 
-        <HomeNav/>
         <div className='pt-16'></div>
                 <main className='w-screen flex justify-center flex-col '>
                     <div className="w-full h-auto  bg-[#053742]   text-[#E8F0F2] ">

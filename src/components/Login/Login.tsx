@@ -32,7 +32,6 @@ export const Login = () => {
                 user:res.data.user,
                 token:res.data.accessToken
             }));
-
             navigate('/home')
 
 

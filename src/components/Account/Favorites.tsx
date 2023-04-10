@@ -42,8 +42,6 @@ export const Favorites = () => {
     },[]);
     if(!favorites) return <SpinnerComponent/>
     return (<>
-
-       <HomeNav/>
             <div className='pt-20'></div>
             <div className='flex mt-[1rem] justify-center'><label className='relative' >
                 <input  className='appearance-none active:outline-none w-60 sm:w-96 border-2 rounded-lg border-cyan-500 py-2 px-4 focus:outline-none' onChange={(e) =>{

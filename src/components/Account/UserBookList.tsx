@@ -129,7 +129,6 @@ export const UserBookList = () => {
 
         if(allBooksLoading || isLoading || !userData || loading || isLoading) return <SpinnerComponent/>
         return (<>
-                <HomeNav/>
                 <div className='pt-16'></div>
 
                 <main className='  bg-[#fbfcff] pt-10 pb-20'>

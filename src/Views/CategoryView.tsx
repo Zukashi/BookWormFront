@@ -5,7 +5,6 @@ import {HomeNav} from "../components/Home/HomeNav";
 
 export const CategoryView = () => {
     return (<>
-        <HomeNav/>
     <CategoryBooks/>
     </>)
 }

@@ -48,7 +48,6 @@ export const CategoryBooks = () => {
         setFilterBooksBoolean(true)
     };
     const getBooksSearch = debounce(async (value:string) =>  {
-        console.log(value);
         
          setSearchValue(value)
 

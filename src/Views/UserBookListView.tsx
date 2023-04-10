@@ -4,7 +4,6 @@ import { HomeNav } from '../components/Home/HomeNav';
 
 export const UserBookListView = () => {
         return <>
-            <HomeNav/>
             <UserBookList/>
         </>
 }

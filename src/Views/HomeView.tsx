@@ -11,7 +11,6 @@ export const HomeView = () => {
     return (<>
 
              <div>
-                <HomeNav/>
                 <BooksSearchBar/>
                 <MainBooks/>
             </div>

@@ -50,7 +50,6 @@ export const AdminUserList = () => {
         return  <SpinnerComponent/>
     }
     return (<>
-        <HomeNav/>
         <div className='pt-20'></div>
         <div className='flex gap-6 justify-center items-center'><input placeholder='Search ...' className='shadow-lg pr-8  pl-2 py-1.5 rounded-xl ring-1 w-80'  onChange={(e) =>{
             setValue(value)

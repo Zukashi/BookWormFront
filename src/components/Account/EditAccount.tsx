@@ -3,8 +3,6 @@ import {useParams} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../app/store";
 import {
-  Avatar as AvatarChakra,
-  Button,
   Input, Select,
   Tab,
   TabList,
@@ -22,6 +20,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {useAxiosPrivate} from "../../hooks/useAxiosPrivate";
 import {SpinnerComponent} from "../SpinnerComponent";
 import { apiUrl } from '../../config/api';
+import {useNavigate} from "react-router-dom";
 export interface UserInterface {
   city:string,
   country:string,
@@ -46,13 +45,13 @@ export const EditAccount = () => {
     setPreview('')
   }
   const onCrop = (view:any) => {
-    console.log(view);
     setForm((prev) => ({
       ...prev,
       base64Avatar: view
     }));
     setPreview(view)
-  }
+  };
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     username :'',
     firstName:'',
@@ -74,7 +73,14 @@ export const EditAccount = () => {
   const saveAvatar = async () => {
       setPreviewSaved(preview)
       setToggleAvatar(prev => !prev);
-      await axiosPrivate.put(`${apiUrl}/user/${user._id}/avatar`,JSON.stringify({preview}))
+    toast({
+      status:'success',
+      title:'User updated successfully',
+    });
+    window.location.reload();
+
+      await axiosPrivate.put(`${apiUrl}/user/${user._id}/avatar`,JSON.stringify({preview}));
+    navigate(`/edit/user/${user._id}`);
   }
   useEffect(() => {
     (async() =>{
@@ -95,7 +101,6 @@ export const EditAccount = () => {
   };
   if(!form.username) return <SpinnerComponent/>
   return (<>
-    <HomeNav/>
     <div className='w-90% flex justify-center pb-12 '>
       <Tabs isFitted variant='line'  pt={20}   w={"100%"} border='0px' >
         <TabList mb='1em'>

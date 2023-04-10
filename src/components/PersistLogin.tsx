@@ -1,11 +1,12 @@
 import {Outlet, useNavigate} from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import {userUpdate} from "../features/User/userSlice";
 import {useDispatch} from "react-redux";
 import {useAxiosPrivate} from "../hooks/useAxiosPrivate";
 import {apiUrl} from "../config/api";
 import {SpinnerComponent} from "./SpinnerComponent";
+import {HomeNav} from "./Home/HomeNav";
 
 const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -47,7 +48,9 @@ const PersistLogin = () => {
     }
     return (
         <>
-            {!isLoading && <Outlet/>}
+            {!isLoading && <>
+                <HomeNav/>
+                <Outlet/></>}
         </>
     )
 }

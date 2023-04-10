@@ -86,7 +86,7 @@ export const AdminBookList = () => {
 
     if(allBooksLoading || isLoading) return <SpinnerComponent/>
     return (<>
-        <HomeNav/>
+
     <div className='pt-16'></div>
 
        <main className='  bg-[#fbfcff] pt-10'>
