@@ -53,13 +53,24 @@ export const Login = () => {
 
     const onSubmitDemo =  async () => {
 
-            const res = await axiosPrivate.get('demo');
+            const res = await axiosPrivate.get('demo/admin');
             dispatch(userUpdate({
                 user:res.data.user,
                 token:res.data.accessToken
             }));
 
             navigate('/home')
+
+    };
+    const onSubmitDemoUser =  async () => {
+
+        const res = await axiosPrivate.get('demo/user');
+        dispatch(userUpdate({
+            user:res.data.user,
+            token:res.data.accessToken
+        }));
+
+        navigate('/home')
 
 
 
@@ -86,7 +97,7 @@ export const Login = () => {
                     </InputGroup>
                     {error && <h1 className='text-center text-red-700 pt-2 font-semibold '>Password or username invalid.</h1>}
                     <div className='w-full flex justify-center'><button className='mt-2  px-3 py-3 w-[7rem] bg-[#000]/[0.36] rounded-md font-medium text-2xl text-white' type={"submit"} >Login</button></div>
-                    <div className='w-full flex justify-center'><div className='text-center mt-2 cursor-pointer px-3 py-3 w-[7rem] bg-[#000]/[0.36] rounded-md font-medium text-2xl text-white' onClick={() => onSubmitDemo()}  >Demo</div></div>
+                    <div className='w-full flex justify-between'><div className='text-center mt-2 cursor-pointer px-3 py-3 w-[7rem] bg-[#000]/[0.36] rounded-md font-medium text-2xl text-white' onClick={() => onSubmitDemo()}  >Demo Admin</div><div className='text-center mt-2 cursor-pointer px-3 py-3 w-[7rem] bg-[#000]/[0.36] rounded-md font-medium text-2xl text-white' onClick={() => onSubmitDemoUser()}  >Demo User</div></div>
                     <Link to='/reset-password' className='mt-3'><ChakraLink className='flex justify-center'>Forgot Password?</ChakraLink></Link>
                     <Link to='/register'  className='mt-1'><ChakraLink className='flex justify-center'>Don't have an account?</ChakraLink></Link>
                 </div>

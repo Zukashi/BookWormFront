@@ -1,14 +1,12 @@
 import { axiosPrivate } from "../api/axios";
 import { useEffect } from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
 import {userUpdate} from "../features/User/userSlice";
 import {useDispatch} from "react-redux";
 import {apiUrl} from "../config/api";
 
 
 export const useAxiosPrivate = () => {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
 
